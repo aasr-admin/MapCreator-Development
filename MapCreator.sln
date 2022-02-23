@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapCreator", "MapCreator.csproj", "{91A35D49-B337-4148-80BB-CA27607C7987}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderFacet", "dll\RenderFacet.csproj", "{839E9DC7-C154-4B8C-A48F-388ADD244E6B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91A35D49-B337-4148-80BB-CA27607C7987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91A35D49-B337-4148-80BB-CA27607C7987}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91A35D49-B337-4148-80BB-CA27607C7987}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91A35D49-B337-4148-80BB-CA27607C7987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{839E9DC7-C154-4B8C-A48F-388ADD244E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{839E9DC7-C154-4B8C-A48F-388ADD244E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{839E9DC7-C154-4B8C-A48F-388ADD244E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{839E9DC7-C154-4B8C-A48F-388ADD244E6B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E690F800-C718-44E5-BA84-21970124D472}
+	EndGlobalSection
+EndGlobal
