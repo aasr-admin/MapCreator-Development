@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapCreator", "MapCreator.csproj", "{91A35D49-B337-4148-80BB-CA27607C7987}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapCreator", "MapCreator\MapCreator.csproj", "{91A35D49-B337-4148-80BB-CA27607C7987}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderFacet", "dll\RenderFacet.csproj", "{839E9DC7-C154-4B8C-A48F-388ADD244E6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderFacet", "RenderFacet\RenderFacet.csproj", "{839E9DC7-C154-4B8C-A48F-388ADD244E6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
