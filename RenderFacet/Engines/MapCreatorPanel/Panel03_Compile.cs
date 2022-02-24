@@ -52,7 +52,7 @@ namespace MapCreator
             {
                 #region Data Directory Modification
 
-                str = string.Format("{0}Data\\Engine\\RoughEdge\\Corner.xml", AppDomain.CurrentDomain.BaseDirectory);
+                str = string.Format("{0}MapCompiler\\Engine\\RoughEdge\\Corner.xml", AppDomain.CurrentDomain.BaseDirectory);
 
                 #endregion
 
@@ -85,7 +85,7 @@ namespace MapCreator
             {
                 #region Data Directory Modification
 
-                str = string.Format("{0}Data\\Engine\\RoughEdge\\Left.xml", AppDomain.CurrentDomain.BaseDirectory);
+                str = string.Format("{0}MapCompiler\\Engine\\RoughEdge\\Left.xml", AppDomain.CurrentDomain.BaseDirectory);
 
                 #endregion
 
@@ -118,7 +118,7 @@ namespace MapCreator
             {
                 #region Data Directory Modification
 
-                str = string.Format("{0}Data\\Engine\\RoughEdge\\Top.xml", AppDomain.CurrentDomain.BaseDirectory);
+                str = string.Format("{0}MapCompiler\\Engine\\RoughEdge\\Top.xml", AppDomain.CurrentDomain.BaseDirectory);
 
                 #endregion
 

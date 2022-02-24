@@ -30,12 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainMenu));
             this.mainMenu_menuStrip = new System.Windows.Forms.MenuStrip();
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoshopCC = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonB_otherPaintPrograms = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainMenu_menuStrip_button02_drawingTools = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainMenu_menuStrip_button03_userSubmittedPlugins = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainMenu_menuStrip_button04_designTutorials = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_button01_userSubmittedPlugins = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_button02_facetTutorials = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu_menuStrip_button05_programInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu_pictureBox01_backDrop = new System.Windows.Forms.PictureBox();
             this.mainMenu_pictureBox02_topDivider = new System.Windows.Forms.PictureBox();
@@ -115,10 +114,9 @@
             this.mainMenu_menuStrip.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.mainMenu_menuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.mainMenu_menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware,
-            this.mainMenu_menuStrip_button02_drawingTools,
-            this.mainMenu_menuStrip_button03_userSubmittedPlugins,
-            this.mainMenu_menuStrip_button04_designTutorials,
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools,
+            this.mainMenu_menuStrip_button01_userSubmittedPlugins,
+            this.mainMenu_menuStrip_button02_facetTutorials,
             this.mainMenu_menuStrip_button05_programInfo});
             this.mainMenu_menuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenu_menuStrip.Name = "mainMenu_menuStrip";
@@ -126,60 +124,59 @@
             this.mainMenu_menuStrip.TabIndex = 0;
             this.mainMenu_menuStrip.Text = "menuStrip1";
             // 
-            // mainMenu_menuStrip_buttonCategory01_paintSoftware
+            // mainMenu_menuStrip_buttonCategory01_drawingTools
             // 
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoshopCC,
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonB_otherPaintPrograms});
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware.Name = "mainMenu_menuStrip_buttonCategory01_paintSoftware";
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware.Padding = new System.Windows.Forms.Padding(4, 0, 14, 0);
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware.Size = new System.Drawing.Size(126, 28);
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware.Text = "Paint Software";
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop,
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette});
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools.ForeColor = System.Drawing.Color.Navy;
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools.Name = "mainMenu_menuStrip_buttonCategory01_drawingTools";
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools.Padding = new System.Windows.Forms.Padding(4, 0, 14, 0);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools.Size = new System.Drawing.Size(126, 28);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools.Text = "Drawing Tools";
             // 
-            // mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoshopCC
+            // mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop
             // 
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoshopCC.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoshopCC.Name = "mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoshopCC";
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoshopCC.Size = new System.Drawing.Size(212, 24);
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoshopCC.Text = "Adobe Photoshop CC";
+            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop.ForeColor = System.Drawing.Color.Green;
+            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop.Name = "mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop";
+            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop.Size = new System.Drawing.Size(189, 24);
+            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop.Text = "Adobe Photoshop";
+            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop.Click += new System.EventHandler(this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop_Click);
             // 
-            // mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonB_otherPaintPrograms
+            // mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette
             // 
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonB_otherPaintPrograms.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonB_otherPaintPrograms.Name = "mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonB_otherPaintPrograms";
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonB_otherPaintPrograms.Size = new System.Drawing.Size(212, 24);
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonB_otherPaintPrograms.Text = "Other Paint Programs";
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette.ForeColor = System.Drawing.Color.Green;
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette.Name = "mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette";
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette.Size = new System.Drawing.Size(189, 24);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette.Text = "Color Tables";
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette.Click += new System.EventHandler(this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette_Click);
             // 
-            // mainMenu_menuStrip_button02_drawingTools
+            // mainMenu_menuStrip_button01_userSubmittedPlugins
             // 
-            this.mainMenu_menuStrip_button02_drawingTools.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.mainMenu_menuStrip_button02_drawingTools.Name = "mainMenu_menuStrip_button02_drawingTools";
-            this.mainMenu_menuStrip_button02_drawingTools.Padding = new System.Windows.Forms.Padding(4, 0, 15, 0);
-            this.mainMenu_menuStrip_button02_drawingTools.Size = new System.Drawing.Size(127, 28);
-            this.mainMenu_menuStrip_button02_drawingTools.Text = "Drawing Tools";
+            this.mainMenu_menuStrip_button01_userSubmittedPlugins.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.mainMenu_menuStrip_button01_userSubmittedPlugins.ForeColor = System.Drawing.Color.Navy;
+            this.mainMenu_menuStrip_button01_userSubmittedPlugins.Name = "mainMenu_menuStrip_button01_userSubmittedPlugins";
+            this.mainMenu_menuStrip_button01_userSubmittedPlugins.Padding = new System.Windows.Forms.Padding(4, 0, 15, 0);
+            this.mainMenu_menuStrip_button01_userSubmittedPlugins.Size = new System.Drawing.Size(185, 28);
+            this.mainMenu_menuStrip_button01_userSubmittedPlugins.Text = "User Submitted Plugins";
+            this.mainMenu_menuStrip_button01_userSubmittedPlugins.Click += new System.EventHandler(this.mainMenu_menuStrip_button03_userSubmittedPlugins_Click);
             // 
-            // mainMenu_menuStrip_button03_userSubmittedPlugins
+            // mainMenu_menuStrip_button02_facetTutorials
             // 
-            this.mainMenu_menuStrip_button03_userSubmittedPlugins.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.mainMenu_menuStrip_button03_userSubmittedPlugins.Name = "mainMenu_menuStrip_button03_userSubmittedPlugins";
-            this.mainMenu_menuStrip_button03_userSubmittedPlugins.Padding = new System.Windows.Forms.Padding(4, 0, 15, 0);
-            this.mainMenu_menuStrip_button03_userSubmittedPlugins.Size = new System.Drawing.Size(185, 28);
-            this.mainMenu_menuStrip_button03_userSubmittedPlugins.Text = "User Submitted Plugins";
-            this.mainMenu_menuStrip_button03_userSubmittedPlugins.Click += new System.EventHandler(this.mainMenu_menuStrip_button03_userSubmittedPlugins_Click);
-            // 
-            // mainMenu_menuStrip_button04_designTutorials
-            // 
-            this.mainMenu_menuStrip_button04_designTutorials.Name = "mainMenu_menuStrip_button04_designTutorials";
-            this.mainMenu_menuStrip_button04_designTutorials.Size = new System.Drawing.Size(134, 28);
-            this.mainMenu_menuStrip_button04_designTutorials.Text = "Design Tutorials";
+            this.mainMenu_menuStrip_button02_facetTutorials.Name = "mainMenu_menuStrip_button02_facetTutorials";
+            this.mainMenu_menuStrip_button02_facetTutorials.Size = new System.Drawing.Size(121, 28);
+            this.mainMenu_menuStrip_button02_facetTutorials.Text = "Facet Tutorials";
+            this.mainMenu_menuStrip_button02_facetTutorials.Click += new System.EventHandler(this.mainMenu_menuStrip_button02_facetTutorials_Click);
             // 
             // mainMenu_menuStrip_button05_programInfo
             // 
             this.mainMenu_menuStrip_button05_programInfo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.mainMenu_menuStrip_button05_programInfo.Image = ((System.Drawing.Image)(resources.GetObject("mainMenu_menuStrip_button05_programInfo.Image")));
             this.mainMenu_menuStrip_button05_programInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.mainMenu_menuStrip_button05_programInfo.Margin = new System.Windows.Forms.Padding(85, 0, 0, 0);
+            this.mainMenu_menuStrip_button05_programInfo.Margin = new System.Windows.Forms.Padding(210, 0, 0, 0);
             this.mainMenu_menuStrip_button05_programInfo.Name = "mainMenu_menuStrip_button05_programInfo";
             this.mainMenu_menuStrip_button05_programInfo.Padding = new System.Windows.Forms.Padding(0);
             this.mainMenu_menuStrip_button05_programInfo.Size = new System.Drawing.Size(28, 28);
@@ -904,6 +901,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.mainMenu_menuStrip;
+            this.MaximizeBox = false;
             this.Name = "mainMenu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MapCreator: Main Menu";
@@ -936,12 +934,11 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip mainMenu_menuStrip;
-        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory01_paintSoftware;
-        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoshopCC;
-        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonB_otherPaintPrograms;
-        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_button02_drawingTools;
-        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_button03_userSubmittedPlugins;
-        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_button04_designTutorials;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory01_drawingTools;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_button01_userSubmittedPlugins;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_button02_facetTutorials;
         private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_button05_programInfo;
         private System.Windows.Forms.PictureBox mainMenu_pictureBox01_backDrop;
         private System.Windows.Forms.PictureBox mainMenu_pictureBox02_topDivider;

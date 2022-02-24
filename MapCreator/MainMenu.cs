@@ -95,7 +95,11 @@ namespace MapCreator
             this.iTerrain.Load();
             this.iAltitude.Load();
 
-            string str = string.Format("{0}\\Data\\Engine\\{1}", Directory.GetCurrentDirectory(), "MapInfo.xml");
+            #region Data Directory Modification
+
+            string str = string.Format("{0}\\MapCompiler\\Engine\\{1}", Directory.GetCurrentDirectory(), "MapInfo.xml");
+
+            #endregion
 
             this.mainMenu_groupBox01_createYourWorld_panel01_workBench_groupBox01_createFacetBitmapFiles_textBox01_projectPath.Text = Directory.GetCurrentDirectory();
             this.iTerrain.Display(this.mainMenu_groupBox01_createYourWorld_panel01_workBench_groupBox01_createFacetBitmapFiles_comboBox02_selectTerrain);
@@ -594,7 +598,7 @@ namespace MapCreator
 
             #region Data Directory Modification
 
-            baseDirectory = string.Concat(baseDirectory, "Data\\Engine\\Transitions\\");
+            baseDirectory = string.Concat(baseDirectory, "MapCompiler\\Engine\\Transitions\\");
 
             #endregion
 
@@ -872,6 +876,30 @@ namespace MapCreator
 
         #endregion
 
+        /// Button: Drawing Tools > Adobe Photoshop
+        private void mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop_Click(object sender, EventArgs e)
+        {
+            //This Snippet Launches A Working Directory From A Button
+            String path = Path.GetDirectoryName(Application.ExecutablePath.ToString());
+
+            if (File.Exists(Application.ExecutablePath))
+            {
+                Process.Start(Path.Combine(path, "DrawingTools/AdobePhotoshop"));
+            }
+        }
+
+        /// Button: Drawing Tools > Color Tables
+        private void mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette_Click(object sender, EventArgs e)
+        {
+            //This Snippet Launches A Working Directory From A Button
+            String path = Path.GetDirectoryName(Application.ExecutablePath.ToString());
+
+            if (File.Exists(Application.ExecutablePath))
+            {
+                Process.Start(Path.Combine(path, "DrawingTools/ColorTables"));
+            }
+        }
+
         /// Button: User Submitted Plugins
         private void mainMenu_menuStrip_button03_userSubmittedPlugins_Click(object sender, EventArgs e)
         {
@@ -880,6 +908,17 @@ namespace MapCreator
             uSP.Show();
 
             iLogger.Close();
+        }
+
+        private void mainMenu_menuStrip_button02_facetTutorials_Click(object sender, EventArgs e)
+        {
+            //This Snippet Launches A Working Directory From A Button
+            String path = Path.GetDirectoryName(Application.ExecutablePath.ToString());
+
+            if (File.Exists(Application.ExecutablePath))
+            {
+                Process.Start(Path.Combine(path, "FacetTutorials"));
+            }
         }
 
         /// Exits Windows Application Process

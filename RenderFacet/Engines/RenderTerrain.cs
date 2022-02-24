@@ -325,7 +325,7 @@ namespace Terrain
 
             #region Data Directory Modification
 
-            string str = string.Format("{0}\\Data\\Engine\\Terrain.xml", AppDomain.CurrentDomain.BaseDirectory);
+            string str = string.Format("{0}\\MapCompiler\\Engine\\Terrain.xml", AppDomain.CurrentDomain.BaseDirectory);
 
             #endregion
 
@@ -381,7 +381,7 @@ namespace Terrain
 
             #region Data Directory Modification
 
-            string str = string.Format("{0}/Data/Engine/Terrain.xml", Directory.GetCurrentDirectory());
+            string str = string.Format("{0}/MapCompiler/Engine/Terrain.xml", Directory.GetCurrentDirectory());
 
             #endregion
 

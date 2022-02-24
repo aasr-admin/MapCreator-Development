@@ -42,7 +42,6 @@
             this.titleScreen_pictureBox01_splashImage.Size = new System.Drawing.Size(546, 224);
             this.titleScreen_pictureBox01_splashImage.TabIndex = 0;
             this.titleScreen_pictureBox01_splashImage.TabStop = false;
-            this.titleScreen_pictureBox01_splashImage.MouseClick += new System.Windows.Forms.MouseEventHandler(this.titleScreen_pictureBox01_splashImage_MouseClick);
             // 
             // titleScreen
             // 
@@ -56,6 +55,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "titleScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.titleScreen_FormClosed);
+            this.Shown += new System.EventHandler(this.titleScreen_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.titleScreen_pictureBox01_splashImage)).EndInit();
             this.ResumeLayout(false);
 

@@ -260,7 +260,7 @@ namespace Altitude
 
             #region Data Directory Modification
 
-            string str = string.Format("{0}Data/Engine/Altitude.xml", AppDomain.CurrentDomain.BaseDirectory);
+            string str = string.Format("{0}MapCompiler/Engine/Altitude.xml", AppDomain.CurrentDomain.BaseDirectory);
 
             #endregion
 
@@ -315,7 +315,7 @@ namespace Altitude
 
             #region Data Directory Modification
 
-            string str = string.Format("{0}Data\\Engine\\Altitude.xml", AppDomain.CurrentDomain.BaseDirectory);
+            string str = string.Format("{0}MapCompiler\\Engine\\Altitude.xml", AppDomain.CurrentDomain.BaseDirectory);
 
             #endregion
 

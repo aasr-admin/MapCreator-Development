@@ -41,9 +41,9 @@ namespace LegacyMUL
         tileart
     }
 
-    public class LegacyMULConverter
+    public class MUL2UOPConverter
     {
-        public LegacyMULConverter()
+        public MUL2UOPConverter()
         {
         }
 

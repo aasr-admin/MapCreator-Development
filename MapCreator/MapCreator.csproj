@@ -54,11 +54,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UserPlugin.cs">
+    <Compile Include="UserPlugins\UserPlugins.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UserPlugin.Designer.cs">
-      <DependentUpon>UserPlugin.cs</DependentUpon>
+    <Compile Include="UserPlugins\UserPlugins.Designer.cs">
+      <DependentUpon>UserPlugins.cs</DependentUpon>
     </Compile>
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
@@ -90,8 +90,8 @@
     <EmbeddedResource Include="TitleScreen.resx">
       <DependentUpon>TitleScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserPlugin.resx">
-      <DependentUpon>UserPlugin.cs</DependentUpon>
+    <EmbeddedResource Include="UserPlugins\UserPlugins.resx">
+      <DependentUpon>UserPlugins.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -115,8 +115,6 @@
   <ItemGroup>
     <Content Include="mcico001.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PluginSubmissions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

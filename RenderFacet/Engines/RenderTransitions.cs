@@ -1538,7 +1538,7 @@ namespace Transition
             {
                 #region Data Directory Modification
 
-                string filename = string.Format("{0}Data\\Engine\\TerrainTypes\\{1}", AppDomain.CurrentDomain.BaseDirectory, iFileName);
+                string filename = string.Format("{0}MapCompiler\\Engine\\TerrainTypes\\{1}", AppDomain.CurrentDomain.BaseDirectory, iFileName);
 
                 #endregion
 
