@@ -24,7 +24,7 @@ namespace MapCreator
         private void titleScreen_Shown(object sender, EventArgs e)
         {
             splashTimer = new Timer();
-            splashTimer.Interval = 1000;
+            splashTimer.Interval = 800;
 
             splashTimer.Start();
             splashTimer.Tick += timer_Tick;

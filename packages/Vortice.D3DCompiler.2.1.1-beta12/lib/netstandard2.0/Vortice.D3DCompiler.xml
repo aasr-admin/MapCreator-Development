@@ -1,0 +1,543 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Vortice.D3DCompiler</name>
+    </assembly>
+    <members>
+        <member name="T:Vortice.D3DCompiler.Compiler">
+            <summary>
+            Functions
+            </summary>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.ReadFileToBlob(System.String)">
+            <unmanaged>HRESULT D3DReadFileToBlob([In] const wchar_t* pFileName, [Out] ID3D10Blob** ppContents)</unmanaged>
+            <unmanaged-short>D3DReadFileToBlob</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.WriteBlobToFile(Vortice.Direct3D.Blob,System.String,SharpGen.Runtime.RawBool)">
+            <unmanaged>HRESULT D3DWriteBlobToFile([In] ID3D10Blob* pBlob, [In] const wchar_t* pFileName, [In] BOOL bOverwrite)</unmanaged>
+            <unmanaged-short>D3DWriteBlobToFile</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.Compile(System.IntPtr,SharpGen.Runtime.PointerSize,System.String,Vortice.Direct3D.ShaderMacro[],Vortice.Direct3D.Include,System.String,System.String,Vortice.D3DCompiler.ShaderFlags,Vortice.D3DCompiler.EffectFlags,Vortice.Direct3D.Blob@,Vortice.Direct3D.Blob@)">
+            <unmanaged>HRESULT D3DCompile([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [In, Optional] const char* pSourceName, [In, Buffer, Optional] const D3D_SHADER_MACRO* pDefines, [In, Optional] ID3DInclude* pInclude, [In, Optional] const char* pEntrypoint, [In] const char* pTarget, [In] UINT Flags1, [In] UINT Flags2, [Out] ID3D10Blob** ppCode, [Out, Optional] ID3D10Blob** ppErrorMsgs)</unmanaged>
+            <unmanaged-short>D3DCompile</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.Compile2(System.IntPtr,SharpGen.Runtime.PointerSize,System.String,Vortice.Direct3D.ShaderMacro[],Vortice.Direct3D.Include,System.String,System.String,Vortice.D3DCompiler.ShaderFlags,Vortice.D3DCompiler.EffectFlags,Vortice.D3DCompiler.SecondaryDataFlags,System.IntPtr,SharpGen.Runtime.PointerSize,Vortice.Direct3D.Blob@,Vortice.Direct3D.Blob@)">
+            <unmanaged>HRESULT D3DCompile2([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [In, Optional] const char* pSourceName, [In, Buffer, Optional] const D3D_SHADER_MACRO* pDefines, [In, Optional] ID3DInclude* pInclude, [In] const char* pEntrypoint, [In] const char* pTarget, [In] UINT Flags1, [In] UINT Flags2, [In] UINT SecondaryDataFlags, [In, Buffer, Optional] const void* pSecondaryData, [In] SIZE_T SecondaryDataSize, [Out] ID3D10Blob** ppCode, [Out, Optional] ID3D10Blob** ppErrorMsgs)</unmanaged>
+            <unmanaged-short>D3DCompile2</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.CompileFromFile(System.String,Vortice.Direct3D.ShaderMacro[],Vortice.Direct3D.Include,System.String,System.String,Vortice.D3DCompiler.ShaderFlags,Vortice.D3DCompiler.EffectFlags,Vortice.Direct3D.Blob@,Vortice.Direct3D.Blob@)">
+            <unmanaged>HRESULT D3DCompileFromFile([In] const wchar_t* pFileName, [In, Buffer, Optional] const D3D_SHADER_MACRO* pDefines, [In, Optional] ID3DInclude* pInclude, [In] const char* pEntrypoint, [In] const char* pTarget, [In] UINT Flags1, [In] UINT Flags2, [Out] ID3D10Blob** ppCode, [Out, Optional] ID3D10Blob** ppErrorMsgs)</unmanaged>
+            <unmanaged-short>D3DCompileFromFile</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.Preprocess(System.IntPtr,SharpGen.Runtime.PointerSize,System.String,Vortice.Direct3D.ShaderMacro[],Vortice.Direct3D.Include,Vortice.Direct3D.Blob@,Vortice.Direct3D.Blob@)">
+            <unmanaged>HRESULT D3DPreprocess([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [In, Optional] const char* pSourceName, [In, Buffer, Optional] const D3D_SHADER_MACRO* pDefines, [In, Optional] ID3DInclude* pInclude, [Out] ID3D10Blob** ppCodeText, [Out, Optional] ID3D10Blob** ppErrorMsgs)</unmanaged>
+            <unmanaged-short>D3DPreprocess</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.GetDebugInfo(System.IntPtr,SharpGen.Runtime.PointerSize)">
+            <unmanaged>HRESULT D3DGetDebugInfo([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [Out] ID3D10Blob** ppDebugInfo)</unmanaged>
+            <unmanaged-short>D3DGetDebugInfo</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.Reflect(System.Void*,SharpGen.Runtime.PointerSize,System.Guid,System.IntPtr@)">
+            <unmanaged>HRESULT D3DReflect([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [In] const GUID&amp; pInterface, [Out] void** ppReflector)</unmanaged>
+            <unmanaged-short>D3DReflect</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.ReflectLibrary(System.IntPtr,SharpGen.Runtime.PointerSize,System.Guid)">
+            <unmanaged>HRESULT D3DReflectLibrary([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [In] const GUID&amp; riid, [Out] void** ppReflector)</unmanaged>
+            <unmanaged-short>D3DReflectLibrary</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.Disassemble(System.IntPtr,SharpGen.Runtime.PointerSize,Vortice.D3DCompiler.DisasmFlags,System.String)">
+            <unmanaged>HRESULT D3DDisassemble([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [In] UINT Flags, [In, Optional] const char* szComments, [Out] ID3D10Blob** ppDisassembly)</unmanaged>
+            <unmanaged-short>D3DDisassemble</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.DisassembleRegion(System.IntPtr,SharpGen.Runtime.PointerSize,System.Int32,System.String,SharpGen.Runtime.PointerSize,SharpGen.Runtime.PointerSize,SharpGen.Runtime.PointerSize@,Vortice.Direct3D.Blob@)">
+            <unmanaged>HRESULT D3DDisassembleRegion([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [In] UINT Flags, [In, Optional] const char* szComments, [In] SIZE_T StartByteOffset, [In] SIZE_T NumInsts, [Out, Optional] SIZE_T* pFinishByteOffset, [Out] ID3D10Blob** ppDisassembly)</unmanaged>
+            <unmanaged-short>D3DDisassembleRegion</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.GetTraceInstructionOffsets(System.IntPtr,SharpGen.Runtime.PointerSize,System.Int32,SharpGen.Runtime.PointerSize,SharpGen.Runtime.PointerSize,SharpGen.Runtime.PointerSize@)">
+            <unmanaged>HRESULT D3DGetTraceInstructionOffsets([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [In] UINT Flags, [In] SIZE_T StartInstIndex, [In] SIZE_T NumInsts, [Out] SIZE_T* pOffsets, [Out] SIZE_T* pTotalInsts)</unmanaged>
+            <unmanaged-short>D3DGetTraceInstructionOffsets</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.GetInputSignatureBlob(System.IntPtr,SharpGen.Runtime.PointerSize,Vortice.Direct3D.Blob@)">
+            <unmanaged>HRESULT D3DGetInputSignatureBlob([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [Out] ID3D10Blob** ppSignatureBlob)</unmanaged>
+            <unmanaged-short>D3DGetInputSignatureBlob</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.GetOutputSignatureBlob(System.IntPtr,SharpGen.Runtime.PointerSize,Vortice.Direct3D.Blob@)">
+            <unmanaged>HRESULT D3DGetOutputSignatureBlob([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [Out] ID3D10Blob** ppSignatureBlob)</unmanaged>
+            <unmanaged-short>D3DGetOutputSignatureBlob</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.GetInputAndOutputSignatureBlob(System.IntPtr,SharpGen.Runtime.PointerSize,Vortice.Direct3D.Blob@)">
+            <unmanaged>HRESULT D3DGetInputAndOutputSignatureBlob([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [Out] ID3D10Blob** ppSignatureBlob)</unmanaged>
+            <unmanaged-short>D3DGetInputAndOutputSignatureBlob</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.StripShader(System.IntPtr,SharpGen.Runtime.PointerSize,Vortice.D3DCompiler.StripFlags,Vortice.Direct3D.Blob@)">
+            <unmanaged>HRESULT D3DStripShader([In, Buffer] const void* pShaderBytecode, [In] SIZE_T BytecodeLength, [In] UINT uStripFlags, [Out] ID3D10Blob** ppStrippedBlob)</unmanaged>
+            <unmanaged-short>D3DStripShader</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.GetBlobPart(System.IntPtr,SharpGen.Runtime.PointerSize,Vortice.D3DCompiler.ShaderBytecodePart,System.Int32)">
+            <unmanaged>HRESULT D3DGetBlobPart([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [In] D3D_BLOB_PART Part, [In] UINT Flags, [Out] ID3D10Blob** ppPart)</unmanaged>
+            <unmanaged-short>D3DGetBlobPart</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.SetBlobPart(System.IntPtr,SharpGen.Runtime.PointerSize,Vortice.D3DCompiler.ShaderBytecodePart,System.Int32,System.IntPtr,SharpGen.Runtime.PointerSize)">
+            <unmanaged>HRESULT D3DSetBlobPart([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [In] D3D_BLOB_PART Part, [In] UINT Flags, [In, Buffer] const void* pPart, [In] SIZE_T PartSize, [Out] ID3D10Blob** ppNewShader)</unmanaged>
+            <unmanaged-short>D3DSetBlobPart</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.CreateBlob(SharpGen.Runtime.PointerSize,Vortice.Direct3D.Blob@)">
+            <unmanaged>HRESULT D3DCreateBlob([In] SIZE_T Size, [Out] ID3D10Blob** ppBlob)</unmanaged>
+            <unmanaged-short>D3DCreateBlob</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.CompressShaders(System.Int32,Vortice.D3DCompiler.ShaderData[],System.Int32)">
+            <unmanaged>HRESULT D3DCompressShaders([In] UINT uNumShaders, [In, Buffer] D3D_SHADER_DATA* pShaderData, [In] UINT uFlags, [Out] ID3D10Blob** ppCompressedData)</unmanaged>
+            <unmanaged-short>D3DCompressShaders</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.Compiler.DecompressShaders(System.IntPtr,SharpGen.Runtime.PointerSize,System.Int32,System.Int32,System.Int32[],System.Int32,Vortice.Direct3D.Blob[],System.Int32@)">
+            <unmanaged>HRESULT D3DDecompressShaders([In, Buffer] const void* pSrcData, [In] SIZE_T SrcDataSize, [In] UINT uNumShaders, [In] UINT uStartIndex, [In, Buffer, Optional] UINT* pIndices, [In] UINT uFlags, [Out, Buffer] ID3D10Blob** ppShaders, [Out, Optional] UINT* pTotalShaders)</unmanaged>
+            <unmanaged-short>D3DDecompressShaders</unmanaged-short>
+        </member>
+        <member name="M:Vortice.D3DCompiler.ShaderBytecode.#ctor(System.Byte[])">
+            <summary>
+            Initialize new instance of <see cref="T:Vortice.D3DCompiler.ShaderBytecode"/> struct.
+            </summary>
+            <param name="data">The bytecode data.</param>
+        </member>
+        <member name="M:Vortice.D3DCompiler.ShaderBytecode.#ctor(System.IO.Stream)">
+            <summary>
+            Initialize new instance of <see cref="T:Vortice.D3DCompiler.ShaderBytecode"/> struct.
+            </summary>
+            <param name="data">The stream containing the compiled bytecode.</param>
+        </member>
+        <member name="T:Vortice.D3DCompiler.DisasmFlags">
+            <unmanaged>D3DCOMPILE_DISASM_FLAGS</unmanaged>
+            <unmanaged-short>D3DCOMPILE_DISASM_FLAGS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.DisasmFlags.EnableColorCode">
+            <unmanaged>D3D_DISASM_ENABLE_COLOR_CODE</unmanaged>
+            <unmanaged-short>D3D_DISASM_ENABLE_COLOR_CODE</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.DisasmFlags.EnableDefaultValuePrints">
+            <unmanaged>D3D_DISASM_ENABLE_DEFAULT_VALUE_PRINTS</unmanaged>
+            <unmanaged-short>D3D_DISASM_ENABLE_DEFAULT_VALUE_PRINTS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.DisasmFlags.EnableInstructionNumbering">
+            <unmanaged>D3D_DISASM_ENABLE_INSTRUCTION_NUMBERING</unmanaged>
+            <unmanaged-short>D3D_DISASM_ENABLE_INSTRUCTION_NUMBERING</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.DisasmFlags.EnableInstructionCycle">
+            <unmanaged>D3D_DISASM_ENABLE_INSTRUCTION_CYCLE</unmanaged>
+            <unmanaged-short>D3D_DISASM_ENABLE_INSTRUCTION_CYCLE</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.DisasmFlags.DisableDebugInfo">
+            <unmanaged>D3D_DISASM_DISABLE_DEBUG_INFO</unmanaged>
+            <unmanaged-short>D3D_DISASM_DISABLE_DEBUG_INFO</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.DisasmFlags.EnableInstructionOffset">
+            <unmanaged>D3D_DISASM_ENABLE_INSTRUCTION_OFFSET</unmanaged>
+            <unmanaged-short>D3D_DISASM_ENABLE_INSTRUCTION_OFFSET</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.DisasmFlags.InstructionOnly">
+            <unmanaged>D3D_DISASM_INSTRUCTION_ONLY</unmanaged>
+            <unmanaged-short>D3D_DISASM_INSTRUCTION_ONLY</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.DisasmFlags.PrintHexLiterals">
+            <unmanaged>D3D_DISASM_PRINT_HEX_LITERALS</unmanaged>
+            <unmanaged-short>D3D_DISASM_PRINT_HEX_LITERALS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.DisasmFlags.None">
+            <summary>
+            Synthetic NONE value
+            </summary>
+            <unmanaged>None</unmanaged>
+            <unmanaged-short>None</unmanaged-short>
+        </member>
+        <member name="T:Vortice.D3DCompiler.EffectFlags">
+            <unmanaged>D3DCOMPILE_EFFECT_FLAGS</unmanaged>
+            <unmanaged-short>D3DCOMPILE_EFFECT_FLAGS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.EffectFlags.ChildEffect">
+            <unmanaged>D3DCOMPILE_EFFECT_CHILD_EFFECT</unmanaged>
+            <unmanaged-short>D3DCOMPILE_EFFECT_CHILD_EFFECT</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.EffectFlags.AllowSlowOperations">
+            <unmanaged>D3DCOMPILE_EFFECT_ALLOW_SLOW_OPS</unmanaged>
+            <unmanaged-short>D3DCOMPILE_EFFECT_ALLOW_SLOW_OPS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.EffectFlags.None">
+            <summary>
+            Synthetic NONE value
+            </summary>
+            <unmanaged>None</unmanaged>
+            <unmanaged-short>None</unmanaged-short>
+        </member>
+        <member name="T:Vortice.D3DCompiler.SecondaryDataFlags">
+            <unmanaged>D3DCOMPILE_SECDATA_FLAGS</unmanaged>
+            <unmanaged-short>D3DCOMPILE_SECDATA_FLAGS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.SecondaryDataFlags.MergeUnorderedAccessViewSlots">
+            <unmanaged>D3DCOMPILE_SECDATA_MERGE_UAV_SLOTS</unmanaged>
+            <unmanaged-short>D3DCOMPILE_SECDATA_MERGE_UAV_SLOTS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.SecondaryDataFlags.PreserveTemplateSlots">
+            <unmanaged>D3DCOMPILE_SECDATA_PRESERVE_TEMPLATE_SLOTS</unmanaged>
+            <unmanaged-short>D3DCOMPILE_SECDATA_PRESERVE_TEMPLATE_SLOTS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.SecondaryDataFlags.RequireTemplateMatch">
+            <unmanaged>D3DCOMPILE_SECDATA_REQUIRE_TEMPLATE_MATCH</unmanaged>
+            <unmanaged-short>D3DCOMPILE_SECDATA_REQUIRE_TEMPLATE_MATCH</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.SecondaryDataFlags.None">
+            <summary>
+            Synthetic NONE value
+            </summary>
+            <unmanaged>None</unmanaged>
+            <unmanaged-short>None</unmanaged-short>
+        </member>
+        <member name="T:Vortice.D3DCompiler.ShaderBytecodePart">
+            <unmanaged>D3D_BLOB_PART</unmanaged>
+            <unmanaged-short>D3D_BLOB_PART</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.InputSignatureBlob">
+            <unmanaged>D3D_BLOB_INPUT_SIGNATURE_BLOB</unmanaged>
+            <unmanaged-short>D3D_BLOB_INPUT_SIGNATURE_BLOB</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.OutputSignatureBlob">
+            <unmanaged>D3D_BLOB_OUTPUT_SIGNATURE_BLOB</unmanaged>
+            <unmanaged-short>D3D_BLOB_OUTPUT_SIGNATURE_BLOB</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.InputAndOutputSignatureBlob">
+            <unmanaged>D3D_BLOB_INPUT_AND_OUTPUT_SIGNATURE_BLOB</unmanaged>
+            <unmanaged-short>D3D_BLOB_INPUT_AND_OUTPUT_SIGNATURE_BLOB</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.PatchConstantSignatureBlob">
+            <unmanaged>D3D_BLOB_PATCH_CONSTANT_SIGNATURE_BLOB</unmanaged>
+            <unmanaged-short>D3D_BLOB_PATCH_CONSTANT_SIGNATURE_BLOB</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.AllSignatureBlob">
+            <unmanaged>D3D_BLOB_ALL_SIGNATURE_BLOB</unmanaged>
+            <unmanaged-short>D3D_BLOB_ALL_SIGNATURE_BLOB</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.DebugInfo">
+            <unmanaged>D3D_BLOB_DEBUG_INFO</unmanaged>
+            <unmanaged-short>D3D_BLOB_DEBUG_INFO</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.LegacyShader">
+            <unmanaged>D3D_BLOB_LEGACY_SHADER</unmanaged>
+            <unmanaged-short>D3D_BLOB_LEGACY_SHADER</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.XnaPrepassShader">
+            <unmanaged>D3D_BLOB_XNA_PREPASS_SHADER</unmanaged>
+            <unmanaged-short>D3D_BLOB_XNA_PREPASS_SHADER</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.XnaShader">
+            <unmanaged>D3D_BLOB_XNA_SHADER</unmanaged>
+            <unmanaged-short>D3D_BLOB_XNA_SHADER</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.Pdb">
+            <unmanaged>D3D_BLOB_PDB</unmanaged>
+            <unmanaged-short>D3D_BLOB_PDB</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.PrivateData">
+            <unmanaged>D3D_BLOB_PRIVATE_DATA</unmanaged>
+            <unmanaged-short>D3D_BLOB_PRIVATE_DATA</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.RootSignature">
+            <unmanaged>D3D_BLOB_ROOT_SIGNATURE</unmanaged>
+            <unmanaged-short>D3D_BLOB_ROOT_SIGNATURE</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.DebugName">
+            <unmanaged>D3D_BLOB_DEBUG_NAME</unmanaged>
+            <unmanaged-short>D3D_BLOB_DEBUG_NAME</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.TestAlternateShader">
+            <unmanaged>D3D_BLOB_TEST_ALTERNATE_SHADER</unmanaged>
+            <unmanaged-short>D3D_BLOB_TEST_ALTERNATE_SHADER</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.TestCompileDetails">
+            <unmanaged>D3D_BLOB_TEST_COMPILE_DETAILS</unmanaged>
+            <unmanaged-short>D3D_BLOB_TEST_COMPILE_DETAILS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.TestCompilePerf">
+            <unmanaged>D3D_BLOB_TEST_COMPILE_PERF</unmanaged>
+            <unmanaged-short>D3D_BLOB_TEST_COMPILE_PERF</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderBytecodePart.TestCompileReport">
+            <unmanaged>D3D_BLOB_TEST_COMPILE_REPORT</unmanaged>
+            <unmanaged-short>D3D_BLOB_TEST_COMPILE_REPORT</unmanaged-short>
+        </member>
+        <member name="T:Vortice.D3DCompiler.ShaderFlags">
+            <unmanaged>D3DCOMPILE_SHADER_FLAGS</unmanaged>
+            <unmanaged-short>D3DCOMPILE_SHADER_FLAGS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.Debug">
+            <unmanaged>D3DCOMPILE_DEBUG</unmanaged>
+            <unmanaged-short>D3DCOMPILE_DEBUG</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.SkipValidation">
+            <unmanaged>D3DCOMPILE_SKIP_VALIDATION</unmanaged>
+            <unmanaged-short>D3DCOMPILE_SKIP_VALIDATION</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.SkipOptimization">
+            <unmanaged>D3DCOMPILE_SKIP_OPTIMIZATION</unmanaged>
+            <unmanaged-short>D3DCOMPILE_SKIP_OPTIMIZATION</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.PackMatrixRowMajor">
+            <unmanaged>D3DCOMPILE_PACK_MATRIX_ROW_MAJOR</unmanaged>
+            <unmanaged-short>D3DCOMPILE_PACK_MATRIX_ROW_MAJOR</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.PackMatrixColumnMajor">
+            <unmanaged>D3DCOMPILE_PACK_MATRIX_COLUMN_MAJOR</unmanaged>
+            <unmanaged-short>D3DCOMPILE_PACK_MATRIX_COLUMN_MAJOR</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.PartialPrecision">
+            <unmanaged>D3DCOMPILE_PARTIAL_PRECISION</unmanaged>
+            <unmanaged-short>D3DCOMPILE_PARTIAL_PRECISION</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.ForceVsSoftwareNoOpt">
+            <unmanaged>D3DCOMPILE_FORCE_VS_SOFTWARE_NO_OPT</unmanaged>
+            <unmanaged-short>D3DCOMPILE_FORCE_VS_SOFTWARE_NO_OPT</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.ForcePsSoftwareNoOpt">
+            <unmanaged>D3DCOMPILE_FORCE_PS_SOFTWARE_NO_OPT</unmanaged>
+            <unmanaged-short>D3DCOMPILE_FORCE_PS_SOFTWARE_NO_OPT</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.NoPreshader">
+            <unmanaged>D3DCOMPILE_NO_PRESHADER</unmanaged>
+            <unmanaged-short>D3DCOMPILE_NO_PRESHADER</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.AvoidFlowControl">
+            <unmanaged>D3DCOMPILE_AVOID_FLOW_CONTROL</unmanaged>
+            <unmanaged-short>D3DCOMPILE_AVOID_FLOW_CONTROL</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.PreferFlowControl">
+            <unmanaged>D3DCOMPILE_PREFER_FLOW_CONTROL</unmanaged>
+            <unmanaged-short>D3DCOMPILE_PREFER_FLOW_CONTROL</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.EnableStrictness">
+            <unmanaged>D3DCOMPILE_ENABLE_STRICTNESS</unmanaged>
+            <unmanaged-short>D3DCOMPILE_ENABLE_STRICTNESS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.EnableBackwardsCompatibility">
+            <unmanaged>D3DCOMPILE_ENABLE_BACKWARDS_COMPATIBILITY</unmanaged>
+            <unmanaged-short>D3DCOMPILE_ENABLE_BACKWARDS_COMPATIBILITY</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.IeeeStrictness">
+            <unmanaged>D3DCOMPILE_IEEE_STRICTNESS</unmanaged>
+            <unmanaged-short>D3DCOMPILE_IEEE_STRICTNESS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.OptimizationLevel0">
+            <unmanaged>D3DCOMPILE_OPTIMIZATION_LEVEL0</unmanaged>
+            <unmanaged-short>D3DCOMPILE_OPTIMIZATION_LEVEL0</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.OptimizationLevel1">
+            <unmanaged>D3DCOMPILE_OPTIMIZATION_LEVEL1</unmanaged>
+            <unmanaged-short>D3DCOMPILE_OPTIMIZATION_LEVEL1</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.OptimizationLevel2">
+            <unmanaged>D3DCOMPILE_OPTIMIZATION_LEVEL2</unmanaged>
+            <unmanaged-short>D3DCOMPILE_OPTIMIZATION_LEVEL2</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.OptimizationLevel3">
+            <unmanaged>D3DCOMPILE_OPTIMIZATION_LEVEL3</unmanaged>
+            <unmanaged-short>D3DCOMPILE_OPTIMIZATION_LEVEL3</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.Reserved16">
+            <unmanaged>D3DCOMPILE_RESERVED16</unmanaged>
+            <unmanaged-short>D3DCOMPILE_RESERVED16</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.Reserved17">
+            <unmanaged>D3DCOMPILE_RESERVED17</unmanaged>
+            <unmanaged-short>D3DCOMPILE_RESERVED17</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.WarningsAreErrors">
+            <unmanaged>D3DCOMPILE_WARNINGS_ARE_ERRORS</unmanaged>
+            <unmanaged-short>D3DCOMPILE_WARNINGS_ARE_ERRORS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.DebugNameForSource">
+            <unmanaged>D3DCOMPILE_DEBUG_NAME_FOR_SOURCE</unmanaged>
+            <unmanaged-short>D3DCOMPILE_DEBUG_NAME_FOR_SOURCE</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.DebugNameForBinary">
+            <unmanaged>D3DCOMPILE_DEBUG_NAME_FOR_BINARY</unmanaged>
+            <unmanaged-short>D3DCOMPILE_DEBUG_NAME_FOR_BINARY</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderFlags.None">
+            <summary>
+            Synthetic NONE value
+            </summary>
+            <unmanaged>None</unmanaged>
+            <unmanaged-short>None</unmanaged-short>
+        </member>
+        <member name="T:Vortice.D3DCompiler.ShaderRequiresFlags">
+            <unmanaged>D3DCOMPILE_SHADER_REQUIRES_FLAGS</unmanaged>
+            <unmanaged-short>D3DCOMPILE_SHADER_REQUIRES_FLAGS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresDoubles">
+            <unmanaged>D3D_SHADER_REQUIRES_DOUBLES</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_DOUBLES</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresEarlyDepthStencil">
+            <unmanaged>D3D_SHADER_REQUIRES_EARLY_DEPTH_STENCIL</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_EARLY_DEPTH_STENCIL</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresUnorderedAccessViewsAtEveryStage">
+            <unmanaged>D3D_SHADER_REQUIRES_UAVS_AT_EVERY_STAGE</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_UAVS_AT_EVERY_STAGE</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequires64UnorderedAccessViews">
+            <unmanaged>D3D_SHADER_REQUIRES_64_UAVS</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_64_UAVS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresMinimumPrecision">
+            <unmanaged>D3D_SHADER_REQUIRES_MINIMUM_PRECISION</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_MINIMUM_PRECISION</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequires111DoubleExtensions">
+            <unmanaged>D3D_SHADER_REQUIRES_11_1_DOUBLE_EXTENSIONS</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_11_1_DOUBLE_EXTENSIONS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequires111ShaderExtensions">
+            <unmanaged>D3D_SHADER_REQUIRES_11_1_SHADER_EXTENSIONS</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_11_1_SHADER_EXTENSIONS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresLevel9ComparisonFiltering">
+            <unmanaged>D3D_SHADER_REQUIRES_LEVEL_9_COMPARISON_FILTERING</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_LEVEL_9_COMPARISON_FILTERING</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresTiledResources">
+            <unmanaged>D3D_SHADER_REQUIRES_TILED_RESOURCES</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_TILED_RESOURCES</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresStencilRef">
+            <unmanaged>D3D_SHADER_REQUIRES_STENCIL_REF</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_STENCIL_REF</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresInnerCoverage">
+            <unmanaged>D3D_SHADER_REQUIRES_INNER_COVERAGE</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_INNER_COVERAGE</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresTypedUnorderedAccessViewLoadAdditionalFormats">
+            <unmanaged>D3D_SHADER_REQUIRES_TYPED_UAV_LOAD_ADDITIONAL_FORMATS</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_TYPED_UAV_LOAD_ADDITIONAL_FORMATS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresRovs">
+            <unmanaged>D3D_SHADER_REQUIRES_ROVS</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_ROVS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresViewportAndRtArrayIndexFromAnyShaderFeedingRasterizer">
+            <unmanaged>D3D_SHADER_REQUIRES_VIEWPORT_AND_RT_ARRAY_INDEX_FROM_ANY_SHADER_FEEDING_RASTERIZER</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_VIEWPORT_AND_RT_ARRAY_INDEX_FROM_ANY_SHADER_FEEDING_RASTERIZER</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresWaveOps">
+            <unmanaged>D3D_SHADER_REQUIRES_WAVE_OPS</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_WAVE_OPS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresInt64Ops">
+            <unmanaged>D3D_SHADER_REQUIRES_INT64_OPS</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_INT64_OPS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresViewId">
+            <unmanaged>D3D_SHADER_REQUIRES_VIEW_ID</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_VIEW_ID</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresBarycentrics">
+            <unmanaged>D3D_SHADER_REQUIRES_BARYCENTRICS</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_BARYCENTRICS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresNative16bitOps">
+            <unmanaged>D3D_SHADER_REQUIRES_NATIVE_16BIT_OPS</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_NATIVE_16BIT_OPS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresShadingRate">
+            <unmanaged>D3D_SHADER_REQUIRES_SHADING_RATE</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_SHADING_RATE</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresRaytracingTier11">
+            <unmanaged>D3D_SHADER_REQUIRES_RAYTRACING_TIER_1_1</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_RAYTRACING_TIER_1_1</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresSamplerFeedback">
+            <unmanaged>D3D_SHADER_REQUIRES_SAMPLER_FEEDBACK</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_SAMPLER_FEEDBACK</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresAtomicInt64OnTypedResource">
+            <unmanaged>D3D_SHADER_REQUIRES_ATOMIC_INT64_ON_TYPED_RESOURCE</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_ATOMIC_INT64_ON_TYPED_RESOURCE</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresAtomicInt64OnGroupShared">
+            <unmanaged>D3D_SHADER_REQUIRES_ATOMIC_INT64_ON_GROUP_SHARED</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_ATOMIC_INT64_ON_GROUP_SHARED</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresDerivativesInMeshAndAmplificationShaders">
+            <unmanaged>D3D_SHADER_REQUIRES_DERIVATIVES_IN_MESH_AND_AMPLIFICATION_SHADERS</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_DERIVATIVES_IN_MESH_AND_AMPLIFICATION_SHADERS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresResourceDescriptorHeapIndexing">
+            <unmanaged>D3D_SHADER_REQUIRES_RESOURCE_DESCRIPTOR_HEAP_INDEXING</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_RESOURCE_DESCRIPTOR_HEAP_INDEXING</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresSamplerDescriptorHeapIndexing">
+            <unmanaged>D3D_SHADER_REQUIRES_SAMPLER_DESCRIPTOR_HEAP_INDEXING</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_SAMPLER_DESCRIPTOR_HEAP_INDEXING</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresWaveMma">
+            <unmanaged>D3D_SHADER_REQUIRES_WAVE_MMA</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_WAVE_MMA</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.ShaderRequiresAtomicInt64OnDescriptorHeapResource">
+            <unmanaged>D3D_SHADER_REQUIRES_ATOMIC_INT64_ON_DESCRIPTOR_HEAP_RESOURCE</unmanaged>
+            <unmanaged-short>D3D_SHADER_REQUIRES_ATOMIC_INT64_ON_DESCRIPTOR_HEAP_RESOURCE</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderRequiresFlags.None">
+            <summary>
+            Synthetic NONE value
+            </summary>
+            <unmanaged>None</unmanaged>
+            <unmanaged-short>None</unmanaged-short>
+        </member>
+        <member name="T:Vortice.D3DCompiler.StripFlags">
+            <unmanaged>D3DCOMPILER_STRIP_FLAGS</unmanaged>
+            <unmanaged-short>D3DCOMPILER_STRIP_FLAGS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.StripFlags.CompilerStripReflectionData">
+            <unmanaged>D3DCOMPILER_STRIP_REFLECTION_DATA</unmanaged>
+            <unmanaged-short>D3DCOMPILER_STRIP_REFLECTION_DATA</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.StripFlags.CompilerStripDebugInfo">
+            <unmanaged>D3DCOMPILER_STRIP_DEBUG_INFO</unmanaged>
+            <unmanaged-short>D3DCOMPILER_STRIP_DEBUG_INFO</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.StripFlags.CompilerStripTestBlobs">
+            <unmanaged>D3DCOMPILER_STRIP_TEST_BLOBS</unmanaged>
+            <unmanaged-short>D3DCOMPILER_STRIP_TEST_BLOBS</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.StripFlags.CompilerStripPrivateData">
+            <unmanaged>D3DCOMPILER_STRIP_PRIVATE_DATA</unmanaged>
+            <unmanaged-short>D3DCOMPILER_STRIP_PRIVATE_DATA</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.StripFlags.CompilerStripRootSignature">
+            <unmanaged>D3DCOMPILER_STRIP_ROOT_SIGNATURE</unmanaged>
+            <unmanaged-short>D3DCOMPILER_STRIP_ROOT_SIGNATURE</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.StripFlags.CompilerStripForceDword">
+            <unmanaged>D3DCOMPILER_STRIP_FORCE_DWORD</unmanaged>
+            <unmanaged-short>D3DCOMPILER_STRIP_FORCE_DWORD</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.StripFlags.None">
+            <summary>
+            Synthetic NONE value
+            </summary>
+            <unmanaged>None</unmanaged>
+            <unmanaged-short>None</unmanaged-short>
+        </member>
+        <member name="T:Vortice.D3DCompiler.ShaderData">
+            <unmanaged>D3D_SHADER_DATA</unmanaged>
+            <unmanaged-short>D3D_SHADER_DATA</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderData.BytecodePtr">
+            <unmanaged>pBytecode</unmanaged>
+            <unmanaged-short>pBytecode</unmanaged-short>
+        </member>
+        <member name="F:Vortice.D3DCompiler.ShaderData.BytecodeLength">
+            <unmanaged>BytecodeLength</unmanaged>
+            <unmanaged-short>BytecodeLength</unmanaged-short>
+        </member>
+    </members>
+</doc>

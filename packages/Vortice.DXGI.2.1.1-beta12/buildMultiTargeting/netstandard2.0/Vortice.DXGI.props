@@ -1,0 +1,5 @@
+<Project>
+<ItemGroup>
+<SharpGenConsumerMapping Include="$(MSBuildThisFileDirectory)Vortice.DXGI.BindMapping.xml"/>
+</ItemGroup>
+</Project>

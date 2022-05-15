@@ -1,9 +1,10 @@
 ﻿using Altitude;
 
 using BuildLogger;
+
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
-
+using PlanetViewer;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,17 +29,14 @@ using Transition;
 using UltimaSDK_v432;
 
 
-
 namespace MapCreator
 {
     public partial class mainMenu : Form
     {
         private Bitmap i_Terrain;
         private ClsTerrainTable iTerrain;
-
         private Bitmap i_Altitude;
         private ClsAltitudeTable iAltitude;
-
         private buildLogger iLogger;
 
         private bool i_RandomStatic;
@@ -69,15 +67,36 @@ namespace MapCreator
                 Thread.Sleep(25);
                 cFBF.Hide();
 
+                this.mainMenu_progressBar.Hide();
+
                 /// These Statements Hide Panel02 On When Loading The Form
                 Control sYAB = this.mainMenu_groupBox01_createYourWorld_panel02_workBench;
                 Thread.Sleep(25);
                 sYAB.Hide();
 
+                this.mainMenu_progressBar.Hide();
+
                 /// These Statements Hide Panel03 On Button Press
                 Control cYNF = this.mainMenu_groupBox01_createYourWorld_panel03_workBench;
                 Thread.Sleep(25);
                 cYNF.Hide();
+
+                this.mainMenu_progressBar.Hide();
+
+
+                /// These Statements Hide Panel04 On Button Press
+                Control sPA = this.mainMenu_groupBox01_createYourWorld_panel04_workBench;
+                Thread.Sleep(25);
+                sPA.Hide();
+
+                this.mainMenu_progressBar.Hide();
+
+
+                Control mMCI = this.mainMenu_creditInformation_panel05_workBench;
+                Thread.Sleep(25);
+                mMCI.Hide();
+
+                this.mainMenu_progressBar.Hide();
             }
 
             #region Data Configuration
@@ -145,7 +164,7 @@ namespace MapCreator
 
             /// Panel_02
             this.mainMenu_groupBox01_createYourWorld_panel02_workBench_groupBox01_syncYourAltitudeBitmap_textBox01_projectPath.Text = Directory.GetCurrentDirectory();
-            
+
             this.iTerrain.Load();
             this.iAltitude.Load();
 
@@ -155,13 +174,14 @@ namespace MapCreator
             #endregion
         }
 
-        /// Button: Create Facet Bitmap Files
+        /// PanelSelection: Create Facet Bitmap Files
         private void mainMenu_groupBox01_createYourWorld_button01_createFacetBitmapFiles_Click(object sender, EventArgs e)
         {
             /// These Statements Show Panel01 On Button Press
             Control cFBF = this.mainMenu_groupBox01_createYourWorld_panel01_workBench;
             Thread.Sleep(1000);
             cFBF.Show();
+            this.mainMenu_progressBar.Show();
 
             #region syncYourAltitudeBitmap_Hide
 
@@ -174,6 +194,15 @@ namespace MapCreator
             Control cYNF = this.mainMenu_groupBox01_createYourWorld_panel03_workBench;
             Thread.Sleep(75); // How Fast Does The Panel Appear After Button Press
             cYNF.Hide();
+
+            /// These Statements Hide Panel04 On Button press 
+            Control sPA = this.mainMenu_groupBox01_createYourWorld_panel04_workBench;
+            Thread.Sleep(75); // How Fast Does The Panel Appear After Button Press
+            sPA.Hide();
+
+            Control mMCI = this.mainMenu_creditInformation_panel05_workBench;
+            Thread.Sleep(75);
+            mMCI.Hide();
 
             #endregion
         }
@@ -382,13 +411,14 @@ namespace MapCreator
 
         #endregion
 
-        /// Button: Sync Your Altitude Bitmap
+        /// PanelSelection: Sync Your Altitude Bitmap
         private void mainMenu_groupBox01_createYourWorld_button02_syncYourAltitudeBitmap_Click(object sender, EventArgs e)
         {
             /// These Statements Show Panel02 On Button Press
             Control sYAB = this.mainMenu_groupBox01_createYourWorld_panel02_workBench;
             Thread.Sleep(1000);
             sYAB.Show();
+            this.mainMenu_progressBar.Show();
 
             #region createFacetBitmapFiles_Hide
 
@@ -401,6 +431,15 @@ namespace MapCreator
             Control cYNF = this.mainMenu_groupBox01_createYourWorld_panel03_workBench;
             Thread.Sleep(75); // How Fast Does The Panel Appear After Button Press
             cYNF.Hide();
+
+            /// These Statements Hide Panel04 On Button press 
+            Control sPA = this.mainMenu_groupBox01_createYourWorld_panel04_workBench;
+            Thread.Sleep(75); // How Fast Does The Panel Appear After Button Press
+            sPA.Hide();
+
+            Control mMCI = this.mainMenu_creditInformation_panel05_workBench;
+            Thread.Sleep(75);
+            mMCI.Hide();
 
             #endregion
         }
@@ -431,13 +470,14 @@ namespace MapCreator
 
         #endregion
 
-        /// Button: Compile Your New Facet
+        /// PanelSelection: Compile Your New Facet
         private void mainMenu_groupBox01_createYourWorld_button03_compileYourNewFacet_Click(object sender, EventArgs e)
         {
             /// These Statements Show Panel03 On Button Press
             Control cYNF = this.mainMenu_groupBox01_createYourWorld_panel03_workBench;
             Thread.Sleep(1000);
             cYNF.Show();
+            this.mainMenu_progressBar.Show();
 
             #region createFacetBitmapFiles_Hide
 
@@ -450,6 +490,15 @@ namespace MapCreator
             Control sYAB = this.mainMenu_groupBox01_createYourWorld_panel02_workBench;
             Thread.Sleep(75); // How Fast Does The Panel Appear After Button Press
             sYAB.Hide();
+
+            /// These Statements Hide Panel04 On Button press 
+            Control sPA = this.mainMenu_groupBox01_createYourWorld_panel04_workBench;
+            Thread.Sleep(75); // How Fast Does The Panel Appear After Button Press
+            sPA.Hide();
+
+            Control mMCI = this.mainMenu_creditInformation_panel05_workBench;
+            Thread.Sleep(75);
+            mMCI.Hide();
 
             #endregion
         }
@@ -876,7 +925,143 @@ namespace MapCreator
 
         #endregion
 
-        /// Button: Drawing Tools > Adobe Photoshop
+        /// PanelSelection: Submitted Plugin Archive
+        private void mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins_Click(object sender, EventArgs e)
+        {
+            /// These Statements Show Panel03 On Button Press
+            Control sPA = this.mainMenu_groupBox01_createYourWorld_panel04_workBench;
+            Thread.Sleep(1000); // How Fast Does The Panel Appear After Button Press
+            sPA.Show();
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Show();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Show();
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Hide(); // dknight
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Hide(); // deccer
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Hide();
+
+            this.mainMenu_progressBar.Hide();
+
+            #region createFacetBitmapFiles_Hide
+
+            /// These Statements Hide Panel01 On Button press 
+            Control cFBF = this.mainMenu_groupBox01_createYourWorld_panel01_workBench;
+            Thread.Sleep(75); // How Fast Does The Panel Appear After Button Press
+            cFBF.Hide();
+
+            /// These Statements Hide Panel02 On Button press 
+            Control sYAB = this.mainMenu_groupBox01_createYourWorld_panel02_workBench;
+            Thread.Sleep(75); // How Fast Does The Panel Appear After Button Press
+            sYAB.Hide();
+
+            /// These Statements Hide Panel03 On Button press 
+            Control cYNF = this.mainMenu_groupBox01_createYourWorld_panel03_workBench;
+            Thread.Sleep(75);
+            cYNF.Hide();
+
+            Control mMCI = this.mainMenu_creditInformation_panel05_workBench;
+            Thread.Sleep(75);
+            mMCI.Hide();
+
+            #endregion
+        }
+
+        #region Panel_04: User Interface
+
+        /// Button 01: Color Table Editor
+        private void mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor_Click(object sender, EventArgs e)
+        {
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Hide();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Hide();
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Hide();  // deccer
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Show();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Show(); // dknight
+        }
+
+        /// Button 02: Planet View
+        private void mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer_Click(object sender, EventArgs e)
+        {
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Hide();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Hide();
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Hide(); // dknight
+
+            /// PlanetViewer planeViewerForm = new PlanetViewer(
+            ///     new GraphicsDevice(
+            ///         new ShaderFactory(),
+            ///         new ModelFactory(),
+            ///         new SixLaborsImagingFactory()),
+            ///     new GifFilmRecorder());
+            /// planeViewerForm.Show();
+
+            PlanetViewer planeViewerForm = new PlanetViewer(
+                new GraphicsDevice(
+                    new ShaderFactory(),
+                    new ModelFactory(),
+                    new WicImagingFactory()),
+                new GifFilmRecorder());
+            planeViewerForm.Show();
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Show();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Show();  // deccer
+        }
+
+        /// Button 03: Transition Editor
+        private void mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor_Click(object sender, EventArgs e)
+        {
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Hide();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Hide();
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Hide();  // deccer
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Show();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Show(); // dknight
+        }
+
+        /// Button 04: Terrain Type Editor
+        private void mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor_Click(object sender, EventArgs e)
+        {
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Hide();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Hide();
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Hide();  // deccer
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Show();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Show(); // dknight
+        }
+
+        /// Button 05: Convert File Type
+        private void mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType_Click(object sender, EventArgs e)
+        {
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Hide();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Hide();
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Hide();  // deccer
+
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Show();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Show(); // dknight
+        }
+
+        /// Button (L): Plugin Source Code
+        private void mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_pluginSourceCode_Click(object sender, EventArgs e)
+        {
+            //This Snippet Launches A Working Directory From A Button
+            String path = Path.GetDirectoryName(Application.ExecutablePath.ToString());
+
+            if (File.Exists(Application.ExecutablePath))
+            {
+                Process.Start(Path.Combine(path, "Development/PluginSourceCode"));
+            }
+        }
+
+        #endregion
+
+        #region MainMenuButton: Function
+
+        /// MainMenuButton: Drawing Tools > Adobe Photoshop
         private void mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop_Click(object sender, EventArgs e)
         {
             //This Snippet Launches A Working Directory From A Button
@@ -884,11 +1069,11 @@ namespace MapCreator
 
             if (File.Exists(Application.ExecutablePath))
             {
-                Process.Start(Path.Combine(path, "DrawingTools/AdobePhotoshop"));
+                Process.Start(Path.Combine(path, "Development/DrawingTools/AdobePhotoshop"));
             }
         }
 
-        /// Button: Drawing Tools > Color Tables
+        /// MainMenuButton: Drawing Tools > Color Tables
         private void mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette_Click(object sender, EventArgs e)
         {
             //This Snippet Launches A Working Directory From A Button
@@ -896,30 +1081,87 @@ namespace MapCreator
 
             if (File.Exists(Application.ExecutablePath))
             {
-                Process.Start(Path.Combine(path, "DrawingTools/ColorTables"));
+                Process.Start(Path.Combine(path, "Development/DrawingTools/ColorTables"));
             }
         }
 
-        /// Button: User Submitted Plugins
-        private void mainMenu_menuStrip_button03_userSubmittedPlugins_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            Form uSP = new userPlugin();
-            uSP.Show();
-
-            iLogger.Close();
-        }
-
-        private void mainMenu_menuStrip_button02_facetTutorials_Click(object sender, EventArgs e)
+        /// MainMenuButton: Editing Tutorials
+        private void editingTutorialsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //This Snippet Launches A Working Directory From A Button
             String path = Path.GetDirectoryName(Application.ExecutablePath.ToString());
 
             if (File.Exists(Application.ExecutablePath))
             {
-                Process.Start(Path.Combine(path, "FacetTutorials"));
+                Process.Start(Path.Combine(path, "Development/DrawingTools/FacetTutorials"));
             }
         }
+
+        /// MainMenuButton: Resource Links > Azgaar
+        private void mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://azgaar.github.io");
+        }
+
+        /// MainMenuButton: Resource Links > Inkarnate
+        private void mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://inkarnate.com");
+        }
+
+        /// MainMenuButton: Resource Links > Ryandor
+        private void mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.ryandor.com");
+        }
+
+        /// MainMenuButton: Resource Links > Vancano
+        private void mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://fantasymapmarket.com/product/map-generator");
+        }
+
+        /// MainMenuButton: Application Credits
+        private void mainMenu_menuStrip_buttonCategory04_creditInformation_Click(object sender, EventArgs e)
+        {
+            /// These Statements Show Panel02 On Button Press
+            Control mMCI = this.mainMenu_creditInformation_panel05_workBench;
+            Thread.Sleep(1000);
+            mMCI.Show();
+
+            this.mainMenu_progressBar.Hide();
+
+            #region createFacetBitmapFiles_Hide
+
+            /// These Statements Hide Panel01 On Button press 
+            Control cFBF = this.mainMenu_groupBox01_createYourWorld_panel01_workBench;
+            Thread.Sleep(75); // How Fast Does The Panel Appear After Button Press
+            cFBF.Hide();
+
+            /// These Statements Show Panel02 On Button Press
+            Control sYAB = this.mainMenu_groupBox01_createYourWorld_panel02_workBench;
+            Thread.Sleep(75);
+            sYAB.Hide();
+
+            /// These Statements Hide Panel03 On Button press 
+            Control cYNF = this.mainMenu_groupBox01_createYourWorld_panel03_workBench;
+            Thread.Sleep(75); // How Fast Does The Panel Appear After Button Press
+            cYNF.Hide();
+
+            /// These Statements Hide Panel04 On Button press 
+            Control sPA = this.mainMenu_groupBox01_createYourWorld_panel04_workBench;
+            Thread.Sleep(75); // How Fast Does The Panel Appear After Button Press
+            sPA.Hide();
+
+            #endregion
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.uoavocation.net");
+        }
+
+        #endregion
 
         /// Exits Windows Application Process
         private void mainMenu_FormClosed(object sender, FormClosedEventArgs e)

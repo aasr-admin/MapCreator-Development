@@ -117,7 +117,7 @@ namespace BuildLogger
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "buildLogger";
-            this.Text = "MapCreator Logger";
+            this.Text = "MapCreator: Status Logger";
             this.Load += new System.EventHandler(this.buildLogger_Load);
             ((System.ComponentModel.ISupportInitialize)(this.buildLogger_pictureBox_backDrop)).EndInit();
             this.buildLogger_menuStrip.ResumeLayout(false);

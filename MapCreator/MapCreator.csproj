@@ -1,7 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Vortice.Direct3D11.2.1.1-beta12\build\netstandard2.0\Vortice.Direct3D11.props" Condition="Exists('..\packages\Vortice.Direct3D11.2.1.1-beta12\build\netstandard2.0\Vortice.Direct3D11.props')" />
+  <Import Project="..\packages\Vortice.Direct2D1.2.1.1-beta12\build\netstandard2.0\Vortice.Direct2D1.props" Condition="Exists('..\packages\Vortice.Direct2D1.2.1.1-beta12\build\netstandard2.0\Vortice.Direct2D1.props')" />
+  <Import Project="..\packages\Vortice.DXGI.2.1.1-beta12\build\netstandard2.0\Vortice.DXGI.props" Condition="Exists('..\packages\Vortice.DXGI.2.1.1-beta12\build\netstandard2.0\Vortice.DXGI.props')" />
+  <Import Project="..\packages\Vortice.D3DCompiler.2.1.1-beta12\build\netstandard2.0\Vortice.D3DCompiler.props" Condition="Exists('..\packages\Vortice.D3DCompiler.2.1.1-beta12\build\netstandard2.0\Vortice.D3DCompiler.props')" />
+  <Import Project="..\packages\Vortice.DirectX.2.1.1-beta12\build\netstandard2.0\Vortice.DirectX.props" Condition="Exists('..\packages\Vortice.DirectX.2.1.1-beta12\build\netstandard2.0\Vortice.DirectX.props')" />
+  <Import Project="..\packages\SharpGen.Runtime.COM.2.0.0-beta.10\build\net45\SharpGen.Runtime.COM.props" Condition="Exists('..\packages\SharpGen.Runtime.COM.2.0.0-beta.10\build\net45\SharpGen.Runtime.COM.props')" />
+  <Import Project="..\packages\SharpGen.Runtime.2.0.0-beta.10\build\SharpGen.Runtime.props" Condition="Exists('..\packages\SharpGen.Runtime.2.0.0-beta.10\build\SharpGen.Runtime.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <LangVersion>latest</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{91A35D49-B337-4148-80BB-CA27607C7987}</ProjectGuid>
@@ -12,6 +20,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -40,9 +50,75 @@
     <StartupObject>MapCreator.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AssimpNet, Version=4.1.0.0, Culture=neutral, PublicKeyToken=0d51b391f59f42a6, processorArchitecture=MSIL">
+      <HintPath>..\packages\AssimpNet.4.1.0\lib\net40\AssimpNet.dll</HintPath>
+    </Reference>
+    <Reference Include="FFMpegCore, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FFMpegCore.4.7.0\lib\netstandard2.0\FFMpegCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Instances, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Instances.1.6.1\lib\netstandard2.0\Instances.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.6.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.6.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="SharpGen.Runtime, Version=2.0.0.0, Culture=neutral, PublicKeyToken=a7c0d43f556c6402, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpGen.Runtime.2.0.0-beta.10\lib\net471\SharpGen.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGen.Runtime.COM, Version=2.0.0.0, Culture=neutral, PublicKeyToken=a7c0d43f556c6402, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpGen.Runtime.COM.2.0.0-beta.10\lib\net45\SharpGen.Runtime.COM.dll</HintPath>
+    </Reference>
+    <Reference Include="SixLabors.ImageSharp, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
+      <HintPath>..\packages\SixLabors.ImageSharp.2.0.0\lib\net472\SixLabors.ImageSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.5.0.2\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Resources.Extensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Resources.Extensions.6.0.0\lib\net461\System.Resources.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Text.Encoding.CodePages, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.5.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.5.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=5.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.5.0.1\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,14 +128,26 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Vortice.D3DCompiler, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vortice.D3DCompiler.2.1.1-beta12\lib\netstandard2.0\Vortice.D3DCompiler.dll</HintPath>
+    </Reference>
+    <Reference Include="Vortice.Direct2D1, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vortice.Direct2D1.2.1.1-beta12\lib\netstandard2.0\Vortice.Direct2D1.dll</HintPath>
+    </Reference>
+    <Reference Include="Vortice.Direct3D11, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vortice.Direct3D11.2.1.1-beta12\lib\netstandard2.0\Vortice.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="Vortice.DirectX, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vortice.DirectX.2.1.1-beta12\lib\netstandard2.0\Vortice.DirectX.dll</HintPath>
+    </Reference>
+    <Reference Include="Vortice.DXGI, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vortice.DXGI.2.1.1-beta12\lib\netstandard2.0\Vortice.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="Vortice.Mathematics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5431ec61a7e925da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vortice.Mathematics.1.4.7\lib\netstandard2.0\Vortice.Mathematics.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UserPlugins\UserPlugins.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UserPlugins\UserPlugins.Designer.cs">
-      <DependentUpon>UserPlugins.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,6 +162,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserPlugins\PlanetViewer\PlanetViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserPlugins\PlanetViewer\PlanetViewer.Designer.cs">
+      <DependentUpon>PlanetViewer.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </EmbeddedResource>
@@ -90,9 +184,10 @@
     <EmbeddedResource Include="TitleScreen.resx">
       <DependentUpon>TitleScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserPlugins\UserPlugins.resx">
-      <DependentUpon>UserPlugins.cs</DependentUpon>
+    <EmbeddedResource Include="UserPlugins\PlanetViewer\PlanetViewer.resx">
+      <DependentUpon>PlanetViewer.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -107,14 +202,27 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="mcico001.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\RenderFacet\RenderFacet.csproj">
       <Project>{839e9dc7-c154-4b8c-a48f-388add244e6b}</Project>
       <Name>RenderFacet</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="mcico001.ico" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\AssimpNet.4.1.0\build\AssimpNet.targets" Condition="Exists('..\packages\AssimpNet.4.1.0\build\AssimpNet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\AssimpNet.4.1.0\build\AssimpNet.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\AssimpNet.4.1.0\build\AssimpNet.targets'))" />
+    <Error Condition="!Exists('..\packages\SharpGen.Runtime.2.0.0-beta.10\build\SharpGen.Runtime.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SharpGen.Runtime.2.0.0-beta.10\build\SharpGen.Runtime.props'))" />
+    <Error Condition="!Exists('..\packages\SharpGen.Runtime.COM.2.0.0-beta.10\build\net45\SharpGen.Runtime.COM.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SharpGen.Runtime.COM.2.0.0-beta.10\build\net45\SharpGen.Runtime.COM.props'))" />
+    <Error Condition="!Exists('..\packages\Vortice.DirectX.2.1.1-beta12\build\netstandard2.0\Vortice.DirectX.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Vortice.DirectX.2.1.1-beta12\build\netstandard2.0\Vortice.DirectX.props'))" />
+    <Error Condition="!Exists('..\packages\Vortice.D3DCompiler.2.1.1-beta12\build\netstandard2.0\Vortice.D3DCompiler.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Vortice.D3DCompiler.2.1.1-beta12\build\netstandard2.0\Vortice.D3DCompiler.props'))" />
+    <Error Condition="!Exists('..\packages\Vortice.DXGI.2.1.1-beta12\build\netstandard2.0\Vortice.DXGI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Vortice.DXGI.2.1.1-beta12\build\netstandard2.0\Vortice.DXGI.props'))" />
+    <Error Condition="!Exists('..\packages\Vortice.Direct2D1.2.1.1-beta12\build\netstandard2.0\Vortice.Direct2D1.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Vortice.Direct2D1.2.1.1-beta12\build\netstandard2.0\Vortice.Direct2D1.props'))" />
+    <Error Condition="!Exists('..\packages\Vortice.Direct3D11.2.1.1-beta12\build\netstandard2.0\Vortice.Direct3D11.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Vortice.Direct3D11.2.1.1-beta12\build\netstandard2.0\Vortice.Direct3D11.props'))" />
+  </Target>
 </Project>

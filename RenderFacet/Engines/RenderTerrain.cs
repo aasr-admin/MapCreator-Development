@@ -418,7 +418,7 @@ namespace Terrain
 
             #region Data Directory Modification
 
-            string str = string.Format("{0}/../Utilities/AdobePhotoshopCC/Terrain.aco", Directory.GetCurrentDirectory());
+            string str = string.Format("{0}/../Development/DrawingTools/AdobePhotoshop/Presets/ColorSwatches/Terrain.aco", Directory.GetCurrentDirectory());
 
             #endregion
 
@@ -465,7 +465,7 @@ namespace Terrain
         {
             #region Data Directory Modification
 
-            string str = string.Format("{0}/../Utilities/AdobePhotoshopCC/Terrain.act", Directory.GetCurrentDirectory());
+            string str = string.Format("{0}/../Development/DrawingTools/AdobePhotoshop/Presets/OptimizedColors/Terrain.act", Directory.GetCurrentDirectory());
 
             #endregion
 

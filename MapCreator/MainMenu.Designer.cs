@@ -31,19 +31,25 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainMenu));
             this.mainMenu_menuStrip = new System.Windows.Forms.MenuStrip();
             this.mainMenu_menuStrip_buttonCategory01_drawingTools = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainMenu_menuStrip_button01_userSubmittedPlugins = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainMenu_menuStrip_button02_facetTutorials = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainMenu_menuStrip_button05_programInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonA_adobePhotoShop = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_colorTables = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonC_editingTutorials = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory02_facetShowcase = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_button05_programInformation = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu_menuStrip_buttonCategory04_creditInformation = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu_pictureBox01_backDrop = new System.Windows.Forms.PictureBox();
             this.mainMenu_pictureBox02_topDivider = new System.Windows.Forms.PictureBox();
             this.mainMenu_statusStrip01 = new System.Windows.Forms.StatusStrip();
-            this.mainMenu_pictureBox03_middleDivider = new System.Windows.Forms.PictureBox();
             this.mainMenu_groupBox01_createYourWorld_button01_createFacetBitmapFiles = new System.Windows.Forms.Button();
             this.mainMenu_groupBox01_createYourWorld_button02_syncYourAltitudeBitmap = new System.Windows.Forms.Button();
             this.mainMenu_groupBox01_createYourWorld_button03_compileYourNewFacet = new System.Windows.Forms.Button();
-            this.mainMenu_groupBox01_createYourWorld = new System.Windows.Forms.GroupBox();
+            this.mainMenu_groupBox02_createYourWorld = new System.Windows.Forms.GroupBox();
+            this.mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins = new System.Windows.Forms.Button();
             this.mainMenu_groupBox01_createYourWorld_panel01_workBench = new System.Windows.Forms.Panel();
             this.mainMenu_groupBox01_createYourWorld_panel01_workBench_groupBox01_createFacetBitmapFiles = new System.Windows.Forms.GroupBox();
             this.mainMenu_groupBox01_createYourWorld_panel01_workBench_groupBox01_createFacetBitmapFiles_checkBox_dungeonToggle = new System.Windows.Forms.CheckBox();
@@ -92,11 +98,35 @@
             this.mainMenu_groupBox01_createYourWorld_panel03_workBench_groupBox01_compileYourNewFacet_button01_locateProjectFolderPath = new System.Windows.Forms.Button();
             this.mainMenu_pictureBox04_bottomDivider = new System.Windows.Forms.PictureBox();
             this.mainMenu_progressBar = new System.Windows.Forms.ProgressBar();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench = new System.Windows.Forms.Panel();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01 = new System.Windows.Forms.GroupBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation = new System.Windows.Forms.Label();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName = new System.Windows.Forms.Label();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader = new System.Windows.Forms.Label();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02 = new System.Windows.Forms.PictureBox();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName = new System.Windows.Forms.Label();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader = new System.Windows.Forms.Label();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01 = new System.Windows.Forms.PictureBox();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel = new System.Windows.Forms.Panel();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType = new System.Windows.Forms.Button();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor = new System.Windows.Forms.Button();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor = new System.Windows.Forms.Button();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer = new System.Windows.Forms.Button();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor = new System.Windows.Forms.Button();
+            this.mainMenu_creditInformation_panel05_workBench = new System.Windows.Forms.Panel();
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01 = new System.Windows.Forms.GroupBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01_panel02 = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.mainMenu_menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainMenu_pictureBox01_backDrop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainMenu_pictureBox02_topDivider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mainMenu_pictureBox03_middleDivider)).BeginInit();
-            this.mainMenu_groupBox01_createYourWorld.SuspendLayout();
+            this.mainMenu_groupBox02_createYourWorld.SuspendLayout();
             this.mainMenu_groupBox01_createYourWorld_panel01_workBench.SuspendLayout();
             this.mainMenu_groupBox01_createYourWorld_panel01_workBench_groupBox01_createFacetBitmapFiles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainMenu_groupBox01_createYourWorld_panel01_workBench_groupBox01_createFacetBitmapFiles_pictureBox01_panelDivider)).BeginInit();
@@ -107,6 +137,18 @@
             this.mainMenu_groupBox01_createYourWorld_panel03_workBench_groupBox01_compileYourNewFacet.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainMenu_groupBox01_createYourWorld_panel03_workBench_groupBox01_compileYourNewFacet_pictureBox01_panelDivider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainMenu_pictureBox04_bottomDivider)).BeginInit();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench.SuspendLayout();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01)).BeginInit();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.SuspendLayout();
+            this.mainMenu_creditInformation_panel05_workBench.SuspendLayout();
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01_panel02.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenu_menuStrip
@@ -115,20 +157,23 @@
             this.mainMenu_menuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.mainMenu_menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mainMenu_menuStrip_buttonCategory01_drawingTools,
-            this.mainMenu_menuStrip_button01_userSubmittedPlugins,
-            this.mainMenu_menuStrip_button02_facetTutorials,
-            this.mainMenu_menuStrip_button05_programInfo});
+            this.mainMenu_menuStrip_buttonCategory02_facetShowcase,
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks,
+            this.mainMenu_menuStrip_button05_programInformation,
+            this.mainMenu_menuStrip_buttonCategory04_creditInformation});
             this.mainMenu_menuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenu_menuStrip.Name = "mainMenu_menuStrip";
-            this.mainMenu_menuStrip.Size = new System.Drawing.Size(704, 32);
+            this.mainMenu_menuStrip.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
+            this.mainMenu_menuStrip.Size = new System.Drawing.Size(704, 30);
             this.mainMenu_menuStrip.TabIndex = 0;
             this.mainMenu_menuStrip.Text = "menuStrip1";
             // 
             // mainMenu_menuStrip_buttonCategory01_drawingTools
             // 
             this.mainMenu_menuStrip_buttonCategory01_drawingTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop,
-            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette});
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonA_adobePhotoShop,
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_colorTables,
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonC_editingTutorials});
             this.mainMenu_menuStrip_buttonCategory01_drawingTools.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.mainMenu_menuStrip_buttonCategory01_drawingTools.ForeColor = System.Drawing.Color.Navy;
             this.mainMenu_menuStrip_buttonCategory01_drawingTools.Name = "mainMenu_menuStrip_buttonCategory01_drawingTools";
@@ -136,51 +181,103 @@
             this.mainMenu_menuStrip_buttonCategory01_drawingTools.Size = new System.Drawing.Size(126, 28);
             this.mainMenu_menuStrip_buttonCategory01_drawingTools.Text = "Drawing Tools";
             // 
-            // mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop
+            // mainMenu_menuStrip_buttonCategory01_drawingTools_buttonA_adobePhotoShop
             // 
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop.ForeColor = System.Drawing.Color.Green;
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop.Name = "mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop";
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop.Size = new System.Drawing.Size(189, 24);
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop.Text = "Adobe Photoshop";
-            this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop.Click += new System.EventHandler(this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop_Click);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonA_adobePhotoShop.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonA_adobePhotoShop.ForeColor = System.Drawing.Color.Green;
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonA_adobePhotoShop.Name = "mainMenu_menuStrip_buttonCategory01_drawingTools_buttonA_adobePhotoShop";
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonA_adobePhotoShop.Size = new System.Drawing.Size(189, 24);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonA_adobePhotoShop.Text = "Adobe Photoshop";
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonA_adobePhotoShop.Click += new System.EventHandler(this.mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop_Click);
             // 
-            // mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette
+            // mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_colorTables
             // 
-            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette.ForeColor = System.Drawing.Color.Green;
-            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette.Name = "mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette";
-            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette.Size = new System.Drawing.Size(189, 24);
-            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette.Text = "Color Tables";
-            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette.Click += new System.EventHandler(this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette_Click);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_colorTables.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_colorTables.ForeColor = System.Drawing.Color.Green;
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_colorTables.Name = "mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_colorTables";
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_colorTables.Size = new System.Drawing.Size(189, 24);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_colorTables.Text = "Color Tables";
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_colorTables.Click += new System.EventHandler(this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette_Click);
             // 
-            // mainMenu_menuStrip_button01_userSubmittedPlugins
+            // mainMenu_menuStrip_buttonCategory01_drawingTools_buttonC_editingTutorials
             // 
-            this.mainMenu_menuStrip_button01_userSubmittedPlugins.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.mainMenu_menuStrip_button01_userSubmittedPlugins.ForeColor = System.Drawing.Color.Navy;
-            this.mainMenu_menuStrip_button01_userSubmittedPlugins.Name = "mainMenu_menuStrip_button01_userSubmittedPlugins";
-            this.mainMenu_menuStrip_button01_userSubmittedPlugins.Padding = new System.Windows.Forms.Padding(4, 0, 15, 0);
-            this.mainMenu_menuStrip_button01_userSubmittedPlugins.Size = new System.Drawing.Size(185, 28);
-            this.mainMenu_menuStrip_button01_userSubmittedPlugins.Text = "User Submitted Plugins";
-            this.mainMenu_menuStrip_button01_userSubmittedPlugins.Click += new System.EventHandler(this.mainMenu_menuStrip_button03_userSubmittedPlugins_Click);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonC_editingTutorials.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonC_editingTutorials.ForeColor = System.Drawing.Color.Green;
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonC_editingTutorials.Name = "mainMenu_menuStrip_buttonCategory01_drawingTools_buttonC_editingTutorials";
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonC_editingTutorials.Size = new System.Drawing.Size(189, 24);
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonC_editingTutorials.Text = "Editing Tutorials";
+            this.mainMenu_menuStrip_buttonCategory01_drawingTools_buttonC_editingTutorials.Click += new System.EventHandler(this.editingTutorialsToolStripMenuItem_Click);
             // 
-            // mainMenu_menuStrip_button02_facetTutorials
+            // mainMenu_menuStrip_buttonCategory02_facetShowcase
             // 
-            this.mainMenu_menuStrip_button02_facetTutorials.Name = "mainMenu_menuStrip_button02_facetTutorials";
-            this.mainMenu_menuStrip_button02_facetTutorials.Size = new System.Drawing.Size(121, 28);
-            this.mainMenu_menuStrip_button02_facetTutorials.Text = "Facet Tutorials";
-            this.mainMenu_menuStrip_button02_facetTutorials.Click += new System.EventHandler(this.mainMenu_menuStrip_button02_facetTutorials_Click);
+            this.mainMenu_menuStrip_buttonCategory02_facetShowcase.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.mainMenu_menuStrip_buttonCategory02_facetShowcase.ForeColor = System.Drawing.Color.Navy;
+            this.mainMenu_menuStrip_buttonCategory02_facetShowcase.Name = "mainMenu_menuStrip_buttonCategory02_facetShowcase";
+            this.mainMenu_menuStrip_buttonCategory02_facetShowcase.Size = new System.Drawing.Size(124, 28);
+            this.mainMenu_menuStrip_buttonCategory02_facetShowcase.Text = "Facet Showcase";
             // 
-            // mainMenu_menuStrip_button05_programInfo
+            // mainMenu_menuStrip_buttonCategory03_resourceLinks
             // 
-            this.mainMenu_menuStrip_button05_programInfo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.mainMenu_menuStrip_button05_programInfo.Image = ((System.Drawing.Image)(resources.GetObject("mainMenu_menuStrip_button05_programInfo.Image")));
-            this.mainMenu_menuStrip_button05_programInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.mainMenu_menuStrip_button05_programInfo.Margin = new System.Windows.Forms.Padding(210, 0, 0, 0);
-            this.mainMenu_menuStrip_button05_programInfo.Name = "mainMenu_menuStrip_button05_programInfo";
-            this.mainMenu_menuStrip_button05_programInfo.Padding = new System.Windows.Forms.Padding(0);
-            this.mainMenu_menuStrip_button05_programInfo.Size = new System.Drawing.Size(28, 28);
-            this.mainMenu_menuStrip_button05_programInfo.Text = "    ";
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar,
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate,
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor,
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano});
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks.ForeColor = System.Drawing.Color.Navy;
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks.Name = "mainMenu_menuStrip_buttonCategory03_resourceLinks";
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks.Padding = new System.Windows.Forms.Padding(4, 0, 15, 0);
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks.Size = new System.Drawing.Size(128, 28);
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks.Text = "Resource Links";
+            // 
+            // mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar
+            // 
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar.ForeColor = System.Drawing.Color.Green;
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar.Name = "mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar";
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar.Size = new System.Drawing.Size(136, 24);
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar.Text = "Azgaar";
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar.Click += new System.EventHandler(this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar_Click);
+            // 
+            // mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate
+            // 
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate.ForeColor = System.Drawing.Color.Green;
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate.Name = "mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate";
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate.Size = new System.Drawing.Size(136, 24);
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate.Text = "Inkarnate";
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate.Click += new System.EventHandler(this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate_Click);
+            // 
+            // mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor
+            // 
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor.ForeColor = System.Drawing.Color.Green;
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor.Name = "mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor";
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor.Size = new System.Drawing.Size(136, 24);
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor.Text = "Ryandor";
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor.Click += new System.EventHandler(this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor_Click);
+            // 
+            // mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano
+            // 
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano.ForeColor = System.Drawing.Color.Green;
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano.Name = "mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano";
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano.Size = new System.Drawing.Size(136, 24);
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano.Text = "Vancano";
+            this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano.Click += new System.EventHandler(this.mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano_Click);
+            // 
+            // mainMenu_menuStrip_button05_programInformation
+            // 
+            this.mainMenu_menuStrip_button05_programInformation.Name = "mainMenu_menuStrip_button05_programInformation";
+            this.mainMenu_menuStrip_button05_programInformation.Size = new System.Drawing.Size(12, 28);
+            // 
+            // mainMenu_menuStrip_buttonCategory04_creditInformation
+            // 
+            this.mainMenu_menuStrip_buttonCategory04_creditInformation.Image = ((System.Drawing.Image)(resources.GetObject("mainMenu_menuStrip_buttonCategory04_creditInformation.Image")));
+            this.mainMenu_menuStrip_buttonCategory04_creditInformation.Margin = new System.Windows.Forms.Padding(258, 0, 0, 0);
+            this.mainMenu_menuStrip_buttonCategory04_creditInformation.Name = "mainMenu_menuStrip_buttonCategory04_creditInformation";
+            this.mainMenu_menuStrip_buttonCategory04_creditInformation.Size = new System.Drawing.Size(36, 28);
+            this.mainMenu_menuStrip_buttonCategory04_creditInformation.Click += new System.EventHandler(this.mainMenu_menuStrip_buttonCategory04_creditInformation_Click);
             // 
             // mainMenu_pictureBox01_backDrop
             // 
@@ -188,7 +285,7 @@
             this.mainMenu_pictureBox01_backDrop.Image = ((System.Drawing.Image)(resources.GetObject("mainMenu_pictureBox01_backDrop.Image")));
             this.mainMenu_pictureBox01_backDrop.Location = new System.Drawing.Point(0, 0);
             this.mainMenu_pictureBox01_backDrop.Name = "mainMenu_pictureBox01_backDrop";
-            this.mainMenu_pictureBox01_backDrop.Size = new System.Drawing.Size(704, 471);
+            this.mainMenu_pictureBox01_backDrop.Size = new System.Drawing.Size(704, 438);
             this.mainMenu_pictureBox01_backDrop.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.mainMenu_pictureBox01_backDrop.TabIndex = 1;
             this.mainMenu_pictureBox01_backDrop.TabStop = false;
@@ -196,7 +293,7 @@
             // mainMenu_pictureBox02_topDivider
             // 
             this.mainMenu_pictureBox02_topDivider.Image = ((System.Drawing.Image)(resources.GetObject("mainMenu_pictureBox02_topDivider.Image")));
-            this.mainMenu_pictureBox02_topDivider.Location = new System.Drawing.Point(0, 32);
+            this.mainMenu_pictureBox02_topDivider.Location = new System.Drawing.Point(0, 29);
             this.mainMenu_pictureBox02_topDivider.Name = "mainMenu_pictureBox02_topDivider";
             this.mainMenu_pictureBox02_topDivider.Size = new System.Drawing.Size(704, 10);
             this.mainMenu_pictureBox02_topDivider.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -206,21 +303,11 @@
             // mainMenu_statusStrip01
             // 
             this.mainMenu_statusStrip01.ImageScalingSize = new System.Drawing.Size(40, 40);
-            this.mainMenu_statusStrip01.Location = new System.Drawing.Point(0, 449);
+            this.mainMenu_statusStrip01.Location = new System.Drawing.Point(0, 416);
             this.mainMenu_statusStrip01.Name = "mainMenu_statusStrip01";
             this.mainMenu_statusStrip01.Size = new System.Drawing.Size(704, 22);
             this.mainMenu_statusStrip01.TabIndex = 3;
             this.mainMenu_statusStrip01.Text = "statusStrip1";
-            // 
-            // mainMenu_pictureBox03_middleDivider
-            // 
-            this.mainMenu_pictureBox03_middleDivider.Image = ((System.Drawing.Image)(resources.GetObject("mainMenu_pictureBox03_middleDivider.Image")));
-            this.mainMenu_pictureBox03_middleDivider.Location = new System.Drawing.Point(0, 414);
-            this.mainMenu_pictureBox03_middleDivider.Name = "mainMenu_pictureBox03_middleDivider";
-            this.mainMenu_pictureBox03_middleDivider.Size = new System.Drawing.Size(704, 10);
-            this.mainMenu_pictureBox03_middleDivider.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.mainMenu_pictureBox03_middleDivider.TabIndex = 4;
-            this.mainMenu_pictureBox03_middleDivider.TabStop = false;
             // 
             // mainMenu_groupBox01_createYourWorld_button01_createFacetBitmapFiles
             // 
@@ -258,21 +345,34 @@
             this.mainMenu_groupBox01_createYourWorld_button03_compileYourNewFacet.UseVisualStyleBackColor = true;
             this.mainMenu_groupBox01_createYourWorld_button03_compileYourNewFacet.Click += new System.EventHandler(this.mainMenu_groupBox01_createYourWorld_button03_compileYourNewFacet_Click);
             // 
-            // mainMenu_groupBox01_createYourWorld
+            // mainMenu_groupBox02_createYourWorld
             // 
-            this.mainMenu_groupBox01_createYourWorld.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("mainMenu_groupBox01_createYourWorld.BackgroundImage")));
-            this.mainMenu_groupBox01_createYourWorld.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.mainMenu_groupBox01_createYourWorld.Controls.Add(this.mainMenu_groupBox01_createYourWorld_button03_compileYourNewFacet);
-            this.mainMenu_groupBox01_createYourWorld.Controls.Add(this.mainMenu_groupBox01_createYourWorld_button01_createFacetBitmapFiles);
-            this.mainMenu_groupBox01_createYourWorld.Controls.Add(this.mainMenu_groupBox01_createYourWorld_button02_syncYourAltitudeBitmap);
-            this.mainMenu_groupBox01_createYourWorld.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mainMenu_groupBox01_createYourWorld.ForeColor = System.Drawing.Color.Gold;
-            this.mainMenu_groupBox01_createYourWorld.Location = new System.Drawing.Point(404, 180);
-            this.mainMenu_groupBox01_createYourWorld.Name = "mainMenu_groupBox01_createYourWorld";
-            this.mainMenu_groupBox01_createYourWorld.Size = new System.Drawing.Size(217, 176);
-            this.mainMenu_groupBox01_createYourWorld.TabIndex = 11;
-            this.mainMenu_groupBox01_createYourWorld.TabStop = false;
-            this.mainMenu_groupBox01_createYourWorld.Text = "Create Your World";
+            this.mainMenu_groupBox02_createYourWorld.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("mainMenu_groupBox02_createYourWorld.BackgroundImage")));
+            this.mainMenu_groupBox02_createYourWorld.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.mainMenu_groupBox02_createYourWorld.Controls.Add(this.mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins);
+            this.mainMenu_groupBox02_createYourWorld.Controls.Add(this.mainMenu_groupBox01_createYourWorld_button03_compileYourNewFacet);
+            this.mainMenu_groupBox02_createYourWorld.Controls.Add(this.mainMenu_groupBox01_createYourWorld_button01_createFacetBitmapFiles);
+            this.mainMenu_groupBox02_createYourWorld.Controls.Add(this.mainMenu_groupBox01_createYourWorld_button02_syncYourAltitudeBitmap);
+            this.mainMenu_groupBox02_createYourWorld.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox02_createYourWorld.ForeColor = System.Drawing.Color.Gold;
+            this.mainMenu_groupBox02_createYourWorld.Location = new System.Drawing.Point(447, 173);
+            this.mainMenu_groupBox02_createYourWorld.Name = "mainMenu_groupBox02_createYourWorld";
+            this.mainMenu_groupBox02_createYourWorld.Size = new System.Drawing.Size(217, 217);
+            this.mainMenu_groupBox02_createYourWorld.TabIndex = 11;
+            this.mainMenu_groupBox02_createYourWorld.TabStop = false;
+            this.mainMenu_groupBox02_createYourWorld.Text = "Create Your World";
+            // 
+            // mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins
+            // 
+            this.mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins.ForeColor = System.Drawing.Color.DarkGreen;
+            this.mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins.Location = new System.Drawing.Point(22, 173);
+            this.mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins.Name = "mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins";
+            this.mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins.Size = new System.Drawing.Size(173, 28);
+            this.mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins.TabIndex = 11;
+            this.mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins.Text = "User Submitted Plugins";
+            this.mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins.UseVisualStyleBackColor = true;
+            this.mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins.Click += new System.EventHandler(this.mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins_Click);
             // 
             // mainMenu_groupBox01_createYourWorld_panel01_workBench
             // 
@@ -867,7 +967,7 @@
             // mainMenu_pictureBox04_bottomDivider
             // 
             this.mainMenu_pictureBox04_bottomDivider.Image = ((System.Drawing.Image)(resources.GetObject("mainMenu_pictureBox04_bottomDivider.Image")));
-            this.mainMenu_pictureBox04_bottomDivider.Location = new System.Drawing.Point(0, 441);
+            this.mainMenu_pictureBox04_bottomDivider.Location = new System.Drawing.Point(0, 407);
             this.mainMenu_pictureBox04_bottomDivider.Name = "mainMenu_pictureBox04_bottomDivider";
             this.mainMenu_pictureBox04_bottomDivider.Size = new System.Drawing.Size(704, 10);
             this.mainMenu_pictureBox04_bottomDivider.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -877,27 +977,340 @@
             // mainMenu_progressBar
             // 
             this.mainMenu_progressBar.BackColor = System.Drawing.Color.Silver;
-            this.mainMenu_progressBar.Location = new System.Drawing.Point(0, 424);
+            this.mainMenu_progressBar.Location = new System.Drawing.Point(0, 416);
             this.mainMenu_progressBar.Name = "mainMenu_progressBar";
-            this.mainMenu_progressBar.Size = new System.Drawing.Size(704, 17);
+            this.mainMenu_progressBar.Size = new System.Drawing.Size(704, 22);
             this.mainMenu_progressBar.TabIndex = 16;
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench.BackColor = System.Drawing.Color.Black;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("mainMenu_groupBox01_createYourWorld_panel04_workBench.BackgroundImage")));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench.Location = new System.Drawing.Point(39, 71);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench.Size = new System.Drawing.Size(330, 319);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench.TabIndex = 17;
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.pictureBox1);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.ForeColor = System.Drawing.Color.Red;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Location = new System.Drawing.Point(10, 9);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Size = new System.Drawing.Size(310, 298);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.TabIndex = 13;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.TabStop = false;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Text = "User Submitted Plugins";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(146, 24);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(18, 263);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 18;
+            this.pictureBox1.TabStop = false;
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.AutoSize = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.ForeColor = System.Drawing.Color.LavenderBlush;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Location = new System.Drawing.Point(178, 155);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInfo" +
+    "rmation";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Size = new System.Drawing.Size(126, 119);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.TabIndex = 22;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Text = "Users are encouraged \r\nto make C# map editing \r\ntools and submit their\r\ncompilabl" +
+    "e source to us \r\nat the following address:\r\n\r\naasr.sva@gmail.com";
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.AutoSize = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.ForeColor = System.Drawing.Color.LavenderBlush;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Location = new System.Drawing.Point(178, 155);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_develope" +
+    "rName";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Size = new System.Drawing.Size(42, 17);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.TabIndex = 22;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Text = "deccer";
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.AutoSize = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Font = new System.Drawing.Font("Arial Narrow", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.ForeColor = System.Drawing.Color.MediumSlateBlue;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Location = new System.Drawing.Point(176, 121);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisW" +
+    "orksHeader";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Size = new System.Drawing.Size(102, 20);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.TabIndex = 21;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Text = "How This Works:";
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02.Image = ((System.Drawing.Image)(resources.GetObject("mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02.Ima" +
+        "ge")));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02.Location = new System.Drawing.Point(175, 144);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02.Size = new System.Drawing.Size(126, 10);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02.TabIndex = 20;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02.TabStop = false;
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.AutoSize = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.ForeColor = System.Drawing.Color.LavenderBlush;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Location = new System.Drawing.Point(178, 155);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_develope" +
+    "rName";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Size = new System.Drawing.Size(42, 17);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.TabIndex = 19;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Text = "dknight";
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.AutoSize = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Font = new System.Drawing.Font("Arial Narrow", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.ForeColor = System.Drawing.Color.MediumSlateBlue;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Location = new System.Drawing.Point(176, 121);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_develope" +
+    "rHeader";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Size = new System.Drawing.Size(82, 20);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.TabIndex = 18;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Text = "Developer(s):";
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01.Image = ((System.Drawing.Image)(resources.GetObject("mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01.Ima" +
+        "ge")));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01.Location = new System.Drawing.Point(175, 22);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01.Size = new System.Drawing.Size(125, 95);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01.TabIndex = 18;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01.TabStop = false;
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.AutoScroll = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.Location = new System.Drawing.Point(11, 24);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.Size = new System.Drawing.Size(153, 263);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.TabIndex = 0;
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType.Location = new System.Drawing.Point(0, 214);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_conv" +
+    "ertFileType";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType.Size = new System.Drawing.Size(128, 36);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType.TabIndex = 4;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType.Text = "Convert File Type";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType.UseVisualStyleBackColor = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType.Click += new System.EventHandler(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType_Click);
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor.Location = new System.Drawing.Point(0, 114);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terr" +
+    "ainTypeEditor";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor.Size = new System.Drawing.Size(128, 36);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor.TabIndex = 3;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor.Text = "Terrain Type Editor";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor.UseVisualStyleBackColor = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor.Click += new System.EventHandler(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor_Click);
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor.Location = new System.Drawing.Point(0, 64);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_tran" +
+    "sitionEditor";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor.Size = new System.Drawing.Size(128, 36);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor.TabIndex = 2;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor.Text = "Transition Editor";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor.UseVisualStyleBackColor = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor.Click += new System.EventHandler(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor_Click);
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer.Location = new System.Drawing.Point(0, 164);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_plan" +
+    "etViewer";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer.Size = new System.Drawing.Size(128, 36);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer.TabIndex = 1;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer.Text = "Planet Viewer";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer.UseVisualStyleBackColor = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer.Click += new System.EventHandler(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer_Click);
+            // 
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor
+            // 
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor.Location = new System.Drawing.Point(0, 14);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colo" +
+    "rTableEditor";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor.Size = new System.Drawing.Size(128, 36);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor.TabIndex = 0;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor.Text = "Color Table Editor";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor.UseVisualStyleBackColor = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor.Click += new System.EventHandler(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor_Click);
+            // 
+            // mainMenu_creditInformation_panel05_workBench
+            // 
+            this.mainMenu_creditInformation_panel05_workBench.BackColor = System.Drawing.Color.Black;
+            this.mainMenu_creditInformation_panel05_workBench.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("mainMenu_creditInformation_panel05_workBench.BackgroundImage")));
+            this.mainMenu_creditInformation_panel05_workBench.Controls.Add(this.mainMenu_creditInformation_panel05_workBench_groupBox01);
+            this.mainMenu_creditInformation_panel05_workBench.Location = new System.Drawing.Point(39, 71);
+            this.mainMenu_creditInformation_panel05_workBench.Name = "mainMenu_creditInformation_panel05_workBench";
+            this.mainMenu_creditInformation_panel05_workBench.Size = new System.Drawing.Size(330, 319);
+            this.mainMenu_creditInformation_panel05_workBench.TabIndex = 18;
+            // 
+            // mainMenu_creditInformation_panel05_workBench_groupBox01
+            // 
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.Controls.Add(this.linkLabel1);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.Controls.Add(this.pictureBox2);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.Controls.Add(this.label1);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.Controls.Add(this.pictureBox3);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.Controls.Add(this.pictureBox4);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.Controls.Add(this.mainMenu_creditInformation_panel05_workBench_groupBox01_panel02);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.ForeColor = System.Drawing.Color.Red;
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.Location = new System.Drawing.Point(10, 9);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.Name = "mainMenu_creditInformation_panel05_workBench_groupBox01";
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.Size = new System.Drawing.Size(310, 298);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.TabIndex = 13;
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.TabStop = false;
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.Text = "MapCreator Credits";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.ForeColor = System.Drawing.Color.MediumSlateBlue;
+            this.linkLabel1.LinkColor = System.Drawing.Color.MediumSlateBlue;
+            this.linkLabel1.Location = new System.Drawing.Point(181, 121);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(114, 18);
+            this.linkLabel1.TabIndex = 23;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "uoAvocation.net";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(146, 24);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(18, 263);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 18;
+            this.pictureBox2.TabStop = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.LavenderBlush;
+            this.label1.Location = new System.Drawing.Point(173, 170);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(132, 102);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "Thank You to Everyone\r\n\r\nwho has helped develop\r\nthis program, and created\r\nplugi" +
+    "ns to extend its \r\nfunction and purpose!";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
+            this.pictureBox3.Location = new System.Drawing.Point(175, 144);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(126, 10);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox3.TabIndex = 20;
+            this.pictureBox3.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
+            this.pictureBox4.Location = new System.Drawing.Point(175, 22);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(125, 95);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox4.TabIndex = 18;
+            this.pictureBox4.TabStop = false;
+            // 
+            // mainMenu_creditInformation_panel05_workBench_groupBox01_panel02
+            // 
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01_panel02.AutoScroll = true;
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01_panel02.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01_panel02.Controls.Add(this.textBox1);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01_panel02.Location = new System.Drawing.Point(11, 24);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01_panel02.Name = "mainMenu_creditInformation_panel05_workBench_groupBox01_panel02";
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01_panel02.Size = new System.Drawing.Size(153, 263);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01_panel02.TabIndex = 0;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.MenuText;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.ForeColor = System.Drawing.Color.PowderBlue;
+            this.textBox1.Location = new System.Drawing.Point(0, 0);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.textBox1.Size = new System.Drawing.Size(129, 261);
+            this.textBox1.TabIndex = 19;
+            this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
             // mainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(704, 471);
+            this.ClientSize = new System.Drawing.Size(704, 438);
+            this.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench);
             this.Controls.Add(this.mainMenu_progressBar);
             this.Controls.Add(this.mainMenu_pictureBox04_bottomDivider);
-            this.Controls.Add(this.mainMenu_groupBox01_createYourWorld);
-            this.Controls.Add(this.mainMenu_pictureBox03_middleDivider);
+            this.Controls.Add(this.mainMenu_groupBox02_createYourWorld);
             this.Controls.Add(this.mainMenu_statusStrip01);
             this.Controls.Add(this.mainMenu_pictureBox02_topDivider);
             this.Controls.Add(this.mainMenu_menuStrip);
+            this.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel01_workBench);
             this.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel03_workBench);
             this.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel02_workBench);
-            this.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel01_workBench);
             this.Controls.Add(this.mainMenu_pictureBox01_backDrop);
+            this.Controls.Add(this.mainMenu_creditInformation_panel05_workBench);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.mainMenu_menuStrip;
@@ -911,8 +1324,7 @@
             this.mainMenu_menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainMenu_pictureBox01_backDrop)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainMenu_pictureBox02_topDivider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mainMenu_pictureBox03_middleDivider)).EndInit();
-            this.mainMenu_groupBox01_createYourWorld.ResumeLayout(false);
+            this.mainMenu_groupBox02_createYourWorld.ResumeLayout(false);
             this.mainMenu_groupBox01_createYourWorld_panel01_workBench.ResumeLayout(false);
             this.mainMenu_groupBox01_createYourWorld_panel01_workBench_groupBox01_createFacetBitmapFiles.ResumeLayout(false);
             this.mainMenu_groupBox01_createYourWorld_panel01_workBench_groupBox01_createFacetBitmapFiles.PerformLayout();
@@ -926,6 +1338,21 @@
             this.mainMenu_groupBox01_createYourWorld_panel03_workBench_groupBox01_compileYourNewFacet.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainMenu_groupBox01_createYourWorld_panel03_workBench_groupBox01_compileYourNewFacet_pictureBox01_panelDivider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainMenu_pictureBox04_bottomDivider)).EndInit();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench.ResumeLayout(false);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.ResumeLayout(false);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01)).EndInit();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel.ResumeLayout(false);
+            this.mainMenu_creditInformation_panel05_workBench.ResumeLayout(false);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.ResumeLayout(false);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01_panel02.ResumeLayout(false);
+            this.mainMenu_creditInformation_panel05_workBench_groupBox01_panel02.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -935,19 +1362,17 @@
 
         private System.Windows.Forms.MenuStrip mainMenu_menuStrip;
         private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory01_drawingTools;
-        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_paintPalette;
-        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory01_paintSoftware_buttonA_adobePhotoShop;
-        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_button01_userSubmittedPlugins;
-        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_button02_facetTutorials;
-        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_button05_programInfo;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory01_drawingTools_buttonB_colorTables;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory01_drawingTools_buttonA_adobePhotoShop;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory03_resourceLinks;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_button05_programInformation;
         private System.Windows.Forms.PictureBox mainMenu_pictureBox01_backDrop;
         private System.Windows.Forms.PictureBox mainMenu_pictureBox02_topDivider;
         private System.Windows.Forms.StatusStrip mainMenu_statusStrip01;
-        private System.Windows.Forms.PictureBox mainMenu_pictureBox03_middleDivider;
         private System.Windows.Forms.Button mainMenu_groupBox01_createYourWorld_button01_createFacetBitmapFiles;
         private System.Windows.Forms.Button mainMenu_groupBox01_createYourWorld_button02_syncYourAltitudeBitmap;
         private System.Windows.Forms.Button mainMenu_groupBox01_createYourWorld_button03_compileYourNewFacet;
-        private System.Windows.Forms.GroupBox mainMenu_groupBox01_createYourWorld;
+        private System.Windows.Forms.GroupBox mainMenu_groupBox02_createYourWorld;
         public System.Windows.Forms.Panel mainMenu_groupBox01_createYourWorld_panel01_workBench;
         private System.Windows.Forms.GroupBox mainMenu_groupBox01_createYourWorld_panel01_workBench_groupBox01_createFacetBitmapFiles;
         private System.Windows.Forms.Button mainMenu_groupBox01_createYourWorld_panel01_workBench_groupBox01_createFacetBitmapFiles_button01_locateProjectFolderPath;
@@ -996,5 +1421,38 @@
         private System.Windows.Forms.RadioButton mainMenu_groupBox01_createYourWorld_panel03_workBench_groupBox01_compileYourNewFacet_radioButton01_toggleRandomStaticsON;
         private System.Windows.Forms.PictureBox mainMenu_pictureBox04_bottomDivider;
         public System.Windows.Forms.ProgressBar mainMenu_progressBar;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory01_drawingTools_buttonC_editingTutorials;
+        public System.Windows.Forms.Panel mainMenu_groupBox01_createYourWorld_panel04_workBench;
+        private System.Windows.Forms.GroupBox mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01;
+        private System.Windows.Forms.Panel mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel;
+        private System.Windows.Forms.Button mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_convertFileType;
+        private System.Windows.Forms.Button mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_terrainTypeEditor;
+        private System.Windows.Forms.Button mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_transitionEditor;
+        private System.Windows.Forms.Button mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_planetViewer;
+        private System.Windows.Forms.Button mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel_colorTableEditor;
+        private System.Windows.Forms.Button mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins;
+        private System.Windows.Forms.PictureBox mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01;
+        private System.Windows.Forms.PictureBox mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02;
+        private System.Windows.Forms.Label mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName;
+        private System.Windows.Forms.Label mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader;
+        private System.Windows.Forms.Label mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader;
+        private System.Windows.Forms.Label mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation;
+        private System.Windows.Forms.Label mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory02_facetShowcase;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory04_creditInformation;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonB_inkarnate;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonC_ryandor;
+        private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonD_vancano;
+        public System.Windows.Forms.Panel mainMenu_creditInformation_panel05_workBench;
+        private System.Windows.Forms.GroupBox mainMenu_creditInformation_panel05_workBench_groupBox01;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.Panel mainMenu_creditInformation_panel05_workBench_groupBox01_panel02;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
