@@ -352,7 +352,9 @@ namespace Altitude
 
             #region Data Directory Modification
 
-            string str = string.Format("{0}/../Utilities/AdobePhotoshopCC/Altitude.aco", Directory.GetCurrentDirectory());
+            // string str = string.Format("{0}/../Utilities/AdobePhotoshopCC/Altitude.aco", Directory.GetCurrentDirectory());
+
+            string str = string.Format("Development/DrawingTools/AdobePhotoshop/Presets/Color Swatches/Altitude.ACO", Directory.GetCurrentDirectory());
 
             #endregion
 
@@ -392,14 +394,16 @@ namespace Altitude
             while (num2 <= 255);
             binaryWriter.Close();
             fileStream.Close();
-            Interaction.MsgBox("Altitude.aco Saved", MsgBoxStyle.OkOnly, null);
+            Interaction.MsgBox("Altitude.ACO Saved", MsgBoxStyle.OkOnly, null);
         }
 
         public void SaveACT()
         {
             #region Data Directory Modification
 
-            string str = string.Format("{0}/../Utilities/AdobePhotoshopCC/Altitude.act", Directory.GetCurrentDirectory());
+            // string str = string.Format("{0}/../Utilities/AdobePhotoshopCC/Altitude.act", Directory.GetCurrentDirectory());
+
+            string str = string.Format("Development/DrawingTools/AdobePhotoshop/Presets/Optimized Colors/Altitude.ACT", Directory.GetCurrentDirectory());
 
             #endregion
 
@@ -424,7 +428,7 @@ namespace Altitude
             while (num1 <= 255);
             binaryWriter.Close();
             fileStream.Close();
-            Interaction.MsgBox("Altitude.act Saved", MsgBoxStyle.OkOnly, null);
+            Interaction.MsgBox("Altitude.ACT Saved", MsgBoxStyle.OkOnly, null);
         }
 
         #endregion

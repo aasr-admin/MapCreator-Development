@@ -418,7 +418,9 @@ namespace Terrain
 
             #region Data Directory Modification
 
-            string str = string.Format("{0}/../Development/DrawingTools/AdobePhotoshop/Presets/ColorSwatches/Terrain.aco", Directory.GetCurrentDirectory());
+            //string str = string.Format("{0}/../Development/DrawingTools/AdobePhotoshop/Presets/ColorSwatches/Terrain.aco", Directory.GetCurrentDirectory());
+
+            string str = string.Format("Development/DrawingTools/AdobePhotoshop/Presets/Color Swatches/Terrain.ACO", Directory.GetCurrentDirectory());
 
             #endregion
 
@@ -458,14 +460,16 @@ namespace Terrain
             while (num2 <= 255);
             binaryWriter.Close();
             fileStream.Close();
-            Interaction.MsgBox("Terrain.aco Saved", MsgBoxStyle.OkOnly, null);
+            Interaction.MsgBox("Terrain.ACO Saved", MsgBoxStyle.OkOnly, null);
         }
 
         public void SaveACT()
         {
             #region Data Directory Modification
 
-            string str = string.Format("{0}/../Development/DrawingTools/AdobePhotoshop/Presets/OptimizedColors/Terrain.act", Directory.GetCurrentDirectory());
+            //string str = string.Format("{0}/../Development/DrawingTools/AdobePhotoshop/Presets/OptimizedColors/Terrain.act", Directory.GetCurrentDirectory());
+
+            string str = string.Format("Development/DrawingTools/AdobePhotoshop/Presets/Optimized Colors/Terrain.ACT", Directory.GetCurrentDirectory());
 
             #endregion
 
@@ -490,7 +494,7 @@ namespace Terrain
             while (num1 <= 255);
             binaryWriter.Close();
             fileStream.Close();
-            Interaction.MsgBox("Terrain.act Saved", MsgBoxStyle.OkOnly, null);
+            Interaction.MsgBox("Terrain.ACT Saved", MsgBoxStyle.OkOnly, null);
         }
 
         #endregion

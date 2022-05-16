@@ -102,10 +102,10 @@
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01 = new System.Windows.Forms.GroupBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation = new System.Windows.Forms.Label();
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName = new System.Windows.Forms.Label();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer = new System.Windows.Forms.Label();
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader = new System.Windows.Forms.Label();
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02 = new System.Windows.Forms.PictureBox();
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName = new System.Windows.Forms.Label();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight = new System.Windows.Forms.Label();
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader = new System.Windows.Forms.Label();
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01 = new System.Windows.Forms.PictureBox();
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel = new System.Windows.Forms.Panel();
@@ -997,10 +997,10 @@
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.pictureBox1);
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation);
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer);
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader);
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02);
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight);
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader);
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01);
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01.Controls.Add(this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_buttonPanel);
@@ -1028,7 +1028,7 @@
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.AutoSize = true;
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.ForeColor = System.Drawing.Color.LavenderBlush;
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Location = new System.Drawing.Point(178, 155);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Location = new System.Drawing.Point(178, 156);
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInfo" +
     "rmation";
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Size = new System.Drawing.Size(126, 119);
@@ -1036,17 +1036,17 @@
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Text = "Users are encouraged \r\nto make C# map editing \r\ntools and submit their\r\ncompilabl" +
     "e source to us \r\nat the following address:\r\n\r\naasr.sva@gmail.com";
             // 
-            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer
             // 
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.AutoSize = true;
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.ForeColor = System.Drawing.Color.LavenderBlush;
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Location = new System.Drawing.Point(178, 155);
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_develope" +
-    "rName";
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Size = new System.Drawing.Size(42, 17);
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.TabIndex = 22;
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Text = "deccer";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.AutoSize = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.ForeColor = System.Drawing.Color.LavenderBlush;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.Location = new System.Drawing.Point(178, 155);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_develope" +
+    "rName_deccer";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.Size = new System.Drawing.Size(42, 17);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.TabIndex = 22;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.Text = "deccer";
             // 
             // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader
             // 
@@ -1071,17 +1071,17 @@
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02.TabIndex = 20;
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02.TabStop = false;
             // 
-            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName
+            // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight
             // 
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.AutoSize = true;
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.ForeColor = System.Drawing.Color.LavenderBlush;
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Location = new System.Drawing.Point(178, 155);
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_develope" +
-    "rName";
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Size = new System.Drawing.Size(42, 17);
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.TabIndex = 19;
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Text = "dknight";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.AutoSize = true;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.ForeColor = System.Drawing.Color.LavenderBlush;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.Location = new System.Drawing.Point(178, 155);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.Name = "mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_develope" +
+    "rName_dknight";
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.Size = new System.Drawing.Size(42, 17);
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.TabIndex = 19;
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.Text = "dknight";
             // 
             // mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader
             // 
@@ -1433,11 +1433,11 @@
         private System.Windows.Forms.Button mainMenu_groupBox01_createYourWorld_button04_userSubmittedPlugins;
         private System.Windows.Forms.PictureBox mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox01;
         private System.Windows.Forms.PictureBox mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_pictureBox02;
-        private System.Windows.Forms.Label mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName;
+        private System.Windows.Forms.Label mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight;
         private System.Windows.Forms.Label mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader;
         private System.Windows.Forms.Label mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader;
         private System.Windows.Forms.Label mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation;
-        private System.Windows.Forms.Label mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName;
+        private System.Windows.Forms.Label mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory02_facetShowcase;
         private System.Windows.Forms.ToolStripMenuItem mainMenu_menuStrip_buttonCategory04_creditInformation;

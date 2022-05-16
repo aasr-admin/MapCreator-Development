@@ -936,8 +936,8 @@ namespace MapCreator
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Show();
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Show();
 
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Hide(); // dknight
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Hide(); // deccer
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.Hide(); // dknight
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.Hide(); // deccer
 
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Hide();
 
@@ -975,10 +975,13 @@ namespace MapCreator
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Hide();
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Hide();
 
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Hide();  // deccer
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.Hide();  // deccer
 
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Show();
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Show(); // dknight
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.Show(); // dknight
+
+            colorTableEditor colorTableEditorForm = new colorTableEditor();
+            colorTableEditorForm.Show();
         }
 
         /// Button 02: Planet View
@@ -987,26 +990,13 @@ namespace MapCreator
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Hide();
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Hide();
 
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Hide(); // dknight
-
-            /// PlanetViewer planeViewerForm = new PlanetViewer(
-            ///     new GraphicsDevice(
-            ///         new ShaderFactory(),
-            ///         new ModelFactory(),
-            ///         new SixLaborsImagingFactory()),
-            ///     new GifFilmRecorder());
-            /// planeViewerForm.Show();
-
-            PlanetViewer planeViewerForm = new PlanetViewer(
-                new GraphicsDevice(
-                    new ShaderFactory(),
-                    new ModelFactory(),
-                    new WicImagingFactory()),
-                new GifFilmRecorder());
-            planeViewerForm.Show();
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.Hide(); // dknight
 
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Show();
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Show();  // deccer
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.Show();  // deccer
+
+            PlanetViewer planeViewerForm = new PlanetViewer(new GraphicsDevice(new ShaderFactory(), new ModelFactory(), new WicImagingFactory()), new GifFilmRecorder());
+            planeViewerForm.Show();
         }
 
         /// Button 03: Transition Editor
@@ -1015,10 +1005,10 @@ namespace MapCreator
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Hide();
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Hide();
 
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Hide();  // deccer
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.Hide();  // deccer
 
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Show();
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Show(); // dknight
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.Show(); // dknight
         }
 
         /// Button 04: Terrain Type Editor
@@ -1027,10 +1017,10 @@ namespace MapCreator
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Hide();
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Hide();
 
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Hide();  // deccer
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.Hide();  // deccer
 
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Show();
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Show(); // dknight
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.Show(); // dknight
         }
 
         /// Button 05: Convert File Type
@@ -1039,10 +1029,10 @@ namespace MapCreator
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label03_howThisWorksHeader.Hide();
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label04_userInformation.Hide();
 
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName.Hide();  // deccer
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label05_developerName_deccer.Hide();  // deccer
 
             this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label01_developerHeader.Show();
-            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName.Show(); // dknight
+            this.mainMenu_groupBox01_createYourWorld_panel04_workBench_groupBox01_label02_developerName_dknight.Show(); // dknight
         }
 
         /// Button (L): Plugin Source Code
