@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Dragon>
+	<MapTrans Description="Dragon Mod09" Location="MapCompiler\Engine\MapTrans\DragonMod09\DragonMod09.xml" />
+	<MapTrans Description="Dragon Mod10" Location="MapCompiler\Engine\MapTrans\DragonMod09\DragonMod10.xml" />
+	<MapTrans Description="Dragon Mod11" Location="MapCompiler\Engine\MapTrans\DragonMod09\DragonMod11.xml" />
+</Dragon>

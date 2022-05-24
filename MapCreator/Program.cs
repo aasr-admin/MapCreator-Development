@@ -16,7 +16,7 @@ namespace MapCreator
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new titleScreen());
+            Application.Run(new TerrainTypeEditor());
         }
     }
 }

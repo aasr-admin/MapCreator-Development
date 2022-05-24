@@ -154,6 +154,18 @@
     <Compile Include="MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\TerrainTypeEditor\StaticSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Plugins\TerrainTypeEditor\StaticSelector.Designer.cs">
+      <DependentUpon>StaticSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\TerrainTypeEditor\TerrainTypeEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Plugins\TerrainTypeEditor\TerrainTypeEditor.Designer.cs">
+      <DependentUpon>TerrainTypeEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="TitleScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -176,6 +188,12 @@
     </Compile>
     <EmbeddedResource Include="MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\TerrainTypeEditor\StaticSelector.resx">
+      <DependentUpon>StaticSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\TerrainTypeEditor\TerrainTypeEditor.resx">
+      <DependentUpon>TerrainTypeEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

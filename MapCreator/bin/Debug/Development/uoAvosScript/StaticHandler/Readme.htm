@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body>
+
+<div align="center"><font size="6"><a name="top"></a>MapCreator</font></div>
+<div align="center"><font size="6"><a name="top"></a>*************************</font></div>
+<p align="center"><font size="5">Exporting your Statics</font></p>
+<p align="center"><font size="2"> Script Tested by aasr-admin (uoAvocation) 02/24/2022<br />
+                                  This File Edited By: aasr-admin (uoAvocation) 02/24/2022<br />
+                           ---------------------------------------------------<br />
+                                  Original Scripted by DKnight<br>
+                                  Fixed and Edited by Ravenal<br>
+                                  Observed by Irro and Khaybel<br />
+
+</font></p>
+
+<p><br><a name="additions"></a>ORIGINAL ADDITIONS<br><br />
+
+  - Command &quot;ExportStatics&quot; Designed to take all the statics including checking 
+  some of the statics to make sure it was a static before exporting. Scripted 
+  by DKnight<br><br />
+
+  - Using the power of XML, MapCreator uses these XML files to import your exported 
+  statics to create on compiling your map, so everytime you wanted to fix something 
+  on you map without altering any of your statics you could do so.
+
+ <br></p><br />
+
+<p>RAVENAL'S ADDITIONS<br><br/>
+
+[x] Command &quot;AreaExportStatics&quot; Designed to target a bounding box area to 
+  export into a xml file.<br><br />
+
+[x] You can now do [AreaExportStatics &lt;Filename&gt; or [ExportStatics &lt;Filename&gt;<br /><br />
+    
+  For Example: <br />
+  Using the command: [AreaExportStatics DessertTown-Dock 
+  this will create a file in the certain directory which is editable on top of the StaticHandler.cs script. <br /><br/>
+
+  Refer to the following example:
+ </p>
+
+<p> <font color="#FF0000">private const string ExportPath = @&quot;C:\MapCreator\Export\&quot;;
+ </font></p>
+
+<p> When Exporting at anytime, there will be a warning gump to warn you if you 
+  wish to do this, so you can't come back to us and say we didn't warn you.</p><br />
+
+<p>POSSIBLE FUTURE ADDITIONS<br><br/>
+
+[x] ImportStatics, will import all the XML files inside your ExportPath and such, 
+  this will have a warning gump before you import<br><br />
+
+[x] ImportStatics &lt;Filename&gt;, will import a specific filename you requested, 
+  that is within your ExportPath.<b></b></p><br />
+
+<p> <a name="directions"></a>DIRECTIONS: <br>How to Export your Statics and use it in MapCreator.</p>
+<ol>
+  <li>Check your ExportPath to make sure it is the directory you wish to target. 
+    If it doesn't exist it will automatically create it, make sure you fix this 
+    when you first get this script.</li>
+
+  <li>Use either the [ExportStatics or [AreaExportStatics command with &lt;filename&gt; 
+    or not to your choice.</li>
+
+  <li>When exporting into the xml file, there will be a warning gump, make sure 
+    you say okay or cancel if your unsure about this.</li>
+
+  <li>When the 3 steps above are complete, goto your ExportPath and grab those 
+    files, I would just &quot;Copy&quot; those files, and then place them into 
+    your MapCreator Project Folder, <br /><br />
+    
+    For Example of what I have is,</li>
+</ol>
+<p> <font color="#0000FF">C:\MapCreator\MyProject\Map#\Import\</font></p>
+<ol>
+  <li>Always make sure in your project folder you have the folder name called: 
+    Import. If it doesn't exist right click on your mouse and create a new 
+    folder naming it &quot;Import&quot;.</li>
+
+  <li>After that, do the following steps on how to create your map it then should 
+    import the XML code within the Import folder, and add it to the statics#.mul. It will also do the 
+    Staidx#.mul files too</li>
+</ol>
+</body>
+</html>
