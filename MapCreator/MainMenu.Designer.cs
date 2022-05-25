@@ -215,6 +215,7 @@
             this.mainMenu_menuStrip_buttonCategory02_facetShowcase.Name = "mainMenu_menuStrip_buttonCategory02_facetShowcase";
             this.mainMenu_menuStrip_buttonCategory02_facetShowcase.Size = new System.Drawing.Size(124, 28);
             this.mainMenu_menuStrip_buttonCategory02_facetShowcase.Text = "Facet Showcase";
+            this.mainMenu_menuStrip_buttonCategory02_facetShowcase.Click += new System.EventHandler(this.mainMenu_menuStrip_buttonCategory02_facetShowcase_Click);
             // 
             // mainMenu_menuStrip_buttonCategory03_resourceLinks
             // 

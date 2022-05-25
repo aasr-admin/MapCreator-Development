@@ -1087,6 +1087,11 @@ namespace MapCreator
             }
         }
 
+        /// MainMenuButton: Facet Showcase
+        private void mainMenu_menuStrip_buttonCategory02_facetShowcase_Click(object sender, EventArgs e)
+        {
+        }
+
         /// MainMenuButton: Resource Links > Azgaar
         private void mainMenu_menuStrip_buttonCategory03_resourceLinks_buttonA_azgaar_Click(object sender, EventArgs e)
         {
