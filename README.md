@@ -10,9 +10,9 @@
    
 >**What Is The Backstory!**
 
-- MapCreator is the result of reverse-engineering UOLandscaper, and yes I did get permission to do that from UOLandscaper's creator Dknight. What separates the two programs is that MapCreator is coded in C# and UOLandscaper is coded in VisualBasic. Additionally MapCreator is open-source and can be modified whereas UOLandscaper is an old soul and closed-source.
-- Dknight would not let me re-release UOLandscaper as an open-sourced project: so he told me to rebrand it, and then gave me permission to distribute it under the name MapCreator.
-- So if you are wondering, yes both software use indentical compiler engines and 80% of the same code; MapCreator is more of a hybrid of C# and VisualBasic so the code is probably 80% the same as well.
+- MapCreator is the result of reverse-engineering UOLandscaper, and yes I did get permission to do that from UOLandscaper's creator Dknight. What separates the two programs is that MapCreator is coded in C# and UOLandscaper is coded in VisualBasic. Additionally MapCreator is open-source and can be modified whereas UOLandscaper is an old soul and closed-source
+- Dknight would not let me re-release UOLandscaper as an open-sourced project: so he told me to rebrand it, and then gave me permission to distribute it under the name MapCreator
+- So if you are wondering, yes both software use indentical compiler engines and 80% of the same code; that also means that the XML files associated with both programs are interchangable
 
 ***
 
