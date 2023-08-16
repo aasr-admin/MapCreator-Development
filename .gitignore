@@ -5,10 +5,15 @@
 /MapCreator/bin
 /MapCreator/obj
 
+/Output/*
+!/Output/MapCompiler
+!/Output/Development
+
 /.vs
 
 *.bin
 *.csproj.user
+*.dll
 *.DotSettings.user
 *.exe
 *.exe.config
@@ -20,6 +25,3 @@
 *.pdb
 *.sh
 *.suo
-
-*/Microsoft.*.dll
-*/System.*.dll
