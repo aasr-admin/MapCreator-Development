@@ -1,6 +1,5 @@
 [![N|Solid](http://www.uoavocation.net/portal/site_image/logos/logo_0001a.png)](http://www.uoavocation.net)
 ***
-
 ## MapCreator-Development - `Official Release` <div align="Right">Last Updated: 08/16/2023</div>
 
 >**What Is MapCreator?!**
