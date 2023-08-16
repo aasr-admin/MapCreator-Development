@@ -10,22 +10,10 @@
 		<StartupObject>MapCreator.Program</StartupObject>
 		<ApplicationIcon>res\exeicon\mC_0001ico.ico</ApplicationIcon>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<OutputPath>..\Output</OutputPath>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<Compile Remove="res\**" />
-		<Compile Remove="userPlugin\viewFacetAsPlanet\**" />
-		<EmbeddedResource Remove="res\**" />
-		<EmbeddedResource Remove="userPlugin\viewFacetAsPlanet\**" />
-		<None Remove="res\**" />
-		<None Remove="userPlugin\viewFacetAsPlanet\**" />
-		<Page Remove="res\**" />
-		<Page Remove="userPlugin\viewFacetAsPlanet\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="System.Runtime" Version="4.3.1" />
-	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Cartography\Cartography.csproj" />
