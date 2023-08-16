@@ -1,8 +1,11 @@
 
-**/bin
-**/obj
+/Cartography/bin
+/Cartography/obj
 
-**/.vs
+/MapCreator/bin
+/MapCreator/obj
+
+/.vs
 
 *.bin
 *.csproj.user
