@@ -1,0 +1,17 @@
+W:\Development\Utility\Current Project\Cartography\bin\Debug\net7.0-windows\Cartography.deps.json
+W:\Development\Utility\Current Project\Cartography\bin\Debug\net7.0-windows\Cartography.dll
+W:\Development\Utility\Current Project\Cartography\bin\Debug\net7.0-windows\Cartography.pdb
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\Cartography.csproj.AssemblyReference.cache
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\Compiler.buildLogger.resources
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\Cartography.Properties.Resources.resources
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\MapCreator.userPlugin.canvasControlBox.resources
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\MapCreator.userPlugin.staticSelector.resources
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\Cartography.csproj.GenerateResource.cache
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\Cartography.GeneratedMSBuildEditorConfig.editorconfig
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\Cartography.AssemblyInfoInputs.cache
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\Cartography.AssemblyInfo.cs
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\Cartography.csproj.CoreCompileInputs.cache
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\Cartography.dll
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\refint\Cartography.dll
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\Cartography.pdb
+W:\Development\Utility\Current Project\Cartography\obj\Debug\net7.0-windows\ref\Cartography.dll

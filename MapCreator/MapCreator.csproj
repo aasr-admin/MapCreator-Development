@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<Nullable>disable</Nullable>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>True</UseWPF>
+		<StartupObject>MapCreator.Program</StartupObject>
+		<ApplicationIcon>res\exeicon\mC_0001ico.ico</ApplicationIcon>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="res\**" />
+		<Compile Remove="userPlugin\viewFacetAsPlanet\**" />
+		<EmbeddedResource Remove="res\**" />
+		<EmbeddedResource Remove="userPlugin\viewFacetAsPlanet\**" />
+		<None Remove="res\**" />
+		<None Remove="userPlugin\viewFacetAsPlanet\**" />
+		<Page Remove="res\**" />
+		<Page Remove="userPlugin\viewFacetAsPlanet\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Runtime" Version="4.3.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Cartography\Cartography.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+</Project>
