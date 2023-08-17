@@ -810,16 +810,6 @@ namespace Cartography.compiler
 		public void WriteMapMul(BinaryWriter i_MapFile)
 		{
 			i_MapFile.Write(TileID);
-			if (AltID <= -127)
-			{
-				AltID = -127;
-			}
-
-			if (AltID >= 127)
-			{
-				AltID = 127;
-			}
-
 			i_MapFile.Write(AltID);
 		}
 	}

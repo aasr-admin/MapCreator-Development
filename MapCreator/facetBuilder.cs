@@ -297,7 +297,7 @@ namespace MapCreator
 				try
 				{
 					var str2 = String.Format("{0}/{1}", str, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap_textBox.Text);
-					var altPalette = MakeAltitudeBitmapFile(selectedItem.XSize, selectedItem.YSize, altID, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.Checked);
+					var altPalette = MakeAltitudeBitmapFile(selectedItem.XSize, selectedItem.YSize, (byte)altID, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.Checked);
 					altPalette.Palette = iAltitude.GetAltPalette();
 					altPalette.Save(str2, ImageFormat.Bmp);
 					altPalette.Dispose();
@@ -378,7 +378,7 @@ namespace MapCreator
 			return bitmap;
 		}
 
-		public Bitmap MakeAltitudeBitmapFile(int xSize, int ySize, sbyte DefaultAlt, bool Dungeon)
+		public Bitmap MakeAltitudeBitmapFile(int xSize, int ySize, byte DefaultAlt, bool Dungeon)
 		{
 			var bitmap = new Bitmap(xSize, ySize, PixelFormat.Format8bppIndexed)
 			{
@@ -398,7 +398,7 @@ namespace MapCreator
 					var num1 = ySize - 1;
 					for (var j = 0; j <= num1; j++)
 					{
-						defaultAlt[(j * xSize) + i] = (byte)DefaultAlt;
+						defaultAlt[(j * xSize) + i] = DefaultAlt;
 					}
 				}
 			}
@@ -412,7 +412,7 @@ namespace MapCreator
 					{
 						if (k <= 5119)
 						{
-							defaultAlt[(l * xSize) + k] = (byte)DefaultAlt;
+							defaultAlt[(l * xSize) + k] = DefaultAlt;
 						}
 						else
 						{

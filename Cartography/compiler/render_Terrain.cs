@@ -11,7 +11,7 @@ namespace Cartography.compiler
 {
 	public class ClsTerrain
 	{
-		[Category("Tile Altitude")]
+		[Category("Base")]
 		public sbyte AltID { get; set; }
 
 		[Category("Colour")]
@@ -26,7 +26,7 @@ namespace Cartography.compiler
 		[Category("Description")]
 		public string Name { get; set; }
 
-		[Category("Random Altitude")]
+		[Category("Random")]
 		public bool RandAlt { get; set; }
 
 		[Category("Tile ID")]
@@ -49,15 +49,7 @@ namespace Cartography.compiler
 			TileID = XmlConvert.ToUInt16(xmlInfo.GetAttribute("TileID"));
 			Colour = Color.FromArgb(XmlConvert.ToByte(xmlInfo.GetAttribute("R")), XmlConvert.ToByte(xmlInfo.GetAttribute("G")), XmlConvert.ToByte(xmlInfo.GetAttribute("B")));
 			AltID = XmlConvert.ToSByte(xmlInfo.GetAttribute("Base"));
-			var attribute = xmlInfo.GetAttribute("Random");
-			if (StringType.StrCmp(attribute, "False", false) == 0)
-			{
-				RandAlt = false;
-			}
-			else if (StringType.StrCmp(attribute, "True", false) == 0)
-			{
-				RandAlt = true;
-			}
+			RandAlt = String.Equals(xmlInfo.GetAttribute("Random"), Boolean.TrueString, StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		public override string ToString()
@@ -73,13 +65,13 @@ namespace Cartography.compiler
 		{
 			xmlInfo.WriteStartElement("Terrain");
 			xmlInfo.WriteAttributeString("Name", Name);
-			xmlInfo.WriteAttributeString("ID", Convert.ToString(GroupID));
-			xmlInfo.WriteAttributeString("TileID", Convert.ToString(TileID));
-			xmlInfo.WriteAttributeString("R", Convert.ToString(Colour.R));
-			xmlInfo.WriteAttributeString("G", Convert.ToString(Colour.G));
-			xmlInfo.WriteAttributeString("B", Convert.ToString(Colour.B));
-			xmlInfo.WriteAttributeString("Base", Convert.ToString(AltID));
-			xmlInfo.WriteAttributeString("Random", Convert.ToString(RandAlt));
+			xmlInfo.WriteAttributeString("ID", XmlConvert.ToString(GroupID));
+			xmlInfo.WriteAttributeString("TileID", XmlConvert.ToString(TileID));
+			xmlInfo.WriteAttributeString("R", XmlConvert.ToString(Colour.R));
+			xmlInfo.WriteAttributeString("G", XmlConvert.ToString(Colour.G));
+			xmlInfo.WriteAttributeString("B", XmlConvert.ToString(Colour.B));
+			xmlInfo.WriteAttributeString("Base", XmlConvert.ToString(AltID));
+			xmlInfo.WriteAttributeString("Random", XmlConvert.ToString(RandAlt));
 			xmlInfo.WriteEndElement();
 		}
 
@@ -217,7 +209,7 @@ namespace Cartography.compiler
 
 			#region Data Directory Modification
 
-			var str = String.Format("{0}\\MapCompiler\\Engine\\Terrain.xml", AppDomain.CurrentDomain.BaseDirectory);
+			var str = Path.Combine("MapCompiler", "Engine", "Terrain.xml");
 
 			#endregion
 
@@ -262,7 +254,7 @@ namespace Cartography.compiler
 			{
 				ProjectData.SetProjectError(exception);
 				_ = Interaction.MsgBox(exception.Message, MsgBoxStyle.OkOnly, null);
-				_ = Interaction.MsgBox(String.Format("XMLFile:{0}", str), MsgBoxStyle.OkOnly, null);
+				_ = Interaction.MsgBox(String.Format("File: {0}", str), MsgBoxStyle.OkOnly, null);
 				ProjectData.ClearProjectError();
 			}
 		}
@@ -273,7 +265,7 @@ namespace Cartography.compiler
 
 			#region Data Directory Modification
 
-			var str = String.Format("{0}/MapCompiler/Engine/Terrain.xml", Directory.GetCurrentDirectory());
+			var str = Path.Combine("MapCompiler", "Engine", "Terrain.xml");
 
 			#endregion
 
@@ -311,7 +303,7 @@ namespace Cartography.compiler
 
 			#region Data Directory Modification
 
-			var str = String.Format("{0}/Development/DrawingTools/AdobePhotoshop/ColorSwatches/Terrain.aco", Directory.GetCurrentDirectory());
+			var str = Path.Combine("Development", "DrawingTools", "AdobePhotoshop", "ColorSwatches", "Terrain.aco");
 
 			#endregion
 
@@ -356,7 +348,7 @@ namespace Cartography.compiler
 		{
 			#region Data Directory Modification
 
-			var str = String.Format("{0}/Development/DrawingTools/AdobePhotoshop/OptimizedColors/Terrain.act", Directory.GetCurrentDirectory());
+			var str = Path.Combine("Development", "DrawingTools", "AdobePhotoshop", "OptimizedColors", "Terrain.act");
 
 			#endregion
 
