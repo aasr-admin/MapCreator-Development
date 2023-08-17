@@ -2,25 +2,25 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="colorTables.cs">
+    <Compile Update="ColorTables.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="communityCredits.cs">
+    <Compile Update="CommunityCredits.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="facetBuilder.cs">
+    <Compile Update="FacetBuilder.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="splashScreen.cs">
+    <Compile Update="SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="userPlugins.cs">
+    <Compile Update="UserPlugins.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="userPlugin\createTerrainTypes\createTerrainTypes.cs">
+    <Compile Update="userPlugin\createTerrainTypes\CreateTerrainTypes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="userPlugin\fileTypeConverters\fileTypeConverters.cs">
+    <Compile Update="userPlugin\fileTypeConverters\FileTypeConverters.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

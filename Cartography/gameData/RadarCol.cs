@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace UltimaSDK
 {
@@ -46,15 +44,13 @@ namespace UltimaSDK
 			var path = Files.GetFilePath("radarcol.mul");
 			if (path != null)
 			{
-				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-				{
-					Colors = new short[fs.Length / 2];
-					var gc = GCHandle.Alloc(Colors, GCHandleType.Pinned);
-					var buffer = new byte[(int)fs.Length];
-					_ = fs.Read(buffer, 0, (int)fs.Length);
-					Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)fs.Length);
-					gc.Free();
-				}
+				using var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+				Colors = new short[fs.Length / 2];
+				var gc = GCHandle.Alloc(Colors, GCHandleType.Pinned);
+				var buffer = new byte[(int)fs.Length];
+				_ = fs.Read(buffer, 0, (int)fs.Length);
+				Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)fs.Length);
+				gc.Free();
 			}
 			else
 			{
@@ -64,28 +60,22 @@ namespace UltimaSDK
 
 		public static void Save(string FileName)
 		{
-			using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
+			using var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write);
+			using var bin = new BinaryWriter(fs);
+			for (var i = 0; i < Colors.Length; ++i)
 			{
-				using (var bin = new BinaryWriter(fs))
-				{
-					for (var i = 0; i < Colors.Length; ++i)
-					{
-						bin.Write(Colors[i]);
-					}
-				}
+				bin.Write(Colors[i]);
 			}
 		}
 
 		public static void ExportToCSV(string FileName)
 		{
-			using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), System.Text.Encoding.GetEncoding(1252)))
-			{
-				Tex.WriteLine("ID;Color");
+			using var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), System.Text.Encoding.GetEncoding(1252));
+			Tex.WriteLine("ID;Color");
 
-				for (var i = 0; i < Colors.Length; ++i)
-				{
-					Tex.WriteLine(String.Format("0x{0:X4};{1}", i, Colors[i]));
-				}
+			for (var i = 0; i < Colors.Length; ++i)
+			{
+				Tex.WriteLine(String.Format("0x{0:X4};{1}", i, Colors[i]));
 			}
 		}
 

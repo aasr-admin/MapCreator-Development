@@ -1,9 +1,5 @@
 ﻿using Microsoft.Win32;
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-
 namespace UltimaSDK
 {
 	public sealed class Files
@@ -166,10 +162,7 @@ namespace UltimaSDK
 		{
 			MulPath = new Dictionary<string, string>();
 			RootDir = Directory;
-			if (RootDir == null)
-			{
-				RootDir = "";
-			}
+			RootDir ??= "";
 
 			foreach (var file in m_Files)
 			{
@@ -385,20 +378,18 @@ namespace UltimaSDK
 				return false;
 			}
 
-			var FileCheck = System.IO.File.OpenRead(file);
-			using (System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider())
+			var FileCheck = File.OpenRead(file);
+			using System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+			var md5Hash = md5.ComputeHash(FileCheck);
+			FileCheck.Close();
+			var md5string = BitConverter.ToString(md5Hash).Replace("-", "").ToLower();
+			if (md5string == hash)
 			{
-				var md5Hash = md5.ComputeHash(FileCheck);
-				FileCheck.Close();
-				var md5string = BitConverter.ToString(md5Hash).Replace("-", "").ToLower();
-				if (md5string == hash)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 
@@ -414,13 +405,11 @@ namespace UltimaSDK
 				return null;
 			}
 
-			var FileCheck = System.IO.File.OpenRead(file);
-			using (System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider())
-			{
-				var md5Hash = md5.ComputeHash(FileCheck);
-				FileCheck.Close();
-				return md5Hash;
-			}
+			var FileCheck = File.OpenRead(file);
+			using System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+			var md5Hash = md5.ComputeHash(FileCheck);
+			FileCheck.Close();
+			return md5Hash;
 		}
 
 		/// <summary>
@@ -435,14 +424,12 @@ namespace UltimaSDK
 			{
 				try
 				{
-					using (var bin = new BinaryReader(new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read)))
-					{
-						var length = bin.ReadInt32();
-						var buffer = new byte[length];
-						_ = bin.Read(buffer, 0, length);
-						var hashold = BitConverter.ToString(buffer).Replace("-", "").ToLower();
-						return Files.CompareMD5(Files.GetFilePath(String.Format("{0}.mul", what)), hashold);
-					}
+					using var bin = new BinaryReader(new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read));
+					var length = bin.ReadInt32();
+					var buffer = new byte[length];
+					_ = bin.Read(buffer, 0, length);
+					var hashold = BitConverter.ToString(buffer).Replace("-", "").ToLower();
+					return CompareMD5(GetFilePath(String.Format("{0}.mul", what)), hashold);
 				}
 				catch
 				{
@@ -458,26 +445,26 @@ namespace UltimaSDK
 		/// </summary>
 		public static void CheckForNewMapSize()
 		{
-			if (Files.GetFilePath("map1.mul") != null)
+			if (GetFilePath("map1.mul") != null)
 			{
-				if (UltimaSDK.Map.Trammel.Width == 7168)
+				if (Map.Trammel.Width == 7168)
 				{
-                    UltimaSDK.Map.Trammel = new UltimaSDK.Map(1, 1, 7168, 4096);
+					Map.Trammel = new UltimaSDK.Map(1, 1, 7168, 4096);
 				}
 				else
 				{
-                    UltimaSDK.Map.Trammel = new UltimaSDK.Map(1, 1, 6144, 4096);
+					Map.Trammel = new UltimaSDK.Map(1, 1, 6144, 4096);
 				}
 			}
 			else
 			{
-				if (UltimaSDK.Map.Trammel.Width == 7168)
+				if (Map.Trammel.Width == 7168)
 				{
-                    UltimaSDK.Map.Trammel = new UltimaSDK.Map(0, 1, 7168, 4096);
+					Map.Trammel = new UltimaSDK.Map(0, 1, 7168, 4096);
 				}
 				else
 				{
-                    UltimaSDK.Map.Trammel = new UltimaSDK.Map(0, 1, 6144, 4096);
+					Map.Trammel = new UltimaSDK.Map(0, 1, 6144, 4096);
 				}
 			}
 		}

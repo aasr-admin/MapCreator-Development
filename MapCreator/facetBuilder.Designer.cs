@@ -1,6 +1,6 @@
 ﻿namespace MapCreator
 {
-    partial class facetBuilder
+	public partial class FacetBuilder
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(facetBuilder));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FacetBuilder));
             facetBuilder_menuStrip = new MenuStrip();
             facetBuilder_menuStrip_button_gettingStarted = new ToolStripMenuItem();
             facetBuilder_menuStrip_button_gettingStarted_createColorTables = new ToolStripMenuItem();

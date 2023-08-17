@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -51,18 +48,16 @@ namespace UltimaSDK
 				return;
 			}
 
-			using (var reader = new StreamReader(path))
+			using var reader = new StreamReader(path);
+			while ((line = reader.ReadLine()) != null)
 			{
-				while ((line = reader.ReadLine()) != null)
+				if (((line = line.Trim()).Length != 0) && !line.StartsWith("#"))
 				{
-					if (((line = line.Trim()).Length != 0) && !line.StartsWith("#"))
-					{
-						var match = reg.Match(line);
+					var match = reg.Match(line);
 
-						if (match.Success)
-						{
-							m_Translations.Add(Int32.Parse(match.Groups[1].Value), Int32.Parse(match.Groups[2].Value));
-						}
+					if (match.Success)
+					{
+						m_Translations.Add(Int32.Parse(match.Groups[1].Value), Int32.Parse(match.Groups[2].Value));
 					}
 				}
 			}
@@ -266,15 +261,13 @@ namespace UltimaSDK
 
 		public static void Add(int id, string name, string file)
 		{
-			using (var wav = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
-			{
-				var resultBuffer = new byte[wav.Length];
-				_ = wav.Seek(0, SeekOrigin.Begin);
-				_ = wav.Read(resultBuffer, 0, (int)wav.Length);
+			using var wav = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read);
+			var resultBuffer = new byte[wav.Length];
+			_ = wav.Seek(0, SeekOrigin.Begin);
+			_ = wav.Read(resultBuffer, 0, (int)wav.Length);
 
-				m_Cache[id] = new UOSound(name, id, resultBuffer);
-				m_Removed[id] = false;
-			}
+			m_Cache[id] = new UOSound(name, id, resultBuffer);
+			m_Removed[id] = false;
 		}
 
 		public static void Remove(int id)
@@ -288,84 +281,78 @@ namespace UltimaSDK
 			var idx = Path.Combine(path, "soundidx.mul");
 			var mul = Path.Combine(path, "sound.mul");
 			var Headerlength = 44;
-			using (FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
-							  fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+			using FileStream fsidx = new(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
+							  fsmul = new(mul, FileMode.Create, FileAccess.Write, FileShare.Write);
+			using BinaryWriter binidx = new(fsidx),
+								binmul = new(fsmul);
+			for (var i = 0; i < m_Cache.Length; ++i)
 			{
-				using (BinaryWriter binidx = new BinaryWriter(fsidx),
-									binmul = new BinaryWriter(fsmul))
+				var sound = m_Cache[i];
+				if ((sound == null) && (!m_Removed[i]))
 				{
-					for (var i = 0; i < m_Cache.Length; ++i)
+					bool trans;
+					sound = GetSound(i, out trans);
+					if (!trans)
 					{
-						var sound = m_Cache[i];
-						if ((sound == null) && (!m_Removed[i]))
-						{
-							bool trans;
-							sound = GetSound(i, out trans);
-							if (!trans)
-							{
-								m_Cache[i] = sound;
-							}
-							else
-							{
-								sound = null;
-							}
-						}
-
-						if ((sound == null) || m_Removed[i])
-						{
-							binidx.Write(-1); // lookup
-							binidx.Write(-1); // length
-							binidx.Write(-1); // extra
-						}
-						else
-						{
-							binidx.Write((int)fsmul.Position); //lookup
-							var length = (int)fsmul.Position;
-
-							var b = new byte[32];
-							if (sound.Name != null)
-							{
-								var bb = Encoding.Default.GetBytes(sound.Name);
-								if (bb.Length > 32)
-								{
-									Array.Resize(ref bb, 32);
-								}
-
-								bb.CopyTo(b, 0);
-							}
-
-							binmul.Write(b);
-							using (var m = new MemoryStream(sound.buffer))
-							{
-								_ = m.Seek(Headerlength, SeekOrigin.Begin);
-								var resultBuffer = new byte[m.Length - Headerlength];
-								_ = m.Read(resultBuffer, 0, (int)m.Length - Headerlength);
-								binmul.Write(resultBuffer);
-							}
-
-							length = (int)fsmul.Position - length;
-							binidx.Write(length);
-							binidx.Write(i + 1);
-						}
+						m_Cache[i] = sound;
 					}
+					else
+					{
+						sound = null;
+					}
+				}
+
+				if ((sound == null) || m_Removed[i])
+				{
+					binidx.Write(-1); // lookup
+					binidx.Write(-1); // length
+					binidx.Write(-1); // extra
+				}
+				else
+				{
+					binidx.Write((int)fsmul.Position); //lookup
+					var length = (int)fsmul.Position;
+
+					var b = new byte[32];
+					if (sound.Name != null)
+					{
+						var bb = Encoding.Default.GetBytes(sound.Name);
+						if (bb.Length > 32)
+						{
+							Array.Resize(ref bb, 32);
+						}
+
+						bb.CopyTo(b, 0);
+					}
+
+					binmul.Write(b);
+					using (var m = new MemoryStream(sound.buffer))
+					{
+						_ = m.Seek(Headerlength, SeekOrigin.Begin);
+						var resultBuffer = new byte[m.Length - Headerlength];
+						_ = m.Read(resultBuffer, 0, (int)m.Length - Headerlength);
+						binmul.Write(resultBuffer);
+					}
+
+					length = (int)fsmul.Position - length;
+					binidx.Write(length);
+					binidx.Write(i + 1);
 				}
 			}
 		}
 
 		public static void SaveSoundListToCSV(string FileName)
 		{
-			using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), System.Text.Encoding.GetEncoding(1252)))
+			using var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252));
+			Tex.WriteLine("ID;Name;Length");
+			var name = "";
+			for (var i = 1; i <= 0xFFF; ++i)
 			{
-				Tex.WriteLine("ID;Name;Length");
-				var name = "";
-				for (var i = 1; i <= 0xFFF; ++i)
+				if (IsValidSound(i - 1, out name))
 				{
-					if (IsValidSound(i - 1, out name))
-					{
-						Tex.Write(String.Format("0x{0:X3}", i));
-						Tex.Write(String.Format(";{0}", name));
-						Tex.WriteLine(String.Format(";{0:f}", GetSoundLength(i - 1)));
-					}
+					Tex.Write(String.Format("0x{0:X3}", i));
+					Tex.Write(String.Format(";{0}", name));
+					Tex.WriteLine(String.Format(";{0:f}", GetSoundLength(i - 1)));
 				}
 			}
 		}

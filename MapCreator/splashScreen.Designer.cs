@@ -1,6 +1,6 @@
 ﻿namespace MapCreator
 {
-    partial class splashScreen
+	public partial class SplashScreen
     {
         /// <summary>
         ///  Required designer variable.
@@ -44,7 +44,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Timer splashScreen_closeTimer;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(splashScreen));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplashScreen));
             this.splashScreen_pictureBox_titleImage = new System.Windows.Forms.PictureBox();
             splashScreen_closeTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splashScreen_pictureBox_titleImage)).BeginInit();

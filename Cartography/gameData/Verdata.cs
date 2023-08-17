@@ -1,5 +1,3 @@
-using System.IO;
-
 // FileIDs
 //0 - map0.mul
 //1 - staidx0.mul
@@ -48,18 +46,16 @@ namespace UltimaSDK
 			{
 				using (Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					using (var bin = new BinaryReader(Stream))
-					{
-						Patches = new Entry5D[bin.ReadInt32()];
+					using var bin = new BinaryReader(Stream);
+					Patches = new Entry5D[bin.ReadInt32()];
 
-						for (var i = 0; i < Patches.Length; ++i)
-						{
-							Patches[i].file = bin.ReadInt32();
-							Patches[i].index = bin.ReadInt32();
-							Patches[i].lookup = bin.ReadInt32();
-							Patches[i].length = bin.ReadInt32();
-							Patches[i].extra = bin.ReadInt32();
-						}
+					for (var i = 0; i < Patches.Length; ++i)
+					{
+						Patches[i].file = bin.ReadInt32();
+						Patches[i].index = bin.ReadInt32();
+						Patches[i].lookup = bin.ReadInt32();
+						Patches[i].length = bin.ReadInt32();
+						Patches[i].extra = bin.ReadInt32();
 					}
 				}
 

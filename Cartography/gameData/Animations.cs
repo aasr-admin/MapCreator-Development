@@ -1,9 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 
 namespace UltimaSDK
 {
@@ -62,7 +58,7 @@ namespace UltimaSDK
 				return;
 			}
 
-			List<int> list1 = new List<int>(), list2 = new List<int>(), list3 = new List<int>(), list4 = new List<int>();
+			List<int> list1 = new(), list2 = new(), list3 = new(), list4 = new();
 			int max1 = 0, max2 = 0, max3 = 0, max4 = 0;
 
 			using (var ip = new StreamReader(path))
@@ -400,19 +396,19 @@ namespace UltimaSDK
 
 	public class Animations
 	{
-		private static FileIndex m_FileIndex = new FileIndex("Anim.idx", "Anim.mul", 0x40000, 6);
+		private static FileIndex m_FileIndex = new("Anim.idx", "Anim.mul", 0x40000, 6);
 		//public static FileIndex FileIndex{ get{ return m_FileIndex; } }
 
-		private static FileIndex m_FileIndex2 = new FileIndex("Anim2.idx", "Anim2.mul", 0x10000, -1);
+		private static FileIndex m_FileIndex2 = new("Anim2.idx", "Anim2.mul", 0x10000, -1);
 		//public static FileIndex FileIndex2{ get{ return m_FileIndex2; } }
 
-		private static FileIndex m_FileIndex3 = new FileIndex("Anim3.idx", "Anim3.mul", 0x20000, -1);
+		private static FileIndex m_FileIndex3 = new("Anim3.idx", "Anim3.mul", 0x20000, -1);
 		//public static FileIndex FileIndex3{ get{ return m_FileIndex3; } }
 
-		private static FileIndex m_FileIndex4 = new FileIndex("Anim4.idx", "Anim4.mul", 0x20000, -1);
+		private static FileIndex m_FileIndex4 = new("Anim4.idx", "Anim4.mul", 0x20000, -1);
 		//public static FileIndex FileIndex4{ get{ return m_FileIndex4; } }
 
-		private static FileIndex m_FileIndex5 = new FileIndex("Anim5.idx", "Anim5.mul", 0x20000, -1);
+		private static FileIndex m_FileIndex5 = new("Anim5.idx", "Anim5.mul", 0x20000, -1);
 		//public static FileIndex FileIndex5 { get { return m_FileIndex5; } }
 
 		private static byte[] m_StreamBuffer;
@@ -557,35 +553,33 @@ namespace UltimaSDK
 
 			var flip = direction > 4;
 
-			using (var bin = new BinaryReader(stream))
+			using var bin = new BinaryReader(stream);
+			var palette = new ushort[0x100];
+
+			for (var i = 0; i < 0x100; ++i)
 			{
-				var palette = new ushort[0x100];
-
-				for (var i = 0; i < 0x100; ++i)
-				{
-					palette[i] = (ushort)(bin.ReadUInt16() ^ 0x8000);
-				}
-
-				var start = (int)bin.BaseStream.Position;
-				var frameCount = bin.ReadInt32();
-
-				var lookups = new int[frameCount];
-
-				for (var i = 0; i < frameCount; ++i)
-				{
-					lookups[i] = start + bin.ReadInt32();
-				}
-
-				var frames = new Frame[frameCount];
-
-				for (var i = 0; i < frameCount; ++i)
-				{
-					_ = bin.BaseStream.Seek(lookups[i], SeekOrigin.Begin);
-					frames[i] = new Frame(palette, bin, flip);
-				}
-
-				return frames;
+				palette[i] = (ushort)(bin.ReadUInt16() ^ 0x8000);
 			}
+
+			var start = (int)bin.BaseStream.Position;
+			var frameCount = bin.ReadInt32();
+
+			var lookups = new int[frameCount];
+
+			for (var i = 0; i < frameCount; ++i)
+			{
+				lookups[i] = start + bin.ReadInt32();
+			}
+
+			var frames = new Frame[frameCount];
+
+			for (var i = 0; i < frameCount; ++i)
+			{
+				_ = bin.BaseStream.Seek(lookups[i], SeekOrigin.Begin);
+				frames[i] = new Frame(palette, bin, flip);
+			}
+
+			return frames;
 		}
 
 		private static int[] m_Table;
@@ -713,10 +707,7 @@ namespace UltimaSDK
 				def = false;
 			}
 
-			if (stream != null)
-			{
-				stream.Close();
-			}
+			stream?.Close();
 
 			return def;
 		}
@@ -728,27 +719,14 @@ namespace UltimaSDK
 		/// <returns></returns>
 		public static int GetAnimCount(int fileType)
 		{
-			int count;
-			switch (fileType)
+			var count = fileType switch
 			{
-				default:
-				case 1:
-					count = 400 + ((int)(m_FileIndex.IdxLength - (35000 * 12)) / (12 * 175));
-					break;
-				case 2:
-					count = 200 + ((int)(m_FileIndex2.IdxLength - (22000 * 12)) / (12 * 65));
-					break;
-				case 3:
-					count = 400 + ((int)(m_FileIndex3.IdxLength - (35000 * 12)) / (12 * 175));
-					break;
-				case 4:
-					count = 400 + ((int)(m_FileIndex4.IdxLength - (35000 * 12)) / (12 * 175));
-					break;
-				case 5:
-					count = 400 + ((int)(m_FileIndex5.IdxLength - (35000 * 12)) / (12 * 175));
-					break;
-			}
-
+				2 => 200 + ((int)(m_FileIndex2.IdxLength - (22000 * 12)) / (12 * 65)),
+				3 => 400 + ((int)(m_FileIndex3.IdxLength - (35000 * 12)) / (12 * 175)),
+				4 => 400 + ((int)(m_FileIndex4.IdxLength - (35000 * 12)) / (12 * 175)),
+				5 => 400 + ((int)(m_FileIndex5.IdxLength - (35000 * 12)) / (12 * 175)),
+				_ => 400 + ((int)(m_FileIndex.IdxLength - (35000 * 12)) / (12 * 175)),
+			};
 			return count;
 		}
 
@@ -916,7 +894,7 @@ namespace UltimaSDK
 					break;
 				case 5:
 					fileIndex = m_FileIndex5;
-					if ((body < 200) && (body != 34)) // looks strange, though it works.
+					if (body is < 200 and not 34) // looks strange, though it works.
 					{
 						index = body * 110;
 					}
@@ -986,7 +964,7 @@ namespace UltimaSDK
 		private const int DoubleXor = (0x200 << 22) | (0x200 << 12);
 
 		//public static readonly Frame[] EmptyFrames = new Frame[1] { Empty };
-		public static readonly Frame Empty = new Frame();
+		public static readonly Frame Empty = new();
 
 		private Frame()
 		{
@@ -1112,42 +1090,40 @@ namespace UltimaSDK
 				return;
 			}
 
-			using (var def = new StreamReader(filePath))
+			using var def = new StreamReader(filePath);
+			string line;
+
+			while ((line = def.ReadLine()) != null)
 			{
-				string line;
-
-				while ((line = def.ReadLine()) != null)
+				if ((line = line.Trim()).Length == 0 || line.StartsWith("#"))
 				{
-					if ((line = line.Trim()).Length == 0 || line.StartsWith("#"))
+					continue;
+				}
+
+				try
+				{
+					var index1 = line.IndexOf("{");
+					var index2 = line.IndexOf("}");
+
+					var param1 = line.Substring(0, index1);
+					var param2 = line.Substring(index1 + 1, index2 - index1 - 1);
+					var param3 = line.Substring(index2 + 1);
+
+					var indexOf = param2.IndexOf(',');
+
+					if (indexOf > -1)
 					{
-						continue;
+						param2 = param2.Substring(0, indexOf).Trim();
 					}
 
-					try
-					{
-						var index1 = line.IndexOf("{");
-						var index2 = line.IndexOf("}");
+					var iParam1 = Convert.ToInt32(param1.Trim());
+					var iParam2 = Convert.ToInt32(param2.Trim());
+					var iParam3 = Convert.ToInt32(param3.Trim());
 
-						var param1 = line.Substring(0, index1);
-						var param2 = line.Substring(index1 + 1, index2 - index1 - 1);
-						var param3 = line.Substring(index2 + 1);
-
-						var indexOf = param2.IndexOf(',');
-
-						if (indexOf > -1)
-						{
-							param2 = param2.Substring(0, indexOf).Trim();
-						}
-
-						var iParam1 = Convert.ToInt32(param1.Trim());
-						var iParam2 = Convert.ToInt32(param2.Trim());
-						var iParam3 = Convert.ToInt32(param3.Trim());
-
-						m_Entries[iParam1] = new BodyTableEntry(iParam2, iParam1, iParam3);
-					}
-					catch
-					{
-					}
+					m_Entries[iParam1] = new BodyTableEntry(iParam2, iParam1, iParam3);
+				}
+				catch
+				{
 				}
 			}
 		}

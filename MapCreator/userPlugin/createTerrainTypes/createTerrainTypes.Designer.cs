@@ -1,6 +1,6 @@
 ﻿namespace MapCreator.userPlugin
 {
-    partial class createTerrainTypes
+	public partial class CreateTerrainTypes
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(createTerrainTypes));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateTerrainTypes));
             userPlugins_pictureBox_topDivider = new PictureBox();
             createTerrainTypes_mainMenu = new MenuStrip();
             createTerrainTypes_mainMenu_button_newTerrainType = new ToolStripMenuItem();

@@ -1,12 +1,10 @@
 using Microsoft.Win32.SafeHandles;
 
-using System;
-
 namespace UltimaSDK
 {
 	public class ClientWindowHandle : CriticalHandleZeroOrMinusOneIsInvalid
 	{
-		public static ClientWindowHandle Invalid = new ClientWindowHandle(new IntPtr(-1));
+		public static ClientWindowHandle Invalid = new(new IntPtr(-1));
 
 		public ClientWindowHandle()
 		{
@@ -30,7 +28,7 @@ namespace UltimaSDK
 
 	public class ClientProcessHandle : CriticalHandleZeroOrMinusOneIsInvalid
 	{
-		public static ClientProcessHandle Invalid = new ClientProcessHandle(new IntPtr(-1));
+		public static ClientProcessHandle Invalid = new(new IntPtr(-1));
 
 		public ClientProcessHandle()
 			: base()

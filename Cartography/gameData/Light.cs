@@ -1,12 +1,10 @@
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 
 namespace UltimaSDK
 {
 	public sealed class Light
 	{
-		private static FileIndex m_FileIndex = new FileIndex("lightidx.mul", "light.mul", 100, -1);
+		private static FileIndex m_FileIndex = new("lightidx.mul", "light.mul", 100, -1);
 		private static Bitmap[] m_Cache = new Bitmap[100];
 		private static bool[] m_Removed = new bool[100];
 		private static byte[] m_StreamBuffer;
@@ -33,10 +31,8 @@ namespace UltimaSDK
 				return 0;
 			}
 
-			using (var index = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-			{
-				return (int)(index.Length / 12);
-			}
+			using var index = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+			return (int)(index.Length / 12);
 		}
 
 		/// <summary>
@@ -194,58 +190,54 @@ namespace UltimaSDK
 		{
 			var idx = Path.Combine(path, "lightidx.mul");
 			var mul = Path.Combine(path, "light.mul");
-			using (FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
-							  fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+			using FileStream fsidx = new(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
+							  fsmul = new(mul, FileMode.Create, FileAccess.Write, FileShare.Write);
+			using BinaryWriter binidx = new(fsidx),
+								binmul = new(fsmul);
+			for (var index = 0; index < m_Cache.Length; index++)
 			{
-				using (BinaryWriter binidx = new BinaryWriter(fsidx),
-									binmul = new BinaryWriter(fsmul))
+				if (m_Cache[index] == null)
 				{
-					for (var index = 0; index < m_Cache.Length; index++)
+					m_Cache[index] = GetLight(index);
+				}
+
+				var bmp = m_Cache[index];
+
+				if ((bmp == null) || m_Removed[index])
+				{
+					binidx.Write(-1); // lookup
+					binidx.Write(-1); // length
+					binidx.Write(-1); // extra
+				}
+				else
+				{
+					var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
+					var line = (ushort*)bd.Scan0;
+					var delta = bd.Stride >> 1;
+
+					binidx.Write((int)fsmul.Position); //lookup
+					var length = (int)fsmul.Position;
+
+					for (var Y = 0; Y < bmp.Height; ++Y, line += delta)
 					{
-						if (m_Cache[index] == null)
+						var cur = line;
+						var end = cur + bmp.Width;
+						while (cur < end)
 						{
-							m_Cache[index] = GetLight(index);
-						}
-
-						var bmp = m_Cache[index];
-
-						if ((bmp == null) || m_Removed[index])
-						{
-							binidx.Write(-1); // lookup
-							binidx.Write(-1); // length
-							binidx.Write(-1); // extra
-						}
-						else
-						{
-							var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
-							var line = (ushort*)bd.Scan0;
-							var delta = bd.Stride >> 1;
-
-							binidx.Write((int)fsmul.Position); //lookup
-							var length = (int)fsmul.Position;
-
-							for (var Y = 0; Y < bmp.Height; ++Y, line += delta)
+							var value = (sbyte)(((*cur++ >> 10) & 0xffff) - 0x1f);
+							if (value > 0) // wtf? but it works...
 							{
-								var cur = line;
-								var end = cur + bmp.Width;
-								while (cur < end)
-								{
-									var value = (sbyte)(((*cur++ >> 10) & 0xffff) - 0x1f);
-									if (value > 0) // wtf? but it works...
-									{
-										--value;
-									}
-
-									binmul.Write(value);
-								}
+								--value;
 							}
 
-							length = (int)fsmul.Position - length;
-							binidx.Write(length);
-							binidx.Write((bmp.Width << 16) + bmp.Height);
-							bmp.UnlockBits(bd);
+							binmul.Write(value);
 						}
 					}
+
+					length = (int)fsmul.Position - length;
+					binidx.Write(length);
+					binidx.Write((bmp.Width << 16) + bmp.Height);
+					bmp.UnlockBits(bd);
 				}
 			}
 		}

@@ -1,6 +1,4 @@
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 
 // ascii text support written by arul
 namespace UltimaSDK
@@ -78,7 +76,7 @@ namespace UltimaSDK
 
 		public static ASCIIFont GetFixed(int font)
 		{
-			if (font < 0 || font > 9)
+			if (font is < 0 or > 9)
 			{
 				return ASCIIText.Fonts[3];
 			}
@@ -105,57 +103,55 @@ namespace UltimaSDK
 
 			if (path != null)
 			{
-				using (var reader = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using var reader = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+				var buffer = new byte[(int)reader.Length];
+				_ = reader.Read(buffer, 0, (int)reader.Length);
+				fixed (byte* bin = buffer)
 				{
-					var buffer = new byte[(int)reader.Length];
-					_ = reader.Read(buffer, 0, (int)reader.Length);
-					fixed (byte* bin = buffer)
+					var read = bin;
+					for (var i = 0; i < 10; ++i)
 					{
-						var read = bin;
-						for (var i = 0; i < 10; ++i)
+						var header = *read++;
+						Fonts[i] = new ASCIIFont(header);
+
+						for (var k = 0; k < 224; ++k)
 						{
-							var header = *read++;
-							Fonts[i] = new ASCIIFont(header);
+							var width = *read++;
+							var height = *read++;
+							var unk = *read++; // delimeter?
 
-							for (var k = 0; k < 224; ++k)
+							if (width > 0 && height > 0)
 							{
-								var width = *read++;
-								var height = *read++;
-								var unk = *read++; // delimeter?
-
-								if (width > 0 && height > 0)
+								if (height > Fonts[i].Height && k < 96)
 								{
-									if (height > Fonts[i].Height && k < 96)
-									{
-										Fonts[i].Height = height;
-									}
+									Fonts[i].Height = height;
+								}
 
-									var bmp = new Bitmap(width, height);
-									var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
-									var line = (ushort*)bd.Scan0;
-									var delta = bd.Stride >> 1;
+								var bmp = new Bitmap(width, height);
+								var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
+								var line = (ushort*)bd.Scan0;
+								var delta = bd.Stride >> 1;
 
-									for (var y = 0; y < height; ++y, line += delta)
+								for (var y = 0; y < height; ++y, line += delta)
+								{
+									var cur = line;
+									for (var x = 0; x < width; ++x)
 									{
-										var cur = line;
-										for (var x = 0; x < width; ++x)
+										var pixel = (ushort)(*read++ | (*read++ << 8));
+										if (pixel == 0)
 										{
-											var pixel = (ushort)(*read++ | (*read++ << 8));
-											if (pixel == 0)
-											{
-												cur[x] = pixel;
-											}
-											else
-											{
-												cur[x] = (ushort)(pixel ^ 0x8000);
-											}
+											cur[x] = pixel;
+										}
+										else
+										{
+											cur[x] = (ushort)(pixel ^ 0x8000);
 										}
 									}
-
-									bmp.UnlockBits(bd);
-									Fonts[i].Characters[k] = bmp;
-									Fonts[i].Unk[k] = unk;
 								}
+
+								bmp.UnlockBits(bd);
+								Fonts[i].Characters[k] = bmp;
+								Fonts[i].Unk[k] = unk;
 							}
 						}
 					}
@@ -165,41 +161,37 @@ namespace UltimaSDK
 
 		public static unsafe void Save(string FileName)
 		{
-			using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
+			using var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write);
+			using var bin = new BinaryWriter(fs);
+			for (var i = 0; i < 10; ++i)
 			{
-				using (var bin = new BinaryWriter(fs))
+				bin.Write(Fonts[i].Header);
+				for (var k = 0; k < 224; ++k)
 				{
-					for (var i = 0; i < 10; ++i)
+					bin.Write((byte)Fonts[i].Characters[k].Width);
+					bin.Write((byte)Fonts[i].Characters[k].Height);
+					bin.Write(Fonts[i].Unk[k]);
+					var bmp = Fonts[i].Characters[k];
+					var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
+					var line = (ushort*)bd.Scan0;
+					var delta = bd.Stride >> 1;
+					for (var y = 0; y < bmp.Height; ++y, line += delta)
 					{
-						bin.Write(Fonts[i].Header);
-						for (var k = 0; k < 224; ++k)
+						var cur = line;
+						for (var x = 0; x < bmp.Width; ++x)
 						{
-							bin.Write((byte)Fonts[i].Characters[k].Width);
-							bin.Write((byte)Fonts[i].Characters[k].Height);
-							bin.Write(Fonts[i].Unk[k]);
-							var bmp = Fonts[i].Characters[k];
-							var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
-							var line = (ushort*)bd.Scan0;
-							var delta = bd.Stride >> 1;
-							for (var y = 0; y < bmp.Height; ++y, line += delta)
+							if (cur[x] == 0)
 							{
-								var cur = line;
-								for (var x = 0; x < bmp.Width; ++x)
-								{
-									if (cur[x] == 0)
-									{
-										bin.Write(cur[x]);
-									}
-									else
-									{
-										bin.Write((ushort)(cur[x] ^ 0x8000));
-									}
-								}
+								bin.Write(cur[x]);
 							}
-
-							bmp.UnlockBits(bd);
+							else
+							{
+								bin.Write((ushort)(cur[x] ^ 0x8000));
+							}
 						}
 					}
+
+					bmp.UnlockBits(bd);
 				}
 			}
 		}

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace UltimaSDK
@@ -48,15 +45,9 @@ namespace UltimaSDK
 
 		public void CloseStreams()
 		{
-			if (m_Map != null)
-			{
-				m_Map.Close();
-			}
+			m_Map?.Close();
 
-			if (m_Statics != null)
-			{
-				m_Statics.Close();
-			}
+			m_Statics?.Close();
 		}
 
 		public TileMatrix(int fileIndex, int mapID, int width, int height, string path)
@@ -158,10 +149,7 @@ namespace UltimaSDK
 
 			var tiles = m_StaticTiles[x][y];
 
-			if (tiles == null)
-			{
-				tiles = m_StaticTiles[x][y] = ReadStaticBlock(x, y);
-			}
+			tiles ??= m_StaticTiles[x][y] = ReadStaticBlock(x, y);
 
 			if (Map.UseDiff && patch)
 			{
@@ -221,10 +209,7 @@ namespace UltimaSDK
 
 			var tiles = m_LandTiles[x][y];
 
-			if (tiles == null)
-			{
-				tiles = m_LandTiles[x][y] = ReadLandBlock(x, y);
-			}
+			tiles ??= m_LandTiles[x][y] = ReadLandBlock(x, y);
 
 			if (Map.UseDiff && patch)
 			{
@@ -260,24 +245,22 @@ namespace UltimaSDK
 				return;
 			}
 
-			using (var index = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+			using var index = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+			m_Statics = new FileStream(staticsPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+			var count = (int)(index.Length / 12);
+			var gc = GCHandle.Alloc(m_StaticIndex, GCHandleType.Pinned);
+			var buffer = new byte[index.Length];
+			_ = index.Read(buffer, 0, (int)index.Length);
+			Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)Math.Min(index.Length, BlockHeight * BlockWidth * 12));
+			gc.Free();
+			for (var i = (int)Math.Min(index.Length, BlockHeight * BlockWidth); i < BlockHeight * BlockWidth; ++i)
 			{
-				m_Statics = new FileStream(staticsPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-				var count = (int)(index.Length / 12);
-				var gc = GCHandle.Alloc(m_StaticIndex, GCHandleType.Pinned);
-				var buffer = new byte[index.Length];
-				_ = index.Read(buffer, 0, (int)index.Length);
-				Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)Math.Min(index.Length, BlockHeight * BlockWidth * 12));
-				gc.Free();
-				for (var i = (int)Math.Min(index.Length, BlockHeight * BlockWidth); i < BlockHeight * BlockWidth; ++i)
-				{
-					m_StaticIndex[i].lookup = -1;
-					m_StaticIndex[i].length = -1;
-					m_StaticIndex[i].extra = -1;
-				}
-
-				StaticIndexInit = true;
+				m_StaticIndex[i].lookup = -1;
+				m_StaticIndex[i].length = -1;
+				m_StaticIndex[i].extra = -1;
 			}
+
+			StaticIndexInit = true;
 		}
 		private static HuedTileList[][] m_Lists;
 		private static byte[] m_Buffer;
@@ -424,10 +407,7 @@ namespace UltimaSDK
 
 		public void RemoveStaticBlock(int blockx, int blocky)
 		{
-			if (m_RemovedStaticBlock == null)
-			{
-				m_RemovedStaticBlock = new bool[BlockWidth][];
-			}
+			m_RemovedStaticBlock ??= new bool[BlockWidth][];
 
 			if (m_RemovedStaticBlock[blockx] == null)
 			{
@@ -480,10 +460,7 @@ namespace UltimaSDK
 
 		public void AddPendingStatic(int blockx, int blocky, StaticTile toadd)
 		{
-			if (m_StaticTiles_ToAdd == null)
-			{
-				m_StaticTiles_ToAdd = new List<StaticTile>[BlockHeight][];
-			}
+			m_StaticTiles_ToAdd ??= new List<StaticTile>[BlockHeight][];
 
 			if (m_StaticTiles_ToAdd[blocky] == null)
 			{
@@ -520,19 +497,13 @@ namespace UltimaSDK
 
 		public void Dispose()
 		{
-			if (m_Map != null)
-			{
-				m_Map.Close();
-			}
+			m_Map?.Close();
 
-			if (m_Statics != null)
-			{
-				m_Statics.Close();
-			}
+			m_Statics?.Close();
 		}
 	}
 
-	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
+	[System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct StaticTile
 	{
 		public ushort m_ID;
@@ -542,7 +513,7 @@ namespace UltimaSDK
 		public short m_Hue;
 	}
 
-	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
+	[System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct HuedTile
 	{
 		internal sbyte m_Z;
@@ -638,7 +609,7 @@ namespace UltimaSDK
 				return 1;
 			}
 
-			if (!(x is MTile))
+			if (x is not MTile)
 			{
 				throw new ArgumentNullException();
 			}
@@ -689,7 +660,7 @@ namespace UltimaSDK
 			return res;
 		}
 	}
-	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
+	[System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct Tile : IComparable
 	{
 		internal ushort m_ID;
@@ -729,7 +700,7 @@ namespace UltimaSDK
 				return 1;
 			}
 
-			if (!(x is Tile))
+			if (x is not Tile)
 			{
 				throw new ArgumentNullException();
 			}

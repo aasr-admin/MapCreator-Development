@@ -1,5 +1,3 @@
-using System;
-
 namespace UltimaSDK
 {
 	public sealed class StringEntry

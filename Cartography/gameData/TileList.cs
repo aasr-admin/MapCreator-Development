@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace UltimaSDK
 {
 	public sealed class HuedTileList

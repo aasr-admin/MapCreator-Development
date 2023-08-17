@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace UltimaSDK
@@ -167,155 +165,147 @@ namespace UltimaSDK
 
 		private unsafe int PatchLand(TileMatrix matrix, string dataPath, string indexPath)
 		{
-			using (FileStream fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read),
-							  fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+			using FileStream fsData = new(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read),
+							  fsIndex = new(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+			using var indexReader = new BinaryReader(fsIndex);
+			var count = (int)(indexReader.BaseStream.Length / 4);
+
+			for (var i = 0; i < count; ++i)
 			{
-				using (var indexReader = new BinaryReader(fsIndex))
+				var blockID = indexReader.ReadInt32();
+				var x = blockID / matrix.BlockHeight;
+				var y = blockID % matrix.BlockHeight;
+
+				_ = fsData.Seek(4, SeekOrigin.Current);
+
+				var tiles = new Tile[64];
+
+				var gc = GCHandle.Alloc(tiles, GCHandleType.Pinned);
+				try
 				{
-					var count = (int)(indexReader.BaseStream.Length / 4);
-
-					for (var i = 0; i < count; ++i)
+					if (m_Buffer == null || m_Buffer.Length < 192)
 					{
-						var blockID = indexReader.ReadInt32();
-						var x = blockID / matrix.BlockHeight;
-						var y = blockID % matrix.BlockHeight;
-
-						_ = fsData.Seek(4, SeekOrigin.Current);
-
-						var tiles = new Tile[64];
-
-						var gc = GCHandle.Alloc(tiles, GCHandleType.Pinned);
-						try
-						{
-							if (m_Buffer == null || m_Buffer.Length < 192)
-							{
-								m_Buffer = new byte[192];
-							}
-
-							_ = fsData.Read(m_Buffer, 0, 192);
-
-							Marshal.Copy(m_Buffer, 0, gc.AddrOfPinnedObject(), 192);
-						}
-						finally
-						{
-							gc.Free();
-						}
-
-						if (LandBlocks[x] == null)
-						{
-							LandBlocks[x] = new Tile[matrix.BlockHeight][];
-						}
-
-						LandBlocks[x][y] = tiles;
+						m_Buffer = new byte[192];
 					}
 
-					return count;
+					_ = fsData.Read(m_Buffer, 0, 192);
+
+					Marshal.Copy(m_Buffer, 0, gc.AddrOfPinnedObject(), 192);
 				}
+				finally
+				{
+					gc.Free();
+				}
+
+				if (LandBlocks[x] == null)
+				{
+					LandBlocks[x] = new Tile[matrix.BlockHeight][];
+				}
+
+				LandBlocks[x][y] = tiles;
 			}
+
+			return count;
 		}
 
 		private unsafe int PatchStatics(TileMatrix matrix, string dataPath, string indexPath, string lookupPath)
 		{
-			using (FileStream fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read),
-							  fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read),
-							  fsLookup = new FileStream(lookupPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-			{
-				using (BinaryReader indexReader = new BinaryReader(fsIndex),
-									lookupReader = new BinaryReader(fsLookup))
-				{
-					var count = Math.Min((int)(indexReader.BaseStream.Length / 4),
-										(int)(lookupReader.BaseStream.Length / 12));
+			using FileStream fsData = new(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read),
+							  fsIndex = new(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read),
+							  fsLookup = new(lookupPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+			using BinaryReader indexReader = new(fsIndex),
+								lookupReader = new(fsLookup);
+			var count = Math.Min((int)(indexReader.BaseStream.Length / 4),
+								(int)(lookupReader.BaseStream.Length / 12));
 
-					var lists = new HuedTileList[8][];
+			var lists = new HuedTileList[8][];
+
+			for (var x = 0; x < 8; ++x)
+			{
+				lists[x] = new HuedTileList[8];
+
+				for (var y = 0; y < 8; ++y)
+				{
+					lists[x][y] = new HuedTileList();
+				}
+			}
+
+			for (var i = 0; i < count; ++i)
+			{
+				var blockID = indexReader.ReadInt32();
+				var blockX = blockID / matrix.BlockHeight;
+				var blockY = blockID % matrix.BlockHeight;
+
+				var offset = lookupReader.ReadInt32();
+				var length = lookupReader.ReadInt32();
+				_ = lookupReader.ReadInt32(); // Extra
+
+				if (offset < 0 || length <= 0)
+				{
+					if (StaticBlocks[blockX] == null)
+					{
+						StaticBlocks[blockX] = new HuedTile[matrix.BlockHeight][][][];
+					}
+
+					StaticBlocks[blockX][blockY] = TileMatrix.EmptyStaticBlock;
+					continue;
+				}
+
+				_ = fsData.Seek(offset, SeekOrigin.Begin);
+
+				var tileCount = length / 7;
+
+				if (m_TileBuffer.Length < tileCount)
+				{
+					m_TileBuffer = new StaticTile[tileCount];
+				}
+
+				var staTiles = m_TileBuffer;
+
+				var gc = GCHandle.Alloc(staTiles, GCHandleType.Pinned);
+				try
+				{
+					if (m_Buffer == null || m_Buffer.Length < length)
+					{
+						m_Buffer = new byte[length];
+					}
+
+					_ = fsData.Read(m_Buffer, 0, length);
+
+					Marshal.Copy(m_Buffer, 0, gc.AddrOfPinnedObject(), length);
+
+					for (var j = 0; j < tileCount; ++j)
+					{
+						var cur = staTiles[j];
+						lists[cur.m_X & 0x7][cur.m_Y & 0x7].Add(Art.GetLegalItemID(cur.m_ID), cur.m_Hue, cur.m_Z);
+					}
+
+					var tiles = new HuedTile[8][][];
 
 					for (var x = 0; x < 8; ++x)
 					{
-						lists[x] = new HuedTileList[8];
+						tiles[x] = new HuedTile[8][];
 
 						for (var y = 0; y < 8; ++y)
 						{
-							lists[x][y] = new HuedTileList();
+							tiles[x][y] = lists[x][y].ToArray();
 						}
 					}
 
-					for (var i = 0; i < count; ++i)
+					if (StaticBlocks[blockX] == null)
 					{
-						var blockID = indexReader.ReadInt32();
-						var blockX = blockID / matrix.BlockHeight;
-						var blockY = blockID % matrix.BlockHeight;
-
-						var offset = lookupReader.ReadInt32();
-						var length = lookupReader.ReadInt32();
-						_ = lookupReader.ReadInt32(); // Extra
-
-						if (offset < 0 || length <= 0)
-						{
-							if (StaticBlocks[blockX] == null)
-							{
-								StaticBlocks[blockX] = new HuedTile[matrix.BlockHeight][][][];
-							}
-
-							StaticBlocks[blockX][blockY] = TileMatrix.EmptyStaticBlock;
-							continue;
-						}
-
-						_ = fsData.Seek(offset, SeekOrigin.Begin);
-
-						var tileCount = length / 7;
-
-						if (m_TileBuffer.Length < tileCount)
-						{
-							m_TileBuffer = new StaticTile[tileCount];
-						}
-
-						var staTiles = m_TileBuffer;
-
-						var gc = GCHandle.Alloc(staTiles, GCHandleType.Pinned);
-						try
-						{
-							if (m_Buffer == null || m_Buffer.Length < length)
-							{
-								m_Buffer = new byte[length];
-							}
-
-							_ = fsData.Read(m_Buffer, 0, length);
-
-							Marshal.Copy(m_Buffer, 0, gc.AddrOfPinnedObject(), length);
-
-							for (var j = 0; j < tileCount; ++j)
-							{
-								var cur = staTiles[j];
-								lists[cur.m_X & 0x7][cur.m_Y & 0x7].Add(Art.GetLegalItemID(cur.m_ID), cur.m_Hue, cur.m_Z);
-							}
-
-							var tiles = new HuedTile[8][][];
-
-							for (var x = 0; x < 8; ++x)
-							{
-								tiles[x] = new HuedTile[8][];
-
-								for (var y = 0; y < 8; ++y)
-								{
-									tiles[x][y] = lists[x][y].ToArray();
-								}
-							}
-
-							if (StaticBlocks[blockX] == null)
-							{
-								StaticBlocks[blockX] = new HuedTile[matrix.BlockHeight][][][];
-							}
-
-							StaticBlocks[blockX][blockY] = tiles;
-						}
-						finally
-						{
-							gc.Free();
-						}
+						StaticBlocks[blockX] = new HuedTile[matrix.BlockHeight][][][];
 					}
 
-					return count;
+					StaticBlocks[blockX][blockY] = tiles;
+				}
+				finally
+				{
+					gc.Free();
 				}
 			}
+
+			return count;
 		}
 	}
 }

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-
 namespace UltimaSDK
 {
 	public sealed class CalibrationInfo
@@ -73,15 +69,15 @@ namespace UltimaSDK
 				var ch = line[i + 0];
 				var cl = line[i + 1];
 
-				if (ch >= '0' && ch <= '9')
+				if (ch is >= '0' and <= '9')
 				{
 					ch -= '0';
 				}
-				else if (ch >= 'a' && ch <= 'f')
+				else if (ch is >= 'a' and <= 'f')
 				{
 					ch -= (char)('a' - 10);
 				}
-				else if (ch >= 'A' && ch <= 'F')
+				else if (ch is >= 'A' and <= 'F')
 				{
 					ch -= (char)('A' - 10);
 				}
@@ -90,15 +86,15 @@ namespace UltimaSDK
 					return null;
 				}
 
-				if (cl >= '0' && cl <= '9')
+				if (cl is >= '0' and <= '9')
 				{
 					cl -= '0';
 				}
-				else if (cl >= 'a' && cl <= 'f')
+				else if (cl is >= 'a' and <= 'f')
 				{
 					cl -= (char)('a' - 10);
 				}
-				else if (cl >= 'A' && cl <= 'F')
+				else if (cl is >= 'A' and <= 'F')
 				{
 					cl -= (char)('A' - 10);
 				}
@@ -169,50 +165,48 @@ namespace UltimaSDK
 
 			if (File.Exists(path))
 			{
-				using (var ip = new StreamReader(path))
+				using var ip = new StreamReader(path);
+				string line;
+
+				while ((line = ip.ReadLine()) != null)
 				{
-					string line;
+					line = line.Trim();
 
-					while ((line = ip.ReadLine()) != null)
+					if (line.Equals("Begin", StringComparison.OrdinalIgnoreCase))
 					{
-						line = line.Trim();
+						byte[] mask, vals, detx, dety, detz, detf;
 
-						if (line.Equals("Begin", StringComparison.OrdinalIgnoreCase))
+						if ((mask = ReadBytes(ip)) == null)
 						{
-							byte[] mask, vals, detx, dety, detz, detf;
-
-							if ((mask = ReadBytes(ip)) == null)
-							{
-								continue;
-							}
-
-							if ((vals = ReadBytes(ip)) == null)
-							{
-								continue;
-							}
-
-							if ((detx = ReadBytes(ip)) == null)
-							{
-								continue;
-							}
-
-							if ((dety = ReadBytes(ip)) == null)
-							{
-								continue;
-							}
-
-							if ((detz = ReadBytes(ip)) == null)
-							{
-								continue;
-							}
-
-							if ((detf = ReadBytes(ip)) == null)
-							{
-								continue;
-							}
-
-							list.Add(new CalibrationInfo(mask, vals, detx, dety, detz, detf));
+							continue;
 						}
+
+						if ((vals = ReadBytes(ip)) == null)
+						{
+							continue;
+						}
+
+						if ((detx = ReadBytes(ip)) == null)
+						{
+							continue;
+						}
+
+						if ((dety = ReadBytes(ip)) == null)
+						{
+							continue;
+						}
+
+						if ((detz = ReadBytes(ip)) == null)
+						{
+							continue;
+						}
+
+						if ((detf = ReadBytes(ip)) == null)
+						{
+							continue;
+						}
+
+						list.Add(new CalibrationInfo(mask, vals, detx, dety, detz, detf));
 					}
 				}
 			}

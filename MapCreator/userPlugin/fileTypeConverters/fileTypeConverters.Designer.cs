@@ -1,6 +1,6 @@
 ﻿namespace MapCreator.userPlugin
 {
-    partial class fileTypeConverters
+    partial class FileTypeConverters
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fileTypeConverters));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileTypeConverters));
             menuStrip1 = new MenuStrip();
             sToolStripMenuItem = new ToolStripMenuItem();
             sToolStripMenuItem1 = new ToolStripMenuItem();
@@ -97,7 +97,7 @@
             sToolStripMenuItem.Margin = new Padding(679, 0, 0, 0);
             sToolStripMenuItem.Name = "sToolStripMenuItem";
             sToolStripMenuItem.Size = new Size(32, 24);
-            sToolStripMenuItem.Click += sToolStripMenuItem_Click;
+            sToolStripMenuItem.Click += SToolStripMenuItem_Click;
             // 
             // sToolStripMenuItem1
             // 
@@ -105,7 +105,7 @@
             sToolStripMenuItem1.Margin = new Padding(5, 0, 0, 0);
             sToolStripMenuItem1.Name = "sToolStripMenuItem1";
             sToolStripMenuItem1.Size = new Size(32, 24);
-            sToolStripMenuItem1.Click += sToolStripMenuItem1_Click;
+            sToolStripMenuItem1.Click += SToolStripMenuItem1_Click;
             // 
             // userPlugins_pictureBox_topDivider
             // 
@@ -270,7 +270,7 @@
             mul2bmpConverter_convertFacet2BitmapButton.TabIndex = 22;
             mul2bmpConverter_convertFacet2BitmapButton.Text = "Convert Facet (.mul) Files To Bitmap (.bmp) Files\r\n";
             mul2bmpConverter_convertFacet2BitmapButton.UseVisualStyleBackColor = true;
-            mul2bmpConverter_convertFacet2BitmapButton.Click += mul2bmpConverter_convertFacet2BitmapButton_Click;
+            mul2bmpConverter_convertFacet2BitmapButton.Click += Mul2bmpConverter_convertFacet2BitmapButton_Click;
             // 
             // mul2bmpConverter_searchButton02_radarcolFileLocation
             // 
@@ -280,7 +280,7 @@
             mul2bmpConverter_searchButton02_radarcolFileLocation.TabIndex = 21;
             mul2bmpConverter_searchButton02_radarcolFileLocation.Text = "Search";
             mul2bmpConverter_searchButton02_radarcolFileLocation.UseVisualStyleBackColor = true;
-            mul2bmpConverter_searchButton02_radarcolFileLocation.Click += mul2bmpConverter_searchButton02_radarcolFileLocation_Click;
+            mul2bmpConverter_searchButton02_radarcolFileLocation.Click += Mul2bmpConverter_searchButton02_radarcolFileLocation_Click;
             // 
             // mul2bmpConverter_searchButton01_compiledFacetLocation
             // 
@@ -290,7 +290,7 @@
             mul2bmpConverter_searchButton01_compiledFacetLocation.TabIndex = 20;
             mul2bmpConverter_searchButton01_compiledFacetLocation.Text = "Search";
             mul2bmpConverter_searchButton01_compiledFacetLocation.UseVisualStyleBackColor = true;
-            mul2bmpConverter_searchButton01_compiledFacetLocation.Click += mul2bmpConverter_searchButton01_compiledFacetLocation_Click;
+            mul2bmpConverter_searchButton01_compiledFacetLocation.Click += Mul2bmpConverter_searchButton01_compiledFacetLocation_Click;
             // 
             // mul2bmpConverter_label04_mapDimensions
             // 
@@ -384,7 +384,7 @@
             mul2uopConverter_convertFacet2MULButton.TabIndex = 8;
             mul2uopConverter_convertFacet2MULButton.Text = "Convert Facet (.uop) Files To (.mul) Files";
             mul2uopConverter_convertFacet2MULButton.UseVisualStyleBackColor = true;
-            mul2uopConverter_convertFacet2MULButton.Click += mul2uopConverter_convertFacet2MULButton_Click;
+            mul2uopConverter_convertFacet2MULButton.Click += Mul2uopConverter_convertFacet2MULButton_Click;
             // 
             // mul2uopConverter_radarcolWarningLabel
             // 
@@ -404,7 +404,7 @@
             mul2uopConverter_convertFacet2UOPButton.TabIndex = 6;
             mul2uopConverter_convertFacet2UOPButton.Text = "Convert Facet (.mul) Files To (.uop) Files";
             mul2uopConverter_convertFacet2UOPButton.UseVisualStyleBackColor = true;
-            mul2uopConverter_convertFacet2UOPButton.Click += mul2uopConverter_convertFacet2UOPButton_Click;
+            mul2uopConverter_convertFacet2UOPButton.Click += Mul2uopConverter_convertFacet2UOPButton_Click;
             // 
             // mul2uopConverter_custom255Selection
             // 
@@ -446,7 +446,7 @@
             mul2uopConverter_searchButton01_mulLocation.TabIndex = 2;
             mul2uopConverter_searchButton01_mulLocation.Text = "Search";
             mul2uopConverter_searchButton01_mulLocation.UseVisualStyleBackColor = true;
-            mul2uopConverter_searchButton01_mulLocation.Click += mul2uopConverter_searchButton01_mulLocation_Click;
+            mul2uopConverter_searchButton01_mulLocation.Click += Mul2uopConverter_searchButton01_mulLocation_Click;
             // 
             // mul2uopConverter_textBox01_facetFileLocation
             // 

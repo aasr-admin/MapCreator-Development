@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace UltimaSDK
@@ -187,22 +185,20 @@ namespace UltimaSDK
 
 			if ((idxPath != null) && (MulPath != null))
 			{
-				using (var index = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using var index = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+				Stream = new FileStream(MulPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+				var count = (int)(index.Length / 12);
+				IdxLength = index.Length;
+				var gc = GCHandle.Alloc(Index, GCHandleType.Pinned);
+				var buffer = new byte[index.Length];
+				_ = index.Read(buffer, 0, (int)index.Length);
+				Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)Math.Min(IdxLength, length * 12));
+				gc.Free();
+				for (var i = count; i < length; ++i)
 				{
-					Stream = new FileStream(MulPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-					var count = (int)(index.Length / 12);
-					IdxLength = index.Length;
-					var gc = GCHandle.Alloc(Index, GCHandleType.Pinned);
-					var buffer = new byte[index.Length];
-					_ = index.Read(buffer, 0, (int)index.Length);
-					Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)Math.Min(IdxLength, length * 12));
-					gc.Free();
-					for (var i = count; i < length; ++i)
-					{
-						Index[i].lookup = -1;
-						Index[i].length = -1;
-						Index[i].extra = -1;
-					}
+					Index[i].lookup = -1;
+					Index[i].length = -1;
+					Index[i].extra = -1;
 				}
 			}
 			else
@@ -279,18 +275,16 @@ namespace UltimaSDK
 
 			if ((idxPath != null) && (MulPath != null))
 			{
-				using (var index = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-				{
-					Stream = new FileStream(MulPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-					var count = (int)(index.Length / 12);
-					IdxLength = index.Length;
-					Index = new Entry3D[count];
-					var gc = GCHandle.Alloc(Index, GCHandleType.Pinned);
-					var buffer = new byte[index.Length];
-					_ = index.Read(buffer, 0, (int)index.Length);
-					Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)index.Length);
-					gc.Free();
-				}
+				using var index = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+				Stream = new FileStream(MulPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+				var count = (int)(index.Length / 12);
+				IdxLength = index.Length;
+				Index = new Entry3D[count];
+				var gc = GCHandle.Alloc(Index, GCHandleType.Pinned);
+				var buffer = new byte[index.Length];
+				_ = index.Read(buffer, 0, (int)index.Length);
+				Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)index.Length);
+				gc.Free();
 			}
 			else
 			{
@@ -318,7 +312,7 @@ namespace UltimaSDK
 		}
 	}
 
-	[StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct Entry3D
 	{
 		public int lookup;

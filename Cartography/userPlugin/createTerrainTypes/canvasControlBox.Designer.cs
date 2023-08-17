@@ -1,6 +1,6 @@
 ﻿namespace MapCreator.userPlugin
 {
-    partial class canvasControlBox
+    public partial class CanvasControlBox
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(canvasControlBox));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CanvasControlBox));
             CanvasNavControl = new ToolStrip();
             NorthWestButton = new ToolStripButton();
             NorthButton = new ToolStripButton();

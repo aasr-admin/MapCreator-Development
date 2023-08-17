@@ -1,7 +1,4 @@
-using System;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 
 namespace UltimaSDK
 {
@@ -195,34 +192,30 @@ namespace UltimaSDK
 				}
 
 				Fonts[i] = new UnicodeFont();
-				using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+				using var bin = new BinaryReader(fs);
+				for (var c = 0; c < 0x10000; ++c)
 				{
-					using (var bin = new BinaryReader(fs))
+					Fonts[i].Chars[c] = new UnicodeChar();
+					_ = fs.Seek(c * 4, SeekOrigin.Begin);
+					var num2 = bin.ReadInt32();
+					if ((num2 >= fs.Length) || (num2 <= 0))
 					{
-						for (var c = 0; c < 0x10000; ++c)
-						{
-							Fonts[i].Chars[c] = new UnicodeChar();
-							_ = fs.Seek(c * 4, SeekOrigin.Begin);
-							var num2 = bin.ReadInt32();
-							if ((num2 >= fs.Length) || (num2 <= 0))
-							{
-								continue;
-							}
+						continue;
+					}
 
-							_ = fs.Seek(num2, SeekOrigin.Begin);
-							var xOffset = bin.ReadSByte();
-							var yOffset = bin.ReadSByte();
-							int Width = bin.ReadByte();
-							int Height = bin.ReadByte();
-							Fonts[i].Chars[c].XOffset = xOffset;
-							Fonts[i].Chars[c].YOffset = yOffset;
-							Fonts[i].Chars[c].Width = Width;
-							Fonts[i].Chars[c].Height = Height;
-							if (!((Width == 0) || (Height == 0)))
-							{
-								Fonts[i].Chars[c].Bytes = bin.ReadBytes(Height * (((Width - 1) / 8) + 1));
-							}
-						}
+					_ = fs.Seek(num2, SeekOrigin.Begin);
+					var xOffset = bin.ReadSByte();
+					var yOffset = bin.ReadSByte();
+					int Width = bin.ReadByte();
+					int Height = bin.ReadByte();
+					Fonts[i].Chars[c].XOffset = xOffset;
+					Fonts[i].Chars[c].YOffset = yOffset;
+					Fonts[i].Chars[c].Width = Width;
+					Fonts[i].Chars[c].Height = Height;
+					if (!((Width == 0) || (Height == 0)))
+					{
+						Fonts[i].Chars[c].Bytes = bin.ReadBytes(Height * (((Width - 1) / 8) + 1));
 					}
 				}
 			}
@@ -266,27 +259,25 @@ namespace UltimaSDK
 			var FileName = Path.Combine(path, m_files[filetype]);
 			using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
 			{
-				using (var bin = new BinaryWriter(fs))
+				using var bin = new BinaryWriter(fs);
+				_ = fs.Seek(0x10000 * 4, SeekOrigin.Begin);
+				bin.Write(0);
+				// Set first data
+				for (var c = 0; c < 0x10000; ++c)
 				{
-					_ = fs.Seek(0x10000 * 4, SeekOrigin.Begin);
-					bin.Write(0);
-					// Set first data
-					for (var c = 0; c < 0x10000; ++c)
+					if (Fonts[filetype].Chars[c].Bytes == null)
 					{
-						if (Fonts[filetype].Chars[c].Bytes == null)
-						{
-							continue;
-						}
-
-						_ = fs.Seek(c * 4, SeekOrigin.Begin);
-						bin.Write((int)fs.Length);
-						_ = fs.Seek(fs.Length, SeekOrigin.Begin);
-						bin.Write(Fonts[filetype].Chars[c].XOffset);
-						bin.Write(Fonts[filetype].Chars[c].YOffset);
-						bin.Write((byte)Fonts[filetype].Chars[c].Width);
-						bin.Write((byte)Fonts[filetype].Chars[c].Height);
-						bin.Write(Fonts[filetype].Chars[c].Bytes);
+						continue;
 					}
+
+					_ = fs.Seek(c * 4, SeekOrigin.Begin);
+					bin.Write((int)fs.Length);
+					_ = fs.Seek(fs.Length, SeekOrigin.Begin);
+					bin.Write(Fonts[filetype].Chars[c].XOffset);
+					bin.Write(Fonts[filetype].Chars[c].YOffset);
+					bin.Write((byte)Fonts[filetype].Chars[c].Width);
+					bin.Write((byte)Fonts[filetype].Chars[c].Height);
+					bin.Write(Fonts[filetype].Chars[c].Bytes);
 				}
 			}
 

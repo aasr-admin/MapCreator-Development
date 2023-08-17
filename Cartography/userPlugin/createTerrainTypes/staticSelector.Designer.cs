@@ -1,6 +1,6 @@
 ﻿namespace MapCreator.userPlugin
 {
-    partial class staticSelector
+    partial class StaticSelector
     {
         /// <summary>
         /// Required designer variable.

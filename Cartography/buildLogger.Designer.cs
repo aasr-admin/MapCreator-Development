@@ -1,6 +1,6 @@
 ﻿namespace Compiler
 {
-    partial class buildLogger
+    public partial class BuildLogger
     {
         /// <summary>
         /// Required designer variable.
@@ -42,7 +42,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(buildLogger));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BuildLogger));
             this.buildLogger_menuStrip = new System.Windows.Forms.MenuStrip();
             this.buildLogger_menuStrip_button_saveLog = new System.Windows.Forms.ToolStripMenuItem();
             this.buildLogger_menuStrip_button_printLog = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,7 +70,7 @@
             this.buildLogger_menuStrip_button_saveLog.Margin = new System.Windows.Forms.Padding(313, 0, 0, 0);
             this.buildLogger_menuStrip_button_saveLog.Name = "buildLogger_menuStrip_button_saveLog";
             this.buildLogger_menuStrip_button_saveLog.Size = new System.Drawing.Size(36, 28);
-            this.buildLogger_menuStrip_button_saveLog.Click += new System.EventHandler(this.buildLogger_menuStrip_button_saveLog_Click);
+            this.buildLogger_menuStrip_button_saveLog.Click += new System.EventHandler(this.BuildLogger_menuStrip_button_saveLog_Click);
             // 
             // buildLogger_menuStrip_button_printLog
             // 
@@ -79,7 +79,7 @@
             this.buildLogger_menuStrip_button_printLog.Margin = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.buildLogger_menuStrip_button_printLog.Name = "buildLogger_menuStrip_button_printLog";
             this.buildLogger_menuStrip_button_printLog.Size = new System.Drawing.Size(36, 28);
-            this.buildLogger_menuStrip_button_printLog.Click += new System.EventHandler(this.buildLogger_menuStrip_button_printLog_Click);
+            this.buildLogger_menuStrip_button_printLog.Click += new System.EventHandler(this.BuildLogger_menuStrip_button_printLog_Click);
             // 
             // buildLogger_pictureBox_backDrop
             // 
@@ -118,7 +118,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MapCreator: Logger";
-            this.Load += new System.EventHandler(this.buildLogger_Load);
+            this.Load += new System.EventHandler(this.BuildLogger_Load);
             this.buildLogger_menuStrip.ResumeLayout(false);
             this.buildLogger_menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.buildLogger_pictureBox_backDrop)).EndInit();

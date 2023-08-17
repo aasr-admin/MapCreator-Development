@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Text.RegularExpressions;
 
 namespace UltimaSDK
@@ -9,7 +5,7 @@ namespace UltimaSDK
 	public sealed class Multis
 	{
 		private static MultiComponentList[] m_Components = new MultiComponentList[0x2000];
-		private static FileIndex m_FileIndex = new FileIndex("Multi.idx", "Multi.mul", 0x2000, 14);
+		private static FileIndex m_FileIndex = new("Multi.idx", "Multi.mul", 0x2000, 14);
 
 		public enum ImportType
 		{
@@ -164,82 +160,80 @@ namespace UltimaSDK
 				return multilist;
 			}
 
-			using (FileStream idxfs = new FileStream(idx, FileMode.Open, FileAccess.Read, FileShare.Read),
-							  binfs = new FileStream(bin, FileMode.Open, FileAccess.Read, FileShare.Read))
+			using FileStream idxfs = new(idx, FileMode.Open, FileAccess.Read, FileShare.Read),
+							  binfs = new(bin, FileMode.Open, FileAccess.Read, FileShare.Read);
+			using (BinaryReader idxbin = new(idxfs),
+								binbin = new(binfs))
 			{
-				using (BinaryReader idxbin = new BinaryReader(idxfs),
-									binbin = new BinaryReader(binfs))
+				var count = idxbin.ReadInt32();
+				var version = idxbin.ReadInt32();
+
+				for (var i = 0; i < count; ++i)
 				{
-					var count = idxbin.ReadInt32();
-					var version = idxbin.ReadInt32();
-
-					for (var i = 0; i < count; ++i)
+					var data = new object[2];
+					switch (version)
 					{
-						var data = new object[2];
-						switch (version)
-						{
-							case 0:
-								data[0] = ReadUOAString(idxbin);
-								var arr = new List<MultiComponentList.MultiTileEntry>();
-								data[0] += "-" + ReadUOAString(idxbin);
-								data[0] += "-" + ReadUOAString(idxbin);
-								var width = idxbin.ReadInt32();
-								var height = idxbin.ReadInt32();
-								var uwidth = idxbin.ReadInt32();
-								var uheight = idxbin.ReadInt32();
-								var filepos = idxbin.ReadInt64();
-								var reccount = idxbin.ReadInt32();
+						case 0:
+							data[0] = ReadUOAString(idxbin);
+							var arr = new List<MultiComponentList.MultiTileEntry>();
+							data[0] += "-" + ReadUOAString(idxbin);
+							data[0] += "-" + ReadUOAString(idxbin);
+							var width = idxbin.ReadInt32();
+							var height = idxbin.ReadInt32();
+							var uwidth = idxbin.ReadInt32();
+							var uheight = idxbin.ReadInt32();
+							var filepos = idxbin.ReadInt64();
+							var reccount = idxbin.ReadInt32();
 
-								_ = binbin.BaseStream.Seek(filepos, SeekOrigin.Begin);
-								int index, x, y, z, level, hue;
-								for (var j = 0; j < reccount; ++j)
+							_ = binbin.BaseStream.Seek(filepos, SeekOrigin.Begin);
+							int index, x, y, z, level, hue;
+							for (var j = 0; j < reccount; ++j)
+							{
+								index = x = y = z = level = hue = 0;
+								var compVersion = binbin.ReadInt32();
+								switch (compVersion)
 								{
-									index = x = y = z = level = hue = 0;
-									var compVersion = binbin.ReadInt32();
-									switch (compVersion)
-									{
-										case 0:
-											index = binbin.ReadInt32();
-											x = binbin.ReadInt32();
-											y = binbin.ReadInt32();
-											z = binbin.ReadInt32();
-											level = binbin.ReadInt32();
-											break;
+									case 0:
+										index = binbin.ReadInt32();
+										x = binbin.ReadInt32();
+										y = binbin.ReadInt32();
+										z = binbin.ReadInt32();
+										level = binbin.ReadInt32();
+										break;
 
-										case 1:
-											index = binbin.ReadInt32();
-											x = binbin.ReadInt32();
-											y = binbin.ReadInt32();
-											z = binbin.ReadInt32();
-											level = binbin.ReadInt32();
-											hue = binbin.ReadInt32();
-											break;
-									}
-
-									var tempitem = new MultiComponentList.MultiTileEntry
-									{
-										m_ItemID = (ushort)index,
-										m_Flags = 1,
-										m_OffsetX = (short)x,
-										m_OffsetY = (short)y,
-										m_OffsetZ = (short)z,
-										m_Unk1 = 0
-									};
-									arr.Add(tempitem);
-
+									case 1:
+										index = binbin.ReadInt32();
+										x = binbin.ReadInt32();
+										y = binbin.ReadInt32();
+										z = binbin.ReadInt32();
+										level = binbin.ReadInt32();
+										hue = binbin.ReadInt32();
+										break;
 								}
 
-								data[1] = new MultiComponentList(arr);
-								break;
+								var tempitem = new MultiComponentList.MultiTileEntry
+								{
+									m_ItemID = (ushort)index,
+									m_Flags = 1,
+									m_OffsetX = (short)x,
+									m_OffsetY = (short)y,
+									m_OffsetZ = (short)z,
+									m_Unk1 = 0
+								};
+								arr.Add(tempitem);
 
-						}
+							}
 
-						multilist.Add(data);
+							data[1] = new MultiComponentList(arr);
+							break;
+
 					}
-				}
 
-				return multilist;
+					multilist.Add(data);
+				}
 			}
+
+			return multilist;
 		}
 
 		public static List<MultiComponentList.MultiTileEntry> RebuildTiles(MultiComponentList.MultiTileEntry[] tiles)
@@ -341,48 +335,44 @@ namespace UltimaSDK
 			var isUOAHS = Art.IsUOAHS();
 			var idx = Path.Combine(path, "multi.idx");
 			var mul = Path.Combine(path, "multi.mul");
-			using (FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
-							  fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+			using FileStream fsidx = new(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
+							  fsmul = new(mul, FileMode.Create, FileAccess.Write, FileShare.Write);
+			using BinaryWriter binidx = new(fsidx),
+								binmul = new(fsmul);
+			for (var index = 0; index < 0x2000; ++index)
 			{
-				using (BinaryWriter binidx = new BinaryWriter(fsidx),
-									binmul = new BinaryWriter(fsmul))
+				var comp = GetComponents(index);
+
+				if (comp == MultiComponentList.Empty)
 				{
-					for (var index = 0; index < 0x2000; ++index)
+					binidx.Write(-1); // lookup
+					binidx.Write(-1); // length
+					binidx.Write(-1); // extra
+				}
+				else
+				{
+					var tiles = RebuildTiles(comp.SortedTiles);
+					binidx.Write((int)fsmul.Position); //lookup
+					if (isUOAHS)
 					{
-						var comp = GetComponents(index);
+						binidx.Write(tiles.Count * 16); //length
+					}
+					else
+					{
+						binidx.Write(tiles.Count * 12); //length
+					}
 
-						if (comp == MultiComponentList.Empty)
+					binidx.Write(-1); //extra
+					for (var i = 0; i < tiles.Count; ++i)
+					{
+						binmul.Write(tiles[i].m_ItemID);
+						binmul.Write(tiles[i].m_OffsetX);
+						binmul.Write(tiles[i].m_OffsetY);
+						binmul.Write(tiles[i].m_OffsetZ);
+						binmul.Write(tiles[i].m_Flags);
+						if (isUOAHS)
 						{
-							binidx.Write(-1); // lookup
-							binidx.Write(-1); // length
-							binidx.Write(-1); // extra
-						}
-						else
-						{
-							var tiles = RebuildTiles(comp.SortedTiles);
-							binidx.Write((int)fsmul.Position); //lookup
-							if (isUOAHS)
-							{
-								binidx.Write(tiles.Count * 16); //length
-							}
-							else
-							{
-								binidx.Write(tiles.Count * 12); //length
-							}
-
-							binidx.Write(-1); //extra
-							for (var i = 0; i < tiles.Count; ++i)
-							{
-								binmul.Write(tiles[i].m_ItemID);
-								binmul.Write(tiles[i].m_OffsetX);
-								binmul.Write(tiles[i].m_OffsetY);
-								binmul.Write(tiles[i].m_OffsetZ);
-								binmul.Write(tiles[i].m_Flags);
-								if (isUOAHS)
-								{
-									binmul.Write(tiles[i].m_Unk1);
-								}
-							}
+							binmul.Write(tiles[i].m_Unk1);
 						}
 					}
 				}
@@ -393,7 +383,7 @@ namespace UltimaSDK
 	public sealed class MultiComponentList
 	{
 		private Point m_Min, m_Max, m_Center;
-		public static readonly MultiComponentList Empty = new MultiComponentList();
+		public static readonly MultiComponentList Empty = new();
 
 		public Point Min => m_Min;
 		public Point Max => m_Max;
@@ -1300,56 +1290,50 @@ namespace UltimaSDK
 
 		public void ExportToTextFile(string FileName)
 		{
-			using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), System.Text.Encoding.GetEncoding(1252)))
+			using var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), System.Text.Encoding.GetEncoding(1252));
+			for (var i = 0; i < SortedTiles.Length; ++i)
 			{
-				for (var i = 0; i < SortedTiles.Length; ++i)
-				{
-					Tex.WriteLine(String.Format("0x{0:X} {1} {2} {3} {4}",
-								SortedTiles[i].m_ItemID,
-								SortedTiles[i].m_OffsetX,
-								SortedTiles[i].m_OffsetY,
-								SortedTiles[i].m_OffsetZ,
-								SortedTiles[i].m_Flags));
-				}
+				Tex.WriteLine(String.Format("0x{0:X} {1} {2} {3} {4}",
+							SortedTiles[i].m_ItemID,
+							SortedTiles[i].m_OffsetX,
+							SortedTiles[i].m_OffsetY,
+							SortedTiles[i].m_OffsetZ,
+							SortedTiles[i].m_Flags));
 			}
 		}
 
 		public void ExportToWscFile(string FileName)
 		{
-			using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), System.Text.Encoding.GetEncoding(1252)))
+			using var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), System.Text.Encoding.GetEncoding(1252));
+			for (var i = 0; i < SortedTiles.Length; ++i)
 			{
-				for (var i = 0; i < SortedTiles.Length; ++i)
-				{
-					Tex.WriteLine(String.Format("SECTION WORLDITEM {0}", i));
-					Tex.WriteLine("{");
-					Tex.WriteLine(String.Format("\tID\t{0}", SortedTiles[i].m_ItemID));
-					Tex.WriteLine(String.Format("\tX\t{0}", SortedTiles[i].m_OffsetX));
-					Tex.WriteLine(String.Format("\tY\t{0}", SortedTiles[i].m_OffsetY));
-					Tex.WriteLine(String.Format("\tZ\t{0}", SortedTiles[i].m_OffsetZ));
-					Tex.WriteLine("\tColor\t0");
-					Tex.WriteLine("}");
+				Tex.WriteLine(String.Format("SECTION WORLDITEM {0}", i));
+				Tex.WriteLine("{");
+				Tex.WriteLine(String.Format("\tID\t{0}", SortedTiles[i].m_ItemID));
+				Tex.WriteLine(String.Format("\tX\t{0}", SortedTiles[i].m_OffsetX));
+				Tex.WriteLine(String.Format("\tY\t{0}", SortedTiles[i].m_OffsetY));
+				Tex.WriteLine(String.Format("\tZ\t{0}", SortedTiles[i].m_OffsetZ));
+				Tex.WriteLine("\tColor\t0");
+				Tex.WriteLine("}");
 
-				}
 			}
 		}
 
 		public void ExportToUOAFile(string FileName)
 		{
-			using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), System.Text.Encoding.GetEncoding(1252)))
+			using var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), System.Text.Encoding.GetEncoding(1252));
+			Tex.WriteLine("6 version");
+			Tex.WriteLine("1 template id");
+			Tex.WriteLine("-1 item version");
+			Tex.WriteLine(String.Format("{0} num components", SortedTiles.Length));
+			for (var i = 0; i < SortedTiles.Length; ++i)
 			{
-				Tex.WriteLine("6 version");
-				Tex.WriteLine("1 template id");
-				Tex.WriteLine("-1 item version");
-				Tex.WriteLine(String.Format("{0} num components", SortedTiles.Length));
-				for (var i = 0; i < SortedTiles.Length; ++i)
-				{
-					Tex.WriteLine(String.Format("{0} {1} {2} {3} {4}",
-								SortedTiles[i].m_ItemID,
-								SortedTiles[i].m_OffsetX,
-								SortedTiles[i].m_OffsetY,
-								SortedTiles[i].m_OffsetZ,
-								SortedTiles[i].m_Flags));
-				}
+				Tex.WriteLine(String.Format("{0} {1} {2} {3} {4}",
+							SortedTiles[i].m_ItemID,
+							SortedTiles[i].m_OffsetX,
+							SortedTiles[i].m_OffsetY,
+							SortedTiles[i].m_OffsetZ,
+							SortedTiles[i].m_Flags));
 			}
 		}
 	}

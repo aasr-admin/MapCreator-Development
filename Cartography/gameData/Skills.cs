@@ -1,12 +1,10 @@
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace UltimaSDK
 {
 	public sealed class Skills
 	{
-		private static FileIndex m_FileIndex = new FileIndex("skills.idx", "skills.mul", 16);
+		private static FileIndex m_FileIndex = new("skills.idx", "skills.mul", 16);
 
 		private static List<SkillInfo> m_SkillEntries;
 		public static List<SkillInfo> SkillEntries
@@ -76,12 +74,10 @@ namespace UltimaSDK
 				return null;
 			}
 
-			using (var bin = new BinaryReader(stream))
-			{
-				var action = bin.ReadBoolean();
-				var name = ReadNameString(bin, length - 1);
-				return new SkillInfo(index, name, action, extra);
-			}
+			using var bin = new BinaryReader(stream);
+			var action = bin.ReadBoolean();
+			var name = ReadNameString(bin, length - 1);
+			return new SkillInfo(index, name, action, extra);
 		}
 
 		private static readonly byte[] m_StringBuffer = new byte[1024];
@@ -101,36 +97,32 @@ namespace UltimaSDK
 		{
 			var idx = Path.Combine(path, "skills.idx");
 			var mul = Path.Combine(path, "skills.mul");
-			using (FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
-							  fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+			using FileStream fsidx = new(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
+							  fsmul = new(mul, FileMode.Create, FileAccess.Write, FileShare.Write);
+			using BinaryWriter binidx = new(fsidx),
+								binmul = new(fsmul);
+			for (var i = 0; i < m_FileIndex.Index.Length; ++i)
 			{
-				using (BinaryWriter binidx = new BinaryWriter(fsidx),
-									binmul = new BinaryWriter(fsmul))
+				var skill = (i < m_SkillEntries.Count) ? m_SkillEntries[i] : null;
+				if (skill == null)
 				{
-					for (var i = 0; i < m_FileIndex.Index.Length; ++i)
-					{
-						var skill = (i < m_SkillEntries.Count) ? m_SkillEntries[i] : null;
-						if (skill == null)
-						{
-							binidx.Write(-1); // lookup
-							binidx.Write(0); // length
-							binidx.Write(0); // extra
-						}
-						else
-						{
-							binidx.Write((int)fsmul.Position); //lookup
-							var length = (int)fsmul.Position;
-							binmul.Write(skill.IsAction);
+					binidx.Write(-1); // lookup
+					binidx.Write(0); // length
+					binidx.Write(0); // extra
+				}
+				else
+				{
+					binidx.Write((int)fsmul.Position); //lookup
+					var length = (int)fsmul.Position;
+					binmul.Write(skill.IsAction);
 
-							var namebytes = Encoding.Default.GetBytes(skill.Name);
-							binmul.Write(namebytes);
-							binmul.Write((byte)0); //nullterminated
+					var namebytes = Encoding.Default.GetBytes(skill.Name);
+					binmul.Write(namebytes);
+					binmul.Write((byte)0); //nullterminated
 
-							length = (int)fsmul.Position - length;
-							binidx.Write(length);
-							binidx.Write(skill.Extra);
-						}
-					}
+					length = (int)fsmul.Position - length;
+					binidx.Write(length);
+					binidx.Write(skill.Extra);
 				}
 			}
 		}

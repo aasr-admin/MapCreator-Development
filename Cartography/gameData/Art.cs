@@ -1,18 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Security.Cryptography;
 
 namespace UltimaSDK
 {
 	public sealed class Art
 	{
-		private static FileIndex m_FileIndex = new FileIndex("Artidx.mul", "Art.mul", 0x14000/*0x13FDC*/, 4);
+		private static FileIndex m_FileIndex = new("Artidx.mul", "Art.mul", 0x14000/*0x13FDC*/, 4);
 		private static Bitmap[] m_Cache;
 		private static bool[] m_Removed;
-		private static readonly Hashtable m_patched = new Hashtable();
+		private static readonly Hashtable m_patched = new();
 		public static bool Modified = false;
 
 		private static byte[] m_StreamBuffer;
@@ -98,7 +95,7 @@ namespace UltimaSDK
 		/// <param name="bmp"></param>
 		public static void ReplaceStatic(int index, Bitmap bmp)
 		{
-			index = Art.GetLegalItemID(index);
+			index = GetLegalItemID(index);
 			index += 0x4000;
 
 			m_Cache[index] = bmp;
@@ -135,7 +132,7 @@ namespace UltimaSDK
 		/// <param name="index"></param>
 		public static void RemoveStatic(int index)
 		{
-			index = Art.GetLegalItemID(index);
+			index = GetLegalItemID(index);
 			index += 0x4000;
 
 			m_Removed[index] = true;
@@ -182,10 +179,7 @@ namespace UltimaSDK
 				return false;
 			}
 
-			if (Validbuffer == null)
-			{
-				Validbuffer = new byte[4];
-			}
+			Validbuffer ??= new byte[4];
 
 			_ = stream.Seek(4, SeekOrigin.Current);
 			_ = stream.Read(Validbuffer, 0, 4);
@@ -590,196 +584,192 @@ namespace UltimaSDK
 			var idx = Path.Combine(path, "artidx.mul");
 			var mul = Path.Combine(path, "art.mul");
 
-			using (FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write), fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+			using FileStream fsidx = new(idx, FileMode.Create, FileAccess.Write, FileShare.Write), fsmul = new(mul, FileMode.Create, FileAccess.Write, FileShare.Write);
+			var memidx = new MemoryStream();
+			var memmul = new MemoryStream();
+			var sha = new SHA256Managed();
+			//StreamWriter Tex = new StreamWriter(new FileStream("d:/artlog.txt", FileMode.Create, FileAccess.ReadWrite));
+
+			using BinaryWriter binidx = new(memidx),
+								binmul = new(memmul);
+			for (var index = 0; index < GetIdxLength(); index++)
 			{
-				var memidx = new MemoryStream();
-				var memmul = new MemoryStream();
-				var sha = new SHA256Managed();
-				//StreamWriter Tex = new StreamWriter(new FileStream("d:/artlog.txt", FileMode.Create, FileAccess.ReadWrite));
-
-				using (BinaryWriter binidx = new BinaryWriter(memidx),
-									binmul = new BinaryWriter(memmul))
+				Files.FireFileSaveEvent();
+				if (m_Cache[index] == null)
 				{
-					for (var index = 0; index < GetIdxLength(); index++)
+					if (index < 0x4000)
 					{
-						Files.FireFileSaveEvent();
-						if (m_Cache[index] == null)
+						m_Cache[index] = GetLand(index);
+					}
+					else
+					{
+						m_Cache[index] = GetStatic(index - 0x4000, false);
+					}
+				}
+
+				var bmp = m_Cache[index];
+				if ((bmp == null) || m_Removed[index])
+				{
+					binidx.Write(-1); // lookup
+					binidx.Write(0); // length
+					binidx.Write(-1); // extra
+									  //Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, (int)-1, (int)-1));
+				}
+				else if (index < 0x4000)
+				{
+					var ms = new MemoryStream();
+					bmp.Save(ms, ImageFormat.Bmp);
+					var checksum = sha.ComputeHash(ms.ToArray());
+					CheckSums sum;
+					if (compareSaveImagesLand(checksum, out sum))
+					{
+						binidx.Write(sum.pos); //lookup
+						binidx.Write(sum.length);
+						binidx.Write(0);
+						//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, (int)sum.pos, (int)sum.length));
+						//Tex.WriteLine(System.String.Format("0x{0:X4} -> 0x{1:X4}", sum.index, index));
+						continue;
+					}
+					//land
+					var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
+					var line = (ushort*)bd.Scan0;
+					var delta = bd.Stride >> 1;
+					binidx.Write((int)binmul.BaseStream.Position); //lookup
+					var length = (int)binmul.BaseStream.Position;
+					var x = 22;
+					var y = 0;
+					var linewidth = 2;
+					for (var m = 0; m < 22; ++m, ++y, line += delta, linewidth += 2)
+					{
+						--x;
+						var cur = line;
+						for (var n = 0; n < linewidth; ++n)
 						{
-							if (index < 0x4000)
-							{
-								m_Cache[index] = GetLand(index);
-							}
-							else
-							{
-								m_Cache[index] = GetStatic(index - 0x4000, false);
-							}
-						}
-
-						var bmp = m_Cache[index];
-						if ((bmp == null) || m_Removed[index])
-						{
-							binidx.Write(-1); // lookup
-							binidx.Write(0); // length
-							binidx.Write(-1); // extra
-											  //Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, (int)-1, (int)-1));
-						}
-						else if (index < 0x4000)
-						{
-							var ms = new MemoryStream();
-							bmp.Save(ms, ImageFormat.Bmp);
-							var checksum = sha.ComputeHash(ms.ToArray());
-							CheckSums sum;
-							if (compareSaveImagesLand(checksum, out sum))
-							{
-								binidx.Write(sum.pos); //lookup
-								binidx.Write(sum.length);
-								binidx.Write(0);
-								//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, (int)sum.pos, (int)sum.length));
-								//Tex.WriteLine(System.String.Format("0x{0:X4} -> 0x{1:X4}", sum.index, index));
-								continue;
-							}
-							//land
-							var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
-							var line = (ushort*)bd.Scan0;
-							var delta = bd.Stride >> 1;
-							binidx.Write((int)binmul.BaseStream.Position); //lookup
-							var length = (int)binmul.BaseStream.Position;
-							var x = 22;
-							var y = 0;
-							var linewidth = 2;
-							for (var m = 0; m < 22; ++m, ++y, line += delta, linewidth += 2)
-							{
-								--x;
-								var cur = line;
-								for (var n = 0; n < linewidth; ++n)
-								{
-									binmul.Write((ushort)(cur[x + n] ^ 0x8000));
-								}
-							}
-
-							x = 0;
-							linewidth = 44;
-							y = 22;
-							line = (ushort*)bd.Scan0;
-							line += delta * 22;
-							for (var m = 0; m < 22; m++, y++, line += delta, ++x, linewidth -= 2)
-							{
-								var cur = line;
-								for (var n = 0; n < linewidth; n++)
-								{
-									binmul.Write((ushort)(cur[x + n] ^ 0x8000));
-								}
-							}
-
-							var start = length;
-							length = (int)binmul.BaseStream.Position - length;
-							binidx.Write(length);
-							binidx.Write(0);
-							bmp.UnlockBits(bd);
-							var s = new CheckSums() { pos = start, length = length, checksum = checksum, index = index };
-							//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, start, length));
-							checksumsLand.Add(s);
-						}
-						else
-						{
-							var ms = new MemoryStream();
-							bmp.Save(ms, ImageFormat.Bmp);
-							var checksum = sha.ComputeHash(ms.ToArray());
-							CheckSums sum;
-							if (compareSaveImagesStatic(checksum, out sum))
-							{
-								binidx.Write(sum.pos); //lookup
-								binidx.Write(sum.length);
-								binidx.Write(0);
-								//Tex.WriteLine(System.String.Format("0x{0:X4} -> 0x{1:X4}", sum.index, index));
-								//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, sum.pos, sum.length));
-								continue;
-							}
-
-							// art
-							var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
-							var line = (ushort*)bd.Scan0;
-							var delta = bd.Stride >> 1;
-							binidx.Write((int)binmul.BaseStream.Position); //lookup
-							var length = (int)binmul.BaseStream.Position;
-							binmul.Write(1234); // header
-							binmul.Write((short)bmp.Width);
-							binmul.Write((short)bmp.Height);
-							var lookup = (int)binmul.BaseStream.Position;
-							var streamloc = lookup + (bmp.Height * 2);
-							var width = 0;
-							for (var i = 0; i < bmp.Height; ++i)// fill lookup
-							{
-								binmul.Write(width);
-							}
-
-							var X = 0;
-							for (var Y = 0; Y < bmp.Height; ++Y, line += delta)
-							{
-								var cur = line;
-								width = (int)(binmul.BaseStream.Position - streamloc) / 2;
-								_ = binmul.BaseStream.Seek(lookup + (Y * 2), SeekOrigin.Begin);
-								binmul.Write(width);
-								_ = binmul.BaseStream.Seek(streamloc + (width * 2), SeekOrigin.Begin);
-								var i = 0;
-								var j = 0;
-								X = 0;
-								while (i < bmp.Width)
-								{
-									i = X;
-									for (i = X; i <= bmp.Width; ++i)
-									{
-										//first pixel set
-										if (i < bmp.Width)
-										{
-											if (cur[i] != 0)
-											{
-												break;
-											}
-										}
-									}
-
-									if (i < bmp.Width)
-									{
-										for (j = i + 1; j < bmp.Width; ++j)
-										{
-											//next non set pixel
-											if (cur[j] == 0)
-											{
-												break;
-											}
-										}
-
-										binmul.Write((short)(i - X)); //xoffset
-										binmul.Write((short)(j - i)); //run
-										for (var p = i; p < j; ++p)
-										{
-											binmul.Write((ushort)(cur[p] ^ 0x8000));
-										}
-
-										X = j;
-									}
-								}
-
-								binmul.Write((short)0); //xOffset
-								binmul.Write((short)0); //Run
-							}
-
-							var start = length;
-							length = (int)binmul.BaseStream.Position - length;
-							binidx.Write(length);
-							binidx.Write(0);
-							bmp.UnlockBits(bd);
-							var s = new CheckSums() { pos = start, length = length, checksum = checksum, index = index };
-							//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, start, length));
-							checksumsStatic.Add(s);
+							binmul.Write((ushort)(cur[x + n] ^ 0x8000));
 						}
 					}
 
-					memidx.WriteTo(fsidx);
-					memmul.WriteTo(fsmul);
+					x = 0;
+					linewidth = 44;
+					y = 22;
+					line = (ushort*)bd.Scan0;
+					line += delta * 22;
+					for (var m = 0; m < 22; m++, y++, line += delta, ++x, linewidth -= 2)
+					{
+						var cur = line;
+						for (var n = 0; n < linewidth; n++)
+						{
+							binmul.Write((ushort)(cur[x + n] ^ 0x8000));
+						}
+					}
+
+					var start = length;
+					length = (int)binmul.BaseStream.Position - length;
+					binidx.Write(length);
+					binidx.Write(0);
+					bmp.UnlockBits(bd);
+					var s = new CheckSums() { pos = start, length = length, checksum = checksum, index = index };
+					//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, start, length));
+					checksumsLand.Add(s);
+				}
+				else
+				{
+					var ms = new MemoryStream();
+					bmp.Save(ms, ImageFormat.Bmp);
+					var checksum = sha.ComputeHash(ms.ToArray());
+					CheckSums sum;
+					if (compareSaveImagesStatic(checksum, out sum))
+					{
+						binidx.Write(sum.pos); //lookup
+						binidx.Write(sum.length);
+						binidx.Write(0);
+						//Tex.WriteLine(System.String.Format("0x{0:X4} -> 0x{1:X4}", sum.index, index));
+						//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, sum.pos, sum.length));
+						continue;
+					}
+
+					// art
+					var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
+					var line = (ushort*)bd.Scan0;
+					var delta = bd.Stride >> 1;
+					binidx.Write((int)binmul.BaseStream.Position); //lookup
+					var length = (int)binmul.BaseStream.Position;
+					binmul.Write(1234); // header
+					binmul.Write((short)bmp.Width);
+					binmul.Write((short)bmp.Height);
+					var lookup = (int)binmul.BaseStream.Position;
+					var streamloc = lookup + (bmp.Height * 2);
+					var width = 0;
+					for (var i = 0; i < bmp.Height; ++i)// fill lookup
+					{
+						binmul.Write(width);
+					}
+
+					var X = 0;
+					for (var Y = 0; Y < bmp.Height; ++Y, line += delta)
+					{
+						var cur = line;
+						width = (int)(binmul.BaseStream.Position - streamloc) / 2;
+						_ = binmul.BaseStream.Seek(lookup + (Y * 2), SeekOrigin.Begin);
+						binmul.Write(width);
+						_ = binmul.BaseStream.Seek(streamloc + (width * 2), SeekOrigin.Begin);
+						var i = 0;
+						var j = 0;
+						X = 0;
+						while (i < bmp.Width)
+						{
+							i = X;
+							for (i = X; i <= bmp.Width; ++i)
+							{
+								//first pixel set
+								if (i < bmp.Width)
+								{
+									if (cur[i] != 0)
+									{
+										break;
+									}
+								}
+							}
+
+							if (i < bmp.Width)
+							{
+								for (j = i + 1; j < bmp.Width; ++j)
+								{
+									//next non set pixel
+									if (cur[j] == 0)
+									{
+										break;
+									}
+								}
+
+								binmul.Write((short)(i - X)); //xoffset
+								binmul.Write((short)(j - i)); //run
+								for (var p = i; p < j; ++p)
+								{
+									binmul.Write((ushort)(cur[p] ^ 0x8000));
+								}
+
+								X = j;
+							}
+						}
+
+						binmul.Write((short)0); //xOffset
+						binmul.Write((short)0); //Run
+					}
+
+					var start = length;
+					length = (int)binmul.BaseStream.Position - length;
+					binidx.Write(length);
+					binidx.Write(0);
+					bmp.UnlockBits(bd);
+					var s = new CheckSums() { pos = start, length = length, checksum = checksum, index = index };
+					//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, start, length));
+					checksumsStatic.Add(s);
 				}
 			}
+
+			memidx.WriteTo(fsidx);
+			memmul.WriteTo(fsmul);
 		}
 
 		private static bool compareSaveImagesLand(byte[] newchecksum, out CheckSums sum)

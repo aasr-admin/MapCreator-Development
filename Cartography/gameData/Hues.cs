@@ -1,7 +1,4 @@
-using System;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -30,45 +27,43 @@ namespace UltimaSDK
 
 			if (path != null)
 			{
-				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+				var blockCount = (int)fs.Length / 708;
+
+				if (blockCount > 375)
 				{
-					var blockCount = (int)fs.Length / 708;
+					blockCount = 375;
+				}
 
-					if (blockCount > 375)
+				m_Header = new int[blockCount];
+				unsafe
+				{
+					var structsize = Marshal.SizeOf(typeof(HueDataMul));
+					var buffer = new byte[blockCount * (4 + (8 * structsize))];
+					var gc = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+					try
 					{
-						blockCount = 375;
-					}
+						_ = fs.Read(buffer, 0, buffer.Length);
+						long currpos = 0;
 
-					m_Header = new int[blockCount];
-					unsafe
-					{
-						var structsize = Marshal.SizeOf(typeof(HueDataMul));
-						var buffer = new byte[blockCount * (4 + (8 * structsize))];
-						var gc = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-						try
+						for (var i = 0; i < blockCount; ++i)
 						{
-							_ = fs.Read(buffer, 0, buffer.Length);
-							long currpos = 0;
+							var ptrheader = new IntPtr(gc.AddrOfPinnedObject() + currpos);
+							currpos += 4;
+							m_Header[i] = (int)Marshal.PtrToStructure(ptrheader, typeof(int));
 
-							for (var i = 0; i < blockCount; ++i)
+							for (var j = 0; j < 8; ++j, ++index)
 							{
-								var ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
-								currpos += 4;
-								m_Header[i] = (int)Marshal.PtrToStructure(ptrheader, typeof(int));
-
-								for (var j = 0; j < 8; ++j, ++index)
-								{
-									var ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
-									currpos += structsize;
-									var cur = (HueDataMul)Marshal.PtrToStructure(ptr, typeof(HueDataMul));
-									List[index] = new Hue(index, cur);
-								}
+								var ptr = new IntPtr(gc.AddrOfPinnedObject() + currpos);
+								currpos += structsize;
+								var cur = (HueDataMul)Marshal.PtrToStructure(ptr, typeof(HueDataMul));
+								List[index] = new Hue(index, cur);
 							}
 						}
-						finally
-						{
-							gc.Free();
-						}
+					}
+					finally
+					{
+						gc.Free();
 					}
 				}
 			}
@@ -82,38 +77,34 @@ namespace UltimaSDK
 		public static void Save(string path)
 		{
 			var mul = Path.Combine(path, "hues.mul");
-			using (var fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+			using var fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write);
+			using var binmul = new BinaryWriter(fsmul);
+			var index = 0;
+			for (var i = 0; i < m_Header.Length; ++i)
 			{
-				using (var binmul = new BinaryWriter(fsmul))
+				binmul.Write(m_Header[i]);
+				for (var j = 0; j < 8; ++j, ++index)
 				{
-					var index = 0;
-					for (var i = 0; i < m_Header.Length; ++i)
+					for (var c = 0; c < 32; ++c)
 					{
-						binmul.Write(m_Header[i]);
-						for (var j = 0; j < 8; ++j, ++index)
-						{
-							for (var c = 0; c < 32; ++c)
-							{
-								binmul.Write((short)(List[index].Colors[c] ^ 0x8000));
-							}
-
-							binmul.Write((short)(List[index].TableStart ^ 0x8000));
-							binmul.Write((short)(List[index].TableEnd ^ 0x8000));
-							var b = new byte[20];
-							if (List[index].Name != null)
-							{
-								var bb = Encoding.Default.GetBytes(List[index].Name);
-								if (bb.Length > 20)
-								{
-									Array.Resize(ref bb, 20);
-								}
-
-								bb.CopyTo(b, 0);
-							}
-
-							binmul.Write(b);
-						}
+						binmul.Write((short)(List[index].Colors[c] ^ 0x8000));
 					}
+
+					binmul.Write((short)(List[index].TableStart ^ 0x8000));
+					binmul.Write((short)(List[index].TableEnd ^ 0x8000));
+					var b = new byte[20];
+					if (List[index].Name != null)
+					{
+						var bb = Encoding.Default.GetBytes(List[index].Name);
+						if (bb.Length > 20)
+						{
+							Array.Resize(ref bb, 20);
+						}
+
+						bb.CopyTo(b, 0);
+					}
+
+					binmul.Write(b);
 				}
 			}
 		}
@@ -127,7 +118,7 @@ namespace UltimaSDK
 		{
 			index &= 0x3FFF;
 
-			if (index >= 0 && index < 3000)
+			if (index is >= 0 and < 3000)
 			{
 				return List[index];
 			}
@@ -408,15 +399,13 @@ namespace UltimaSDK
 
 		public void Export(string FileName)
 		{
-			using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), System.Text.Encoding.GetEncoding(1252)))
+			using var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252));
+			Tex.WriteLine(Name);
+			Tex.WriteLine(((short)(TableStart ^ 0x8000)).ToString());
+			Tex.WriteLine(((short)(TableEnd ^ 0x8000)).ToString());
+			for (var i = 0; i < Colors.Length; ++i)
 			{
-				Tex.WriteLine(Name);
-				Tex.WriteLine(((short)(TableStart ^ 0x8000)).ToString());
-				Tex.WriteLine(((short)(TableEnd ^ 0x8000)).ToString());
-				for (var i = 0; i < Colors.Length; ++i)
-				{
-					Tex.WriteLine(((short)(Colors[i] ^ 0x8000)).ToString());
-				}
+				Tex.WriteLine(((short)(Colors[i] ^ 0x8000)).ToString());
 			}
 		}
 
@@ -427,45 +416,43 @@ namespace UltimaSDK
 				return;
 			}
 
-			using (var sr = new StreamReader(FileName))
+			using var sr = new StreamReader(FileName);
+			string line;
+			var i = -3;
+			while ((line = sr.ReadLine()) != null)
 			{
-				string line;
-				var i = -3;
-				while ((line = sr.ReadLine()) != null)
+				line = line.Trim();
+				try
 				{
-					line = line.Trim();
-					try
+					if (i >= Colors.Length)
 					{
-						if (i >= Colors.Length)
-						{
-							break;
-						}
-
-						if (i == -3)
-						{
-							Name = line;
-						}
-						else if (i == -2)
-						{
-							TableStart = (short)(UInt16.Parse(line) | 0x8000);
-						}
-						else if (i == -1)
-						{
-							TableEnd = (short)(UInt16.Parse(line) | 0x8000);
-						}
-						else
-						{
-							Colors[i] = (short)(UInt16.Parse(line) | 0x8000);
-						}
-
-						++i;
+						break;
 					}
-					catch { }
+
+					if (i == -3)
+					{
+						Name = line;
+					}
+					else if (i == -2)
+					{
+						TableStart = (short)(UInt16.Parse(line) | 0x8000);
+					}
+					else if (i == -1)
+					{
+						TableEnd = (short)(UInt16.Parse(line) | 0x8000);
+					}
+					else
+					{
+						Colors[i] = (short)(UInt16.Parse(line) | 0x8000);
+					}
+
+					++i;
 				}
+				catch { }
 			}
 		}
 	}
-	[StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public unsafe struct HueDataMul
 	{
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]

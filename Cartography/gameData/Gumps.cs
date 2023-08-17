@@ -1,18 +1,15 @@
-using System;
 using System.Collections;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 
 namespace UltimaSDK
 {
 	public sealed class Gumps
 	{
-		private static FileIndex m_FileIndex = new FileIndex("Gumpidx.mul", "Gumpart.mul", 12);
+		private static FileIndex m_FileIndex = new("Gumpidx.mul", "Gumpart.mul", 12);
 
 		private static Bitmap[] m_Cache;
 		private static bool[] m_Removed;
-		private static readonly Hashtable m_patched = new Hashtable();
+		private static readonly Hashtable m_patched = new();
 
 		private static byte[] m_PixelBuffer;
 		private static byte[] m_StreamBuffer;
@@ -458,85 +455,81 @@ namespace UltimaSDK
 		{
 			var idx = Path.Combine(path, "Gumpidx.mul");
 			var mul = Path.Combine(path, "Gumpart.mul");
-			using (FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
-							  fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+			using FileStream fsidx = new(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
+							  fsmul = new(mul, FileMode.Create, FileAccess.Write, FileShare.Write);
+			using BinaryWriter binidx = new(fsidx),
+								binmul = new(fsmul);
+			for (var index = 0; index < m_Cache.Length; index++)
 			{
-				using (BinaryWriter binidx = new BinaryWriter(fsidx),
-									binmul = new BinaryWriter(fsmul))
+				if (m_Cache[index] == null)
 				{
-					for (var index = 0; index < m_Cache.Length; index++)
+					m_Cache[index] = GetGump(index);
+				}
+
+				var bmp = m_Cache[index];
+				if ((bmp == null) || m_Removed[index])
+				{
+					binidx.Write(-1); // lookup
+					binidx.Write(-1); // length
+					binidx.Write(-1); // extra
+				}
+				else
+				{
+					var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
+					var line = (ushort*)bd.Scan0;
+					var delta = bd.Stride >> 1;
+
+					binidx.Write((int)fsmul.Position); //lookup
+					var length = (int)fsmul.Position;
+					var fill = 0;
+					for (var i = 0; i < bmp.Height; ++i)
 					{
-						if (m_Cache[index] == null)
-						{
-							m_Cache[index] = GetGump(index);
-						}
+						binmul.Write(fill);
+					}
 
-						var bmp = m_Cache[index];
-						if ((bmp == null) || m_Removed[index])
-						{
-							binidx.Write(-1); // lookup
-							binidx.Write(-1); // length
-							binidx.Write(-1); // extra
-						}
-						else
-						{
-							var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
-							var line = (ushort*)bd.Scan0;
-							var delta = bd.Stride >> 1;
+					for (var Y = 0; Y < bmp.Height; ++Y, line += delta)
+					{
+						var cur = line;
 
-							binidx.Write((int)fsmul.Position); //lookup
-							var length = (int)fsmul.Position;
-							var fill = 0;
-							for (var i = 0; i < bmp.Height; ++i)
+						var X = 0;
+						var current = (int)fsmul.Position;
+						_ = fsmul.Seek(length + (Y * 4), SeekOrigin.Begin);
+						var offset = (current - length) / 4;
+						binmul.Write(offset);
+						_ = fsmul.Seek(length + (offset * 4), SeekOrigin.Begin);
+
+						while (X < bd.Width)
+						{
+							var Run = 1;
+							var c = cur[X];
+							while ((X + Run) < bd.Width)
 							{
-								binmul.Write(fill);
-							}
-
-							for (var Y = 0; Y < bmp.Height; ++Y, line += delta)
-							{
-								var cur = line;
-
-								var X = 0;
-								var current = (int)fsmul.Position;
-								_ = fsmul.Seek(length + (Y * 4), SeekOrigin.Begin);
-								var offset = (current - length) / 4;
-								binmul.Write(offset);
-								_ = fsmul.Seek(length + (offset * 4), SeekOrigin.Begin);
-
-								while (X < bd.Width)
+								if (c != cur[X + Run])
 								{
-									var Run = 1;
-									var c = cur[X];
-									while ((X + Run) < bd.Width)
-									{
-										if (c != cur[X + Run])
-										{
-											break;
-										}
-
-										++Run;
-									}
-
-									if (c == 0)
-									{
-										binmul.Write(c);
-									}
-									else
-									{
-										binmul.Write((ushort)(c ^ 0x8000));
-									}
-
-									binmul.Write((short)Run);
-									X += Run;
+									break;
 								}
+
+								++Run;
 							}
 
-							length = (int)fsmul.Position - length;
-							binidx.Write(length);
-							binidx.Write((bmp.Width << 16) + bmp.Height);
-							bmp.UnlockBits(bd);
+							if (c == 0)
+							{
+								binmul.Write(c);
+							}
+							else
+							{
+								binmul.Write((ushort)(c ^ 0x8000));
+							}
+
+							binmul.Write((short)Run);
+							X += Run;
 						}
 					}
+
+					length = (int)fsmul.Position - length;
+					binidx.Write(length);
+					binidx.Write((bmp.Width << 16) + bmp.Height);
+					bmp.UnlockBits(bd);
 				}
 			}
 		}

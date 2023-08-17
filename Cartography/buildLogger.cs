@@ -1,129 +1,128 @@
-﻿using System.Drawing.Printing;
+﻿using Microsoft.VisualBasic;
 
-using Microsoft.VisualBasic;
+using System.Drawing.Printing;
 
 namespace Compiler
 {
-    public partial class buildLogger : Form
-    {
-        private string m_LogName;
-        private DateTime m_Task_Start;
-        private DateTime m_Task_End;
-        private readonly PrintDocument document = new();
-        private readonly PrintDialog dialog = new();
+	public partial class BuildLogger : Form
+	{
+		private DateTime _taskStart;
+		private DateTime _taskEnd;
 
-        public buildLogger()
-        {
-            var buildLogger = this;
-            base.Load += new EventHandler(buildLogger.buildLogger_Load);
-            document.PrintPage += new PrintPageEventHandler(document_PrintPage);
+		private readonly PrintDocument _document = new();
+		private readonly PrintDialog _dialog = new();
 
-            InitializeComponent();
-        }
+		public BuildLogger()
+		{
+			Load += BuildLogger_Load;
 
-        private void buildLogger_Load(object? sender, EventArgs e)
-        {
-            var logMessageTarget = buildLogger_textBox_logDisplay;
+			_document.PrintPage += Document_PrintPage;
 
-            logMessageTarget.Text = string.Concat("MapCreator: Logger                      |  \r", DateTime.UtcNow.ToString("dd.MM.yyyy - hh:mm:ss tt\r\n"));
-            logMessageTarget.Text = string.Concat(logMessageTarget.Text, "========================================\r\n");
+			InitializeComponent();
+		}
 
-            #region This Lists All Assembies Used By MapCreator On The Log
+		private void BuildLogger_Load(object sender, EventArgs e)
+		{
+			var logMessageTarget = buildLogger_textBox_logDisplay;
 
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+			logMessageTarget.Text = String.Concat("MapCreator: Logger                      |  \r", DateTime.UtcNow.ToString("dd.MM.yyyy - hh:mm:ss tt\r\n"));
+			logMessageTarget.Text = String.Concat(logMessageTarget.Text, "========================================\r\n");
 
-            for (var i = 0; i < assemblies.Length; i++)
-            {
-                var assembly = assemblies[i];
+			#region This Lists All Assembies Used By MapCreator On The Log
 
-                if (assembly.EntryPoint != null)
-                {
-                    m_LogName = assembly.EntryPoint.DeclaringType.Name;
-                    var name = assembly.GetName();
+			var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-                    logMessageTarget = buildLogger_textBox_logDisplay;
-                    logMessageTarget.Text = string.Concat(logMessageTarget.Text, string.Format("{0} version:{1}\r\n", name.Name, name.Version.ToString()));
+			for (var i = 0; i < assemblies.Length; i++)
+			{
+				var assembly = assemblies[i];
 
-                    var referencedAssemblies = assembly.GetReferencedAssemblies();
+				if (assembly.EntryPoint != null)
+				{
+					var name = assembly.GetName();
 
-                    for (var j = 0; j < referencedAssemblies.Length; j++)
-                    {
-                        var assemblyName = referencedAssemblies[j];
+					logMessageTarget = buildLogger_textBox_logDisplay;
+					logMessageTarget.Text = String.Concat(logMessageTarget.Text, String.Format("{0} version:{1}\r\n", name.Name, name.Version.ToString()));
 
-                        logMessageTarget = buildLogger_textBox_logDisplay;
-                        logMessageTarget.Text = string.Concat(logMessageTarget.Text, string.Format("{0} version:{1}\r\n", assemblyName.Name, assemblyName.Version.ToString()));
-                    }
-                }
-            }
+					var referencedAssemblies = assembly.GetReferencedAssemblies();
 
-            logMessageTarget = buildLogger_textBox_logDisplay;
-            logMessageTarget.Text = string.Concat(logMessageTarget.Text, "\r\n");
+					for (var j = 0; j < referencedAssemblies.Length; j++)
+					{
+						var assemblyName = referencedAssemblies[j];
 
-            #endregion
-        }
+						logMessageTarget = buildLogger_textBox_logDisplay;
+						logMessageTarget.Text = String.Concat(logMessageTarget.Text, String.Format("{0} version:{1}\r\n", assemblyName.Name, assemblyName.Version.ToString()));
+					}
+				}
+			}
 
-        /// LoggerForm Output
-        public void StartTask()
-        {
-            m_Task_Start = DateTime.UtcNow;
-        }
+			logMessageTarget = buildLogger_textBox_logDisplay;
+			logMessageTarget.Text = String.Concat(logMessageTarget.Text, "\r\n");
 
-        public void LogMessage(string Message)
-        {
-            var textLog = buildLogger_textBox_logDisplay;
-            textLog.Text = string.Concat(textLog.Text, Message, "\r\n");
-            Refresh();
-        }
+			#endregion
+		}
 
-        public void LogTimeStamp()
-        {
-            var textLog = buildLogger_textBox_logDisplay;
-            textLog.Text = string.Concat(textLog.Text, string.Format("  Task:{0:dd/MMM/yyyy hh:mm:ss}", m_Task_Start));
-            textLog = buildLogger_textBox_logDisplay;
-            textLog.Text = string.Concat(textLog.Text, " === > ");
-            textLog = buildLogger_textBox_logDisplay;
-            textLog.Text = string.Concat(textLog.Text, string.Format("{0:hh:mm:ss}", m_Task_End));
-            textLog = buildLogger_textBox_logDisplay;
-            textLog.Text = string.Concat(textLog.Text, string.Format("  Total:{0} seconds\r\n", DateAndTime.DateDiff(DateInterval.Second, m_Task_Start, m_Task_End, FirstDayOfWeek.Sunday, FirstWeekOfYear.Jan1)));
-            Refresh();
-        }
+		/// LoggerForm Output
+		public void StartTask()
+		{
+			_taskStart = DateTime.UtcNow;
+		}
 
-        public void EndTask()
-        {
-            m_Task_End = DateTime.UtcNow;
-        }
+		public void LogMessage(string Message)
+		{
+			var textLog = buildLogger_textBox_logDisplay;
+			textLog.Text = String.Concat(textLog.Text, Message, "\r\n");
+			Refresh();
+		}
 
-        /// LoggerForm Saves
-        private void buildLogger_menuStrip_button_saveLog_Click(object sender, EventArgs e)
-        {
-            var Log = new SaveFileDialog
-            {
-                FileName = "DefaultLog.txt",
-                Filter = "ProgressLog | (*.txt)"
-            };
+		public void LogTimeStamp()
+		{
+			var textLog = buildLogger_textBox_logDisplay;
+			textLog.Text = String.Concat(textLog.Text, String.Format("  Task:{0:dd/MMM/yyyy hh:mm:ss}", _taskStart));
+			textLog = buildLogger_textBox_logDisplay;
+			textLog.Text = String.Concat(textLog.Text, " === > ");
+			textLog = buildLogger_textBox_logDisplay;
+			textLog.Text = String.Concat(textLog.Text, String.Format("{0:hh:mm:ss}", _taskEnd));
+			textLog = buildLogger_textBox_logDisplay;
+			textLog.Text = String.Concat(textLog.Text, String.Format("  Total:{0} seconds\r\n", DateAndTime.DateDiff(DateInterval.Second, _taskStart, _taskEnd, FirstDayOfWeek.Sunday, FirstWeekOfYear.Jan1)));
+			Refresh();
+		}
 
-            if (Log.ShowDialog() == DialogResult.OK)
-            {
-                using var sw = new StreamWriter(Log.FileName, true);
-                sw.Write(buildLogger_textBox_logDisplay.Text);
-                sw.Flush();
-            }
-        }
+		public void EndTask()
+		{
+			_taskEnd = DateTime.UtcNow;
+		}
 
-        /// LoggerForm Prints
-        private void document_PrintPage(object sender, PrintPageEventArgs e)
-        {
-            e.Graphics.DrawString(buildLogger_textBox_logDisplay.Text, new Font("Arial", 20, FontStyle.Regular), Brushes.Black, 20, 20);
-        }
+		/// LoggerForm Saves
+		private void BuildLogger_menuStrip_button_saveLog_Click(object sender, EventArgs e)
+		{
+			var Log = new SaveFileDialog
+			{
+				FileName = "DefaultLog.txt",
+				Filter = "ProgressLog | (*.txt)"
+			};
 
-        private void buildLogger_menuStrip_button_printLog_Click(object sender, EventArgs e)
-        {
-            dialog.Document = document;
+			if (Log.ShowDialog() == DialogResult.OK)
+			{
+				using var sw = new StreamWriter(Log.FileName, true);
+				sw.Write(buildLogger_textBox_logDisplay.Text);
+				sw.Flush();
+			}
+		}
 
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                document.Print();
-            }
-        }
-    }
+		/// LoggerForm Prints
+		private void Document_PrintPage(object sender, PrintPageEventArgs e)
+		{
+			e.Graphics.DrawString(buildLogger_textBox_logDisplay.Text, new Font("Arial", 20, FontStyle.Regular), Brushes.Black, 20, 20);
+		}
+
+		private void BuildLogger_menuStrip_button_printLog_Click(object sender, EventArgs e)
+		{
+			_dialog.Document = _document;
+
+			if (_dialog.ShowDialog() == DialogResult.OK)
+			{
+				_document.Print();
+			}
+		}
+	}
 }
