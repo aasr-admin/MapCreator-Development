@@ -432,7 +432,6 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MapCreator: Create Color Tables";
             TopMost = true;
-            Load += colorTables_Load;
             colorTables_menuStrip.ResumeLayout(false);
             colorTables_menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)colorTables_pictureBox_topDivider).EndInit();

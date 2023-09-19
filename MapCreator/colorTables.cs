@@ -1,9 +1,8 @@
-﻿using Cartography.compiler;
+﻿using Assets;
+
+using Cartography;
 
 using System.Diagnostics;
-using System.IO;
-
-using UltimaSDK;
 
 namespace MapCreator
 {
@@ -11,27 +10,20 @@ namespace MapCreator
 	{
 		private int i_Menu;
 
-		private readonly ClsAltitudeTable i_Altitude;
-		private readonly ClsTerrainTable i_Terrain;
+		private readonly AltitudeTable i_Altitude = new();
+		private readonly TerrainTable i_Terrain = new();
 
 		public colorTables()
 		{
 			MaximizeBox = false;
 			MinimizeBox = false;
 
-			var cTWB = this;
-
-			Load += new EventHandler(cTWB.colorTables_Load);
-			i_Menu = 0;
-			i_Altitude = new ClsAltitudeTable();
-			i_Terrain = new ClsTerrainTable();
-
 			InitializeComponent();
 		}
 
-		private void colorTables_Load(object? sender, EventArgs e)
+		protected override void OnLoad(EventArgs e)
 		{
-			i_Menu = 0;
+			base.OnLoad(e);
 
 			colorTables_pictureBox_tileDisplay.Visible = false;
 			colorTables_pictureBox_altitudeDisplay.Visible = false;
@@ -81,22 +73,22 @@ namespace MapCreator
 
 		private void colorTables_menuStrip_button_export_terrain_adobeColorTableACT_Click(object sender, EventArgs e)
 		{
-			i_Terrain.SaveACT();
+			//i_Terrain.SaveTable();
 		}
 
 		private void colorTables_menuStrip_button_export_terrain_adobeSwatchFileACO_Click(object sender, EventArgs e)
 		{
-			i_Terrain.SaveACO();
+			//i_Terrain.SaveSwatch();
 		}
 
 		private void colorTables_menuStrip_button_export_altitude_adobeColorTableACT_Click(object sender, EventArgs e)
 		{
-			i_Altitude.SaveACT();
+			//i_Altitude.SaveTable();
 		}
 
 		private void colorTables_menuStrip_button_export_altitude_adobeSwatchFileACO_Click(object sender, EventArgs e)
 		{
-			i_Altitude.SaveACO();
+			//i_Altitude.SaveSwatch();
 		}
 
 		#endregion
@@ -120,8 +112,9 @@ namespace MapCreator
 			i_Menu = 0;
 			colorTables_label_adobePhotoshopColorPalette.Text = "Terrain Color Table";
 
-			i_Terrain.Load();
-			i_Terrain.Display(colorTables_listBox_colorTableList);
+			//i_Terrain.LoadXml();
+
+			colorTables_listBox_colorTableList.Fill(i_Terrain);
 
 			colorTables_pictureBox_colorPalette.Hide();
 			colorTables_pictureBox_altitudeDisplay.Visible = false;
@@ -137,8 +130,9 @@ namespace MapCreator
 			i_Menu = 1;
 			colorTables_label_adobePhotoshopColorPalette.Text = "Altitude Color Table";
 
-			i_Altitude.Load();
-			i_Altitude.Display(colorTables_listBox_colorTableList);
+			//i_Altitude.LoadXml();
+
+			colorTables_listBox_colorTableList.Fill(i_Altitude);
 
 			colorTables_pictureBox_colorPalette.Hide();
 			colorTables_pictureBox_tileDisplay.Visible = false;
@@ -156,15 +150,19 @@ namespace MapCreator
 				{
 					case 0:
 						{
-							var selectedItem = (ClsTerrain)colorTables_listBox_colorTableList.SelectedItem;
-							colorTables_propertyGrid_colorTableProperties.SelectedObject = selectedItem;
-							colorTables_pictureBox_tileDisplay.Image = Art.GetLand(selectedItem.TileID);
+							colorTables_propertyGrid_colorTableProperties.SelectedObject = colorTables_listBox_colorTableList.SelectedItem;
+
+							if (colorTables_listBox_colorTableList.SelectedItem is Terrain terrain)
+							{
+								colorTables_pictureBox_tileDisplay.Image = AssetData.Art.GetLand(terrain.TileID);
+							}
+
 							break;
 						}
 					case 1:
 						{
-							var clsAltitude = (ClsAltitude)colorTables_listBox_colorTableList.SelectedItem;
-							colorTables_propertyGrid_colorTableProperties.SelectedObject = clsAltitude;
+							colorTables_propertyGrid_colorTableProperties.SelectedObject = colorTables_listBox_colorTableList.SelectedItem;
+
 							break;
 						}
 				}

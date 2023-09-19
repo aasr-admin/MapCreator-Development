@@ -777,7 +777,6 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MapCreator: Create Terrain Types";
             TopMost = true;
-            Load += createTerrainTypes_Load;
             ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_topDivider).EndInit();
             createTerrainTypes_mainMenu.ResumeLayout(false);
             createTerrainTypes_mainMenu.PerformLayout();

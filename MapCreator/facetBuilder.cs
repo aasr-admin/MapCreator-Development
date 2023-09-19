@@ -1,15 +1,9 @@
-﻿using Cartography.compiler;
-using Cartography.groupBoxControls;
+﻿using Cartography;
 
 using Compiler;
 
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
-
-using System.Collections;
 using System.Diagnostics;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Xml;
 
@@ -17,12 +11,16 @@ namespace MapCreator
 {
 	public partial class FacetBuilder : Form
 	{
-		private Bitmap i_Terrain;
-		private readonly ClsTerrainTable iTerrain;
-		private Bitmap i_Altitude;
-		private readonly ClsAltitudeTable iAltitude;
-		private readonly BuildLogger iLogger;
-		private bool i_RandomStatic;
+		private readonly BuildLogger _Logs = new();
+
+		private readonly UserPlugins _UserPlugins = new();
+		private readonly colorTables _ColorTables = new();
+		private readonly CommunityCredits _CommunityCredits = new();
+
+		private readonly TerrainTable _TerrainTable = new();
+		private readonly AltitudeTable _AltitudeTable = new();
+
+		private bool _RandomStatics = true;
 
 		public FacetBuilder()
 		{
@@ -30,112 +28,57 @@ namespace MapCreator
 
 			MaximizeBox = false;
 			MinimizeBox = false;
-
-			var facetBuilderForm = this;
-
-			Load += new EventHandler(facetBuilderForm.facetBuilder_Load);
-
-			iTerrain = new ClsTerrainTable();
-			iAltitude = new ClsAltitudeTable();
-			iLogger = new BuildLogger();
-			i_RandomStatic = true;
 		}
 
-		private void facetBuilder_Load(object? sender, EventArgs e)
+		protected override void OnLoad(EventArgs e)
 		{
-			if (Visible == true)
+			base.OnLoad(e);
+
+			if (Visible)
 			{
-				Control fBPW = facetBuilder_panel_workbench;
-				Thread.Sleep(25);
-				fBPW.Hide();
+				facetBuilder_panel_workbench.Hide();
 			}
+
+			_Logs.Show();
+
+			Location = new Point(_Logs.Location.X + 100, _Logs.Location.Y + 100);
 
 			#region Workbench Loading
 
-			/// GroupBox: Create Facet Bitmap Files
-
-			IEnumerator enumerator = null;
-
-			iLogger.Show();
-
-			var x = iLogger.Location.X + 100;
-			var location = iLogger.Location;
-			var point = new Point(x, location.Y + 100);
-			Location = point;
-
-			iTerrain.Load();
-			iAltitude.Load();
-
-			#region Data Directory Modification
-
-			var str = String.Format("{0}\\MapCompiler\\Engine\\{1}", Directory.GetCurrentDirectory(), "MapInfo.xml");
-
-			#endregion
-
 			facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text = Directory.GetCurrentDirectory();
-			iTerrain.Display(facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox);
+			facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text = Directory.GetCurrentDirectory();
+			facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text = Directory.GetCurrentDirectory();
+
+			var facetsPath = Path.Combine("MapCompiler", "Engine", "Facets.xml");
 
 			try
 			{
-				var xmlDocument = new XmlDocument();
-				xmlDocument.Load(str);
-				try
-				{
-					facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.Items.Clear();
-					try
-					{
-						enumerator = xmlDocument.SelectNodes("//Maps/Map").GetEnumerator();
-						while (enumerator.MoveNext())
-						{
-							var mapInfo = new MapInfo((XmlElement)enumerator.Current);
-							_ = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.Items.Add(mapInfo);
-						}
-					}
-					finally
-					{
-						if (enumerator is IDisposable)
-						{
-							((IDisposable)enumerator).Dispose();
-						}
-					}
-				}
-				catch (Exception exception1)
-				{
-					ProjectData.SetProjectError(exception1);
-					var exception = exception1;
-					iLogger.LogMessage(String.Format("XML Error:{0}", exception.Message));
-					ProjectData.ClearProjectError();
-				}
+				var facets = new FacetList();
+
+				facets.LoadXml(facetsPath);
+
+				facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.Fill(facets);
 			}
-			catch (Exception exception2)
+			catch 
 			{
-				ProjectData.SetProjectError(exception2);
-				iLogger.LogMessage(String.Format("Unable to find:{0}", str));
-				ProjectData.ClearProjectError();
+				_Logs.LogMessage($"Unable to find: {facetsPath}");
 			}
 
-			/// GroupBox: Sync Your Altitude Bitmap
+			//_TerrainTable.LoadXml();
+			//_AltitudeTable.LoadXml();
 
-			facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text = Directory.GetCurrentDirectory();
-
-			iTerrain.Load();
-			iAltitude.Load();
-
-			/// GroupBox: Compile Your New Facet
-
-			facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text = AppDomain.CurrentDomain.BaseDirectory;
+			facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox.Fill(_TerrainTable);
 
 			#endregion
 		}
 
 		private void facetBuilder_menuStrip_button_gettingStarted_createColorTables_Click(object sender, EventArgs e)
 		{
-			Hide();
+			//Hide();
 
-			var colorTablesForm = new colorTables();
-			colorTablesForm.Show();
+			//_Logs.Hide();
 
-			iLogger.Close();
+			_ = _ColorTables.ShowDialog(this);
 		}
 
 		private void facetBuilder_menuStrip_button_gettingStarted_mapCreatorManual_Click(object sender, EventArgs e)
@@ -172,12 +115,11 @@ namespace MapCreator
 
 		private void facetBuilder_menuStrip_button_userPlugins_Click(object sender, EventArgs e)
 		{
-			Hide();
+			//Hide();
 
-			var userPluginsForm = new UserPlugins();
-			userPluginsForm.Show();
+			//_Logs.Hide();
 
-			iLogger.Close();
+			_ = _UserPlugins.ShowDialog(this);
 		}
 
 		private void facetBuilder_menuStrip_button_uploadPlugin_Click(object sender, EventArgs e)
@@ -187,10 +129,11 @@ namespace MapCreator
 
 		private void facetBuilder_menuStrip_button_information_Click(object sender, EventArgs e)
 		{
-			var communityCreditsForm = new CommunityCredits();
-			communityCreditsForm.Show();
+			//Hide();
 
-			iLogger.Close();
+			//_Logs.Hide();
+
+			_ = _CommunityCredits.ShowDialog(this);
 		}
 
 		private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles_MouseEnter(object sender, EventArgs e)
@@ -200,23 +143,11 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles_Click(object sender, EventArgs e)
 		{
-			/// Show These Controls
-			Control fBPW = facetBuilder_panel_workbench;
-			Thread.Sleep(25);
-			fBPW.Show();
+			facetBuilder_panel_workbench.Show();
+			facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Show();
 
-			Control cFBF = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles;
-			Thread.Sleep(25);
-			cFBF.Show();
-
-			/// Hide These Controls
-			Control sYAB = facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap;
-			Thread.Sleep(25);
-			sYAB.Hide();
-
-			Control cYNF = facetBuilder_panel_workbench_groupBox_compileYourNewFacet;
-			Thread.Sleep(25);
-			cYNF.Hide();
+			facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Hide();
+			facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Hide();
 		}
 
 		private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles_MouseLeave(object sender, EventArgs e)
@@ -228,9 +159,16 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_button_locateProject_Click(object sender, EventArgs e)
 		{
+			var path = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text;
+
+			if (String.IsNullOrWhiteSpace(path))
+			{
+				path = Directory.GetCurrentDirectory();
+			}
+
 			var folderBrowserDialog = new FolderBrowserDialog()
 			{
-				SelectedPath = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text
+				SelectedPath = path
 			};
 
 			if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
@@ -241,83 +179,79 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_button_createFacetBitmapFiles_Click(object sender, EventArgs e)
 		{
-			sbyte altID;
-			byte groupID;
+			byte terrainIndex, altitudeIndex;
 
-			var selectedItem = (MapInfo)facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.SelectedItem;
-
-			if (selectedItem == null)
+			if (facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.SelectedItem is not Facet facet)
 			{
-				iLogger.LogMessage("Error: Select a Map Type.");
+				_Logs.LogMessage("Error: Select a Map Type.");
 			}
-			else if (StringType.StrCmp(facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName_textBox.Text, String.Empty, false) != 0)
+			else if (String.IsNullOrWhiteSpace(facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName_textBox.Text))
 			{
-				var str = String.Format("{0}/{1}/Map{2}", facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName_textBox.Text, selectedItem.MapNumber);
-
-				if (!Directory.Exists(str))
-				{
-					_ = Directory.CreateDirectory(str);
-				}
-
-				if (facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox.SelectedItem != null)
-				{
-					var clsTerrain = (ClsTerrain)facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox.SelectedItem;
-					groupID = clsTerrain.GroupID;
-					altID = clsTerrain.AltID;
-				}
-				else
-				{
-					groupID = 9;
-					altID = 66;
-				}
-
-				iLogger.LogMessage("Creating Terrain Image.");
-				iLogger.StartTask();
-
-				try
-				{
-					var str1 = String.Format("{0}/{1}", str, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap_textBox.Text);
-					var palette = MakeTerrainBitmapFile(selectedItem.XSize, selectedItem.YSize, groupID, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.Checked);
-					palette.Palette = iTerrain.GetPalette();
-					palette.Save(str1, ImageFormat.Bmp);
-					palette.Dispose();
-				}
-				catch (Exception exception)
-				{
-					ProjectData.SetProjectError(exception);
-					iLogger.LogMessage("Error: Problem creating Terrain Image.");
-					ProjectData.ClearProjectError();
-				}
-
-				//this.iLogger.EndTask();
-				iLogger.LogTimeStamp();
-				iLogger.LogMessage("Creating Altitude Image.");
-				iLogger.StartTask();
-
-				try
-				{
-					var str2 = String.Format("{0}/{1}", str, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap_textBox.Text);
-					var altPalette = MakeAltitudeBitmapFile(selectedItem.XSize, selectedItem.YSize, (byte)altID, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.Checked);
-					altPalette.Palette = iAltitude.GetAltPalette();
-					altPalette.Save(str2, ImageFormat.Bmp);
-					altPalette.Dispose();
-				}
-				catch (Exception exception2)
-				{
-					ProjectData.SetProjectError(exception2);
-					var exception1 = exception2;
-					iLogger.LogMessage("Error: Problem creating Altitude Image.");
-					iLogger.LogMessage(exception1.Message);
-					ProjectData.ClearProjectError();
-				}
-
-				//this.iLogger.EndTask();
-				iLogger.LogTimeStamp();
-				iLogger.LogMessage("Done.");
+				_Logs.LogMessage("Error: Enter a project Name.");
 			}
 			else
 			{
-				iLogger.LogMessage("Error: Enter a project Name.");
+				var str = Path.Combine(facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName_textBox.Text, $"Facet{facet.Index}");
+
+				_ = Directory.CreateDirectory(str);
+
+				if (facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox.SelectedItem != null)
+				{
+					terrainIndex = 0;
+					altitudeIndex = (byte)facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox.SelectedIndex;
+				}
+				else
+				{
+					terrainIndex = 0;
+					altitudeIndex = 66;
+				}
+
+				_Logs.LogMessage("Creating Terrain Image.");
+				_Logs.StartTask();
+
+				try
+				{
+					try
+					{
+						var str1 = String.Format("{0}/{1}", str, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap_textBox.Text);
+
+						using var terrainImage = MakeTerrainBitmapFile(facet.Width, facet.Height, terrainIndex, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.Checked);
+
+						terrainImage.Save(str1, ImageFormat.Bmp);
+					}
+					catch
+					{
+						_Logs.LogMessage("Error: Problem creating Terrain Image.");
+
+						return;
+					}
+
+					//this.iLogger.EndTask();
+					_Logs.LogTimeStamp();
+					_Logs.LogMessage("Creating Altitude Image.");
+					_Logs.StartTask();
+
+					try
+					{
+						var str2 = String.Format("{0}/{1}", str, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap_textBox.Text);
+
+						using var altitudeImage = MakeAltitudeBitmapFile(facet.Width, facet.Height, altitudeIndex, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.Checked);
+
+						altitudeImage.Save(str2, ImageFormat.Bmp);
+					}
+					catch 
+					{
+						_Logs.LogMessage("Error: Problem creating Altitude Image.");
+
+						return;
+					}
+				}
+				finally
+				{
+					_Logs.EndTask();
+					_Logs.LogTimeStamp();
+					_Logs.LogMessage("Done.");
+				}
 			}
 		}
 
@@ -325,7 +259,7 @@ namespace MapCreator
 		{
 			var bitmap = new Bitmap(xSize, ySize, PixelFormat.Format8bppIndexed)
 			{
-				Palette = iTerrain.GetPalette()
+				Palette = _TerrainTable.GetPalette()
 			};
 
 			var rectangle = new Rectangle(0, 0, xSize, ySize);
@@ -378,52 +312,43 @@ namespace MapCreator
 			return bitmap;
 		}
 
-		public Bitmap MakeAltitudeBitmapFile(int xSize, int ySize, byte DefaultAlt, bool Dungeon)
+		public Bitmap MakeAltitudeBitmapFile(int width, int height, byte altitude, bool Dungeon)
 		{
-			var bitmap = new Bitmap(xSize, ySize, PixelFormat.Format8bppIndexed)
+			var bitmap = new Bitmap(width, height, PixelFormat.Format8bppIndexed)
 			{
-				Palette = iAltitude.GetAltPalette()
+				Palette = _AltitudeTable.GetPalette()
 			};
-			var rectangle = new Rectangle(0, 0, xSize, ySize);
-			var bitmapDatum = bitmap.LockBits(rectangle, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
-			var scan0 = bitmapDatum.Scan0;
-			var width = checked(bitmapDatum.Width * bitmapDatum.Height);
-			var defaultAlt = new byte[width];
-			Marshal.Copy(scan0, defaultAlt, 0, width);
-			if (!Dungeon)
+
+			var bd = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
+
+			try
 			{
-				var num = xSize - 1;
-				for (var i = 0; i <= num; i++)
+				var matrix = new byte[bd.Width * bd.Height];
+
+				Marshal.Copy(bd.Scan0, matrix, 0, matrix.Length);
+
+				for (var x = 0; x < width; x++)
 				{
-					var num1 = ySize - 1;
-					for (var j = 0; j <= num1; j++)
+					for (var y = 0; y < height; y++)
 					{
-						defaultAlt[(j * xSize) + i] = DefaultAlt;
-					}
-				}
-			}
-			else
-			{
-				var num2 = xSize - 1;
-				for (var k = 0; k <= num2; k++)
-				{
-					var num3 = ySize - 1;
-					for (var l = 0; l <= num3; l++)
-					{
-						if (k <= 5119)
+						if (!Dungeon || x <= 5119)
 						{
-							defaultAlt[(l * xSize) + k] = DefaultAlt;
+							matrix[(y * width) + x] = altitude;
 						}
 						else
 						{
-							defaultAlt[(l * xSize) + k] = 72;
+							matrix[(y * width) + x] = 72;
 						}
 					}
 				}
+
+				Marshal.Copy(matrix, 0, bd.Scan0, matrix.Length);
+			}
+			finally
+			{
+				bitmap.UnlockBits(bd);
 			}
 
-			Marshal.Copy(defaultAlt, 0, scan0, width);
-			bitmap.UnlockBits(bitmapDatum);
 			return bitmap;
 		}
 
@@ -474,18 +399,18 @@ namespace MapCreator
 			}
 		}
 
-		private async void facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_button_syncAltitudeBitmapFile_Click(object sender, EventArgs e)
+		private void facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_button_syncAltitudeBitmapFile_Click(object sender, EventArgs e)
 		{
+			/*
 			var progress = new Progress<int>(i => { facetBuilder_panel_workbench_progressBar.Value = Math.Abs(i); }); // TODO: temporary fix, i didn't get why it put -73
-			var logger = new Progress<string>(iLogger.LogMessage);
+			var logger = new Progress<string>(_Logs.LogMessage);
 			var resetProgress = new Task(() =>
 			{
 				Thread.Sleep(1000);
 				((IProgress<int>)progress).Report(0);
 			});
-			await Task.Run(() => EncodeAltitudeBitmapHelper.MakeAltitudeImage(facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text, facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap_textBox.Text, facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap_textBox.Text, iAltitude, iTerrain, progress, logger)).ContinueWith(c => resetProgress.Start());
-
-			/// await Task.Run(() => EncodeAltitudeBitmapHelper.MakeAltitudeImage(mainMenu_groupBox01_createYourWorld_panel02_workBench_groupBox01_syncYourAltitudeBitmap_textBox01_projectPath.Text, mainMenu_groupBox01_createYourWorld_panel02_workBench_groupBox01_syncYourAltitudeBitmap_textBox02_terrainBitmap.Text, mainMenu_groupBox01_createYourWorld_panel02_workBench_groupBox01_syncYourAltitudeBitmap_textBox03_altitudeBitmap.Text, iAltitude, iTerrain, progress, logger)).ContinueWith(c => resetProgress.Start());
+			await Task.Run(() => EncodeAltitudeBitmapHelper.MakeAltitudeImage(facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text, facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap_textBox.Text, facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap_textBox.Text, _AltitudeTable, _TerrainTable, progress, logger)).ContinueWith(c => resetProgress.Start());
+			*/		
 		}
 
 		#endregion
@@ -538,7 +463,7 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_on_CheckedChanged(object sender, EventArgs e)
 		{
-			i_RandomStatic = true;
+			_RandomStatics = true;
 			/// Form NotificationAlertOn = new NotificationAlertOn();
 			/// NotificationAlertOn.Show();
 			System.Media.SystemSounds.Beep.Play();
@@ -546,7 +471,7 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_off_CheckedChanged(object sender, EventArgs e)
 		{
-			i_RandomStatic = false;
+			_RandomStatics = false;
 			/// Form NotificationAlertOff = new NotificationAlertOff();
 			/// NotificationAlertOff.Show();
 			System.Media.SystemSounds.Beep.Play();
@@ -554,6 +479,7 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_compileYourNewFacet_button_createFacetFiles_Click(object sender, EventArgs e)
 		{
+			/*
 			if (Interaction.MsgBox("You are about to create the Mul Files\r\nAre you sure ?", MsgBoxStyle.YesNo, "Make UO Map") == MsgBoxResult.Yes)
 			{
 				var mc_MapMake = this;
@@ -561,394 +487,343 @@ namespace MapCreator
 				///
 				new Thread(new ThreadStart(CreateFacet_mul_Files)).Start();
 			}
+			*/
 		}
 
 		private void CreateFacet_mul_Files()
 		{
-			sbyte altID = 0;
-			string str;
-			IEnumerator enumerator = null;
+			_Logs.StartTask();
+			_Logs.LogMessage("Loading Terrain Image...");
+
+			// Reading Terrain.bmp (Bitmap File)
+			var terrainPath = Path.Combine(facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text, facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap_textBox.Text);
+
+			_Logs.LogMessage(terrainPath);
+
+			using var terrainImage = new Bitmap(terrainPath);
+
+			_Logs.LogMessage("Loading Altitude Image...");
+
+			// Reading Altitude.bmp (Bitmap File)
+			var altitudePath = Path.Combine(facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text, facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap_textBox.Text);
+
+			_Logs.LogMessage(altitudePath);
+
+			using var altitudeImage = new Bitmap(altitudePath);
+
+			_Logs.EndTask();
+			_Logs.LogTimeStamp();
+
+			_Logs.LogMessage("Preparing Image Files...");
+			_Logs.StartTask();
+
+			var matrix = new FacetMatrix(terrainImage.Width, terrainImage.Height);
+
+			byte[] terrainData;
+
+			var terrainImageData = terrainImage.LockBits(matrix.Bounds, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
+
+			try
+			{
+				terrainData = new byte[matrix.Width * matrix.Height];
+
+				Marshal.Copy(terrainImageData.Scan0, terrainData, 0, terrainData.Length);
+			}
+			finally
+			{
+				terrainImage.UnlockBits(terrainImageData);
+			}
+
+			byte[] altitudeData;
+
+			var altitudeImageData = altitudeImage.LockBits(matrix.Bounds, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
+
+			try
+			{
+				altitudeData = new byte[matrix.Width * matrix.Height];
+
+				Marshal.Copy(altitudeImageData.Scan0, altitudeData, 0, altitudeData.Length);
+			}
+			finally
+			{
+				altitudeImage.UnlockBits(altitudeImageData);
+			}
+
+			_Logs.LogTimeStamp();
+			_Logs.LogMessage("Creating Master Terrian Table...");
+			_Logs.StartTask();
+
+			var altitudeTable = new AltitudeTable();
+
+			//altitudeTable.LoadXml();
+
+			for (var x = 0; x < matrix.LandMatrix.Width; x++)
+			{
+				for (var y = 0; y < matrix.LandMatrix.Height; y++)
+				{
+					var alt = altitudeData[(y * matrix.LandMatrix.Width) + x];
+
+					matrix.LandMatrix.Set(x, y, altitudeTable[alt].Z);
+				}
+			}
+
+			_Logs.LogTimeStamp();
+
+			_Logs.LogMessage("Load Transition Tables.");
+			_Logs.StartTask();
+
+			var baseDirectory = Path.Combine("MapCompiler", "Engine", "Transitions");
+
+			if (!Directory.Exists(baseDirectory))
+			{
+				_Logs.LogMessage("Unable to find Transition Data files in the following path: ");
+				_Logs.LogMessage(baseDirectory);
+
+				return;
+			}
+
 			var transitionTable = new TransitionTable();
-			var now = DateTime.Now;
-			iLogger.StartTask();
-			iLogger.LogMessage("Loading Terrain Image.");
-			try
+
+			foreach (var trans in XmlHelper.LoadDirectory<Transition>(baseDirectory, "Transitions"))
 			{
-				// Reading Terrain.bmp (Bitmap File)
-				str = String.Format("{0}\\{1}", facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text, facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap_textBox.Text);
-				iLogger.LogMessage(str);
-				i_Terrain = new Bitmap(str);
-			}
-			catch (Exception exception1)
-			{
-				ProjectData.SetProjectError(exception1);
-				var exception = exception1;
-				iLogger.LogMessage("Problem with Loading Terrain Image.");
-				iLogger.LogMessage(exception.Message);
-				ProjectData.ClearProjectError();
-				return;
+				transitionTable.Add(trans);
 			}
 
-			iLogger.LogMessage("Loading Altitude Image.");
-			try
+			_Logs.LogTimeStamp();
+			_Logs.LogMessage("Preparing Static Tables");
+
+			_Logs.LogMessage("Applying Transition Tables.");
+			_Logs.StartTask();
+
+			var terrainTable = new TerrainTable();
+
+			//terrainTable.LoadXml();
+
+			var landIndex = 0;
+			var landCount = matrix.LandMatrix.Length;
+
+			Invoke(() => facetBuilder_panel_workbench_progressBar.Maximum = landCount);
+
+			for (var x = 0; x < matrix.LandMatrix.Width; x++)
 			{
-				// Reading Altitude.bmp (Bitmap File)
-				str = String.Format("{0}\\{1}", facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text, facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap_textBox.Text);
-				iLogger.LogMessage(str);
-				i_Altitude = new Bitmap(str);
-			}
-			catch (Exception exception3)
-			{
-				ProjectData.SetProjectError(exception3);
-				var exception2 = exception3;
-				iLogger.LogMessage("Problem with Loading Altitude Image.");
-				iLogger.LogMessage(exception2.Message);
-				ProjectData.ClearProjectError();
-				return;
-			}
-			//this.iLogger.EndTask();
-			iLogger.LogTimeStamp();
-			iLogger.LogMessage("Preparing Image Files.");
-			iLogger.StartTask();
-			var width = i_Terrain.Width;
-			var height = i_Terrain.Height;
-			var rectangle = new Rectangle(0, 0, width, height);
-			var bitmapDatum = i_Terrain.LockBits(rectangle, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
-			var scan0 = bitmapDatum.Scan0;
-			var width1 = bitmapDatum.Width * bitmapDatum.Height;
-			var numArray = new byte[width1];
-			Marshal.Copy(scan0, numArray, 0, width1);
-			var bitmapDatum1 = i_Altitude.LockBits(rectangle, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
-			var intPtr = bitmapDatum1.Scan0;
-			var width2 = bitmapDatum1.Width * bitmapDatum1.Height;
-			var numArray1 = new byte[width2];
-			Marshal.Copy(intPtr, numArray1, 0, width2);
-			//this.iLogger.EndTask();
-			iLogger.LogTimeStamp();
-			iLogger.LogMessage("Creating Master Terrian Table.");
-			iLogger.StartTask();
-			var mapCell = new MapCell[width + 1, height + 1];
-			var clsAltitudeTable = new ClsAltitudeTable();
-			clsAltitudeTable.Load();
-			try
-			{
-				var num5 = width - 1;
-				for (var i = 0; i <= num5; i++)
+				for (var y = 0; y < matrix.LandMatrix.Height; y++)
 				{
-					var num6 = height - 1;
-					for (var j = 0; j <= num6; j++)
-					{
-						var num7 = (j * width) + i;
-						var getAltitude = clsAltitudeTable.GetAltitude(numArray1[num7]);
-						mapCell[i, j] = new MapCell(numArray[num7], getAltitude.GetAltitude);
-					}
+					sbyte z = 0;
+
+					ref var tile = ref matrix.LandMatrix[x, y];
+
+					var terrianGroup = terrainTable[tile.Group];
+
+					var landSequence = GetLandSequence(matrix.LandMatrix, x, y);
+
+					var transition = transitionTable.Find(landSequence);
+
+					var randTile = transition?.RandomLandTile();
+
+					tile.ID = randTile?.ID ?? terrianGroup.TileID;
+					tile.Z = randTile?.Z ?? terrianGroup.Z;
+
+					transition?.AddRandomStaticTiles(matrix.StaticMatrix, x, y, z, _RandomStatics);
+
+					++landIndex;
+
+					Invoke(() => facetBuilder_panel_workbench_progressBar.Value = landIndex);
 				}
 			}
-			catch (Exception exception4)
+
+			_Logs.LogTimeStamp();
+			_Logs.LogMessage("Second Pass.");
+			_Logs.StartTask();
+
+			landIndex = 0;
+			landCount = matrix.LandMatrix.Length;
+
+			Invoke(() => facetBuilder_panel_workbench_progressBar.Maximum = landCount);
+
+			var roughEdge = new RoughEdge();
+
+			for (var x = 0; x < matrix.LandMatrix.Width; x++)
 			{
-				ProjectData.SetProjectError(exception4);
-				iLogger.LogMessage("Altitude image needs to be rebuilt");
-				ProjectData.ClearProjectError();
-				return;
-			}
-
-			i_Terrain.Dispose();
-			i_Altitude.Dispose();
-			iLogger.LogTimeStamp();
-			width--;
-			height--;
-			var num8 = (int)Math.Round((width / 8.0) - 1);
-			var num9 = (int)Math.Round((height / 8.0) - 1);
-			iLogger.LogMessage("Load Transition Tables.");
-			iLogger.StartTask();
-			var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-			#region Data Directory Modification
-
-			baseDirectory = String.Concat(baseDirectory, "MapCompiler\\Engine\\Transitions\\");
-
-			#endregion
-
-			if (Directory.Exists(baseDirectory))
-			{
-				transitionTable.MassLoad(baseDirectory);
-				iLogger.LogTimeStamp();
-				iLogger.LogMessage("Preparing Static Tables");
-				var collections = new Collection[num8 + 1, num9 + 1];
-				var num10 = num8;
-				for (var k = 0; k <= num10; k++)
+				for (var y = 0; y < matrix.LandMatrix.Height; y++)
 				{
-					var num11 = num9;
-					for (var l = 0; l <= num11; l++)
+					ref var tile = ref matrix.LandMatrix[x, y];
+
+					if (x > 0 && y > 0 && x < matrix.LandMatrix.Width && y < matrix.LandMatrix.Height)
 					{
-						collections[k, l] = new Collection();
+						ref var corner = ref matrix.LandMatrix[x - 1, y - 1];
+						ref var left = ref matrix.LandMatrix[x - 1, y];
+						ref var top = ref matrix.LandMatrix[x, y - 1];
+
+						tile.Z = roughEdge.Check(corner.ID, left.ID, top.ID);
 					}
-				}
 
-				iLogger.LogMessage("Applying Transition Tables.");
-				iLogger.StartTask();
-				facetBuilder_panel_workbench_progressBar.Invoke(() => { facetBuilder_panel_workbench_progressBar.Maximum = width; });
-				var clsTerrainTable = new ClsTerrainTable();
-				clsTerrainTable.Load();
-				var mapTile = new MapTile();
-				var transition = new Transition();
+					ref var terrianGroup = ref terrainTable[tile.Group];
 
-				for (var x = 0; x <= width; x++)
-				{
-					var num1 = x != 0 ? (x - 1) : width;
-					var num2 = x != width ? (x + 1) : 0;
-
-					for (var y = 0; y <= height; y++)
+					if (terrianGroup.RandomZ)
 					{
-						var num4 = y != 0 ? (y - 1) : height;
-						var num3 = y != height ? (y + 1) : 0;
-
-						var groupID = new object[] { mapCell[num1, num4].GroupID, mapCell[x, num4].GroupID, mapCell[num2, num4].GroupID, mapCell[num1, y].GroupID, mapCell[x, y].GroupID, mapCell[num2, y].GroupID, mapCell[num1, num3].GroupID, mapCell[x, num3].GroupID, mapCell[num2, num3].GroupID };
-						var str1 = String.Format("{0:X2}{1:X2}{2:X2}{3:X2}{4:X2}{5:X2}{6:X2}{7:X2}{8:X2}", groupID);
-						try
+						switch (Utility.Random(100))
 						{
-							transition = (Transition)transitionTable.GetTransitionTable[str1];
+							case >= 0 and < 10: tile.Z -= 4; break;
+							case >= 10 and < 20: tile.Z -= 2; break;
+							case >= 20 and < 80: break;
+							case >= 80 and < 90: tile.Z += 2; break;
+							case >= 90 and < 100: tile.Z += 4; break;
+						}
+					}
 
-							if (transition == null)
+					++landIndex;
+
+					Invoke(() => facetBuilder_panel_workbench_progressBar.Value = landIndex);
+				}
+			}
+
+			_Logs.LogTimeStamp();
+
+			var facetIndex = 0;
+
+			_Logs.LogMessage("\r\n");
+			_Logs.LogMessage("Import Tiles...");
+			_Logs.StartTask();
+
+			var directoryPath = Path.Combine(facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text);
+
+			_ = Directory.CreateDirectory(directoryPath);
+
+			try
+			{
+				foreach (var filePath in Directory.EnumerateFiles(directoryPath, "*.xml", SearchOption.AllDirectories))
+				{
+					matrix.StaticMatrix.LoadXml(filePath);
+				}
+
+				_Logs.LogTimeStamp();
+			}
+			finally
+			{
+				_Logs.EndTask();
+				_Logs.LogTimeStamp();
+				_Logs.LogMessage("Done.");
+			}
+
+			_Logs.LogMessage("\r\n");
+			_Logs.LogMessage("Write Mul Files...");
+			_Logs.StartTask();
+
+			try
+			{
+				var mulPath = Path.Combine(directoryPath, $"map{facetIndex}.mul");
+
+				_Logs.LogMessage(mulPath);
+
+				using var mulStream = new FileStream(mulPath, FileMode.Create);
+				using var mulWriter = new BinaryWriter(mulStream);
+
+				try
+				{
+					for (var x = 0; x < matrix.LandMatrix.Width; x += 8)
+					{
+						for (var y = 0; y < matrix.LandMatrix.Height; y += 8)
+						{
+							mulWriter.Write(1);
+
+							for (var by = 0; by < 8; by++)
 							{
-								var terrianGroup = clsTerrainTable.TerrianGroup(mapCell[x, y].GroupID);
-								mapCell[x, y].TileID = terrianGroup.TileID;
-								mapCell[x, y].AltID = altID;
-								terrianGroup = null;
+								for (var bx = 0; bx < 8; bx++)
+								{
+									ref var tile = ref matrix.LandMatrix[x + bx, y + by];
+
+									mulWriter.Write(tile.ID);
+									mulWriter.Write(tile.Z);
+								}
+							}
+						}
+					}
+				}
+				finally
+				{
+					mulWriter.Flush();
+				}
+
+				var staIdxPath = Path.Combine(directoryPath, $"StaIdx{facetIndex}.mul");
+
+				_Logs.LogMessage(staIdxPath);
+
+				using var staIdxFile = new FileStream(staIdxPath, FileMode.Create);
+				using var staIdxWriter = new BinaryWriter(staIdxFile);
+
+				var staticsPath = Path.Combine(directoryPath, $"Statics{facetIndex}.mul");
+
+				_Logs.LogMessage(staticsPath);
+
+				using var staticsStream = new MemoryStream();
+				using var staticsWriter = new BinaryWriter(staticsStream);
+
+				try
+				{
+					var staticsPosition = 0;
+
+					for (var x = 0; x < matrix.StaticMatrix.Width; x++)
+					{
+						for (var y = 0; y < matrix.StaticMatrix.Height; y++)
+						{
+							var length = 0;
+
+							ref var tiles = ref matrix.StaticMatrix[x, y];
+
+							for (var i = 0; i < tiles.Length; i++)
+							{
+								ref var tile = ref tiles[i];
+
+								staticsWriter.Write(tile.ID);
+								staticsWriter.Write(tile.X);
+								staticsWriter.Write(tile.Y);
+								staticsWriter.Write(tile.Z);
+								staticsWriter.Write(tile.Hue);
+
+								length += 7;
+							}
+
+							if (length > 0)
+							{
+								staIdxWriter.Write(staticsPosition);
+
+								staticsPosition += length;
 							}
 							else
 							{
-								altID = mapCell[x, y].AltID;
-								mapTile = transition.GetRandomMapTile();
-								if (mapTile == null)
-								{
-									var clsTerrain = clsTerrainTable.TerrianGroup(mapCell[x, y].GroupID);
-									mapCell[x, y].TileID = clsTerrain.TileID;
-									mapCell[x, y].ChangeAltID(clsTerrain.AltID);
-									clsTerrain = null;
-								}
-								else
-								{
-									var mapTile1 = mapTile;
-									mapCell[x, y].TileID = mapTile1.TileID;
-									mapCell[x, y].ChangeAltID(mapTile1.AltIDMod);
-									mapTile1 = null;
-								}
-
-								transition.GetRandomStaticTiles((byte)x, (byte)y, altID, collections, i_RandomStatic);
+								staIdxWriter.Write(-1);
 							}
 
-							if (mapCell[x, y].GroupID == 254)
-							{
-								mapCell[x, y].TileID = 1078;
-								mapCell[x, y].AltID = 0;
-							}
-						}
-						catch (Exception exception6)
-						{
-							ProjectData.SetProjectError(exception6);
-							var exception5 = exception6;
-
-							var loggerForm = iLogger;
-
-							groupID = new object[] { x, y, altID, str1 };
-
-							loggerForm.LogMessage(String.Format("\r\nLocation: X:{0}, Y:{1}, Z:{2} Hkey:{3}", groupID));
-							iLogger.LogMessage(exception5.ToString());
-
-							ProjectData.ClearProjectError();
-							return;
+							staIdxWriter.Write(length);
+							staIdxWriter.Write(1);
 						}
 					}
-
-					facetBuilder_panel_workbench_progressBar.Invoke(() => { facetBuilder_panel_workbench_progressBar.Value = x; });
 				}
-
-				iLogger.LogTimeStamp();
-				iLogger.LogMessage("Second Pass.");
-				iLogger.StartTask();
-				var altID1 = new sbyte[9];
-				var roughEdge = new RoughEdge();
-
-				for (var o = 0; o <= width; o++)
+				finally
 				{
-					var num1 = o != 0 ? (o - 1) : width;
-					var num2 = o != width ? (o + 1) : 0;
-
-					for (var p = 0; p <= height; p++)
-					{
-						var num4 = p != 0 ? (p - 1) : height;
-						var num3 = p != height ? (p + 1) : 0;
-
-						mapCell[o, p].ChangeAltID(roughEdge.CheckCorner(mapCell[num1, num4].TileID));
-						mapCell[o, p].ChangeAltID(roughEdge.CheckLeft(mapCell[num1, p].TileID));
-						mapCell[o, p].ChangeAltID(roughEdge.CheckTop(mapCell[o, num4].TileID));
-						if (mapCell[o, p].GroupID == 20)
-						{
-							altID1[0] = mapCell[num1, num4].AltID;
-							altID1[1] = mapCell[o, num4].AltID;
-							altID1[2] = mapCell[num2, num4].AltID;
-							altID1[3] = mapCell[num1, p].AltID;
-							altID1[4] = mapCell[o, p].AltID;
-							altID1[5] = mapCell[num2, p].AltID;
-							altID1[6] = mapCell[num1, num3].AltID;
-							altID1[7] = mapCell[o, num3].AltID;
-							altID1[8] = mapCell[num2, num3].AltID;
-							Array.Sort(altID1);
-							var single = 10f * VBMath.Rnd();
-							if (single == 0f)
-							{
-								mapCell[o, p].AltID = (sbyte)(altID1[8] - 4);
-							}
-							else if (single is >= 1f and <= 2f)
-							{
-								mapCell[o, p].AltID = (sbyte)(altID1[8] - 2);
-							}
-							else if (single is >= 3f and <= 7f)
-							{
-								mapCell[o, p].AltID = altID1[8];
-							}
-							else if (single is >= 8f and <= 9f)
-							{
-								mapCell[o, p].AltID = (sbyte)(altID1[8] + 2);
-							}
-							else if (single == 10f)
-							{
-								mapCell[o, p].AltID = (sbyte)(altID1[8] + 4);
-							}
-						}
-
-						if (clsTerrainTable.TerrianGroup(mapCell[o, p].GroupID).RandAlt)
-						{
-							var single1 = 10f * VBMath.Rnd();
-							if (single1 == 0f)
-							{
-								mapCell[o, p].ChangeAltID(-4);
-							}
-							else if (single1 is >= 1f and <= 2f)
-							{
-								mapCell[o, p].ChangeAltID(-2);
-							}
-							else if (single1 is >= 8f and <= 9f)
-							{
-								mapCell[o, p].ChangeAltID(2);
-							}
-							else if (single1 == 10f)
-							{
-								mapCell[o, p].ChangeAltID(4);
-							}
-						}
-					}
-
-					_ = facetBuilder_panel_workbench_progressBar.Invoke(() => facetBuilder_panel_workbench_progressBar.Value = o);
+					staIdxWriter.Flush();
+					staticsWriter.Flush();
 				}
-
-				iLogger.LogTimeStamp();
-
-				var num = 0;
-
-				if (width == 6143)
-				{
-					num = 0;
-				}
-				else if (width == 2303)
-				{
-					num = 2;
-				}
-				else if (width == 2559)
-				{
-					num = 3;
-				}
-
-				iLogger.LogMessage("\r\n");
-				iLogger.LogMessage("Load . . . . . Import Tiles.");
-				iLogger.StartTask();
-				var importTile = new ImportTiles(collections, facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text);
-				iLogger.LogTimeStamp();
-				iLogger.LogMessage("\r\n");
-				iLogger.LogMessage("Write Mul Files.");
-				iLogger.StartTask();
-				str = String.Format("{0}/Map{1}.mul", facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text, num);
-				iLogger.LogMessage(str);
-				var fileStream = new FileStream(str, FileMode.Create);
-				var binaryWriter = new BinaryWriter(fileStream);
-
-				for (var q = 0; q <= width; q += 8)
-				{
-					for (var r = 0; r <= height; r += 8)
-					{
-						binaryWriter.Write(1);
-						var num20 = 0;
-						do
-						{
-							var num21 = 0;
-							do
-							{
-								mapCell[q + num21, r + num20].WriteMapMul(binaryWriter);
-							}
-							while (++num21 < 8);
-						}
-						while (++num20 < 8);
-					}
-				}
-
-				binaryWriter.Close();
-				fileStream.Close();
-				str = String.Format("{0}/StaIdx{1}.mul", facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text, num);
-				var fileStream1 = new FileStream(str, FileMode.Create);
-				iLogger.LogMessage(str);
-				str = String.Format("{0}/Statics{1}.mul", facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text, num);
-				var fileStream2 = new FileStream(str, FileMode.Create);
-				iLogger.LogMessage(str);
-				var binaryWriter1 = new BinaryWriter(fileStream1);
-				var binaryWriter2 = new BinaryWriter(fileStream2);
-
-				for (var s = 0; s <= num8; s++)
-				{
-					for (var t = 0; t <= num9; t++)
-					{
-						var num24 = 0;
-						var position = checked((int)binaryWriter2.BaseStream.Position);
-						try
-						{
-							enumerator = collections[s, t].GetEnumerator();
-							while (enumerator.MoveNext())
-							{
-								((StaticCell)enumerator.Current).Write(binaryWriter2);
-								num24 += 7;
-							}
-						}
-						finally
-						{
-							if (enumerator is IDisposable)
-							{
-								((IDisposable)enumerator).Dispose();
-							}
-						}
-
-						if (num24 == 0)
-						{
-							position = -1;
-						}
-
-						binaryWriter1.Write(position);
-						binaryWriter1.Write(num24);
-						binaryWriter1.Write(1);
-					}
-				}
-
-				binaryWriter2.Close();
-				binaryWriter1.Close();
-				fileStream2.Close();
-				fileStream1.Close();
-				iLogger.LogTimeStamp();
-				iLogger.LogMessage("Done.");
 			}
-			else
+			finally
 			{
-				iLogger.LogMessage("Unable to find Transition Data files in the following path: ");
-				iLogger.LogMessage(baseDirectory);
+				_Logs.EndTask();
+				_Logs.LogTimeStamp();
+				_Logs.LogMessage("Done.");
 			}
+		}
+
+		private static IEnumerable<LandCell> GetLandSequence(LandMatrix m, int x, int y)
+		{
+			yield return m[x - 1, y - 1];
+			yield return m[x, y - 1];
+			yield return m[x + 1, y - 1];
+			yield return m[x - 1, y];
+			yield return m[x, y];
+			yield return m[x + 1, y];
+			yield return m[x - 1, y + 1];
+			yield return m[x, y + 1];
+			yield return m[x + 1, y + 1];
 		}
 
 		#endregion
