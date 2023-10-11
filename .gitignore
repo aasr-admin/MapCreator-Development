@@ -5,6 +5,9 @@
 /MapCreator/bin
 /MapCreator/obj
 
+/Utilities/bin
+/Utilities/obj
+
 /Output/*
 !/Output/MapCompiler
 !/Output/Development
