@@ -5,8 +5,8 @@ namespace Cartography
 	public record struct StaticCell : IXmlEntry
 	{
 		public ushort ID;
-		public byte X;
-		public byte Y;
+		public ushort X;
+		public ushort Y;
 		public sbyte Z;
 		public ushort Hue;
 
@@ -26,7 +26,7 @@ namespace Cartography
 			return $"{ID:D5}";
 		}
 
-		public void Set(ushort tileID, byte x, byte y, sbyte z)
+		public void Set(ushort tileID, ushort x, ushort y, sbyte z)
 		{
 			ID = tileID;
 			X = x;
@@ -34,7 +34,7 @@ namespace Cartography
 			Z = z;
 		}
 
-		public void Set(ushort tileID, byte x, byte y, sbyte z, ushort hue)
+		public void Set(ushort tileID, ushort x, ushort y, sbyte z, ushort hue)
 		{
 			ID = tileID;
 			X = x;
@@ -60,8 +60,8 @@ namespace Cartography
 		public void Load(XmlElement node)
 		{
 			ID = UInt16.Parse(node.GetAttribute("ID"));
-			X = Byte.Parse(node.GetAttribute("X"));
-			Y = Byte.Parse(node.GetAttribute("Y"));
+			X = UInt16.Parse(node.GetAttribute("X"));
+			Y = UInt16.Parse(node.GetAttribute("Y"));
 			Z = SByte.Parse(node.GetAttribute("Z"));
 			Hue = UInt16.Parse(node.GetAttribute("Hue"));
 

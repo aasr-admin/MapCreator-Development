@@ -8,7 +8,7 @@ namespace Cartography
 
 		public override string ToString()
 		{
-			return $"Static ({Count:N0})";
+			return $"Statics ({Count:N0})";
 		}
 
 		public void Save(XmlElement node)

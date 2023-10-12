@@ -32,6 +32,19 @@ namespace Photoshop
             }
         }
 
+		public void Reset()
+		{
+			Array.Clear(_Entries);
+
+			if (_BaseType.IsClass)
+			{
+				for (var i = 0; i < _Entries.Length; i++)
+				{
+					_Entries[i] = new T();
+				}
+			}
+		}
+
         IEnumerator IEnumerable.GetEnumerator()
 		{
 			foreach (var entry in _Entries)

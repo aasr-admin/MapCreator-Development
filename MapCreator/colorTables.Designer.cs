@@ -1,6 +1,6 @@
 ﻿namespace MapCreator
 {
-    partial class colorTables
+    partial class ColorTables
     {
         /// <summary>
         /// Required designer variable.
@@ -42,7 +42,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(colorTables));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ColorTables));
             colorTables_menuStrip = new MenuStrip();
             colorTables_menuStrip_button_getAdobePhotoshop = new ToolStripMenuItem();
             colorTables_menuStrip_button_openExportLocation = new ToolStripMenuItem();

@@ -6,6 +6,11 @@ namespace Cartography
 	{
 		public int TotalCells => this.Sum(o => o?.Length ?? 0);
 
+		public StaticMatrix()
+			: this(0, 0)
+		{
+		}
+
 		public StaticMatrix(int width, int height)
 			: base(width / 8, height / 8)
 		{

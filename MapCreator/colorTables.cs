@@ -6,14 +6,14 @@ using System.Diagnostics;
 
 namespace MapCreator
 {
-	public partial class colorTables : Form
+	public partial class ColorTables : Form
 	{
 		private int i_Menu;
 
 		private readonly AltitudeTable i_Altitude = new();
 		private readonly TerrainTable i_Terrain = new();
 
-		public colorTables()
+		public ColorTables()
 		{
 			MaximizeBox = false;
 			MinimizeBox = false;
