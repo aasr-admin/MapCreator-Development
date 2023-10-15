@@ -8,21 +8,6 @@ using System.Xml;
 
 namespace MapCreator
 {
-	public sealed class ProjectSettings : IXmlEntry
-	{
-		public bool RandomStatics { get; set; } = true;
-
-		public void Save(XmlElement node)
-		{
-			XmlHelper.WriteNode(node, nameof(RandomStatics), RandomStatics);
-		}
-
-		public void Load(XmlElement node)
-		{
-			RandomStatics = XmlHelper.ReadNode(node, nameof(RandomStatics), Boolean.Parse);
-		}
-	}
-
 	public sealed class Project : IXmlEntry
 	{
 		public static Project CurrentProject { get; set; }
@@ -102,6 +87,10 @@ namespace MapCreator
 				}
 			}
 		}
+
+		private IProgress<ProgressUpdateEventArgs> _Progress;
+
+		public Progress<ProgressUpdateEventArgs> Progress { get; } = new();
 
 		public Logging Logger { get; } = new();
 
@@ -315,13 +304,28 @@ namespace MapCreator
 				return;
 			}
 
+			ReportCompileProgress("Started", 0, 1, LogType.Info);
+
 			if (!Loaded)
 			{
 				Load();
 			}
 
+			string processName;
+			long processIndex, processCount;
+
+			var outputDirectoryPath = OutputDirectory;
+
 			try
 			{
+				#region Preparing Terrain
+
+				processName = "Preparing Terrain";
+				processIndex = 0;
+				processCount = 3;
+
+				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
+
 				byte[] terrainData;
 
 				var terrainImageData = TerrainImage.LockBits(Facet.Bounds, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
@@ -336,6 +340,8 @@ namespace MapCreator
 				{
 					TerrainImage.UnlockBits(terrainImageData);
 				}
+
+				ReportCompileProgress(processName, ++processIndex, processCount, null);
 
 				byte[] altitudeData;
 
@@ -352,6 +358,8 @@ namespace MapCreator
 					AltitudeImage.UnlockBits(altitudeImageData);
 				}
 
+				ReportCompileProgress(processName, ++processIndex, processCount, null);
+
 				for (var x = 0; x < Facet.Width; x++)
 				{
 					for (var y = 0; y < Facet.Height; y++)
@@ -362,8 +370,17 @@ namespace MapCreator
 					}
 				}
 
-				var landIndex = 0;
-				var landCount = Facet.LandMatrix.Length;
+				ReportCompileProgress(processName, ++processIndex, processCount, LogType.Info);
+
+				#endregion
+
+				#region Applying Terrain Transitions
+
+				processName = "Applying Terrain Transitions";
+				processIndex = 0;
+				processCount = Facet.Area;
+
+				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
 
 				for (var x = 0; x < Facet.Width; x++)
 				{
@@ -379,12 +396,24 @@ namespace MapCreator
 
 						transition?.Apply(Facet, x, y, z, RandomStatics);
 
-						++landIndex;
+						if (++processIndex < processCount)
+						{
+							ReportCompileProgress(processName, processIndex, processCount, null);
+						}
 					}
 				}
 
-				landIndex = 0;
-				landCount = Facet.Area;
+				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
+
+				#endregion
+
+				#region Applying Terrain Mutations
+
+				processName = "Applying Terrain Mutations";
+				processIndex = 0;
+				processCount = Facet.Area;
+
+				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
 
 				for (var x = 0; x < Facet.Width; x++)
 				{
@@ -406,9 +435,24 @@ namespace MapCreator
 							}
 						}
 
-						++landIndex;
+						if (++processIndex < processCount)
+						{
+							ReportCompileProgress(processName, processIndex, processCount, null);
+						}
 					}
 				}
+
+				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
+
+				#endregion
+
+				#region Building Static Structures
+
+				processName = "Building Static Structures";
+				processIndex = 0;
+				processCount = Structures.Count;
+
+				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
 
 				foreach (var structure in Structures)
 				{
@@ -416,117 +460,149 @@ namespace MapCreator
 					{
 						_ = ref Facet.AddStatic(cell.X, cell.Y, cell.Z, cell.ID, cell.Hue);
 					}
+
+					if (++processIndex < processCount)
+					{
+						ReportCompileProgress(processName, processIndex, processCount, null);
+					}
 				}
 
-				var outputDirectoryPath = OutputDirectory;
+				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
+
+				#endregion
+
+				#region Writing Land Blocks
+
+				processName = "Writing Land Blocks";
+				processIndex = 0;
+				processCount = Facet.Area / 8;
+
+				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
+
+				var mulPath = Path.Combine(outputDirectoryPath, $"map{Facet.Index}.mul");
+
+				using var mulStream = new FileStream(mulPath, FileMode.Create);
+				using var mulWriter = new BinaryWriter(mulStream);
 
 				try
 				{
-					var mulPath = Path.Combine(outputDirectoryPath, $"map{Facet.Index}.mul");
-
-					//_Logs.LogMessage(mulPath);
-
-					using var mulStream = new FileStream(mulPath, FileMode.Create);
-					using var mulWriter = new BinaryWriter(mulStream);
-
-					try
+					for (var x = 0; x < Facet.Width; x += 8)
 					{
-						for (var x = 0; x < Facet.Width; x += 8)
+						for (var y = 0; y < Facet.Height; y += 8)
 						{
-							for (var y = 0; y < Facet.Height; y += 8)
+							mulWriter.Write(1);
+
+							for (var by = 0; by < 8; by++)
 							{
-								mulWriter.Write(1);
-
-								for (var by = 0; by < 8; by++)
+								for (var bx = 0; bx < 8; bx++)
 								{
-									for (var bx = 0; bx < 8; bx++)
-									{
-										ref var tile = ref Facet.GetLand(x + bx, y + by);
+									ref var tile = ref Facet.GetLand(x + bx, y + by);
 
-										mulWriter.Write(tile.ID);
-										mulWriter.Write(tile.Z);
-									}
+									mulWriter.Write(tile.ID);
+									mulWriter.Write(tile.Z);
 								}
 							}
-						}
-					}
-					finally
-					{
-						mulWriter.Flush();
-					}
 
-					var staIdxPath = Path.Combine(outputDirectoryPath, $"StaIdx{Facet.Index}.mul");
-
-					//_Logs.LogMessage(staIdxPath);
-
-					using var staIdxFile = new FileStream(staIdxPath, FileMode.Create);
-					using var staIdxWriter = new BinaryWriter(staIdxFile);
-
-					var staticsPath = Path.Combine(outputDirectoryPath, $"Statics{Facet.Index}.mul");
-
-					//_Logs.LogMessage(staticsPath);
-
-					using var staticsStream = new MemoryStream();
-					using var staticsWriter = new BinaryWriter(staticsStream);
-
-					try
-					{
-						var staticsPosition = 0;
-
-						for (var x = 0; x < Facet.Width; x++)
-						{
-							for (var y = 0; y < Facet.Height; y++)
+							if (++processIndex < processCount)
 							{
-								var length = 0;
-
-								ref var tiles = ref Facet.GetStatics(x, y);
-
-								for (var i = 0; i < tiles.Length; i++)
-								{
-									ref var tile = ref tiles[i];
-
-									staticsWriter.Write(tile.ID);
-									staticsWriter.Write(tile.X);
-									staticsWriter.Write(tile.Y);
-									staticsWriter.Write(tile.Z);
-									staticsWriter.Write(tile.Hue);
-
-									length += 7;
-								}
-
-								if (length > 0)
-								{
-									staIdxWriter.Write(staticsPosition);
-
-									staticsPosition += length;
-								}
-								else
-								{
-									staIdxWriter.Write(-1);
-								}
-
-								staIdxWriter.Write(length);
-								staIdxWriter.Write(1);
+								ReportCompileProgress(processName, processIndex, processCount, null);
 							}
 						}
-					}
-					finally
-					{
-						staIdxWriter.Flush();
-						staticsWriter.Flush();
 					}
 				}
 				finally
 				{
-					//_Logs.EndTask();
-					//_Logs.LogTimeStamp();
-					//_Logs.LogMessage("Done.");
+					mulWriter.Flush();
 				}
+
+				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
+
+				#endregion
+
+				#region Writing Static Blocks
+
+				processName = "Writing Static Blocks";
+				processIndex = 0;
+				processCount = Facet.Area;
+
+				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
+
+				var staIdxPath = Path.Combine(outputDirectoryPath, $"StaIdx{Facet.Index}.mul");
+
+				using var staIdxFile = new FileStream(staIdxPath, FileMode.Create);
+				using var staIdxWriter = new BinaryWriter(staIdxFile);
+
+				var staticsPath = Path.Combine(outputDirectoryPath, $"Statics{Facet.Index}.mul");
+
+				using var staticsStream = new MemoryStream();
+				using var staticsWriter = new BinaryWriter(staticsStream);
+
+				try
+				{
+					var staticsPosition = 0;
+
+					for (var x = 0; x < Facet.Width; x++)
+					{
+						for (var y = 0; y < Facet.Height; y++)
+						{
+							var length = 0;
+
+							ref var tiles = ref Facet.GetStatics(x, y);
+
+							for (var i = 0; i < tiles.Length; i++)
+							{
+								ref var tile = ref tiles[i];
+
+								staticsWriter.Write(tile.ID);
+								staticsWriter.Write((byte)tile.X);
+								staticsWriter.Write((byte)tile.Y);
+								staticsWriter.Write(tile.Z);
+								staticsWriter.Write(tile.Hue);
+
+								length += 7;
+							}
+
+							if (length > 0)
+							{
+								staIdxWriter.Write(staticsPosition);
+
+								staticsPosition += length;
+							}
+							else
+							{
+								staIdxWriter.Write(-1);
+							}
+
+							staIdxWriter.Write(length);
+							staIdxWriter.Write(1);
+
+							if (++processIndex < processCount)
+							{
+								ReportCompileProgress(processName, processIndex, processCount, null);
+							}
+						}
+					}
+				}
+				finally
+				{
+					staIdxWriter.Flush();
+					staticsWriter.Flush();
+				}
+
+				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
+
+				#endregion
+			}
+			catch (Exception e)
+			{
+				ReportCompileProgress(e.Message, 1, 1, LogType.Error);
 			}
 			finally
 			{
 				Compiling = false;
 			}
+
+			ReportCompileProgress("Finished", 1, 1, LogType.Info);
 		}
 
 		private Bitmap CreateImage<T>(T table) where T : IColorCollection
@@ -536,6 +612,43 @@ namespace MapCreator
 			table.FillPallette(bitmap.Palette);
 
 			return bitmap;
+		}
+
+		private void ReportProgress(string summary, long value, long limit, LogType? log)
+		{
+			if (log != null)
+			{
+				if (value > 0)
+				{
+					if (limit > 0)
+					{
+						Logger.Log(log.Value, $"{summary} [{value / (double)limit:P1}]");
+					}
+					else
+					{
+						Logger.Log(log.Value, $"{summary} [{value:N0}]");
+					}
+				}
+				else
+				{
+					if (limit > 0)
+					{
+						Logger.Log(log.Value, $"{summary} [{limit:N0}]");
+					}
+					else
+					{
+						Logger.Log(log.Value, summary);
+					}
+				}
+			}
+
+			_Progress ??= Progress;
+			_Progress.Report(new ProgressUpdateEventArgs(this, summary, value, limit));
+		}
+
+		private void ReportCompileProgress(string summary, long value, long limit, LogType? log)
+		{
+			ReportProgress($"[Compile] {summary}", value, limit, log);
 		}
 	}
 }
