@@ -772,29 +772,29 @@ namespace MapCreator
 		{
 			var ultimaPath = Settings.UltimaDirectory;
 
+			if (!Directory.Exists(ultimaPath))
+			{
+				ReportProgress(title, "Ultima Directory Not Found", 1, 1, LogType.Warn);
+
+				return;
+			}
+
 			if (root == ultimaPath)
 			{
 				return;
 			}
 
-			if (Directory.Exists(ultimaPath))
+			try
 			{
-				try
-				{
-					ReportProgress(title, "Loading", 0, 1, LogType.Info);
+				ReportProgress(title, "Loading", 0, 1, LogType.Info);
 
-					loader(ultimaPath);
+				loader(ultimaPath);
 
-					ReportProgress(title, "Loaded", 1, 1, LogType.Info);
-				}
-				catch (Exception e)
-				{
-					ReportProgress(title, e.Message, 1, 1, LogType.Error);
-				}
+				ReportProgress(title, "Loaded", 1, 1, LogType.Info);
 			}
-			else
+			catch (Exception e)
 			{
-				ReportProgress(title, "Ultima Directory Not Found", 1, 1, LogType.Warn);
+				ReportProgress(title, e.Message, 1, 1, LogType.Error);
 			}
 		}
 	}
