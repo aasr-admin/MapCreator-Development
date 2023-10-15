@@ -1,4 +1,6 @@
-﻿using Cartography;
+﻿using Assets;
+
+using Cartography;
 
 using Photoshop;
 
@@ -49,8 +51,8 @@ namespace MapCreator
 		public string ProjectFile { get; private set; }
 
 		public string RootDirectory => Path.GetDirectoryName(ProjectFile);
-		public string OutputDirectory => Path.Combine(RootDirectory, "Output");
 		public string DataDirectory => Path.Combine(RootDirectory, "Data");
+		public string OutputDirectory => Path.Combine(RootDirectory, "Output");
 
 		public string Name
 		{
@@ -67,6 +69,10 @@ namespace MapCreator
 					{
 						value = value.Replace(c, '_');
 					}
+
+					value = value.Trim();
+					value = value.Trim('_');
+					value = value.Trim();
 				}
 
 				var newPath = Path.Combine(RootDirectory, $"{value}.mcproj");
@@ -97,6 +103,8 @@ namespace MapCreator
 		public bool Loaded { get; private set; }
 		public bool Compiling { get; private set; }
 
+		public ProjectSettings Settings { get; } = new();
+
 		public Facet Facet { get; } = new();
 		public Terrains Terrains { get; } = new();
 		public Altitudes Altitudes { get; } = new();
@@ -104,15 +112,99 @@ namespace MapCreator
 		public EdgeMutator Mutator { get; } = new();
 		public Structures Structures { get; } = new();
 
-		public ProjectSettings Settings { get; } = new();
-
-		public bool RandomStatics { get => Settings.RandomStatics; set => Settings.RandomStatics = value; }
-
 		public Bitmap TerrainImage { get; private set; }
 		public Bitmap AltitudeImage { get; private set; }
 
 		public Graphics TerrainGraphics { get; private set; }
 		public Graphics AltitudeGraphics { get; private set; }
+
+		#region Ultima Data
+
+		private ArtData _UltimaArt;
+
+		public ArtData UltimaArt
+		{
+			get
+			{
+				_UltimaArt ??= new ArtData();
+
+				UltimaLoader("Art Data", _UltimaArt.Directory, _UltimaArt.Load);
+
+				return _UltimaArt;
+			}
+		}
+
+		private GumpData _UltimaGumps;
+
+		public GumpData UltimaGumps
+		{
+			get
+			{
+				_UltimaGumps ??= new GumpData();
+
+				UltimaLoader("Gump Data", _UltimaGumps.Directory, _UltimaGumps.Load);
+
+				return _UltimaGumps;
+			}
+		}
+
+		private HueData _UltimaHues;
+
+		public HueData UltimaHues
+		{
+			get
+			{
+				_UltimaHues ??= new HueData();
+
+				UltimaLoader("Hue Data", _UltimaHues.Directory, _UltimaHues.Load);
+
+				return _UltimaHues;
+			}
+		}
+
+		private ClilocData _UltimaClilocs;
+
+		public ClilocData UltimaClilocs
+		{
+			get
+			{
+				_UltimaClilocs ??= new ClilocData();
+
+				UltimaLoader("Cliloc Data", _UltimaClilocs.Directory, _UltimaClilocs.Load);
+
+				return _UltimaClilocs;
+			}
+		}
+
+		private TileData _UltimaTiles;
+
+		public TileData UltimaTiles
+		{
+			get
+			{
+				_UltimaTiles ??= new TileData();
+
+				UltimaLoader("Tile Data", _UltimaTiles.Directory, _UltimaTiles.Load);
+
+				return _UltimaTiles;
+			}
+		}
+
+		private RadarData _UltimaRadar;
+
+		public RadarData UltimaRadar
+		{
+			get
+			{
+				_UltimaRadar ??= new RadarData();
+
+				UltimaLoader("Radar Data", _UltimaRadar.Directory, _UltimaRadar.Load);
+
+				return _UltimaRadar;
+			}
+		}
+
+		#endregion
 
 		public Project(string filePath)
 		{
@@ -269,6 +361,8 @@ namespace MapCreator
 
 		public void Unload()
 		{
+			UnloadUltima();
+
 			Facet.Clear();
 			Terrains.Reset();
 			Altitudes.Reset();
@@ -290,11 +384,32 @@ namespace MapCreator
 			Loaded = false;
 		}
 
+		public void UnloadUltima()
+		{
+			_UltimaArt?.Clear();
+			_UltimaArt = null;
+
+			_UltimaGumps?.Clear();
+			_UltimaGumps = null;
+
+			_UltimaHues?.Clear();
+			_UltimaHues = null;
+
+			_UltimaClilocs?.Clear();
+			_UltimaClilocs = null;
+
+			_UltimaTiles?.Clear();
+			_UltimaTiles = null;
+
+			_UltimaRadar?.Clear();
+			_UltimaRadar = null;
+		}
+
 		public void CreateDirectories()
 		{
 			_ = Directory.CreateDirectory(RootDirectory);
-			_ = Directory.CreateDirectory(OutputDirectory);
 			_ = Directory.CreateDirectory(DataDirectory);
+			_ = Directory.CreateDirectory(OutputDirectory);
 		}
 
 		public void Compile()
@@ -303,6 +418,8 @@ namespace MapCreator
 			{
 				return;
 			}
+
+			CreateDirectories();
 
 			ReportCompileProgress("Started", 0, 1, LogType.Info);
 
@@ -394,7 +511,7 @@ namespace MapCreator
 
 						var transition = Transitions.Find(sequence);
 
-						transition?.Apply(Facet, x, y, z, RandomStatics);
+						transition?.Apply(Facet, x, y, z, Settings.RandomStatics);
 
 						if (++processIndex < processCount)
 						{
@@ -614,7 +731,7 @@ namespace MapCreator
 			return bitmap;
 		}
 
-		private void ReportProgress(string summary, long value, long limit, LogType? log)
+		private void ReportProgress(string title, string summary, long value, long limit, LogType? log)
 		{
 			if (log != null)
 			{
@@ -622,33 +739,63 @@ namespace MapCreator
 				{
 					if (limit > 0)
 					{
-						Logger.Log(log.Value, $"{summary} [{value / (double)limit:P1}]");
+						Logger.Log(log.Value, $"[{title}] {summary} [{value / (double)limit:P1}]");
 					}
 					else
 					{
-						Logger.Log(log.Value, $"{summary} [{value:N0}]");
+						Logger.Log(log.Value, $"[{title}] {summary} [{value:N0}]");
 					}
 				}
 				else
 				{
 					if (limit > 0)
 					{
-						Logger.Log(log.Value, $"{summary} [{limit:N0}]");
+						Logger.Log(log.Value, $"[{title}] {summary} [{limit:N0}]");
 					}
 					else
 					{
-						Logger.Log(log.Value, summary);
+						Logger.Log(log.Value, $"[{title}] {summary}");
 					}
 				}
 			}
 
 			_Progress ??= Progress;
-			_Progress.Report(new ProgressUpdateEventArgs(this, summary, value, limit));
+			_Progress.Report(new ProgressUpdateEventArgs(this, title, summary, value, limit));
 		}
 
 		private void ReportCompileProgress(string summary, long value, long limit, LogType? log)
 		{
-			ReportProgress($"[Compile] {summary}", value, limit, log);
+			ReportProgress("Compile", summary, value, limit, log);
+		}
+
+		private void UltimaLoader(string title, string root, Action<string> loader)
+		{
+			var ultimaPath = Settings.UltimaDirectory;
+
+			if (root == ultimaPath)
+			{
+				return;
+			}
+
+			if (Directory.Exists(ultimaPath))
+			{
+				try
+				{
+					ReportProgress(title, "Loading", 0, 1, LogType.Info);
+
+					loader(ultimaPath);
+
+					ReportProgress(title, "Loaded", 1, 1, LogType.Info);
+				}
+				catch (Exception e)
+				{
+					ReportProgress(title, e.Message, 1, 1, LogType.Error);
+				}
+			}
+			else
+			{
+				ReportProgress(title, "Ultima Directory Not Found", 1, 1, LogType.Warn);
+			}
 		}
 	}
 }

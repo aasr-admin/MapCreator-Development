@@ -36,7 +36,12 @@ namespace Assets
 			Array.Clear(_Invalid);
 		}
 
-		public void Load(string directoryPath, bool uop)
+		public void Load(string directoryPath)
+		{
+			Load(directoryPath, false);
+		}
+
+        public void Load(string directoryPath, bool uop)
 		{
 			Clear();
 

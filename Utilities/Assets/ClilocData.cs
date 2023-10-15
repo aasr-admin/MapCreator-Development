@@ -19,7 +19,12 @@ namespace Assets
 			Entries.Clear();
 		}
 
-		public void Load(string directoryPath, string language)
+        public void Load(string directoryPath)
+        {
+            Load(directoryPath, "enu");
+        }
+
+        public void Load(string directoryPath, string language)
 		{
 			Clear();
 

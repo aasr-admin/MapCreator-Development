@@ -4,6 +4,7 @@
 	{
 		public Project Project { get; }
 
+		public string Title { get; }
 		public string Summary { get; }
 
 		public long Value { get; }
@@ -11,9 +12,10 @@
 
 		public bool IsComplete => Value >= Limit;
 
-		public ProgressUpdateEventArgs(Project project, string summary, long value, long limit) 
+		public ProgressUpdateEventArgs(Project project, string title, string summary, long value, long limit) 
 		{
 			Project = project;
+			Title = title;
 			Summary = summary;
 			Value = value;
 			Limit = limit;

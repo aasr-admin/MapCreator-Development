@@ -273,7 +273,7 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_on_CheckedChanged(object sender, EventArgs e)
 		{
-			Project.CurrentProject.RandomStatics = true;
+			Project.CurrentProject.Settings.RandomStatics = true;
 			/// Form NotificationAlertOn = new NotificationAlertOn();
 			/// NotificationAlertOn.Show();
 			System.Media.SystemSounds.Beep.Play();
@@ -281,7 +281,7 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_off_CheckedChanged(object sender, EventArgs e)
 		{
-			Project.CurrentProject.RandomStatics = false;
+			Project.CurrentProject.Settings.RandomStatics = false;
 			/// Form NotificationAlertOff = new NotificationAlertOff();
 			/// NotificationAlertOff.Show();
 			System.Media.SystemSounds.Beep.Play();

@@ -145,10 +145,6 @@ namespace MapCreator
 
 		private void userPlugins_panel_formLauncher_button_fileTypeConverters_Click(object sender, EventArgs e)
 		{
-			Hide();
-
-			var fileTypeConvertersForm = new FileTypeConverters();
-			fileTypeConvertersForm.Show();
 		}
 
 		private void userPlugins_panel_formLauncher_button_fileTypeConverters_MouseLeave(object sender, EventArgs e)
