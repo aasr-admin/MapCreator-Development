@@ -5,50 +5,55 @@ using System.Xml;
 
 namespace Cartography
 {
-	public class Transition : IXmlEntry
+	public class Transition : List<RandomStatics>, IXmlEntry
 	{
 		public static string GetHash(IEnumerable<LandCell> cells)
 		{
 			return String.Join("-", cells.Where(s => s.Group >= 0).Select(s => s.Group));
 		}
 
-		private readonly StaticCellRandomizer _Randomizer = new();
-
 		public string Name { get; set; } = "Transition";
 
-		public string File { get; set; }
+		public byte Weight { get; set; }
 
 		public LandCells LandTiles { get; } = new();
 		public StaticCells StaticTiles { get; } = new();
 
 		public string GroupHash => GetHash(LandTiles);
 
-		public virtual LandCell RandomLandTile()
-		{
-			return LandTiles.RandomTile;
-		}
-
-		public virtual void AddRandomStaticTiles(StaticMatrix statics, int x, int y, sbyte z, bool randomizer)
-		{
-			if (StaticTiles.Count > 0)
-			{
-				var randomTile = StaticTiles.RandomTile;
-
-				_ = statics.Add(x, y, (sbyte)(z + randomTile.Z), randomTile.ID);
-			}
-
-			if (randomizer)
-			{
-				_ = _Randomizer.Randomize(statics, x, y, z);
-			}
-		}
-
 		public override string ToString()
 		{
-			return $"{Name}";
+			return $"[{Weight}%] ({Count:N0}) {Name}";
 		}
 
-		public Bitmap GetImage(TerrainTable terrain)
+		public virtual void Apply(FacetMatrix matrix, int x, int y, sbyte z, bool randomizer)
+		{
+			if (LandTiles.Count > 0)
+			{
+				var randTile = LandTiles.RandomTile;
+
+				matrix.SetLand(x, y, randTile);
+			}
+
+			if (StaticTiles.Count > 0)
+			{
+				var randomStatic = StaticTiles.RandomTile;
+
+				_ = matrix.AddStatic(x, y, (sbyte)(z + randomStatic.Z), randomStatic.ID);
+			}
+
+			if (randomizer && Count > 0)
+			{
+				if (Utility.RandomDouble() <= Weight / 100.0)
+				{
+					var random = Utility.RandomList(this);
+
+					random?.FillBlock(matrix, x, y, z);
+				}
+			}
+		}
+
+		public virtual Bitmap GetImage(Terrains terrain)
 		{
 			var bitmap = new Bitmap(400, 168, PixelFormat.Format32bppArgb);
 
@@ -75,10 +80,10 @@ namespace Cartography
 			return bitmap;
 		}
 
-		public void Save(XmlElement node)
+		public virtual void Save(XmlElement node)
 		{
 			node.SetAttribute("Name", Name);
-			node.SetAttribute("File", File);
+			node.SetAttribute("Weight", $"{Weight}");
 
 			var landTilesRoot = node.OwnerDocument.CreateElement("LandTiles");
 
@@ -93,10 +98,18 @@ namespace Cartography
 			_ = node.AppendChild(staticTilesRoot);
 		}
 
-		public void Load(XmlElement node)
+		public virtual void Load(XmlElement node)
 		{
 			Name = node.GetAttribute("Name");
-			File = node.GetAttribute("File");
+			Weight = Byte.Parse(node.GetAttribute("Weight"));
+
+			foreach (var entry in XmlHelper.LoadChildren<RandomStatics>(node, "Statics"))
+			{
+				if (entry.Count > 0)
+				{
+					Add(entry);
+				}
+			}
 
 			if (node.SelectSingleNode("LandTiles") is XmlElement landTilesRoot)
 			{
@@ -106,11 +119,6 @@ namespace Cartography
 			if (node.SelectSingleNode("StaticTiles") is XmlElement staticTilesRoot)
 			{
 				StaticTiles.Load(staticTilesRoot);
-			}
-
-			if (!String.IsNullOrWhiteSpace(File))
-			{
-				_ = _Randomizer.LoadXml(File);
 			}
 		}
 	}

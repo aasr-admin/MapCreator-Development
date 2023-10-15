@@ -1,8 +1,9 @@
 ﻿using System.Collections;
+using System.Drawing.Imaging;
 
 namespace Photoshop
 {
-	public abstract class ColorCollection<T> : IEnumerable<T> where T : IColorEntry, new()
+	public abstract class ColorCollection<T> : IColorCollection<T> where T : IColorEntry, new()
     {
         private readonly Type _BaseType = typeof(T);
 
@@ -30,7 +31,17 @@ namespace Photoshop
             {
                 _Entries = Array.Empty<T>();
             }
-        }
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return _Entries.GetEnumerator();
+		}
+
+		public IEnumerator<T> GetEnumerator()
+		{
+			return _Entries.AsEnumerable().GetEnumerator();
+		}
 
 		public void Reset()
 		{
@@ -45,40 +56,77 @@ namespace Photoshop
 			}
 		}
 
-        IEnumerator IEnumerable.GetEnumerator()
+		public int IndexOf(Color color)
 		{
-			foreach (var entry in _Entries)
+			return IndexOf(color, 0);
+		}
+
+		public int IndexOf(Color color, int startIndex)
+		{
+			for (var i = startIndex; i < _Entries.Length; i++)
 			{
-				yield return entry;
+				if (_Entries[i].Color == color)
+				{
+					return i;
+				}
+			}
+
+			return -1;
+		}
+
+		public int IndexOf(T o)
+		{
+			return IndexOf(o, 0);
+		}
+
+		public int IndexOf(T o, int startIndex)
+		{
+			return Array.IndexOf(_Entries, o, startIndex);
+		}
+
+		public bool Contains(T o)
+		{
+			return IndexOf(o) >= 0;
+		}
+
+		public bool Contains(Color color)
+		{
+			return IndexOf(color) >= 0;
+		}
+
+		public virtual void FillPallette(ColorPalette palette)
+		{
+			for (var i = 0; i < palette.Entries.Length; i++)
+			{
+				if (i < _Entries.Length)
+				{
+					palette.Entries[i] = _Entries[i].Color;
+				}
+				else
+				{
+					palette.Entries[i] = Color.Empty;
+				}
 			}
 		}
 
-        public IEnumerator<T> GetEnumerator()
-        {
-			foreach (var entry in _Entries)
-			{
-				yield return entry;
-			}
-        }
-
-        public void SaveSwatch(string filePath, ColorFormat format)
+		public virtual void SaveSwatch(string filePath, ColorFormat format)
         {
             ColorSwatchHelper.Export(filePath, _Entries, format);
         }
 
-        public void LoadSwatch(string filePath)
+		public virtual void LoadSwatch(string filePath)
         {
             ColorSwatchHelper.Import(filePath, _Entries);
         }
 
-        public void SaveTable(string filePath)
+		public virtual void SaveTable(string filePath)
         {
             ColorTableHelper.Export(filePath, _Entries);
         }
 
-        public void LoadTable(string filePath)
+		public virtual void LoadTable(string filePath)
         {
             ColorTableHelper.Import(filePath, _Entries);
-        }
-    }
+		}
+	}
 }

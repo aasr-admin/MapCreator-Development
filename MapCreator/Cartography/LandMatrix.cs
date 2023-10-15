@@ -2,7 +2,7 @@
 
 namespace Cartography
 {
-	public sealed class LandMatrix : BaseMatrix<LandCell>, IXmlEntry
+	public class LandMatrix : Matrix<LandCell>, IXmlEntry
 	{
 		public LandMatrix(int width, int height)
 			: base(width, height)

@@ -1,9 +1,11 @@
-﻿using System.Globalization;
+﻿using Photoshop;
+
+using System.Globalization;
 using System.Xml;
 
 namespace Cartography
 {
-	public record struct Terrain : IColorTableEntry
+	public record struct Terrain : IColorEntry, IXmlEntry
 	{
 		public ushort TileID { get; set; }
 

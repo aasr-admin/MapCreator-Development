@@ -2,7 +2,7 @@
 
 namespace Cartography
 {
-	public sealed class StaticMatrix : BaseMatrix<StaticCell[]>, IXmlEntry
+	public class StaticMatrix : Matrix<StaticCell[]>, IXmlEntry
 	{
 		public int TotalCells => this.Sum(o => o?.Length ?? 0);
 
@@ -63,17 +63,17 @@ namespace Cartography
 			return ref tile;
 		}
 
-		public void SaveXml(string filePath)
+		public virtual void SaveXml(string filePath)
 		{
 			XmlHelper.Save(filePath, "StaticMatrix", this);
 		}
 
-		public void Save(XmlDocument doc)
+		public virtual void Save(XmlDocument doc)
 		{
 			XmlHelper.Save(doc, "StaticMatrix", this);
 		}
 
-		public void Save(XmlElement node)
+		public virtual void Save(XmlElement node)
 		{
 			node.SetAttribute("Width", $"{Width}");
 			node.SetAttribute("Height", $"{Height}");
@@ -105,17 +105,17 @@ namespace Cartography
 			}
 		}
 
-		public bool LoadXml(string filePath)
+		public virtual bool LoadXml(string filePath)
 		{
 			return XmlHelper.Load(filePath, "StaticMatrix", this);
 		}
 
-		public bool Load(XmlDocument doc)
+		public virtual bool Load(XmlDocument doc)
 		{
 			return XmlHelper.Load(doc, "StaticMatrix", this);
 		}
 
-		public void Load(XmlElement node)
+		public virtual void Load(XmlElement node)
 		{
 			var width = Int32.Parse(node.GetAttribute("Width"));
 			var height = Int32.Parse(node.GetAttribute("Height"));

@@ -32,9 +32,9 @@
 			}
 		}
 
-		public static IEnumerable<T> LoadDirectory<T>(string directoryPath, string rootName) where T : IXmlEntry, new()
+		public static IEnumerable<T> LoadDirectory<T>(string directoryPath, string rootName, string search = "*.xml") where T : IXmlEntry, new()
 		{
-			foreach (var filePath in Directory.EnumerateFiles(directoryPath, "*.xml", SearchOption.AllDirectories))
+			foreach (var filePath in Directory.EnumerateFiles(directoryPath, search, SearchOption.AllDirectories))
 			{
 				yield return Load<T>(filePath, rootName);
 			}
@@ -100,6 +100,25 @@
 			}
 
 			return false;
+		}
+
+		public static void WriteNode(XmlElement root, string childName, object value)
+		{
+			var node = root.OwnerDocument.CreateElement(childName);
+
+			node.Value = $"{value}";
+
+			root.AppendChild(node);
+		}
+
+		public static T ReadNode<T>(XmlElement root, string childName, Func<string, T> parser)
+		{
+			if (root.SelectSingleNode(childName) is XmlElement node)
+			{
+				return parser(node.Value);
+			}
+
+			return default;
 		}
 	}
 }

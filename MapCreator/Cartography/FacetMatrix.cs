@@ -2,15 +2,22 @@
 {
 	public class FacetMatrix
 	{
-		public Rectangle Bounds { get; }
+		public Rectangle Bounds { get; private set; }
 
 		public Size Size => Bounds.Size;
 
 		public int Width => Bounds.Width;
 		public int Height => Bounds.Height;
 
+		public int Area => Bounds.Width * Bounds.Height;
+
 		public LandMatrix LandMatrix { get; }
 		public StaticMatrix StaticMatrix { get; }
+
+		public FacetMatrix()
+			: this(0, 0)
+		{
+		}
 
 		public FacetMatrix(int width, int height)
 		{
@@ -18,6 +25,61 @@
 
 			LandMatrix = new LandMatrix(width, height);
 			StaticMatrix = new StaticMatrix(width, height);
+		}
+
+		public void Clear()
+		{
+			LandMatrix.Clear();
+			StaticMatrix.Clear();
+		}
+
+		public void Clear(int x, int y)
+		{
+			if (x >= 0 && x < Width && y >= 0 && y < Height)
+			{
+				LandMatrix.Clear(x, y);
+				StaticMatrix.Clear(x, y);
+			}
+		}
+
+		public void Resize(int width, int height)
+		{
+			if (Width == width && Height == height)
+			{
+				return;
+			}
+
+			width = Math.Max(0, width);
+			height = Math.Max(0, height);
+
+			Bounds = new Rectangle(0, 0, width, height);
+
+			LandMatrix.Resize(width, height);
+			StaticMatrix.Resize(width, height);
+		}
+
+		public void Crop(int x1, int y1, int x2, int y2)
+		{
+			if (x1 > x2)
+			{
+				(x1, x2) = (x2, x1);
+			}
+
+			x1 = Math.Clamp(x1, 0, Width);
+			x2 = Math.Clamp(x2, 0, Width);
+
+			if (y1 > y2)
+			{
+				(y1, y2) = (y2, y1);
+			}
+
+			y1 = Math.Clamp(y1, 0, Height);
+			y2 = Math.Clamp(y2, 0, Height);
+
+			Bounds = new Rectangle(0, 0, x2 - x1, y2 - y1);
+
+			LandMatrix.Crop(x1, y1, x2, y2);
+			StaticMatrix.Crop(x1, y1, x2, y2);
 		}
 
 		public ref LandCell GetLand(int x, int y)

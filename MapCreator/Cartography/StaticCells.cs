@@ -11,14 +11,14 @@ namespace Cartography
 			return $"Statics ({Count:N0})";
 		}
 
-		public void Save(XmlElement node)
+		public virtual void Save(XmlElement node)
 		{
 			var count = XmlHelper.SaveChildren(node, "Static", this);
 
 			node.SetAttribute("Count", $"{count:N0}");
 		}
 
-		public void Load(XmlElement node)
+		public virtual void Load(XmlElement node)
 		{
 			foreach (var entry in XmlHelper.LoadChildren<StaticCell>(node, "Static"))
 			{

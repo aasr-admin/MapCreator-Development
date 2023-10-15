@@ -6,5 +6,5 @@
 		{
 			return $"Structure ({Count:N0})";
 		}
-	}
+    }
 }

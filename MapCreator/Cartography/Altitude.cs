@@ -1,9 +1,11 @@
-﻿using System.Globalization;
+﻿using Photoshop;
+
+using System.Globalization;
 using System.Xml;
 
 namespace Cartography
 {
-	public record struct Altitude : IColorTableEntry
+	public record struct Altitude : IColorEntry, IXmlEntry
 	{
 		public sbyte Z { get; set; }
 
