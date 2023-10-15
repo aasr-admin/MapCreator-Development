@@ -22,7 +22,7 @@ namespace MapCreator
 		{
 			foreach (var filePath in Directory.EnumerateFiles(ProjectsDirectory, "*.mcproj", SearchOption.AllDirectories))
 			{
-				Projects.Add(new Project(filePath));
+				_ = Projects.Add(new Project(filePath));
 			}
 		}
 
@@ -236,7 +236,7 @@ namespace MapCreator
 			return XmlHelper.Load(doc, "Project", this);
 		}
 
-		public void Load(XmlElement node) 
+		public void Load(XmlElement node)
 		{
 			Settings.Load(node);
 		}
@@ -290,33 +290,33 @@ namespace MapCreator
 
 			CreateDirectories();
 
-			XmlHelper.Load(ProjectFile, "Project", this);
+			_ = XmlHelper.Load(ProjectFile, "Project", this);
 
 			var dataDirectoryPath = DataDirectory;
 
 			var facetFilePath = Path.Combine(dataDirectoryPath, "Facet.xml");
 
-			Facet.LoadXml(facetFilePath);
+			_ = Facet.LoadXml(facetFilePath);
 
 			var terrainTableFilePath = Path.Combine(dataDirectoryPath, "Terrain.xml");
 
-			Terrains.LoadXml(terrainTableFilePath);
+			_ = Terrains.LoadXml(terrainTableFilePath);
 
 			var altitudeTableFilePath = Path.Combine(dataDirectoryPath, "Altitude.xml");
 
-			Altitudes.LoadXml(altitudeTableFilePath);
+			_ = Altitudes.LoadXml(altitudeTableFilePath);
 
 			var transitionsTableFilePath = Path.Combine(dataDirectoryPath, "Transitions.xml");
 
-			Transitions.LoadXml(transitionsTableFilePath);
+			_ = Transitions.LoadXml(transitionsTableFilePath);
 
 			var edgeMutatorFilePath = Path.Combine(dataDirectoryPath, "Mutator.xml");
 
-			Mutator.LoadXml(edgeMutatorFilePath);
+			_ = Mutator.LoadXml(edgeMutatorFilePath);
 
 			var structuresFilePath = Path.Combine(dataDirectoryPath, "Structures.xml");
 
-			Structures.LoadXml(structuresFilePath);
+			_ = Structures.LoadXml(structuresFilePath);
 
 			var terrainImageFilePath = Path.Combine(dataDirectoryPath, "Terrain.bmp");
 

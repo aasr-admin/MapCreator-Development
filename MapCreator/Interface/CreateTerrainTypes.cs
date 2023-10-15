@@ -16,7 +16,7 @@ namespace MapCreator.userPlugin
 
 		private readonly Point[,] StaticGrid;
 		private readonly Terrains iTerrain;
-		private StaticRandomizer iRandomStatic;
+		private readonly StaticRandomizer iRandomStatic;
 
 		private CommunityCredits _communityCredits;
 		private CanvasControlBox _canvasControlBox;
@@ -24,8 +24,8 @@ namespace MapCreator.userPlugin
 		private FacetBuilder _facetBuilder;
 		private StaticSelector _staticSelector;
 
-		private OpenFileDialog _openFileDialog;
-		private SaveFileDialog _saveFileDialog;
+		private readonly OpenFileDialog _openFileDialog;
+		private readonly SaveFileDialog _saveFileDialog;
 
 		public CreateTerrainTypes()
 		{
@@ -525,7 +525,7 @@ namespace MapCreator.userPlugin
 			}
 
 			iRandomStatic.Add(new RandomStatics(staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox.Text, Convert.ToByte(staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.Value)));
-			
+
 			staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Fill(iRandomStatic);
 
 			createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
@@ -535,7 +535,7 @@ namespace MapCreator.userPlugin
 		{
 			if (staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.SelectedItem is RandomStatics selectedItem)
 			{
-				iRandomStatic.Remove(selectedItem);
+				_ = iRandomStatic.Remove(selectedItem);
 			}
 
 			staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Fill(iRandomStatic);
@@ -657,7 +657,7 @@ namespace MapCreator.userPlugin
 			{
 				if (staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem is StaticCell tile)
 				{
-					selectedItem.Remove(tile);
+					_ = selectedItem.Remove(tile);
 
 					staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Fill(selectedItem);
 

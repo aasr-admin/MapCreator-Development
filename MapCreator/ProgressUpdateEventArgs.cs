@@ -12,7 +12,7 @@
 
 		public bool IsComplete => Value >= Limit;
 
-		public ProgressUpdateEventArgs(Project project, string title, string summary, long value, long limit) 
+		public ProgressUpdateEventArgs(Project project, string title, string summary, long value, long limit)
 		{
 			Project = project;
 			Title = title;

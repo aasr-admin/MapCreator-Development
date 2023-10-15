@@ -39,7 +39,7 @@ namespace Cartography
 			{
 				yield return entry;
 			}
-        }
+		}
 
 		public void Clear()
 		{
@@ -52,7 +52,7 @@ namespace Cartography
 			}
 		}
 
-        public void Clear(int x, int y)
+		public void Clear(int x, int y)
 		{
 			this[x, y] = default;
 		}
@@ -64,10 +64,10 @@ namespace Cartography
 				return;
 			}
 
-            width = Math.Max(0, width);
-            height = Math.Max(0, height);
+			width = Math.Max(0, width);
+			height = Math.Max(0, height);
 
-            var matrix = new T[width, height];
+			var matrix = new T[width, height];
 
 			for (var x = 0; x < width && x < Width; x++)
 			{

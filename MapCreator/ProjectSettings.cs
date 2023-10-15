@@ -3,10 +3,10 @@
 namespace MapCreator
 {
 	public sealed class ProjectSettings : IXmlEntry
-    {
-        public string UltimaDirectory { get; set; }
+	{
+		public string UltimaDirectory { get; set; }
 
-        public bool RandomStatics { get; set; } = true;
+		public bool RandomStatics { get; set; } = true;
 
 		public void Save(XmlElement node)
 		{

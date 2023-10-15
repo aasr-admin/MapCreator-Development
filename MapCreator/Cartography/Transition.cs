@@ -48,7 +48,7 @@ namespace Cartography
 				{
 					var random = Utility.RandomList(this);
 
-					random?.FillBlock(matrix, x, y, z);
+					_ = (random?.FillBlock(matrix, x, y, z));
 				}
 			}
 		}

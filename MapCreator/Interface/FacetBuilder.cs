@@ -1,10 +1,6 @@
-﻿using Cartography;
-
-using Compiler;
+﻿using Compiler;
 
 using System.Diagnostics;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 
 namespace MapCreator
 {
@@ -157,10 +153,8 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_button_createFacetBitmapFiles_Click(object sender, EventArgs e)
 		{
-			
+
 		}
-
-
 
 		#endregion
 

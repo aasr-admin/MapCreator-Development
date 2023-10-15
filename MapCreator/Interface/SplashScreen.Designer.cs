@@ -43,17 +43,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.Timer splashScreen_closeTimer;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplashScreen));
             this.splashScreen_pictureBox_titleImage = new System.Windows.Forms.PictureBox();
-            splashScreen_closeTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splashScreen_pictureBox_titleImage)).BeginInit();
             this.SuspendLayout();
-            // 
-            // splashScreen_closeTimer
-            // 
-            splashScreen_closeTimer.Interval = 1500;
-            splashScreen_closeTimer.Tick += new System.EventHandler(this.splashScreen_closeTimer_Tick);
             // 
             // splashScreen_pictureBox_titleImage
             // 
@@ -84,7 +77,6 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TopMost = true;
-            this.Shown += new System.EventHandler(this.splashScreen_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.splashScreen_pictureBox_titleImage)).EndInit();
             this.ResumeLayout(false);
 
@@ -93,6 +85,5 @@
         #endregion
 
         private PictureBox splashScreen_pictureBox_titleImage;
-        private System.Windows.Forms.Timer splashScreen_closeTimer;
     }
 }

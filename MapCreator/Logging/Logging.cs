@@ -77,7 +77,7 @@ namespace MapCreator
 			Log(LogType.Warn, message);
 		}
 
-		public  void LogError(string message)
+		public void LogError(string message)
 		{
 			Log(LogType.Error, message);
 		}

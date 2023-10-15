@@ -4,20 +4,20 @@ namespace Cartography
 {
 	public class Structures : HashSet<Structure>, IXmlEntry
 	{
-        public override string ToString()
-        {
-            return $"Structures ({Count:N0})";
-        }
+		public override string ToString()
+		{
+			return $"Structures ({Count:N0})";
+		}
 
 		public virtual void SaveXml(string filePath)
-        {
-            XmlHelper.Save(filePath, "Structures", this);
-        }
+		{
+			XmlHelper.Save(filePath, "Structures", this);
+		}
 
 		public virtual void Save(XmlDocument doc)
-        {
-            XmlHelper.Save(doc, "Structures", this);
-        }
+		{
+			XmlHelper.Save(doc, "Structures", this);
+		}
 
 		public virtual void Save(XmlElement node)
 		{
@@ -40,7 +40,7 @@ namespace Cartography
 		{
 			foreach (var entry in XmlHelper.LoadChildren<Structure>(node, "Structure"))
 			{
-				Add(entry);
+				_ = Add(entry);
 			}
 		}
 	}

@@ -21,17 +21,17 @@ namespace Cartography
 			}
 
 			return null;
-        }
+		}
 
 		public virtual void SaveXml(string filePath)
-        {
-            XmlHelper.Save(filePath, "Transitions", this);
-        }
+		{
+			XmlHelper.Save(filePath, "Transitions", this);
+		}
 
 		public virtual void Save(XmlDocument doc)
-        {
-            XmlHelper.Save(doc, "Transitions", this);
-        }
+		{
+			XmlHelper.Save(doc, "Transitions", this);
+		}
 
 		public virtual void Save(XmlElement node)
 		{

@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 
 using System.Drawing.Printing;
-using System.IO;
 
 namespace Compiler
 {

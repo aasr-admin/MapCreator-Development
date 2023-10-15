@@ -19,7 +19,7 @@ namespace Cartography
 			XmlHelper.Save(filePath, RootNodeName, this);
 		}
 
-        public virtual void Save(XmlDocument doc)
+		public virtual void Save(XmlDocument doc)
 		{
 			XmlHelper.Save(doc, RootNodeName, this);
 		}

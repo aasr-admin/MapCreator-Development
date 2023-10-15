@@ -61,7 +61,7 @@ namespace Cartography
 
 					entry.SetAttribute("ID", $"{id}");
 
-					node.AppendChild(entry);
+					_ = node.AppendChild(entry);
 				}
 			}
 		}
@@ -87,7 +87,7 @@ namespace Cartography
 				{
 					var id = UInt16.Parse(entry.GetAttribute("ID"));
 
-					set.Add(id);
+					_ = set.Add(id);
 				}
 			}
 		}
