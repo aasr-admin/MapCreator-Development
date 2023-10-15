@@ -37,6 +37,8 @@ namespace System.Windows.Forms
 			control.MouseDown += Native.BeginMoveWindow;
 		}
 
+		#region Global ToolTip
+
 		private static readonly ToolTip _ToolTip = new();
 
 		private static TaskTimer? _ToolTipTimer;
@@ -70,14 +72,13 @@ namespace System.Windows.Forms
 				_ToolTip.ToolTipIcon = ToolTipIcon.None;
 				_ToolTip.ToolTipTitle = null;
 
-				_ToolTipTimer = TaskTimer.DelayCall(TimeSpan.FromMilliseconds(100), (c, t) =>
+				_ToolTipTimer = TaskTimer.DelayCall(TimeSpan.FromMilliseconds(100), control.Invoke, () =>
 				{
 					_ToolTip.ToolTipIcon = icon;
 					_ToolTip.ToolTipTitle = title;
 
-					_ToolTip.SetToolTip(c, t);
-
-				}, control, text);
+					_ToolTip.SetToolTip(control, text);
+				});
 			};
 
 			control.MouseLeave += (s, e) =>
@@ -91,5 +92,7 @@ namespace System.Windows.Forms
 				_ToolTip.RemoveAll();
 			};
 		}
+
+		#endregion
 	}
 }

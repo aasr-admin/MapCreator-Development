@@ -124,14 +124,7 @@ namespace System.Timers
 
 				++_Count;
 
-				if (_Thread == Thread.CurrentThread)
-				{
-					OnTick();
-				}
-				else
-				{
-
-				}
+				OnTick();
 
 				Last = TimeStamp;
 
@@ -166,14 +159,10 @@ namespace System.Timers
 			}
 		}
 
-		private Thread _Thread;
-
 		public void Start()
 		{
 			if (!IsRunning)
 			{
-				_Thread = Thread.CurrentThread;
-
 				_Counter.Start();
 
 				Run(_Delay, 0);

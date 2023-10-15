@@ -22,13 +22,18 @@
 
 		public static IEnumerable<T> LoadChildren<T>(XmlElement node, string childName) where T : IXmlEntry, new()
 		{
-			foreach (XmlElement entry in node.SelectNodes(childName))
+			var nodes = node.SelectNodes(childName);
+
+			if (nodes?.Count > 0)
 			{
-				var o = new T();
+				foreach (XmlElement entry in nodes)
+				{
+					var o = new T();
 
-				o.Load(entry);
+					o.Load(entry);
 
-				yield return o;
+					yield return o;
+				}
 			}
 		}
 
@@ -36,7 +41,12 @@
 		{
 			foreach (var filePath in Directory.EnumerateFiles(directoryPath, search, SearchOption.AllDirectories))
 			{
-				yield return Load<T>(filePath, rootName);
+				var loaded = Load<T>(filePath, rootName);
+
+				if (loaded != null)
+				{
+					yield return loaded;
+				}
 			}
 		}
 
@@ -58,7 +68,7 @@
 			doc.AppendChild(root);
 		}
 
-		public static T Load<T>(string filePath, string rootName) where T : IXmlEntry, new()
+		public static T? Load<T>(string filePath, string rootName) where T : IXmlEntry, new()
 		{
 			var doc = new XmlDocument();
 
@@ -67,7 +77,7 @@
 			return Load<T>(doc, rootName);
 		}
 
-		public static T Load<T>(XmlDocument doc, string rootName) where T : IXmlEntry, new()
+		public static T? Load<T>(XmlDocument doc, string rootName) where T : IXmlEntry, new()
 		{
 			if (doc.SelectSingleNode(rootName) is XmlElement root)
 			{
@@ -111,7 +121,7 @@
 			root.AppendChild(node);
 		}
 
-		public static T ReadNode<T>(XmlElement root, string childName, Func<string, T> parser)
+		public static T? ReadNode<T>(XmlElement root, string childName, Func<string?, T> parser)
 		{
 			if (root.SelectSingleNode(childName) is XmlElement node)
 			{

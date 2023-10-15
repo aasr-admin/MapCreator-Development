@@ -12,7 +12,7 @@ namespace MapCreator
 {
 	public sealed class Project : IXmlEntry
 	{
-		public static Project CurrentProject { get; set; }
+		public static Project? CurrentProject { get; set; }
 
 		public static HashSet<Project> Projects { get; } = new HashSet<Project>();
 
@@ -50,7 +50,8 @@ namespace MapCreator
 
 		public string ProjectFile { get; private set; }
 
-		public string RootDirectory => Path.GetDirectoryName(ProjectFile);
+		public string RootDirectory => Path.GetDirectoryName(ProjectFile) ?? Path.Combine(ProjectsDirectory, Path.GetFileNameWithoutExtension(ProjectFile));
+		
 		public string DataDirectory => Path.Combine(RootDirectory, "Data");
 		public string OutputDirectory => Path.Combine(RootDirectory, "Output");
 
@@ -96,7 +97,7 @@ namespace MapCreator
 
 		private IProgress<ProgressUpdateEventArgs> _Progress;
 
-		public Progress<ProgressUpdateEventArgs> Progress { get; } = new();
+		public Progress<ProgressUpdateEventArgs> Progress { get; }
 
 		public Logging Logger { get; } = new();
 
@@ -112,15 +113,15 @@ namespace MapCreator
 		public EdgeMutator Mutator { get; } = new();
 		public Structures Structures { get; } = new();
 
-		public Bitmap TerrainImage { get; private set; }
-		public Bitmap AltitudeImage { get; private set; }
+		public Bitmap? TerrainImage { get; private set; }
+		public Bitmap? AltitudeImage { get; private set; }
 
-		public Graphics TerrainGraphics { get; private set; }
-		public Graphics AltitudeGraphics { get; private set; }
+		public Graphics? TerrainGraphics { get; private set; }
+		public Graphics? AltitudeGraphics { get; private set; }
 
 		#region Ultima Data
 
-		private ArtData _UltimaArt;
+		private ArtData? _UltimaArt;
 
 		public ArtData UltimaArt
 		{
@@ -134,7 +135,7 @@ namespace MapCreator
 			}
 		}
 
-		private GumpData _UltimaGumps;
+		private GumpData? _UltimaGumps;
 
 		public GumpData UltimaGumps
 		{
@@ -148,7 +149,7 @@ namespace MapCreator
 			}
 		}
 
-		private HueData _UltimaHues;
+		private HueData? _UltimaHues;
 
 		public HueData UltimaHues
 		{
@@ -162,7 +163,7 @@ namespace MapCreator
 			}
 		}
 
-		private ClilocData _UltimaClilocs;
+		private ClilocData? _UltimaClilocs;
 
 		public ClilocData UltimaClilocs
 		{
@@ -176,7 +177,7 @@ namespace MapCreator
 			}
 		}
 
-		private TileData _UltimaTiles;
+		private TileData? _UltimaTiles;
 
 		public TileData UltimaTiles
 		{
@@ -190,7 +191,7 @@ namespace MapCreator
 			}
 		}
 
-		private RadarData _UltimaRadar;
+		private RadarData? _UltimaRadar;
 
 		public RadarData UltimaRadar
 		{
@@ -209,6 +210,8 @@ namespace MapCreator
 		public Project(string filePath)
 		{
 			ProjectFile = filePath;
+
+			_Progress = Progress = new Progress<ProgressUpdateEventArgs>();
 		}
 
 		public override string ToString()
@@ -254,37 +257,15 @@ namespace MapCreator
 
 			var dataDirectoryPath = DataDirectory;
 
-			var facetFilePath = Path.Combine(dataDirectoryPath, "Facet.xml");
+			Facet.SaveXml(Path.Combine(dataDirectoryPath, "Facet.xml"));
+			Terrains.SaveXml(Path.Combine(dataDirectoryPath, "Terrain.xml"));
+			Altitudes.SaveXml(Path.Combine(dataDirectoryPath, "Altitude.xml"));
+			Transitions.SaveXml(Path.Combine(dataDirectoryPath, "Transitions.xml"));
+			Mutator.SaveXml(Path.Combine(dataDirectoryPath, "Mutator.xml"));
+			Structures.SaveXml(Path.Combine(dataDirectoryPath, "Structures.xml"));
 
-			Facet.SaveXml(facetFilePath);
-
-			var terrainTableFilePath = Path.Combine(dataDirectoryPath, "Terrain.xml");
-
-			Terrains.SaveXml(terrainTableFilePath);
-
-			var altitudeTableFilePath = Path.Combine(dataDirectoryPath, "Altitude.xml");
-
-			Altitudes.SaveXml(altitudeTableFilePath);
-
-			var transitionsTableFilePath = Path.Combine(dataDirectoryPath, "Transitions.xml");
-
-			Transitions.SaveXml(transitionsTableFilePath);
-
-			var edgeMutatorFilePath = Path.Combine(dataDirectoryPath, "Mutator.xml");
-
-			Mutator.SaveXml(edgeMutatorFilePath);
-
-			var structuresFilePath = Path.Combine(dataDirectoryPath, "Structures.xml");
-
-			Structures.SaveXml(structuresFilePath);
-
-			var terrainImageFilePath = Path.Combine(dataDirectoryPath, "Terrain.bmp");
-
-			TerrainImage.Save(terrainImageFilePath);
-
-			var altitudeImageFilePath = Path.Combine(dataDirectoryPath, "Altitude.bmp");
-
-			AltitudeImage.Save(altitudeImageFilePath);
+			TerrainImage?.Save(Path.Combine(dataDirectoryPath, "Terrain.bmp"));
+			AltitudeImage?.Save(Path.Combine(dataDirectoryPath, "Altitude.bmp"));
 
 			Loaded = true;
 		}
@@ -299,29 +280,12 @@ namespace MapCreator
 
 			var dataDirectoryPath = DataDirectory;
 
-			var facetFilePath = Path.Combine(dataDirectoryPath, "Facet.xml");
-
-			_ = Facet.LoadXml(facetFilePath);
-
-			var terrainTableFilePath = Path.Combine(dataDirectoryPath, "Terrain.xml");
-
-			_ = Terrains.LoadXml(terrainTableFilePath);
-
-			var altitudeTableFilePath = Path.Combine(dataDirectoryPath, "Altitude.xml");
-
-			_ = Altitudes.LoadXml(altitudeTableFilePath);
-
-			var transitionsTableFilePath = Path.Combine(dataDirectoryPath, "Transitions.xml");
-
-			_ = Transitions.LoadXml(transitionsTableFilePath);
-
-			var edgeMutatorFilePath = Path.Combine(dataDirectoryPath, "Mutator.xml");
-
-			_ = Mutator.LoadXml(edgeMutatorFilePath);
-
-			var structuresFilePath = Path.Combine(dataDirectoryPath, "Structures.xml");
-
-			_ = Structures.LoadXml(structuresFilePath);
+			_ = Facet.LoadXml(Path.Combine(dataDirectoryPath, "Facet.xml"));
+			_ = Terrains.LoadXml(Path.Combine(dataDirectoryPath, "Terrain.xml"));
+			_ = Altitudes.LoadXml(Path.Combine(dataDirectoryPath, "Altitude.xml"));
+			_ = Transitions.LoadXml(Path.Combine(dataDirectoryPath, "Transitions.xml"));
+			_ = Mutator.LoadXml(Path.Combine(dataDirectoryPath, "Mutator.xml"));
+			_ = Structures.LoadXml(Path.Combine(dataDirectoryPath, "Structures.xml"));
 
 			var terrainImageFilePath = Path.Combine(dataDirectoryPath, "Terrain.bmp");
 
@@ -450,7 +414,9 @@ namespace MapCreator
 
 				byte[] terrainData;
 
-				var terrainImageData = TerrainImage.LockBits(Facet.Bounds, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
+				TerrainImage ??= CreateImage(Terrains);
+
+				var terrainImageData = TerrainImage.LockBits(Facet.Bounds, ImageLockMode.ReadWrite, TerrainImage.PixelFormat);
 
 				try
 				{
@@ -467,7 +433,9 @@ namespace MapCreator
 
 				byte[] altitudeData;
 
-				var altitudeImageData = AltitudeImage.LockBits(Facet.Bounds, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
+				AltitudeImage ??= CreateImage(Altitudes);
+
+				var altitudeImageData = AltitudeImage.LockBits(Facet.Bounds, ImageLockMode.ReadWrite, AltitudeImage.PixelFormat);
 
 				try
 				{

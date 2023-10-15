@@ -4,10 +4,9 @@ using System.Runtime.InteropServices;
 namespace System.Windows.Forms
 {
 	[SuppressMessage("Interoperability", "SYSLIB1054", Justification = "Incompatible")]
-	public static class Native
+	internal static class Native
 	{
 		private const uint WM_NCLBUTTONDOWN = 0xA1;
-		private const uint WM_NCLBUTTONUP = 0xA2;
 		private const int HT_CAPTION = 0x2;
 
 		[DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
