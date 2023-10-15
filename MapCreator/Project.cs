@@ -211,6 +211,11 @@ namespace MapCreator
 			ProjectFile = filePath;
 		}
 
+		public override string ToString()
+		{
+			return Name;
+		}
+
 		public void SaveXml(string filePath)
 		{
 			XmlHelper.Save(filePath, "Project", this);

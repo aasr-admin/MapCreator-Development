@@ -1,6 +1,8 @@
+using System.Runtime.InteropServices;
+
 namespace MapCreator
 {
-	internal static class Program
+	internal static partial class Program
 	{
 		/// <summary>
 		///  The main entry point for the application.
