@@ -30,8 +30,8 @@ namespace MapCreator
 		{
 			Hide();
 
-			var facetBuilderForm = new FacetBuilder();
-			facetBuilderForm.Show();
+			//var facetBuilderForm = new FacetBuilder();
+			//facetBuilderForm.Show();
 		}
 
 		private void userPlugins_menuStrip_button_information_Click(object sender, EventArgs e)

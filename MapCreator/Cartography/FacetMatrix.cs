@@ -15,7 +15,7 @@
 		public StaticMatrix StaticMatrix { get; }
 
 		public FacetMatrix()
-			: this(0, 0)
+			: this(8, 8)
 		{
 		}
 
@@ -49,37 +49,13 @@
 				return;
 			}
 
-			width = Math.Max(0, width);
-			height = Math.Max(0, height);
+			width = Math.Max(8, width);
+			height = Math.Max(8, height);
 
 			Bounds = new Rectangle(0, 0, width, height);
 
 			LandMatrix.Resize(width, height);
 			StaticMatrix.Resize(width, height);
-		}
-
-		public void Crop(int x1, int y1, int x2, int y2)
-		{
-			if (x1 > x2)
-			{
-				(x1, x2) = (x2, x1);
-			}
-
-			x1 = Math.Clamp(x1, 0, Width);
-			x2 = Math.Clamp(x2, 0, Width);
-
-			if (y1 > y2)
-			{
-				(y1, y2) = (y2, y1);
-			}
-
-			y1 = Math.Clamp(y1, 0, Height);
-			y2 = Math.Clamp(y2, 0, Height);
-
-			Bounds = new Rectangle(0, 0, x2 - x1, y2 - y1);
-
-			LandMatrix.Crop(x1, y1, x2, y2);
-			StaticMatrix.Crop(x1, y1, x2, y2);
 		}
 
 		public ref LandCell GetLand(int x, int y)

@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace Photoshop
+﻿namespace Photoshop
 {
 	public static class ColorHelper
     {

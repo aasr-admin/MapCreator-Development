@@ -2,9 +2,9 @@
 
 namespace Cartography
 {
-	public class StaticMatrix : Matrix<StaticCell[]>, IXmlEntry
+	public class StaticMatrix : Matrix<StaticCell[]>//, IXmlEntry
 	{
-		public int TotalCells => this.Sum(o => o?.Length ?? 0);
+		//public int TotalCells => this.Sum(o => o?.Length ?? 0);
 
 		public StaticMatrix()
 			: this(0, 0)
@@ -62,7 +62,7 @@ namespace Cartography
 
 			return ref tile;
 		}
-
+		/*
 		public virtual void SaveXml(string filePath)
 		{
 			XmlHelper.Save(filePath, "StaticMatrix", this);
@@ -122,25 +122,31 @@ namespace Cartography
 
 			Resize(Math.Max(width, Width), Math.Max(height, Height));
 
-			foreach (XmlElement child in node.SelectNodes("Static"))
+			var nodes = node.SelectNodes("Static");
+
+			if (nodes?.Count > 0)
 			{
-				var x = UInt16.Parse(child.GetAttribute("X"));
-				var y = UInt16.Parse(child.GetAttribute("Y"));
-
-				if (x < Width && y < Height)
+				foreach (XmlElement child in nodes)
 				{
-					var tileID = UInt16.Parse(child.GetAttribute("ID"));
-					var z = SByte.Parse(child.GetAttribute("Z"));
-					var hue = UInt16.Parse(child.GetAttribute("Hue"));
+					var x = UInt16.Parse(child.GetAttribute("X"));
+					var y = UInt16.Parse(child.GetAttribute("Y"));
 
-					ref var entry = ref Add(x, y, z, tileID, hue);
-
-					if (!Int32.TryParse(child.GetAttribute("Group"), out entry.Group))
+					if (x < Width && y < Height)
 					{
-						entry.Group = -1;
+						var tileID = UInt16.Parse(child.GetAttribute("ID"));
+						var z = SByte.Parse(child.GetAttribute("Z"));
+						var hue = UInt16.Parse(child.GetAttribute("Hue"));
+
+						ref var entry = ref Add(x, y, z, tileID, hue);
+
+						if (!Int32.TryParse(child.GetAttribute("Group"), out entry.Group))
+						{
+							entry.Group = -1;
+						}
 					}
 				}
 			}
 		}
+		*/
 	}
 }

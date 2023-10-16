@@ -1,8 +1,11 @@
-﻿using System.Drawing;
-using System.Text;
+﻿using System.Text;
 
 namespace Photoshop
 {
+	/// <summary>
+	/// Exposes helper functions for handling 
+	/// <see href="https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/PhotoshopFileFormats.htm#50577411_pgfId-1055819">ACO Color Swatches</see>
+	/// </summary>
 	public static class ColorSwatchHelper
     {
         private const ushort NULL16 = 0;
@@ -32,7 +35,7 @@ namespace Photoshop
             fileStream.Flush();
         }
 
-        public static void Write<T>(BinaryWriter writer, T entry, bool name, ColorFormat format) where T : IColorEntry
+        public static void Write<T>(BinaryWriter writer, T? entry, bool name, ColorFormat format) where T : IColorEntry
         {
             writer.Write((ushort)format);
 
@@ -47,7 +50,7 @@ namespace Photoshop
 
             if (name)
             {
-                var value = entry.Name ?? String.Empty;
+                var value = entry?.Name ?? String.Empty;
 
                 writer.Write(value.Length + 1);
 

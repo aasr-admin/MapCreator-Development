@@ -12,35 +12,77 @@ namespace MapCreator
 {
 	public sealed class Project : IXmlEntry
 	{
-		public static Project? CurrentProject { get; set; }
-
 		public static HashSet<Project> Projects { get; } = new HashSet<Project>();
 
 		public static string ProjectsDirectory => Path.Combine(Environment.CurrentDirectory, "Projects");
 
 		static Project()
 		{
-			foreach (var filePath in Directory.EnumerateFiles(ProjectsDirectory, "*.mcproj", SearchOption.AllDirectories))
+			if (Directory.Exists(ProjectsDirectory))
 			{
-				_ = Projects.Add(new Project(filePath));
+				foreach (var filePath in Directory.EnumerateFiles(ProjectsDirectory, "*.mcproj", SearchOption.AllDirectories))
+				{
+					_ = Projects.Add(new Project(filePath));
+				}
 			}
 		}
 
-		public static Project OpenOrCreate(string name)
+		public static bool Delete(string projectFilePath)
 		{
-			var rootDirectoryPath = Path.Combine(ProjectsDirectory, name);
+			var rootDirectoryPath = Path.GetDirectoryName(projectFilePath);
 
-			_ = Directory.CreateDirectory(rootDirectoryPath);
+			if (!Directory.Exists(rootDirectoryPath))
+			{
+				return false;
+			}
 
-			var projectFilePath = Path.Combine(rootDirectoryPath, $"{name}.mcproj");
+			if (File.Exists(projectFilePath))
+			{
+				File.Delete(projectFilePath);
+			}
 
-			var project = new Project(projectFilePath);
+			var dataDirectoryPath = Path.Combine(rootDirectoryPath, "Data");
 
+			if (Directory.Exists(dataDirectoryPath))
+			{
+				Directory.Delete(dataDirectoryPath, true);
+			}
+
+			var outputDirectoryPath = Path.Combine(rootDirectoryPath, "Output");
+
+			if (Directory.Exists(outputDirectoryPath))
+			{
+				Directory.Delete(outputDirectoryPath, true);
+			}
+
+			if (!Directory.EnumerateFiles(rootDirectoryPath, "*", SearchOption.AllDirectories).Any())
+			{
+				Directory.Delete(rootDirectoryPath, true);
+			}
+
+			return true;
+		}
+
+		public static Project OpenOrCreate(string projectFilePath)
+		{
+			Project project = null!;
+
+			foreach (var p in Projects)
+			{
+				if (String.Equals(p.ProjectFile, projectFilePath, StringComparison.InvariantCultureIgnoreCase))
+				{
+					project = p;
+					break;
+				}
+			}
+
+			project ??= new Project(projectFilePath);
+			
 			if (!File.Exists(project.ProjectFile))
 			{
 				project.Save();
 			}
-			else
+			else if (!project.Loaded)
 			{
 				project.Load();
 			}
@@ -48,10 +90,15 @@ namespace MapCreator
 			return project;
 		}
 
+		public static string GetFilePath(string name)
+		{
+			return Path.Combine(ProjectsDirectory, name, $"{name}.mcproj");
+		}
+
 		public string ProjectFile { get; private set; }
 
-		public string RootDirectory => Path.GetDirectoryName(ProjectFile) ?? Path.Combine(ProjectsDirectory, Path.GetFileNameWithoutExtension(ProjectFile));
-		
+		public string RootDirectory => Path.GetDirectoryName(ProjectFile) ?? Path.Combine(ProjectsDirectory, Name);
+
 		public string DataDirectory => Path.Combine(RootDirectory, "Data");
 		public string OutputDirectory => Path.Combine(RootDirectory, "Output");
 
@@ -103,21 +150,20 @@ namespace MapCreator
 
 		public bool Loaded { get; private set; }
 		public bool Compiling { get; private set; }
+		public bool Exporting { get; private set; }
 
 		public ProjectSettings Settings { get; } = new();
 
 		public Facet Facet { get; } = new();
+
 		public Terrains Terrains { get; } = new();
 		public Altitudes Altitudes { get; } = new();
 		public Transitions Transitions { get; } = new();
-		public EdgeMutator Mutator { get; } = new();
+		public Mutations Mutations { get; } = new();
 		public Structures Structures { get; } = new();
 
-		public Bitmap? TerrainImage { get; private set; }
-		public Bitmap? AltitudeImage { get; private set; }
-
-		public Graphics? TerrainGraphics { get; private set; }
-		public Graphics? AltitudeGraphics { get; private set; }
+		public Bitmap TerrainImage { get; private set; } = null!;
+		public Bitmap AltitudeImage { get; private set; } = null!;
 
 		#region Ultima Data
 
@@ -207,11 +253,13 @@ namespace MapCreator
 
 		#endregion
 
-		public Project(string filePath)
+		private Project(string filePath)
 		{
 			ProjectFile = filePath;
 
 			_Progress = Progress = new Progress<ProgressUpdateEventArgs>();
+
+			LoadImages();
 		}
 
 		public override string ToString()
@@ -231,7 +279,33 @@ namespace MapCreator
 
 		public void Save(XmlElement node)
 		{
-			Settings.Save(node);
+			XmlHelper.Save(node, nameof(Settings), Settings);
+		}
+
+		public void Save()
+		{
+			CreateDirectories();
+
+			XmlHelper.Save(ProjectFile, "Project", this);
+
+			var dataDirectoryPath = DataDirectory;
+
+			XmlHelper.Save(Path.Combine(dataDirectoryPath, "Facet.xml"), Facet);
+			XmlHelper.Save(Path.Combine(dataDirectoryPath, "Terrains.xml"), Terrains);
+			XmlHelper.Save(Path.Combine(dataDirectoryPath, "Altitudes.xml"), Altitudes);
+			XmlHelper.Save(Path.Combine(dataDirectoryPath, "Transitions.xml"), Transitions);
+			XmlHelper.Save(Path.Combine(dataDirectoryPath, "Mutations.xml"), Mutations);
+			XmlHelper.Save(Path.Combine(dataDirectoryPath, "Structures.xml"), Facet);
+
+			Terrains.SaveTable(Path.Combine(dataDirectoryPath, "Terrain.act"));
+			Terrains.SaveSwatch(Path.Combine(dataDirectoryPath, "Terrain.aco"), ColorFormat.RGB);
+
+			Altitudes.SaveTable(Path.Combine(dataDirectoryPath, "Altitude.act"));
+			Altitudes.SaveSwatch(Path.Combine(dataDirectoryPath, "Altitude.aco"), ColorFormat.RGB);
+
+			SaveImages();
+
+			Loaded = true;
 		}
 
 		public bool LoadXml(string filePath)
@@ -246,28 +320,7 @@ namespace MapCreator
 
 		public void Load(XmlElement node)
 		{
-			Settings.Load(node);
-		}
-
-		public void Save()
-		{
-			CreateDirectories();
-
-			XmlHelper.Save(ProjectFile, "Project", this);
-
-			var dataDirectoryPath = DataDirectory;
-
-			Facet.SaveXml(Path.Combine(dataDirectoryPath, "Facet.xml"));
-			Terrains.SaveXml(Path.Combine(dataDirectoryPath, "Terrain.xml"));
-			Altitudes.SaveXml(Path.Combine(dataDirectoryPath, "Altitude.xml"));
-			Transitions.SaveXml(Path.Combine(dataDirectoryPath, "Transitions.xml"));
-			Mutator.SaveXml(Path.Combine(dataDirectoryPath, "Mutator.xml"));
-			Structures.SaveXml(Path.Combine(dataDirectoryPath, "Structures.xml"));
-
-			TerrainImage?.Save(Path.Combine(dataDirectoryPath, "Terrain.bmp"));
-			AltitudeImage?.Save(Path.Combine(dataDirectoryPath, "Altitude.bmp"));
-
-			Loaded = true;
+			_ = XmlHelper.Load(node, nameof(Settings), Settings);
 		}
 
 		public void Load()
@@ -280,77 +333,100 @@ namespace MapCreator
 
 			var dataDirectoryPath = DataDirectory;
 
-			_ = Facet.LoadXml(Path.Combine(dataDirectoryPath, "Facet.xml"));
-			_ = Terrains.LoadXml(Path.Combine(dataDirectoryPath, "Terrain.xml"));
-			_ = Altitudes.LoadXml(Path.Combine(dataDirectoryPath, "Altitude.xml"));
-			_ = Transitions.LoadXml(Path.Combine(dataDirectoryPath, "Transitions.xml"));
-			_ = Mutator.LoadXml(Path.Combine(dataDirectoryPath, "Mutator.xml"));
-			_ = Structures.LoadXml(Path.Combine(dataDirectoryPath, "Structures.xml"));
+			XmlHelper.Load(Path.Combine(dataDirectoryPath, "Facet.xml"), Facet);
+			XmlHelper.Load(Path.Combine(dataDirectoryPath, "Terrains.xml"), Terrains);
+			XmlHelper.Load(Path.Combine(dataDirectoryPath, "Altitudes.xml"), Altitudes);
+			XmlHelper.Load(Path.Combine(dataDirectoryPath, "Transitions.xml"), Transitions);
+			XmlHelper.Load(Path.Combine(dataDirectoryPath, "Mutations.xml"), Mutations);
+			XmlHelper.Load(Path.Combine(dataDirectoryPath, "Structures.xml"), Facet);
+
+			LoadImages();
+
+			Loaded = true;
+		}
+
+		public void SaveImages()
+		{
+			CreateDirectories();
+
+			CreateImages();
+
+			var dataDirectoryPath = DataDirectory;
+
+			AltitudeImage?.Save(Path.Combine(dataDirectoryPath, "Altitude.bmp"), ImageFormat.Bmp);
+			TerrainImage?.Save(Path.Combine(dataDirectoryPath, "Altitude.bmp"), ImageFormat.Bmp);
+		}
+
+		public void LoadImages()
+		{
+			CreateDirectories();
+
+			var dataDirectoryPath = DataDirectory;
 
 			var terrainImageFilePath = Path.Combine(dataDirectoryPath, "Terrain.bmp");
 
 			if (File.Exists(terrainImageFilePath))
 			{
+				TerrainImage?.Dispose();
 				TerrainImage = new Bitmap(terrainImageFilePath);
-				TerrainGraphics = Graphics.FromImage(TerrainImage);
-			}
-			else
-			{
-				TerrainImage = CreateImage(Terrains);
-				TerrainGraphics = Graphics.FromImage(TerrainImage);
-
-				using var brush = new SolidBrush(Terrains[9].Color);
-
-				TerrainGraphics.FillRectangle(brush, Facet.Bounds);
-
-				TerrainImage.Save(terrainImageFilePath, ImageFormat.Bmp);
 			}
 
 			var altitudeImageFilePath = Path.Combine(dataDirectoryPath, "Altitude.bmp");
 
 			if (File.Exists(altitudeImageFilePath))
 			{
+				AltitudeImage?.Dispose();
 				AltitudeImage = new Bitmap(altitudeImageFilePath);
-				AltitudeGraphics = Graphics.FromImage(AltitudeImage);
 			}
-			else
+
+			CreateImages();
+		}
+
+		public void CreateImages()
+		{
+			if (TerrainImage == null)
+			{
+				TerrainImage = CreateImage(Terrains);
+				TerrainImage.Fill(9);
+			}
+
+			if (AltitudeImage == null)
 			{
 				AltitudeImage = CreateImage(Altitudes);
-				AltitudeGraphics = Graphics.FromImage(AltitudeImage);
-
-				using var brush = new SolidBrush(Altitudes[66].Color);
-
-				AltitudeGraphics.FillRectangle(brush, Facet.Bounds);
-
-				AltitudeImage.Save(altitudeImageFilePath, ImageFormat.Bmp);
+				AltitudeImage.Fill(66);
 			}
+		}
 
-			Loaded = true;
+		private Bitmap CreateImage<T>(T table) where T : IColorCollection
+		{
+			var bitmap = new Bitmap(Facet.Width, Facet.Height, PixelFormat.Format8bppIndexed);
+
+			table.FillPallette(bitmap.Palette);
+
+			return bitmap;
 		}
 
 		public void Unload()
 		{
+			UnloadImages();
 			UnloadUltima();
 
 			Facet.Clear();
 			Terrains.Reset();
 			Altitudes.Reset();
 			Transitions.Clear();
-			Mutator.Clear();
-
-			TerrainGraphics?.Dispose();
-			TerrainGraphics = null;
-
-			AltitudeGraphics?.Dispose();
-			AltitudeGraphics = null;
-
-			TerrainImage?.Dispose();
-			TerrainImage = null;
-
-			AltitudeImage?.Dispose();
-			AltitudeImage = null;
+			Mutations.Clear();
 
 			Loaded = false;
+		}
+
+		public void UnloadImages()
+		{
+			TerrainImage?.Dispose();
+			TerrainImage = null!;
+
+			AltitudeImage?.Dispose();
+			AltitudeImage = null!;
 		}
 
 		public void UnloadUltima()
@@ -381,21 +457,33 @@ namespace MapCreator
 			_ = Directory.CreateDirectory(OutputDirectory);
 		}
 
-		public void Compile()
+		public bool DeleteFiles()
+		{
+			return Delete(ProjectFile);
+		}
+
+		public bool Compile()
 		{
 			if (Compiling)
 			{
-				return;
+				return false;
 			}
 
 			CreateDirectories();
 
-			ReportCompileProgress("Started", 0, 1, LogType.Info);
-
 			if (!Loaded)
 			{
 				Load();
+
+				if (!Loaded)
+				{
+					return false;
+				}
 			}
+
+			Compiling = true;
+
+			ReportCompileProgress("Started", 0, 1, LogType.Info);
 
 			string processName;
 			long processIndex, processCount;
@@ -509,7 +597,7 @@ namespace MapCreator
 				{
 					for (var y = 0; y < Facet.Height; y++)
 					{
-						ref var tile = ref Mutator.Mutate(Facet, x, y);
+						ref var tile = ref Mutations.Mutate(Facet, x, y);
 
 						ref var terrianGroup = ref Terrains[tile.Group];
 
@@ -561,51 +649,55 @@ namespace MapCreator
 
 				#endregion
 
+				return true;
+			}
+			catch (Exception e)
+			{
+				ReportCompileProgress(e.Message, 1, 1, LogType.Error);
+
+				return false;
+			}
+			finally
+			{
+				Compiling = false;
+
+				ReportCompileProgress("Finished", 1, 1, LogType.Info);
+			}
+		}
+
+		public bool ExportMapFiles(bool uop)
+		{
+			if (Exporting)
+			{
+				return false;
+			}
+
+			CreateDirectories();
+
+			Exporting = true;
+
+			ReportExportProgress("Started", 0, 1, LogType.Info);
+
+			string processName;
+			long processIndex, processCount;
+
+			var outputDirectoryPath = OutputDirectory;
+
+			try
+			{
 				#region Writing Land Blocks
 
 				processName = "Writing Land Blocks";
 				processIndex = 0;
 				processCount = Facet.Area / 8;
 
-				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
+				ReportExportProgress(processName, processIndex, processCount, LogType.Info);
 
 				var mulPath = Path.Combine(outputDirectoryPath, $"map{Facet.Index}.mul");
 
-				using var mulStream = new FileStream(mulPath, FileMode.Create);
-				using var mulWriter = new BinaryWriter(mulStream);
+				Facet.SaveLandMatrix(mulPath, (i, c) => ReportExportProgress(processName, processIndex = i, processCount = c, null));
 
-				try
-				{
-					for (var x = 0; x < Facet.Width; x += 8)
-					{
-						for (var y = 0; y < Facet.Height; y += 8)
-						{
-							mulWriter.Write(1);
-
-							for (var by = 0; by < 8; by++)
-							{
-								for (var bx = 0; bx < 8; bx++)
-								{
-									ref var tile = ref Facet.GetLand(x + bx, y + by);
-
-									mulWriter.Write(tile.ID);
-									mulWriter.Write(tile.Z);
-								}
-							}
-
-							if (++processIndex < processCount)
-							{
-								ReportCompileProgress(processName, processIndex, processCount, null);
-							}
-						}
-					}
-				}
-				finally
-				{
-					mulWriter.Flush();
-				}
-
-				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
+				ReportExportProgress(processName, processIndex, processCount, LogType.Info);
 
 				#endregion
 
@@ -615,93 +707,31 @@ namespace MapCreator
 				processIndex = 0;
 				processCount = Facet.Area;
 
-				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
+				ReportExportProgress(processName, processIndex, processCount, LogType.Info);
 
 				var staIdxPath = Path.Combine(outputDirectoryPath, $"StaIdx{Facet.Index}.mul");
-
-				using var staIdxFile = new FileStream(staIdxPath, FileMode.Create);
-				using var staIdxWriter = new BinaryWriter(staIdxFile);
-
 				var staticsPath = Path.Combine(outputDirectoryPath, $"Statics{Facet.Index}.mul");
 
-				using var staticsStream = new MemoryStream();
-				using var staticsWriter = new BinaryWriter(staticsStream);
+				Facet.SaveStaticMatrix(staIdxPath, staticsPath, (i, c) => ReportExportProgress(processName, processIndex = i, processCount = c, null));
 
-				try
-				{
-					var staticsPosition = 0;
-
-					for (var x = 0; x < Facet.Width; x++)
-					{
-						for (var y = 0; y < Facet.Height; y++)
-						{
-							var length = 0;
-
-							ref var tiles = ref Facet.GetStatics(x, y);
-
-							for (var i = 0; i < tiles.Length; i++)
-							{
-								ref var tile = ref tiles[i];
-
-								staticsWriter.Write(tile.ID);
-								staticsWriter.Write((byte)tile.X);
-								staticsWriter.Write((byte)tile.Y);
-								staticsWriter.Write(tile.Z);
-								staticsWriter.Write(tile.Hue);
-
-								length += 7;
-							}
-
-							if (length > 0)
-							{
-								staIdxWriter.Write(staticsPosition);
-
-								staticsPosition += length;
-							}
-							else
-							{
-								staIdxWriter.Write(-1);
-							}
-
-							staIdxWriter.Write(length);
-							staIdxWriter.Write(1);
-
-							if (++processIndex < processCount)
-							{
-								ReportCompileProgress(processName, processIndex, processCount, null);
-							}
-						}
-					}
-				}
-				finally
-				{
-					staIdxWriter.Flush();
-					staticsWriter.Flush();
-				}
-
-				ReportCompileProgress(processName, processIndex, processCount, LogType.Info);
+				ReportExportProgress(processName, processIndex, processCount, LogType.Info);
 
 				#endregion
+
+				return true;
 			}
 			catch (Exception e)
 			{
-				ReportCompileProgress(e.Message, 1, 1, LogType.Error);
+				ReportExportProgress(e.Message, 1, 1, LogType.Error);
+
+				return false;
 			}
 			finally
 			{
-				Compiling = false;
+				Exporting = false;
+
+				ReportExportProgress("Finished", 1, 1, LogType.Info);
 			}
-
-			ReportCompileProgress("Finished", 1, 1, LogType.Info);
-		}
-
-		private Bitmap CreateImage<T>(T table) where T : IColorCollection
-		{
-			var bitmap = new Bitmap(Facet.Width, Facet.Height, PixelFormat.Format8bppIndexed);
-
-			table.FillPallette(bitmap.Palette);
-
-			return bitmap;
 		}
 
 		private void ReportProgress(string title, string summary, long value, long limit, LogType? log)
@@ -739,6 +769,11 @@ namespace MapCreator
 		private void ReportCompileProgress(string summary, long value, long limit, LogType? log)
 		{
 			ReportProgress("Compile", summary, value, limit, log);
+		}
+
+		private void ReportExportProgress(string summary, long value, long limit, LogType? log)
+		{
+			ReportProgress("Export", summary, value, limit, log);
 		}
 
 		private void UltimaLoader(string title, string root, Action<string> loader)

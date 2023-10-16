@@ -385,8 +385,8 @@ namespace MapCreator.userPlugin
 
 		private void createTerrainTypes_mainMenu_button_facetBuilder_Click(object sender, EventArgs e)
 		{
-			_facetBuilder ??= new FacetBuilder();
-			_facetBuilder.Show();
+			//_facetBuilder ??= new FacetBuilder();
+			//_facetBuilder.Show();
 
 			Hide();
 		}

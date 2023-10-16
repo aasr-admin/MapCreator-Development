@@ -1,8 +1,6 @@
-﻿using System.Xml;
-
-namespace Cartography
+﻿namespace Cartography
 {
-	public class LandMatrix : Matrix<LandCell>, IXmlEntry
+	public class LandMatrix : Matrix<LandCell>//, IXmlEntry
 	{
 		public LandMatrix(int width, int height)
 			: base(width, height)
@@ -27,18 +25,18 @@ namespace Cartography
 
 			return ref tile;
 		}
-
-		public void SaveXml(string filePath)
+		/*
+		public virtual void SaveXml(string filePath)
 		{
 			XmlHelper.Save(filePath, "StaticMatrix", this);
 		}
 
-		public void Save(XmlDocument doc)
+		public virtual void Save(XmlDocument doc)
 		{
 			XmlHelper.Save(doc, "StaticMatrix", this);
 		}
 
-		public void Save(XmlElement node)
+		public virtual void Save(XmlElement node)
 		{
 			node.SetAttribute("Width", $"{Width}");
 			node.SetAttribute("Height", $"{Height}");
@@ -68,41 +66,47 @@ namespace Cartography
 			}
 		}
 
-		public bool LoadXml(string filePath)
+		public virtual bool LoadXml(string filePath)
 		{
 			return XmlHelper.Load(filePath, "LandMatrix", this);
 		}
 
-		public bool Load(XmlDocument doc)
+		public virtual bool Load(XmlDocument doc)
 		{
 			return XmlHelper.Load(doc, "LandMatrix", this);
 		}
 
-		public void Load(XmlElement node)
+		public virtual void Load(XmlElement node)
 		{
 			var width = Int32.Parse(node.GetAttribute("Width"));
 			var height = Int32.Parse(node.GetAttribute("Height"));
 
 			Resize(Math.Max(width, Width), Math.Max(height, Height));
 
-			foreach (XmlElement child in node.SelectNodes("Land"))
+			var nodes = node.SelectNodes("Land");
+
+			if (nodes?.Count > 0)
 			{
-				var x = Int32.Parse(child.GetAttribute("X"));
-				var y = Int32.Parse(child.GetAttribute("Y"));
-
-				if (x < Width && y < Width)
+				foreach (XmlElement child in nodes)
 				{
-					var tileID = UInt16.Parse(child.GetAttribute("ID"));
-					var z = SByte.Parse(child.GetAttribute("Z"));
+					var x = Int32.Parse(child.GetAttribute("X"));
+					var y = Int32.Parse(child.GetAttribute("Y"));
 
-					ref var entry = ref Set(x, y, z, tileID);
-
-					if (!Int32.TryParse(child.GetAttribute("Group"), out entry.Group))
+					if (x < Width && y < Width)
 					{
-						entry.Group = -1;
+						var tileID = UInt16.Parse(child.GetAttribute("ID"));
+						var z = SByte.Parse(child.GetAttribute("Z"));
+
+						ref var entry = ref Set(x, y, z, tileID);
+
+						if (!Int32.TryParse(child.GetAttribute("Group"), out entry.Group))
+						{
+							entry.Group = -1;
+						}
 					}
 				}
 			}
 		}
+		*/
 	}
 }

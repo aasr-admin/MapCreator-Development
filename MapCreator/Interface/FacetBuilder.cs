@@ -13,12 +13,28 @@ namespace MapCreator
 
 		private readonly ColorTables _ColorTables = new();
 
-		public FacetBuilder()
+		public Project CurrentProject { get; }
+
+		public FacetBuilder(Project project)
 		{
+			CurrentProject = project;
+
+			if (!CurrentProject.Loaded)
+			{
+				CurrentProject.Load();
+			}
+
 			InitializeComponent();
 
 			MaximizeBox = false;
 			MinimizeBox = false;
+		}
+
+		protected override void OnClosed(EventArgs e)
+		{
+			base.OnClosed(e);
+
+			MapCreatorUI.Instance.Show();
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -40,8 +56,8 @@ namespace MapCreator
 			facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text = Directory.GetCurrentDirectory();
 			facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text = Directory.GetCurrentDirectory();
 
-			//facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.Fill(Project.CurrentProject.Facet);
-			facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox.Fill(Project.CurrentProject.Terrains);
+			//facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.Fill(CurrentProject.Facet);
+			facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox.Fill(CurrentProject.Terrains);
 
 			#endregion
 		}
@@ -267,7 +283,7 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_on_CheckedChanged(object sender, EventArgs e)
 		{
-			Project.CurrentProject.Settings.RandomStatics = true;
+			CurrentProject.Settings.RandomStatics = true;
 			/// Form NotificationAlertOn = new NotificationAlertOn();
 			/// NotificationAlertOn.Show();
 			System.Media.SystemSounds.Beep.Play();
@@ -275,7 +291,7 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_off_CheckedChanged(object sender, EventArgs e)
 		{
-			Project.CurrentProject.Settings.RandomStatics = false;
+			CurrentProject.Settings.RandomStatics = false;
 			/// Form NotificationAlertOff = new NotificationAlertOff();
 			/// NotificationAlertOff.Show();
 			System.Media.SystemSounds.Beep.Play();
@@ -296,7 +312,7 @@ namespace MapCreator
 
 		private void CreateFacet_mul_Files()
 		{
-			Project.CurrentProject.Compile();
+			CurrentProject.Compile();
 		}
 
 		#endregion

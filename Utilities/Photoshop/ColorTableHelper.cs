@@ -1,7 +1,9 @@
-﻿using System.Drawing;
-
-namespace Photoshop
+﻿namespace Photoshop
 {
+	/// <summary>
+	/// Exposes helper functions for handling 
+	/// <see href="https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/#50577411_pgfId-1070626">ACT Color Tables</see>
+	/// </summary>
 	public static class ColorTableHelper
     {
         public static void Write<T>(BinaryWriter writer, T entry) where T : IColorEntry

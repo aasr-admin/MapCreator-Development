@@ -26,16 +26,9 @@ namespace Cartography
 
 		public virtual void Save(XmlElement node)
 		{
-			node.SetAttribute("Count", $"{Length:N0}");
+			var count = XmlHelper.SaveChildren(node, EntryNodeName, this);
 
-			foreach (var entry in this)
-			{
-				var child = node.OwnerDocument.CreateElement(EntryNodeName);
-
-				entry.Save(child);
-
-				_ = node.AppendChild(child);
-			}
+			node.SetAttribute("Count", $"{count:N0}");
 		}
 
 		public virtual bool LoadXml(string filePath)
@@ -52,11 +45,11 @@ namespace Cartography
 		{
 			var index = -1;
 
-			foreach (XmlElement entry in node.SelectNodes(EntryNodeName))
+			foreach (var entry in XmlHelper.LoadChildren<T>(node, EntryNodeName))
 			{
 				if (++index < Length)
 				{
-					this[index].Load(node);
+					this[index] = entry;
 				}
 				else
 				{
