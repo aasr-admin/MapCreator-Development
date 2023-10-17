@@ -168,15 +168,15 @@ namespace Cartography
 			return z;
 		}
 
-		public ref LandCell Mutate(FacetMatrix matrix, int x, int y)
+		public ref LandCell Mutate(Facet facet, int x, int y)
 		{
-			ref var tile = ref matrix.GetLand(x, y);
+			ref var tile = ref facet.GetLand(x, y);
 
-			if (x > 0 && y > 0 && x < matrix.Width && y < matrix.Height)
+			if (x > 0 && y > 0 && x < facet.Width && y < facet.Height)
 			{
-				ref var corner = ref matrix.GetLand(x - 1, y - 1);
-				ref var left = ref matrix.GetLand(x - 1, y);
-				ref var top = ref matrix.GetLand(x, y - 1);
+				ref var corner = ref facet.GetLand(x - 1, y - 1);
+				ref var left = ref facet.GetLand(x - 1, y);
+				ref var top = ref facet.GetLand(x, y - 1);
 
 				tile.Z = Mutate(corner.ID, left.ID, top.ID);
 			}

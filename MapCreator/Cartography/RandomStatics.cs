@@ -22,7 +22,7 @@ namespace Cartography
 			return $"[{Weight}%] ({Count:N0}) {Name}";
 		}
 
-		public int FillBlock(FacetMatrix matrix, int x, int y, sbyte z)
+		public int FillBlock(Facet facet, int x, int y, sbyte z)
 		{
 			x /= 8;
 			y /= 8;
@@ -31,7 +31,7 @@ namespace Cartography
 
 			foreach (var entry in this)
 			{
-				_ = matrix.AddStatic(x + entry.X, y + entry.Y, (sbyte)(z + entry.Z), entry.ID, entry.Hue);
+				_ = facet.AddStatic(x + entry.X, y + entry.Y, (sbyte)(z + entry.Z), entry.ID, entry.Hue);
 
 				++count;
 			}

@@ -26,20 +26,20 @@ namespace Cartography
 			return $"[{Weight}%] ({Count:N0}) {Name}";
 		}
 
-		public virtual void Apply(FacetMatrix matrix, int x, int y, sbyte z, bool randomizer)
+		public virtual void Apply(Facet facet, int x, int y, sbyte z, bool randomizer)
 		{
 			if (LandTiles.Count > 0)
 			{
 				var randTile = LandTiles.RandomTile;
 
-				matrix.SetLand(x, y, randTile);
+				facet.SetLand(x, y, randTile);
 			}
 
 			if (StaticTiles.Count > 0)
 			{
 				var randomStatic = StaticTiles.RandomTile;
 
-				_ = matrix.AddStatic(x, y, (sbyte)(z + randomStatic.Z), randomStatic.ID);
+				_ = ref facet.AddStatic(x, y, (sbyte)(z + randomStatic.Z), randomStatic.ID);
 			}
 
 			if (randomizer && Count > 0)
@@ -48,7 +48,7 @@ namespace Cartography
 				{
 					var random = Utility.RandomList(this);
 
-					_ = (random?.FillBlock(matrix, x, y, z));
+					_ = random?.FillBlock(facet, x, y, z);
 				}
 			}
 		}

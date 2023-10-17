@@ -1,88 +1,52 @@
-﻿using System.Collections;
-
-namespace Cartography
+﻿namespace Cartography
 {
-	public abstract class Matrix<T> /*: IEnumerable<T>*/
+	public abstract class Matrix<T>
 	{
-		private T[,] _Matrix;
+		protected T[,] _Matrix;
 
-		public int Width { get; private set; }
-		public int Height { get; private set; }
+		public int Width => _Matrix.GetLength(0);
+		public int Height => _Matrix.GetLength(1);
 
-		public int Length { get; private set; }
+		public int Length => _Matrix.Length;
 
-		public ref T this[int x, int y] => ref _Matrix[x, y];
+		public virtual ref T this[int x, int y] => ref _Matrix[x, y];
 
-		public ref T this[int index] => ref _Matrix[index / Width, index % Width];
+		public virtual ref T this[int index] => ref _Matrix[index / Width, index % Width];
 
 		public Matrix(int width, int height)
 		{
-			Width = width;
-			Height = height;
-
-			Length = width * height;
-
 			_Matrix = new T[width, height];
 		}
-		/*
-		IEnumerator IEnumerable.GetEnumerator()
+
+		public virtual void Clear()
 		{
-			foreach (var entry in _Matrix)
+			Array.Clear(_Matrix, 0, _Matrix.Length);
+		}
+
+		public virtual void Clear(int x, int y)
+		{
+			if (x >= 0 && x < Width && y >= 0 && y < Height)
 			{
-				yield return entry;
+				this[x, y] = default!;
 			}
 		}
 
-		public IEnumerator<T> GetEnumerator()
+		public virtual void Resize(int width, int height)
 		{
-			foreach (var entry in _Matrix)
+			if (Width != width || Height != height)
 			{
-				yield return entry;
-			}
-		}
-		*/
-		public void Clear()
-		{
-			for (var x = 0; x < Width; x++)
-			{
-				for (var y = 0; y < Height; y++)
+				var matrix = new T[width, height];
+
+				for (var x = 0; x < width && x < Width; x++)
 				{
-					Clear(x, y);
+					for (var y = 0; y < height && y < Height; y++)
+					{
+						matrix[x, y] = _Matrix[x, y];
+					}
 				}
+
+				_Matrix = matrix;
 			}
-		}
-
-		public void Clear(int x, int y)
-		{
-			this[x, y] = default!;
-		}
-
-		public void Resize(int width, int height)
-		{
-			if (Width == width && Height == height)
-			{
-				return;
-			}
-
-			width = Math.Max(0, width);
-			height = Math.Max(0, height);
-
-			var matrix = new T[width, height];
-
-			for (var x = 0; x < width && x < Width; x++)
-			{
-				for (var y = 0; y < height && y < Height; y++)
-				{
-					matrix[x, y] = _Matrix[x, y];
-				}
-			}
-
-			Width = width;
-			Height = height;
-
-			Length = width * height;
-
-			_Matrix = matrix;
 		}
 	}
 }

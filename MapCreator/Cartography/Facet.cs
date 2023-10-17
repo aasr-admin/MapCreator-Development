@@ -2,13 +2,43 @@
 
 namespace Cartography
 {
-	public sealed class Facet : FacetMatrix, IXmlEntry, IComparable<Facet>
+	public sealed class Facet : IXmlEntry, IComparable<Facet>
 	{
+		public const int BLOCK_SIZE = 8;
+
 		public byte Index { get; set; }
 
 		public string Name { get; set; } = String.Empty;
 
+		public Rectangle Bounds { get; private set; }
+
+		public Size Size => Bounds.Size;
+
+		public int Width => Bounds.Width;
+		public int Height => Bounds.Height;
+
+		public int Area => Bounds.Width * Bounds.Height;
+
 		public bool IsValid => Area > 0 && !String.IsNullOrWhiteSpace(Name);
+
+		private readonly LandMatrix _LandMatrix;
+		private readonly StaticMatrix _StaticMatrix;
+
+		public Facet()
+			: this(7168, 4096)
+		{
+		}
+
+		public Facet(int width, int height)
+		{
+			Utility.RoundUp(ref width, BLOCK_SIZE);
+			Utility.RoundUp(ref height, BLOCK_SIZE);
+
+			Bounds = new Rectangle(0, 0, width, height);
+
+			_LandMatrix = new LandMatrix(width, height);
+			_StaticMatrix = new StaticMatrix(width, height);
+		}
 
 		public override string ToString()
 		{
@@ -18,6 +48,69 @@ namespace Cartography
 		public int CompareTo(Facet? other)
 		{
 			return Index.CompareTo(other?.Index);
+		}
+
+		public void Clear()
+		{
+			_LandMatrix.Clear();
+			_StaticMatrix.Clear();
+		}
+
+		public void Clear(int x, int y)
+		{
+			_LandMatrix.Clear(x, y);
+			_StaticMatrix.Clear(x, y);
+		}
+
+		public void Resize(int width, int height)
+		{
+			_LandMatrix.Resize(width, height);
+			_StaticMatrix.Resize(width, height);
+		}
+
+		public ref LandCell GetLand(int x, int y)
+		{
+			return ref _LandMatrix[x, y];
+		}
+
+		public void SetLand(int x, int y, LandCell tile)
+		{
+			_LandMatrix[x, y] = tile;
+		}
+
+		public void SetLand(int x, int y, sbyte z)
+		{
+			_ = _LandMatrix.Set(x, y, z);
+		}
+
+		public void SetLand(int x, int y, sbyte z, ushort tileID)
+		{
+			_ = _LandMatrix.Set(x, y, z, tileID);
+		}
+
+		public void ClearStatics(int x, int y)
+		{
+			_StaticMatrix.Clear(x, y);
+		}
+
+		public ref StaticCell[] GetStatics(int x, int y)
+		{
+			return ref _StaticMatrix[x, y];
+		}
+
+		public void SetStatics(int x, int y, StaticCell[] tiles)
+		{
+			_StaticMatrix[x, y] = tiles;
+		}
+
+		public ref StaticCell AddStatic(int x, int y, sbyte z, ushort tileID)
+		{
+			return ref _StaticMatrix.Add(x, y, z, tileID);
+		}
+
+		public ref StaticCell AddStatic(int x, int y, sbyte z, ushort tileID, ushort hue)
+		{
+			return ref _StaticMatrix.Add(x, y, z, tileID, hue);
 		}
 
 		public IEnumerable<LandCell> GetLandSequence(int x, int y)
@@ -87,22 +180,22 @@ namespace Cartography
 		public void SaveLandMatrix(string mulPath, Action<int, int>? progressCallback = null)
 		{
 			var processIndex = 0;
-			var processCount = Area / 8;
+			var processCount = Area / BLOCK_SIZE;
 
 			using var mulStream = new FileStream(mulPath, FileMode.Create);
 			using var mulWriter = new BinaryWriter(mulStream);
 
 			try
 			{
-				for (var x = 0; x < Width; x += 8)
+				for (var x = 0; x < Width; x += BLOCK_SIZE)
 				{
-					for (var y = 0; y < Height; y += 8)
+					for (var y = 0; y < Height; y += BLOCK_SIZE)
 					{
 						mulWriter.Write(1);
 
-						for (var by = 0; by < 8; by++)
+						for (var by = 0; by < BLOCK_SIZE; by++)
 						{
-							for (var bx = 0; bx < 8; bx++)
+							for (var bx = 0; bx < BLOCK_SIZE; bx++)
 							{
 								ref var tile = ref GetLand(x + bx, y + by);
 
@@ -145,19 +238,25 @@ namespace Cartography
 					{
 						var length = 0;
 
-						ref var tiles = ref GetStatics(x, y);
-
-						for (var i = 0; i < tiles.Length; i++)
+						for (var by = 0; by < BLOCK_SIZE; by++)
 						{
-							ref var tile = ref tiles[i];
+							for (var bx = 0; bx < BLOCK_SIZE; bx++)
+							{
+								ref var tiles = ref GetStatics(x + bx, y + by);
 
-							staticsWriter.Write(tile.ID);
-							staticsWriter.Write((byte)tile.X);
-							staticsWriter.Write((byte)tile.Y);
-							staticsWriter.Write(tile.Z);
-							staticsWriter.Write(tile.Hue);
+								for (var i = 0; i < tiles.Length; i++)
+								{
+									ref var tile = ref tiles[i];
 
-							length += 7;
+									staticsWriter.Write(tile.ID);
+									staticsWriter.Write((byte)bx);
+									staticsWriter.Write((byte)by);
+									staticsWriter.Write(tile.Z);
+									staticsWriter.Write(tile.Hue);
+
+									length += 7;
+								}
+							}
 						}
 
 						if (length > 0)

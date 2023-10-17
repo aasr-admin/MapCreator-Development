@@ -12,13 +12,13 @@ namespace Cartography
 			return $"[{Weight}%] ({Count:N0}) {Name}";
 		}
 
-		public bool Randomize(FacetMatrix matrix, int x, int y, sbyte z)
+		public bool Randomize(Facet facet, int x, int y, sbyte z)
 		{
 			if (Utility.RandomDouble() <= Weight / 100.0)
 			{
 				var random = Utility.RandomList(this);
 
-				if (random?.FillBlock(matrix, x, y, z) > 0)
+				if (random?.FillBlock(facet, x, y, z) > 0)
 				{
 					return true;
 				}

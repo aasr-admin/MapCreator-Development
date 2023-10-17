@@ -2,15 +2,15 @@
 
 namespace Cartography
 {
-	public record struct StaticCell : IXmlEntry
+	public record struct StaticCell : IComparable<StaticCell>, ICell, IXmlEntry
 	{
-		public ushort ID;
-		public ushort X;
-		public ushort Y;
-		public sbyte Z;
-		public ushort Hue;
+		public ushort ID { get; set; }
+		public int X { get; set; }
+		public int Y { get; set; }
+		public sbyte Z { get; set; }
+		public ushort Hue { get; set; }
 
-		public int Group = -1;
+		public int Group { get; set; } = -1;
 
 		public StaticCell()
 		{
@@ -26,7 +26,12 @@ namespace Cartography
 			return $"{ID:D5}";
 		}
 
-		public void Set(ushort tileID, ushort x, ushort y, sbyte z)
+		public readonly int CompareTo(StaticCell other)
+		{
+			return Z.CompareTo(other.Z);
+		}
+
+		public void Set(ushort tileID, int x, int y, sbyte z)
 		{
 			ID = tileID;
 			X = x;
@@ -34,7 +39,7 @@ namespace Cartography
 			Z = z;
 		}
 
-		public void Set(ushort tileID, ushort x, ushort y, sbyte z, ushort hue)
+		public void Set(ushort tileID, int x, int y, sbyte z, ushort hue)
 		{
 			ID = tileID;
 			X = x;
@@ -60,14 +65,14 @@ namespace Cartography
 		public void Load(XmlElement node)
 		{
 			ID = UInt16.Parse(node.GetAttribute("ID"));
-			X = UInt16.Parse(node.GetAttribute("X"));
-			Y = UInt16.Parse(node.GetAttribute("Y"));
+			X = Int32.Parse(node.GetAttribute("X"));
+			Y = Int32.Parse(node.GetAttribute("Y"));
 			Z = SByte.Parse(node.GetAttribute("Z"));
 			Hue = UInt16.Parse(node.GetAttribute("Hue"));
 
-			if (!Int32.TryParse(node.GetAttribute("Group"), out Group))
+			if (Int32.TryParse(node.GetAttribute("Group"), out var group))
 			{
-				Group = -1;
+				Group = group;
 			}
 		}
 	}

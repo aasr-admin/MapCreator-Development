@@ -2,21 +2,15 @@
 
 namespace Cartography
 {
-	public record struct LandCell : IXmlEntry
+	public record struct LandCell : IComparable<LandCell>, ICell, IXmlEntry
 	{
-		public ushort ID;
-		public sbyte Z;
+		public ushort ID { get; set; }
+		public sbyte Z { get; set; }
 
-		public int Group = -1;
+		public int Group { get; set; } = -1;
 
 		public LandCell()
 		{
-		}
-
-		public void Set(ushort tileID, sbyte z)
-		{
-			ID = tileID;
-			Z = z;
 		}
 
 		public override readonly string ToString()
@@ -27,6 +21,17 @@ namespace Cartography
 			}
 
 			return $"{ID:D5}";
+		}
+
+		public readonly int CompareTo(LandCell other)
+		{
+			return Z.CompareTo(other.Z);
+		}
+
+		public void Set(ushort tileID, sbyte z)
+		{
+			ID = tileID;
+			Z = z;
 		}
 
 		public readonly void Save(XmlElement node)
@@ -45,9 +50,9 @@ namespace Cartography
 			ID = UInt16.Parse(node.GetAttribute("ID"));
 			Z = SByte.Parse(node.GetAttribute("Z"));
 
-			if (!Int32.TryParse(node.GetAttribute("Group"), out Group))
+			if (Int32.TryParse(node.GetAttribute("Group"), out var group))
 			{
-				Group = -1;
+				Group = group;
 			}
 		}
 	}
