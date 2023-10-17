@@ -41,7 +41,7 @@ namespace Assets
 		public long IdxLength { get; }
 		public int IdxCount { get; }
 
-		private readonly string _BinPath, _IdxPath;
+		private readonly string? _BinPath, _IdxPath;
 
 		private FileIndex(int entryCount)
 		{

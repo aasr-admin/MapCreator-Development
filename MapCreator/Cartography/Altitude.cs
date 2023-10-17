@@ -11,18 +11,17 @@ namespace Cartography
 
 		public Color Color { get; set; }
 
-		public string Name { get; set; }
+		public string Name { get; set; } = "Altitude";
+
+		public Altitude()
+		{
+		}
 
 		public void Set(sbyte z, Color color, string name)
 		{
 			Z = z;
 			Color = color;
 			Name = name;
-		}
-
-		public Altitude(XmlElement node)
-		{
-			Load(node);
 		}
 
 		public override readonly string ToString()

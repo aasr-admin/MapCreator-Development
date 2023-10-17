@@ -4,7 +4,7 @@ namespace Cartography
 {
 	public class StaticRandomizer : List<RandomStatics>, IXmlEntry
 	{
-		public string Name { get; set; }
+		public string Name { get; set; } = "Randomizer";
 		public byte Weight { get; set; }
 
 		public override string ToString()

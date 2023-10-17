@@ -15,7 +15,11 @@ namespace Cartography
 
 		public bool RandomZ { get; set; }
 
-		public string Name { get; set; }
+		public string Name { get; set; } = "Terrain";
+
+		public Terrain()
+		{
+		}
 
 		public void Set(sbyte z, ushort tileID, Color color, bool random, string name)
 		{

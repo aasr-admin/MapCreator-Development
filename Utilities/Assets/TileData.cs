@@ -140,7 +140,7 @@ namespace Assets
 
 		public bool Is64BitFlags { get; private set; }
 
-		public string Directory { get; private set; }
+		public string? Directory { get; private set; }
 
 		public void Clear()
 		{
@@ -158,66 +158,69 @@ namespace Assets
 		{
 			Clear();
 
-			Directory = directoryPath;
+			var path = Utility.FindDataFile(directoryPath, "tiledata.mul");
 
-			var path = Utility.FindDataFile(Directory, "tiledata.mul");
-
-			using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-
-			using var reader = new BinaryReader(file);
-
-			if (file.Length >= 3188736) // 7.0.9.0
+			if (File.Exists(path))
 			{
-				Is64BitFlags = true;
+				Directory = directoryPath;
 
-				MaxLandID = 16383;
-				MaxItemID = 65535;
-			}
-			else if (file.Length >= 1644544) // 7.0.0.0
-			{
-				MaxLandID = 16383;
-				MaxItemID = 32767;
-			}
-			else
-			{
-				MaxLandID = 16383;
-				MaxItemID = 16383;
-			}
+				using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
-			for (var i = 0; i <= MaxLandID; ++i)
-			{
-				if (Is64BitFlags ? (i == 1 || (i > 0 && (i & 0x1F) == 0)) : ((i & 0x1F) == 0))
+				using var reader = new BinaryReader(file);
+
+				if (file.Length >= 3188736) // 7.0.9.0
 				{
-					reader.ReadInt32(); // header
+					Is64BitFlags = true;
+
+					MaxLandID = 16383;
+					MaxItemID = 65535;
+				}
+				else if (file.Length >= 1644544) // 7.0.0.0
+				{
+					MaxLandID = 16383;
+					MaxItemID = 32767;
+				}
+				else
+				{
+					MaxLandID = 16383;
+					MaxItemID = 16383;
 				}
 
-				var flags = (TileFlag)(Is64BitFlags ? reader.ReadUInt64() : reader.ReadUInt32());
-
-				reader.ReadInt16(); // skip 2 bytes -- textureID
-
-				LandTable[i] = new LandData(ReadNameString(reader), flags);
-			}
-
-			for (var i = 0; i <= MaxItemID; ++i)
-			{
-				if ((i & 0x1F) == 0)
+				for (var i = 0; i <= MaxLandID; ++i)
 				{
-					reader.ReadInt32(); // header
+					if (Is64BitFlags ? (i == 1 || (i > 0 && (i & 0x1F) == 0)) : ((i & 0x1F) == 0))
+					{
+						reader.ReadInt32(); // header
+					}
+
+					var flags = (TileFlag)(Is64BitFlags ? reader.ReadUInt64() : reader.ReadUInt32());
+
+					reader.ReadInt16(); // skip 2 bytes -- textureID
+
+					LandTable[i] = new LandData(ReadNameString(reader), flags);
 				}
 
-				var flags = (TileFlag)(Is64BitFlags ? reader.ReadUInt64() : reader.ReadUInt32());
-				var weight = reader.ReadByte();
-				var quality = reader.ReadByte();
-				var anim = reader.ReadUInt16();
-				reader.ReadByte();
-				var quantity = reader.ReadByte();
-				reader.ReadInt32();
-				reader.ReadByte();
-				var value = reader.ReadByte();
-				var height = reader.ReadByte();
-				var name = ReadNameString(reader);
+				for (var i = 0; i <= MaxItemID; ++i)
+				{
+					if ((i & 0x1F) == 0)
+					{
+						reader.ReadInt32(); // header
+					}
 
-				ItemTable[i] = new ItemData(name, flags, weight, quality, anim, quantity, value, height);
+					var flags = (TileFlag)(Is64BitFlags ? reader.ReadUInt64() : reader.ReadUInt32());
+					var weight = reader.ReadByte();
+					var quality = reader.ReadByte();
+					var anim = reader.ReadUInt16();
+					reader.ReadByte();
+					var quantity = reader.ReadByte();
+					reader.ReadInt32();
+					reader.ReadByte();
+					var value = reader.ReadByte();
+					var height = reader.ReadByte();
+					var name = ReadNameString(reader);
+
+					ItemTable[i] = new ItemData(name, flags, weight, quality, anim, quantity, value, height);
+				}
 			}
 		}
 	}

@@ -9,7 +9,7 @@
 		public int MaxLandID { get; private set; }
 		public int MaxItemID { get; private set; }
 
-		public string Directory { get; private set; }
+		public string? Directory { get; private set; }
 
 		public void Clear()
 		{
@@ -24,27 +24,37 @@
 		{
 			Clear();
 
-			Directory = directoryPath;
+			var index = 0;
+			var path = Utility.FindDataFile(directoryPath, "radarcol.mul");
 
-			var path = Utility.FindDataFile(Directory, "radarcol.mul");
-
-			using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-
-			var buffer = new byte[file.Length];
-
-			file.Read(buffer, 0, buffer.Length);
-
-			var count = buffer.Length / 2;
-
-			var index = -1;
-
-			while (++index < count)
+			if (File.Exists(path))
 			{
-				Colors[index] = Color.FromArgb(HueData.Convert32(BitConverter.ToUInt16(buffer, index * 2)));
+				Directory = directoryPath;
+
+				using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
+				var buffer = new byte[file.Length];
+
+				file.Read(buffer, 0, buffer.Length);
+
+				var count = buffer.Length / 2;
+
+				do
+				{
+					Colors[index] = Color.FromArgb(HueData.Convert32(BitConverter.ToUInt16(buffer, index * 2)));
+				}
+				while (++index < count);
+
+				MaxLandID = 16383;
+				MaxItemID = count - (MaxLandID + 1);
 			}
 
-			MaxLandID = 16383;
-			MaxItemID = count - (MaxLandID + 1);
+			while (index < Colors.Length)
+			{
+				Colors[index] = Color.Empty;
+
+				++index;
+			}
 		}
 
 		public Color GetLandColor(int index)
@@ -59,7 +69,7 @@
 
 		public Color GetStaticColor(int index)
 		{
-			if (index < 0 || index > MaxItemID - (MaxLandID + 1))
+			if (index < 0 || index > MaxItemID)
 			{
 				return Color.Empty;
 			}

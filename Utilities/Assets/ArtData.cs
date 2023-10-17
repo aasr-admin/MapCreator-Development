@@ -4,12 +4,12 @@ namespace Assets
 {
 	public sealed class ArtData
 	{
-		private readonly Bitmap[] _Cache = new Bitmap[81920];
+		private readonly Bitmap?[] _Cache = new Bitmap[81920];
 		private readonly bool[] _Invalid = new bool[81920];
 
-		private byte[] _Buffer;
+		private byte[]? _Buffer;
 
-		private FileIndex _FileIndex;
+		private FileIndex? _FileIndex;
 
 		public int Length => _Cache.Length;
 
@@ -19,7 +19,7 @@ namespace Assets
 		public bool UOP { get; private set; }
 		public bool MUL { get; private set; }
 
-		public string Directory { get; private set; }
+		public string? Directory { get; private set; }
 
 		public void Clear()
 		{
@@ -42,35 +42,46 @@ namespace Assets
             Load(directoryPath, false);
         }
 
-        public void Load(string directoryPath, bool uop)
+		public void Load(string directoryPath, bool uop)
 		{
 			Clear();
 
-			Directory = directoryPath;
-
 			if (uop)
 			{
-				var uopPath = Utility.FindDataFile(Directory, "artLegacyMUL.uop");
+				var uopPath = Utility.FindDataFile(directoryPath, "artLegacyMUL.uop");
 
-				_FileIndex = new FileIndex(uopPath, 81920, ".tga", false);
+				if (File.Exists(uopPath))
+				{
+					Directory = directoryPath;
 
-				UOP = true;
+					_FileIndex = new FileIndex(uopPath, 81920, ".tga", false);
+
+					UOP = true;
+				}
 			}
 			else
 			{
-				var mulPath = Utility.FindDataFile(Directory, "art.mul");
-				var idxPath = Utility.FindDataFile(Directory, "artidx.mul");
+				var mulPath = Utility.FindDataFile(directoryPath, "art.mul");
+				var idxPath = Utility.FindDataFile(directoryPath, "artidx.mul");
 
-				_FileIndex = new FileIndex(idxPath, mulPath, 81920);
+				if (File.Exists(mulPath) && File.Exists(idxPath))
+				{
+					Directory = directoryPath;
 
-				MUL = true;
+					_FileIndex = new FileIndex(idxPath, mulPath, 81920);
+
+					MUL = true;
+				}
 			}
 
-			MaxLandID = 16383;
-			MaxItemID = _FileIndex.IdxCount - (MaxLandID + 1);
+			if (_FileIndex != null)
+			{
+				MaxLandID = 16383;
+				MaxItemID = _FileIndex.IdxCount - (MaxLandID + 1);
+			}
 		}
 
-		public unsafe Bitmap GetLand(int index)
+		public unsafe Bitmap? GetLand(int index)
 		{
 			if (index < 0 || index > MaxLandID)
 			{
@@ -85,6 +96,11 @@ namespace Assets
 			if (_Cache[index] != null)
 			{
 				return _Cache[index];
+			}
+
+			if (_FileIndex == null || _Buffer == null)
+			{
+				return null;
 			}
 
 			if (!_FileIndex.Seek(index, ref _Buffer, out var length, out var extra))
@@ -155,9 +171,9 @@ namespace Assets
 			}
 		}
 
-		public unsafe Bitmap GetStatic(int index)
+		public unsafe Bitmap? GetStatic(int index)
 		{
-			if (index < 0 || index > MaxItemID - (MaxLandID + 1))
+			if (index < 0 || index > MaxItemID)
 			{
 				return null;
 			}
@@ -172,6 +188,11 @@ namespace Assets
 			if (_Cache[index] != null)
 			{
 				return _Cache[index];
+			}
+
+			if (_FileIndex == null || _Buffer == null)
+			{
+				return null;
 			}
 
 			if (!_FileIndex.Seek(index, ref _Buffer, out var length, out var extra))

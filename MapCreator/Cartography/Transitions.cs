@@ -8,7 +8,7 @@ namespace Cartography
 		{
 		}
 
-		public Transition Find(IEnumerable<LandCell> tiles)
+		public Transition? Find(IEnumerable<LandCell> tiles)
 		{
 			var hash = Transition.GetHash(tiles);
 

@@ -4,12 +4,12 @@ namespace Assets
 {
 	public sealed class GumpData
 	{
-		private readonly Bitmap[] _Cache = new Bitmap[65535];
+		private readonly Bitmap?[] _Cache = new Bitmap[65535];
 		private readonly bool[] _Invalid = new bool[65535];
 
-		private byte[] _Buffer;
+		private byte[]? _Buffer;
 
-		private FileIndex _FileIndex;
+		private FileIndex? _FileIndex;
 
 		public int Length => _Cache.Length;
 
@@ -18,7 +18,7 @@ namespace Assets
 		public bool UOP { get; private set; }
 		public bool MUL { get; private set; }
 
-		public string Directory { get; private set; }
+		public string? Directory { get; private set; }
 
 		public void Clear()
 		{
@@ -45,30 +45,41 @@ namespace Assets
 		{
 			Clear();
 
-			Directory = directoryPath;
-
 			if (uop)
 			{
-				var uopPath = Utility.FindDataFile(Directory, "gumpartLegacyMUL.uop");
+				var uopPath = Utility.FindDataFile(directoryPath, "gumpartLegacyMUL.uop");
 
-				_FileIndex = new FileIndex(uopPath, 65535, ".tga", false);
+				if (File.Exists(uopPath))
+				{
+					Directory = directoryPath;
 
-				UOP = true;
+					_FileIndex = new FileIndex(uopPath, 65535, ".tga", false);
+
+					UOP = true;
+				}
 			}
 			else
 			{
-				var mulPath = Utility.FindDataFile(Directory, "gumpart.mul");
-				var idxPath = Utility.FindDataFile(Directory, "gumpidx.mul");
+				var mulPath = Utility.FindDataFile(directoryPath, "gumpart.mul");
+				var idxPath = Utility.FindDataFile(directoryPath, "gumpidx.mul");
 
-				_FileIndex = new FileIndex(idxPath, mulPath, 65535);
+				if (File.Exists(mulPath) && File.Exists(idxPath))
+				{
+					Directory = directoryPath;
 
-				MUL = true;
+					_FileIndex = new FileIndex(idxPath, mulPath, 65535);
+
+					MUL = true;
+				}
 			}
 
-			MaxGumpID = _FileIndex.IdxCount - 1;
+			if (_FileIndex != null)
+			{
+				MaxGumpID = _FileIndex.IdxCount - 1;
+			}
 		}
 
-		public unsafe Bitmap GetGump(int index)
+		public unsafe Bitmap? GetGump(int index)
 		{
 			if (index < 0 || index > MaxGumpID)
 			{
@@ -83,6 +94,11 @@ namespace Assets
 			if (_Cache[index] != null)
 			{
 				return _Cache[index];
+			}
+
+			if (_FileIndex == null || _Buffer == null)
+			{
+				return null;
 			}
 
 			if (!_FileIndex.Seek(index, ref _Buffer, out var length, out var extra) || extra == -1)

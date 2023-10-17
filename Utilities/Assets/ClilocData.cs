@@ -9,8 +9,8 @@ namespace Assets
 
 		public int Count => Entries.Count;
 
-		public string Directory { get; private set; }
-		public string Language { get; private set; }
+		public string? Directory { get; private set; }
+		public string? Language { get; private set; }
 
 		public void Clear()
 		{
@@ -32,6 +32,11 @@ namespace Assets
 			Language = language;
 
 			var path = Utility.FindDataFile(Directory, $"Cliloc.{Language}");
+
+			if (!File.Exists(path))
+			{
+				return;
+			}
 
 			using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 			using var reader = new BinaryReader(file);
@@ -81,7 +86,7 @@ namespace Assets
 	{
 		private const RegexOptions _RegexOptions = RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.CultureInvariant;
 
-		private string _Formatted;
+		private string? _Formatted;
 
 		public int Number { get; }
 		public string String { get; }

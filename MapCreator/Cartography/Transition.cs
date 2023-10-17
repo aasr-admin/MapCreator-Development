@@ -60,7 +60,7 @@ namespace Cartography
 			using var graphics = Graphics.FromImage(bitmap);
 
 			graphics.Clear(Color.White);
-
+			/*
 			graphics.DrawImage(AssetData.Art.GetLand(terrain[0].TileID), 61, 15);
 			graphics.DrawImage(AssetData.Art.GetLand(terrain[1].TileID), 84, 38);
 			graphics.DrawImage(AssetData.Art.GetLand(terrain[2].TileID), 107, 61);
@@ -72,7 +72,7 @@ namespace Cartography
 			graphics.DrawImage(AssetData.Art.GetLand(terrain[6].TileID), 15, 61);
 			graphics.DrawImage(AssetData.Art.GetLand(terrain[7].TileID), 38, 84);
 			graphics.DrawImage(AssetData.Art.GetLand(terrain[8].TileID), 61, 107);
-
+			*/
 			using var font = new Font("Arial", 10f);
 
 			graphics.DrawString(ToString(), font, Brushes.Black, 151f, 2f);

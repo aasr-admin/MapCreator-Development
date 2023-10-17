@@ -25,7 +25,7 @@ namespace Assets
 
 		public int Length => Entries.Length;
 
-		public string Directory { get; private set; }
+		public string? Directory { get; private set; }
 
 		public void Clear()
 		{
@@ -38,58 +38,61 @@ namespace Assets
 		{
 			Clear();
 
-			Directory = directoryPath;
-
-			var path = Utility.FindDataFile(Directory, "hues.mul");
-
-			using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-
 			var index = 0;
 
-			var blockCount = Math.Min(375, (int)file.Length / 708);
+			var path = Utility.FindDataFile(directoryPath, "hues.mul");
 
-			var header = new int[blockCount];
-
-			var structsize = Marshal.SizeOf(typeof(HueEntry));
-			var buffer = new byte[blockCount * (4 + (8 * structsize))];
-
-			var gc = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-
-			try
+			if (File.Exists(path))
 			{
-				var pin = gc.AddrOfPinnedObject();
+				Directory = directoryPath;
 
-				_ = file.Read(buffer, 0, buffer.Length);
+				using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
-				var currpos = 0L;
+				var blockCount = Math.Min(375, (int)file.Length / 708);
 
-				var list = new Hue[blockCount * 8];
+				var header = new int[blockCount];
 
-				for (var i = 0; i < blockCount; ++i)
+				var structsize = Marshal.SizeOf(typeof(HueEntry));
+				var buffer = new byte[blockCount * (4 + (8 * structsize))];
+
+				var gc = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+
+				try
 				{
-					var ptrheader = new IntPtr(pin + currpos);
+					var pin = gc.AddrOfPinnedObject();
 
-					currpos += 4L;
+					_ = file.Read(buffer, 0, buffer.Length);
 
-					header[i] = (int)Marshal.PtrToStructure(ptrheader, typeof(int));
+					var currpos = 0L;
 
-					for (var j = 0; j < 8; ++j, ++index)
+					var list = new Hue[blockCount * 8];
+
+					for (var i = 0; i < blockCount; ++i)
 					{
-						var ptr = new IntPtr(pin + currpos);
+						var ptrheader = new IntPtr(pin + currpos);
 
-						currpos += structsize;
+						currpos += 4L;
 
-						var cur = (HueEntry)Marshal.PtrToStructure(ptr, typeof(HueEntry));
+						header[i] = (int)Marshal.PtrToStructure(ptrheader, typeof(int))!;
 
-						list[index] = new Hue(index, cur);
+						for (var j = 0; j < 8; ++j, ++index)
+						{
+							var ptr = new IntPtr(pin + currpos);
+
+							currpos += structsize;
+
+							var cur = (HueEntry)Marshal.PtrToStructure(ptr, typeof(HueEntry))!;
+
+							list[index] = new Hue(index, cur);
+						}
 					}
-				}
 
-				Entries = list;
-			}
-			finally
-			{
-				gc.Free();
+					Entries = list;
+				}
+				finally
+				{
+					gc.Free();
+				}
 			}
 
 			while (index < Entries.Length)

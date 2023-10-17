@@ -9,7 +9,7 @@
 		public LogType Type { get; init; }
 		public string Message { get; init; }
 
-		private string _Formatted;
+		private string? _Formatted;
 
 		public LogEntry(LogType type, string message)
 		{
@@ -34,7 +34,7 @@
 			return _Formatted = $"[{Date.DateTime.ToShortDateString()} {Date.DateTime.ToShortTimeString()}] {Message}";
 		}
 
-		public int CompareTo(LogEntry other)
+		public int CompareTo(LogEntry? other)
 		{
 			if (other is not null)
 			{

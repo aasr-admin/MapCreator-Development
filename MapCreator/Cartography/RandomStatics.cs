@@ -4,7 +4,7 @@ namespace Cartography
 {
 	public class RandomStatics : StaticCells
 	{
-		public string Name { get; set; }
+		public string Name { get; set; } = "Statics";
 		public byte Weight { get; set; }
 
 		public RandomStatics()

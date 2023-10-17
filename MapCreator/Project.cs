@@ -776,12 +776,17 @@ namespace MapCreator
 			ReportProgress("Export", summary, value, limit, log);
 		}
 
-		private void UltimaLoader(string title, string root, Action<string> loader)
+		private void UltimaLoader(string title, string? root, Action<string> loader)
 		{
 			var ultimaPath = Settings.UltimaDirectory;
 
 			if (!Directory.Exists(ultimaPath))
 			{
+				if (Directory.Exists(root))
+				{
+					(root, ultimaPath) = (ultimaPath, root);
+				}
+
 				ReportProgress(title, "Ultima Directory Not Found", 1, 1, LogType.Warn);
 
 				return;

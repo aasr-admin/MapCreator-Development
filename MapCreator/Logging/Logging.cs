@@ -6,8 +6,8 @@ namespace MapCreator
 	{
 		public static Logging Global { get; } = new();
 
-		public static event EventHandler<LoggingUpdatedEventArgs> OnUpdated, OnRemoved;
-		public static event EventHandler<LoggingEventArgs> OnClear, OnCleared;
+		public static event EventHandler<LoggingUpdatedEventArgs>? OnUpdated, OnRemoved;
+		public static event EventHandler<LoggingEventArgs>? OnClear, OnCleared;
 
 		private readonly SortedSet<LogEntry> _Logs = new();
 
