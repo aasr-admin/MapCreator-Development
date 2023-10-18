@@ -15,13 +15,15 @@
             writer.Write(color.B);
         }
 
-        public static void Read<T>(BinaryReader reader, T entry) where T : IColorEntry
+        public static T Read<T>(BinaryReader reader, T entry) where T : IColorEntry
         {
             var r = reader.ReadByte();
             var g = reader.ReadByte();
             var b = reader.ReadByte();
 
             entry.Color = Color.FromArgb(Byte.MaxValue, r, g, b);
+
+			return entry;
         }
 
         public static void Export<T>(string filePath, T[] entries) where T : IColorEntry
@@ -38,17 +40,24 @@
             file.Flush();
         }
 
-        public static void Import<T>(string filePath, T[] entries) where T : IColorEntry
-        {
-            using var file = new FileStream(filePath, FileMode.Open);
-            using var reader = new BinaryReader(file);
+        public static bool Import<T>(string filePath, T[] entries) where T : IColorEntry
+		{
+			if (!File.Exists(filePath))
+			{
+				return false;
+			}
 
-            var index = -1;
+			using var file = new FileStream(filePath, FileMode.Open);
+			using var reader = new BinaryReader(file);
 
-            while (++index < entries.Length)
-            {
-                Read(reader, entries[index]);
-            }
-        }
-    }
+			var index = -1;
+
+			while (++index < entries.Length)
+			{
+				entries[index] = Read(reader, entries[index]);
+			}
+
+			return true;
+		}
+	}
 }

@@ -15,11 +15,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Content Include="Resources\icon\appicon.ico" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Utilities\Utilities.csproj" />
+		<ProjectReference Include="..\Utilities\Utilities.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -27,27 +23,36 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Interface\BuildLogger.cs">
-	    <SubType>Form</SubType>
-	  </Compile>
-	  <Compile Update="Interface\CanvasControlBox.cs">
-	    <SubType>Form</SubType>
-	  </Compile>
-	  <Compile Update="Interface\StaticSelector.cs">
-	    <SubType>Form</SubType>
-	  </Compile>
-	  <Compile Update="Properties\Resources.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Resources.resx</DependentUpon>
-	  </Compile>
+		<Compile Update="Interface\BuildLogger.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Interface\CanvasControlBox.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Interface\StaticSelector.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Properties\Buttons.Designer.cs">
+		  <DependentUpon>Buttons.resx</DependentUpon>
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		</Compile>
+		<Compile Update="Properties\Common.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Common.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Properties\Resources.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
+		<EmbeddedResource Update="Properties\Buttons.resx">
+		  <LastGenOutput>Buttons.Designer.cs</LastGenOutput>
+		  <Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Properties\Common.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Common.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>

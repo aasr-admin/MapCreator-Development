@@ -56,6 +56,20 @@ namespace Photoshop
 			}
 		}
 
+		public Color GetColor(int index)
+		{
+			ref var entry = ref _Entries[index];
+
+			return entry.Color;
+		}
+
+		public void SetColor(int index, Color color)
+		{
+			ref var entry = ref _Entries[index];
+
+			entry.Color = color;
+		}
+
 		public int IndexOf(Color color)
 		{
 			return IndexOf(color, 0);
@@ -114,9 +128,9 @@ namespace Photoshop
             ColorSwatchHelper.Export(filePath, _Entries, format);
         }
 
-		public virtual void LoadSwatch(string filePath)
+		public virtual bool LoadSwatch(string filePath)
         {
-            ColorSwatchHelper.Import(filePath, _Entries);
+			return ColorSwatchHelper.Import(filePath, _Entries);
         }
 
 		public virtual void SaveTable(string filePath)
@@ -124,9 +138,9 @@ namespace Photoshop
             ColorTableHelper.Export(filePath, _Entries);
         }
 
-		public virtual void LoadTable(string filePath)
+		public virtual bool LoadTable(string filePath)
         {
-            ColorTableHelper.Import(filePath, _Entries);
+            return ColorTableHelper.Import(filePath, _Entries);
 		}
 	}
 }

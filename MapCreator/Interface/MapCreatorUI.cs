@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Timers;
 
 namespace MapCreator
@@ -16,12 +17,7 @@ namespace MapCreator
 
 			Menu.SetWindowDragHandle();
 
-			Menu_Minimize.Click += OnClickMinimize;
-			Menu_Exit.Click += OnClickExit;
-
-			Toolbar_Create.Click += OnClickCreate;
-			Toolbar_Open.Click += OnClickOpen;
-			Toolbar_Delete.Click += OnClickDelete;
+			Toolbar_Select.BeginUpdate();
 
 			Toolbar_Select.SelectedIndex = Toolbar_Select.Items.Add("<New Project>");
 
@@ -30,13 +26,59 @@ namespace MapCreator
 				Toolbar_Select.Items.Add(project);
 			}
 
-			Toolbar_Select.SelectedIndexChanged += OnProjectSelection;
+			Toolbar_Select.EndUpdate();
 
 			Toolbar_Create.SetToolTip(ToolTipIcon.Info, "Create", "Create a new project");
 			Toolbar_Open.SetToolTip(ToolTipIcon.Info, "Open", "Open the selected project");
 			Toolbar_Delete.SetToolTip(ToolTipIcon.Error, "Delete", "Delete the selected project");
 
-			InvalidateToolbar();
+			Toolbar_Select.SelectedIndexChanged += OnProjectSelection;
+
+			Toolbar_Refresh.Click += OnClickRefresh;
+			Toolbar_Create.Click += OnClickCreate;
+			Toolbar_Open.Click += OnClickOpen;
+			Toolbar_Delete.Click += OnClickDelete;
+
+			Menu_Icon.Click += OnClickIcon;
+			Menu_Minimize.Click += OnClickMinimize;
+			Menu_Exit.Click += OnClickExit;
+
+			foreach (var button in this.FindChildren<Button>())
+			{
+				button.GotFocus += (s, e) =>
+				{
+					if (ActiveControl == button)
+					{
+						ActiveControl = ActiveControl?.Parent;
+					}
+				};
+			}
+
+			RefreshToolbar();
+		}
+
+		private void InvalidatePreviews()
+		{
+			var box = new PictureBox();
+
+			((ISupportInitialize)box).BeginInit();
+
+			/*
+			box.ErrorImage = (Image)resources.GetObject("pictureBox1.ErrorImage");
+			box.InitialImage = (Image)resources.GetObject("pictureBox1.InitialImage");
+			box.Location = new Point(3, 3);
+			box.Name = "pictureBox1";
+			box.Size = new Size(100, 50);
+			box.SizeMode = PictureBoxSizeMode.Zoom;
+			box.TabIndex = 0;
+			box.TabStop = false;
+			*/
+			((ISupportInitialize)box).EndInit();
+		}
+
+		private void OnClickIcon(object? sender, EventArgs e)
+		{
+			// launch github link?
 		}
 
 		private void OnClickMinimize(object? sender, EventArgs e)
@@ -49,6 +91,11 @@ namespace MapCreator
 			Close();
 
 			Application.Exit();
+		}
+
+		private void OnClickRefresh(object? sender, EventArgs e)
+		{
+			RefreshProjects();
 		}
 
 		private void OnClickCreate(object? sender, EventArgs e)
@@ -87,8 +134,6 @@ namespace MapCreator
 					Toolbar_Select.SelectedIndex = Toolbar_Select.Items.Add(project);
 				}
 
-				InvalidateToolbar();
-
 				OnClickOpen(sender, e);
 			}
 		}
@@ -116,20 +161,18 @@ namespace MapCreator
 
 			if (project.DeleteFiles())
 			{
-				--Toolbar_Select.SelectedIndex;
-
 				Toolbar_Select.Items.Remove(project);
 
-				InvalidateToolbar();
+				Toolbar_Select.SelectedIndex = 0;
 			}
 		}
 
 		private void OnProjectSelection(object? sender, EventArgs e)
 		{
-			InvalidateToolbar();
+			RefreshToolbar();
 		}
 
-		private void InvalidateToolbar()
+		private void RefreshToolbar()
 		{
 			if (Toolbar_Select.SelectedItem is Project)
 			{
@@ -147,6 +190,47 @@ namespace MapCreator
 				Toolbar_Input.Show();
 				Toolbar_Create.Show();
 			}
+		}
+
+		private void RefreshProjects()
+		{
+			Project.RefreshProjects();
+
+			var selected = Toolbar_Select.SelectedItem;
+
+			Toolbar_Select.SuspendLayout();
+			Toolbar_Select.BeginUpdate();
+
+			var index = Toolbar_Select.Items.Count;
+
+			while (--index >= 0)
+			{
+				if (Toolbar_Select.Items[index] is Project)
+				{
+					Toolbar_Select.Items.RemoveAt(index);
+				}
+			}
+
+			foreach (var project in Project.Projects)
+			{
+				Toolbar_Select.Items.Add(project);
+			}
+
+			var selectIndex = Toolbar_Select.Items.IndexOf(selected);
+
+			if (selectIndex >= 0)
+			{
+				Toolbar_Select.SelectedIndex = selectIndex;
+			}
+			else
+			{
+				Toolbar_Select.SelectedIndex = 0;
+			}
+
+			Toolbar_Select.EndUpdate();
+			Toolbar_Select.ResumeLayout();
+
+			RefreshToolbar();
 		}
 	}
 }

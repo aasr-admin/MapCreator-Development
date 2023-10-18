@@ -5,6 +5,37 @@ namespace System.Windows.Forms
 {
 	public static class Extensions
 	{
+		public static IEnumerable<T> FindChildren<T>(this Control root) where T : Control
+		{
+			return FindChildren<T>(root, true);
+		}
+
+		public static IEnumerable<T> FindChildren<T>(this Control root, bool recursive) where T : Control
+		{
+			if (!root.HasChildren)
+			{
+				yield break;
+			}
+
+			foreach (Control child in root.Controls)
+			{
+				if (child is T found)
+				{
+					yield return found;
+				}
+
+				if (!child.HasChildren)
+				{
+					continue;
+				}
+
+				foreach (var nested in FindChildren<T>(child))
+				{
+					yield return nested;
+				}
+			}
+		}
+
 		public static void Fill(this ListControl control, IEnumerable collection)
 		{
 			control.SuspendLayout();

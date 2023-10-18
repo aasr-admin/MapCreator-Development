@@ -18,13 +18,48 @@ namespace MapCreator
 
 		static Project()
 		{
+			RefreshProjects();
+		}
+
+		public static void RefreshProjects()
+		{
+			HashSet<string>? existing = null;
+
+			Projects.RemoveWhere(project =>
+			{
+				if (!File.Exists(project.ProjectFile))
+				{
+					project.Unload();
+
+					return true;
+				}
+
+				existing ??= new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+				existing.Add(project.ProjectFile);
+
+				return false;
+			});
+
 			if (Directory.Exists(ProjectsDirectory))
 			{
 				foreach (var filePath in Directory.EnumerateFiles(ProjectsDirectory, "*.mcproj", SearchOption.AllDirectories))
 				{
-					_ = Projects.Add(new Project(filePath));
+					if (existing?.Contains(filePath) != true)
+					{
+						_ = Projects.Add(new Project(filePath));
+					}
 				}
 			}
+		}
+
+		public static bool Exists(string projectFilePath)
+		{
+			return Find(projectFilePath) != null;
+		}
+
+		public static Project? Find(string projectFilePath)
+		{
+			return Projects.FirstOrDefault(project => String.Equals(project.ProjectFile, projectFilePath, StringComparison.InvariantCultureIgnoreCase));
 		}
 
 		public static bool Delete(string projectFilePath)
@@ -65,16 +100,7 @@ namespace MapCreator
 
 		public static Project OpenOrCreate(string projectFilePath)
 		{
-			Project project = null!;
-
-			foreach (var p in Projects)
-			{
-				if (String.Equals(p.ProjectFile, projectFilePath, StringComparison.InvariantCultureIgnoreCase))
-				{
-					project = p;
-					break;
-				}
-			}
+			var project = Find(projectFilePath);
 
 			project ??= new Project(projectFilePath);
 			
@@ -148,7 +174,12 @@ namespace MapCreator
 
 		public Logging Logger { get; } = new();
 
+		public bool Saving { get; private set; }
+		public bool Saved { get; private set; }
+
+		public bool Loading { get; private set; }
 		public bool Loaded { get; private set; }
+
 		public bool Compiling { get; private set; }
 		public bool Exporting { get; private set; }
 
@@ -162,8 +193,8 @@ namespace MapCreator
 		public Mutations Mutations { get; } = new();
 		public Structures Structures { get; } = new();
 
-		public Bitmap TerrainImage { get; private set; } = null!;
-		public Bitmap AltitudeImage { get; private set; } = null!;
+		public Bitmap? TerrainImage { get; private set; }
+		public Bitmap? AltitudeImage { get; private set; }
 
 		#region Ultima Data
 
@@ -282,30 +313,40 @@ namespace MapCreator
 			XmlHelper.Save(node, nameof(Settings), Settings);
 		}
 
-		public void Save()
+		public bool Save()
 		{
-			CreateDirectories();
+			if (Saving)
+			{
+				return false;
+			}
 
-			XmlHelper.Save(ProjectFile, "Project", this);
+			Saving = true;
 
-			var dataDirectoryPath = DataDirectory;
+			try
+			{
+				CreateDirectories();
 
-			XmlHelper.Save(Path.Combine(dataDirectoryPath, "Facet.xml"), Facet);
-			XmlHelper.Save(Path.Combine(dataDirectoryPath, "Terrains.xml"), Terrains);
-			XmlHelper.Save(Path.Combine(dataDirectoryPath, "Altitudes.xml"), Altitudes);
-			XmlHelper.Save(Path.Combine(dataDirectoryPath, "Transitions.xml"), Transitions);
-			XmlHelper.Save(Path.Combine(dataDirectoryPath, "Mutations.xml"), Mutations);
-			XmlHelper.Save(Path.Combine(dataDirectoryPath, "Structures.xml"), Facet);
+				XmlHelper.Save(ProjectFile, "Project", this);
 
-			Terrains.SaveTable(Path.Combine(dataDirectoryPath, "Terrain.act"));
-			Terrains.SaveSwatch(Path.Combine(dataDirectoryPath, "Terrain.aco"), ColorFormat.RGB);
+				var dataDirectoryPath = DataDirectory;
 
-			Altitudes.SaveTable(Path.Combine(dataDirectoryPath, "Altitude.act"));
-			Altitudes.SaveSwatch(Path.Combine(dataDirectoryPath, "Altitude.aco"), ColorFormat.RGB);
+				XmlHelper.Save(Path.Combine(dataDirectoryPath, "Facet.xml"), Facet);
+				//XmlHelper.Save(Path.Combine(dataDirectoryPath, "Terrains.xml"), Terrains);
+				//XmlHelper.Save(Path.Combine(dataDirectoryPath, "Altitudes.xml"), Altitudes);
+				XmlHelper.Save(Path.Combine(dataDirectoryPath, "Transitions.xml"), Transitions);
+				XmlHelper.Save(Path.Combine(dataDirectoryPath, "Mutations.xml"), Mutations);
+				XmlHelper.Save(Path.Combine(dataDirectoryPath, "Structures.xml"), Facet);
 
-			SaveImages();
+				SaveImages();
 
-			Loaded = true;
+				Loaded = Saved = true;
+			}
+			finally
+			{
+				Saving = false;
+			}
+
+			return Saved;
 		}
 
 		public bool LoadXml(string filePath)
@@ -323,26 +364,42 @@ namespace MapCreator
 			_ = XmlHelper.Load(node, nameof(Settings), Settings);
 		}
 
-		public void Load()
+		public bool Load()
 		{
-			Unload();
+			if (Loading)
+			{
+				return false;
+			}
 
-			CreateDirectories();
+			Loading = true;
 
-			_ = XmlHelper.Load(ProjectFile, "Project", this);
+			try
+			{
+				Unload();
 
-			var dataDirectoryPath = DataDirectory;
+				CreateDirectories();
 
-			XmlHelper.Load(Path.Combine(dataDirectoryPath, "Facet.xml"), Facet);
-			XmlHelper.Load(Path.Combine(dataDirectoryPath, "Terrains.xml"), Terrains);
-			XmlHelper.Load(Path.Combine(dataDirectoryPath, "Altitudes.xml"), Altitudes);
-			XmlHelper.Load(Path.Combine(dataDirectoryPath, "Transitions.xml"), Transitions);
-			XmlHelper.Load(Path.Combine(dataDirectoryPath, "Mutations.xml"), Mutations);
-			XmlHelper.Load(Path.Combine(dataDirectoryPath, "Structures.xml"), Facet);
+				_ = XmlHelper.Load(ProjectFile, "Project", this);
 
-			LoadImages();
+				var dataDirectoryPath = DataDirectory;
 
-			Loaded = true;
+				XmlHelper.Load(Path.Combine(dataDirectoryPath, "Facet.xml"), Facet);
+				//XmlHelper.Load(Path.Combine(dataDirectoryPath, "Terrains.xml"), Terrains);
+				//XmlHelper.Load(Path.Combine(dataDirectoryPath, "Altitudes.xml"), Altitudes);
+				XmlHelper.Load(Path.Combine(dataDirectoryPath, "Transitions.xml"), Transitions);
+				XmlHelper.Load(Path.Combine(dataDirectoryPath, "Mutations.xml"), Mutations);
+				XmlHelper.Load(Path.Combine(dataDirectoryPath, "Structures.xml"), Facet);
+
+				LoadImages();
+
+				Loaded = true;
+			}
+			finally
+			{
+				Loading = false;
+			}
+
+			return Loaded;
 		}
 
 		public void SaveImages()
@@ -353,8 +410,19 @@ namespace MapCreator
 
 			var dataDirectoryPath = DataDirectory;
 
-			AltitudeImage?.Save(Path.Combine(dataDirectoryPath, "Altitude.bmp"), ImageFormat.Bmp);
-			TerrainImage?.Save(Path.Combine(dataDirectoryPath, "Altitude.bmp"), ImageFormat.Bmp);
+			if (AltitudeImage != null)
+			{
+				Altitudes.SaveSwatch(Path.Combine(dataDirectoryPath, "Altitude.aco"), ColorFormat.RGB);
+
+				AltitudeImage.Save(Path.Combine(dataDirectoryPath, "Altitude.bmp"), ImageFormat.Bmp);
+			}
+
+			if (TerrainImage != null)
+			{
+				Terrains.SaveSwatch(Path.Combine(dataDirectoryPath, "Terrain.aco"), ColorFormat.RGB);
+
+				TerrainImage.Save(Path.Combine(dataDirectoryPath, "Terrain.bmp"), ImageFormat.Bmp);
+			}
 		}
 
 		public void LoadImages()
@@ -363,47 +431,45 @@ namespace MapCreator
 
 			var dataDirectoryPath = DataDirectory;
 
+			var terrainSwatchFilePath = Path.Combine(dataDirectoryPath, "Terrain.aco");
 			var terrainImageFilePath = Path.Combine(dataDirectoryPath, "Terrain.bmp");
 
-			if (File.Exists(terrainImageFilePath))
-			{
-				TerrainImage?.Dispose();
-				TerrainImage = new Bitmap(terrainImageFilePath);
-			}
+			TerrainImage?.Dispose();
+			TerrainImage = LoadImage(Terrains, terrainSwatchFilePath, terrainImageFilePath);
 
+			var altitudeSwatchFilePath = Path.Combine(dataDirectoryPath, "Altitude.aco");
 			var altitudeImageFilePath = Path.Combine(dataDirectoryPath, "Altitude.bmp");
 
-			if (File.Exists(altitudeImageFilePath))
-			{
-				AltitudeImage?.Dispose();
-				AltitudeImage = new Bitmap(altitudeImageFilePath);
-			}
+			AltitudeImage?.Dispose();
+			AltitudeImage = LoadImage(Altitudes, altitudeSwatchFilePath, altitudeImageFilePath);
 
-			CreateImages();
+			if (Loaded && CreateImages())
+			{
+				SaveImages();
+			}
 		}
 
-		public void CreateImages()
+		public bool CreateImages()
 		{
+			var created = false;
+
 			if (TerrainImage == null)
 			{
-				TerrainImage = CreateImage(Terrains);
+				TerrainImage = CreateImage(Terrains, Facet.Width, Facet.Height);
 				TerrainImage.Fill(9);
+
+				created = true;
 			}
 
 			if (AltitudeImage == null)
 			{
-				AltitudeImage = CreateImage(Altitudes);
+				AltitudeImage = CreateImage(Altitudes, Facet.Width, Facet.Height);
 				AltitudeImage.Fill(66);
+
+				created = true;
 			}
-		}
 
-		private Bitmap CreateImage<T>(T table) where T : IColorCollection
-		{
-			var bitmap = new Bitmap(Facet.Width, Facet.Height, PixelFormat.Format8bppIndexed);
-
-			table.FillPallette(bitmap.Palette);
-
-			return bitmap;
+			return created;
 		}
 
 		public void Unload()
@@ -502,7 +568,7 @@ namespace MapCreator
 
 				byte[] terrainData;
 
-				TerrainImage ??= CreateImage(Terrains);
+				TerrainImage ??= CreateImage(Terrains, Facet.Width, Facet.Height);
 
 				var terrainImageData = TerrainImage.LockBits(Facet.Bounds, ImageLockMode.ReadWrite, TerrainImage.PixelFormat);
 
@@ -521,7 +587,7 @@ namespace MapCreator
 
 				byte[] altitudeData;
 
-				AltitudeImage ??= CreateImage(Altitudes);
+				AltitudeImage ??= CreateImage(Altitudes, Facet.Width, Facet.Height);
 
 				var altitudeImageData = AltitudeImage.LockBits(Facet.Bounds, ImageLockMode.ReadWrite, AltitudeImage.PixelFormat);
 
@@ -542,9 +608,9 @@ namespace MapCreator
 				{
 					for (var y = 0; y < Facet.Height; y++)
 					{
-						var alt = altitudeData[(y * Facet.Width) + x];
+						var altIndex = altitudeData[(y * Facet.Width) + x];
 
-						Facet.SetLand(x, y, Altitudes[alt].Z);
+						Facet.SetLand(x, y, (sbyte)(SByte.MinValue + altIndex));
 					}
 				}
 
@@ -782,17 +848,22 @@ namespace MapCreator
 
 			if (!Directory.Exists(ultimaPath))
 			{
-				if (Directory.Exists(root))
+				if (!Directory.Exists(root))
 				{
-					(root, ultimaPath) = (ultimaPath, root);
+					ReportProgress(title, "Ultima Directory Not Found", 1, 1, LogType.Warn);
+					return;
 				}
 
-				ReportProgress(title, "Ultima Directory Not Found", 1, 1, LogType.Warn);
+				(root, ultimaPath) = (ultimaPath, root);
+			}
 
+			if (ultimaPath == null)
+			{
+				ReportProgress(title, "Ultima Directory Not Found", 1, 1, LogType.Warn);
 				return;
 			}
 
-			if (root == ultimaPath)
+			if (ultimaPath == root)
 			{
 				return;
 			}
@@ -809,6 +880,46 @@ namespace MapCreator
 			{
 				ReportProgress(title, e.Message, 1, 1, LogType.Error);
 			}
+		}
+
+		private static Bitmap? LoadImage<T>(T table, string swatchPath, string imagePath) where T : IColorCollection
+		{
+			Bitmap? image = null;
+
+			var swatchLoaded = false;
+
+			if (File.Exists(swatchPath))
+			{
+				swatchLoaded = table.LoadSwatch(swatchPath);
+			}
+
+			if (File.Exists(imagePath))
+			{
+				image = new Bitmap(imagePath);
+
+				if (swatchLoaded)
+				{
+					table.FillPallette(image.Palette);
+				}
+				else
+				{
+					for (var i = 0; i < table.Length; i++)
+					{
+						table.SetColor(i, image.Palette.Entries[i]);
+					}
+				}
+			}
+
+			return image;
+		}
+
+		private static Bitmap CreateImage<T>(T table, int width, int height) where T : IColorCollection
+		{
+			var bitmap = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
+
+			table.FillPallette(bitmap.Palette);
+
+			return bitmap;
 		}
 	}
 }
