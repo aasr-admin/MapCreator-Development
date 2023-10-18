@@ -1,5 +1,7 @@
 ﻿using Compiler;
 
+using MapCreator.Interface;
+
 using System.Diagnostics;
 
 namespace MapCreator

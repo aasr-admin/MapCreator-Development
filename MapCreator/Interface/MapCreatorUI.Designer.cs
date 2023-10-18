@@ -1,4 +1,4 @@
-﻿namespace MapCreator
+﻿namespace MapCreator.Interface
 {
 	public partial class MapCreatorUI
 	{
@@ -47,15 +47,9 @@
 			Menu_Icon = new Button();
 			Menu_Minimize = new Button();
 			Menu_Exit = new Button();
-			Toolbar = new FlowLayoutPanel();
-			Toolbar_Refresh = new Button();
-			Toolbar_Select = new ComboBox();
-			Toolbar_Open = new Button();
-			Toolbar_Delete = new Button();
-			Toolbar_Input = new TextBox();
-			Toolbar_Create = new Button();
+			Content = new ContentContainer();
 			Menu.SuspendLayout();
-			Toolbar.SuspendLayout();
+			Content.SuspendLayout();
 			SuspendLayout();
 			// 
 			// Menu
@@ -129,116 +123,14 @@
 			Menu_Exit.TabIndex = 3;
 			Menu_Exit.UseVisualStyleBackColor = false;
 			// 
-			// Toolbar
+			// Content
 			// 
-			Toolbar.AutoSize = true;
-			Toolbar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-			Toolbar.BackColor = Color.FromArgb(63, 0, 0, 0);
-			Toolbar.Controls.Add(Toolbar_Refresh);
-			Toolbar.Controls.Add(Toolbar_Select);
-			Toolbar.Controls.Add(Toolbar_Open);
-			Toolbar.Controls.Add(Toolbar_Delete);
-			Toolbar.Controls.Add(Toolbar_Input);
-			Toolbar.Controls.Add(Toolbar_Create);
-			Toolbar.Dock = DockStyle.Bottom;
-			Toolbar.Location = new Point(0, 195);
-			Toolbar.Name = "Toolbar";
-			Toolbar.Padding = new Padding(3);
-			Toolbar.Size = new Size(548, 29);
-			Toolbar.TabIndex = 1;
-			Toolbar.TabStop = true;
-			// 
-			// Toolbar_Refresh
-			// 
-			Toolbar_Refresh.BackColor = Color.Transparent;
-			Toolbar_Refresh.BackgroundImage = Properties.Buttons.refresh;
-			Toolbar_Refresh.BackgroundImageLayout = ImageLayout.Zoom;
-			Toolbar_Refresh.Cursor = Cursors.Hand;
-			Toolbar_Refresh.FlatAppearance.BorderSize = 0;
-			Toolbar_Refresh.FlatAppearance.MouseDownBackColor = Color.FromArgb(79, 255, 255, 255);
-			Toolbar_Refresh.FlatAppearance.MouseOverBackColor = Color.FromArgb(63, 255, 255, 255);
-			Toolbar_Refresh.FlatStyle = FlatStyle.Flat;
-			Toolbar_Refresh.ForeColor = Color.Transparent;
-			Toolbar_Refresh.Location = new Point(3, 3);
-			Toolbar_Refresh.Margin = new Padding(0);
-			Toolbar_Refresh.Name = "Toolbar_Refresh";
-			Toolbar_Refresh.Size = new Size(23, 23);
-			Toolbar_Refresh.TabIndex = 1;
-			Toolbar_Refresh.UseVisualStyleBackColor = false;
-			// 
-			// Toolbar_Select
-			// 
-			Toolbar_Select.DropDownStyle = ComboBoxStyle.DropDownList;
-			Toolbar_Select.FormattingEnabled = true;
-			Toolbar_Select.Location = new Point(26, 3);
-			Toolbar_Select.Margin = new Padding(0);
-			Toolbar_Select.Name = "Toolbar_Select";
-			Toolbar_Select.Size = new Size(150, 23);
-			Toolbar_Select.TabIndex = 2;
-			// 
-			// Toolbar_Open
-			// 
-			Toolbar_Open.BackColor = Color.Transparent;
-			Toolbar_Open.BackgroundImage = Properties.Buttons.valid2;
-			Toolbar_Open.BackgroundImageLayout = ImageLayout.Zoom;
-			Toolbar_Open.Cursor = Cursors.Hand;
-			Toolbar_Open.FlatAppearance.BorderSize = 0;
-			Toolbar_Open.FlatAppearance.MouseDownBackColor = Color.FromArgb(79, 255, 255, 255);
-			Toolbar_Open.FlatAppearance.MouseOverBackColor = Color.FromArgb(63, 255, 255, 255);
-			Toolbar_Open.FlatStyle = FlatStyle.Flat;
-			Toolbar_Open.ForeColor = Color.Transparent;
-			Toolbar_Open.Location = new Point(176, 3);
-			Toolbar_Open.Margin = new Padding(0);
-			Toolbar_Open.Name = "Toolbar_Open";
-			Toolbar_Open.Size = new Size(23, 23);
-			Toolbar_Open.TabIndex = 3;
-			Toolbar_Open.UseVisualStyleBackColor = false;
-			// 
-			// Toolbar_Delete
-			// 
-			Toolbar_Delete.BackColor = Color.Transparent;
-			Toolbar_Delete.BackgroundImage = Properties.Buttons.remove1;
-			Toolbar_Delete.BackgroundImageLayout = ImageLayout.Zoom;
-			Toolbar_Delete.Cursor = Cursors.Hand;
-			Toolbar_Delete.FlatAppearance.BorderSize = 0;
-			Toolbar_Delete.FlatAppearance.MouseDownBackColor = Color.FromArgb(79, 255, 255, 255);
-			Toolbar_Delete.FlatAppearance.MouseOverBackColor = Color.FromArgb(63, 255, 255, 255);
-			Toolbar_Delete.FlatStyle = FlatStyle.Flat;
-			Toolbar_Delete.ForeColor = Color.Transparent;
-			Toolbar_Delete.Location = new Point(199, 3);
-			Toolbar_Delete.Margin = new Padding(0);
-			Toolbar_Delete.Name = "Toolbar_Delete";
-			Toolbar_Delete.Size = new Size(23, 23);
-			Toolbar_Delete.TabIndex = 4;
-			Toolbar_Delete.UseVisualStyleBackColor = false;
-			// 
-			// Toolbar_Input
-			// 
-			Toolbar_Input.Location = new Point(222, 3);
-			Toolbar_Input.Margin = new Padding(0);
-			Toolbar_Input.MaxLength = 30;
-			Toolbar_Input.Name = "Toolbar_Input";
-			Toolbar_Input.PlaceholderText = "New Project Name";
-			Toolbar_Input.Size = new Size(150, 23);
-			Toolbar_Input.TabIndex = 5;
-			// 
-			// Toolbar_Create
-			// 
-			Toolbar_Create.BackColor = Color.Transparent;
-			Toolbar_Create.BackgroundImage = Properties.Buttons.add;
-			Toolbar_Create.BackgroundImageLayout = ImageLayout.Zoom;
-			Toolbar_Create.Cursor = Cursors.Hand;
-			Toolbar_Create.FlatAppearance.BorderSize = 0;
-			Toolbar_Create.FlatAppearance.MouseDownBackColor = Color.FromArgb(79, 255, 255, 255);
-			Toolbar_Create.FlatAppearance.MouseOverBackColor = Color.FromArgb(63, 255, 255, 255);
-			Toolbar_Create.FlatStyle = FlatStyle.Flat;
-			Toolbar_Create.ForeColor = Color.Transparent;
-			Toolbar_Create.Location = new Point(372, 3);
-			Toolbar_Create.Margin = new Padding(0);
-			Toolbar_Create.Name = "Toolbar_Create";
-			Toolbar_Create.Size = new Size(23, 23);
-			Toolbar_Create.TabIndex = 6;
-			Toolbar_Create.UseVisualStyleBackColor = false;
+			Content.BackColor = Color.Transparent;
+			Content.Dock = DockStyle.Fill;
+			Content.Location = new Point(0, 38);
+			Content.Name = "Content";
+			Content.Size = new Size(548, 186);
+			Content.TabIndex = 2;
 			// 
 			// MapCreatorUI
 			// 
@@ -248,8 +140,8 @@
 			BackgroundImageLayout = ImageLayout.Zoom;
 			ClientSize = new Size(548, 224);
 			ControlBox = false;
+			Controls.Add(Content);
 			Controls.Add(Menu);
-			Controls.Add(Toolbar);
 			DoubleBuffered = true;
 			FormBorderStyle = FormBorderStyle.None;
 			Icon = (Icon)resources.GetObject("$this.Icon");
@@ -260,10 +152,8 @@
 			StartPosition = FormStartPosition.CenterScreen;
 			Text = "Map Creator";
 			Menu.ResumeLayout(false);
-			Toolbar.ResumeLayout(false);
-			Toolbar.PerformLayout();
+			Content.ResumeLayout(false);
 			ResumeLayout(false);
-			PerformLayout();
 		}
 
 		#endregion
@@ -272,12 +162,6 @@
 		private Button Menu_Icon;
 		private Button Menu_Minimize;
 		private Button Menu_Exit;
-		private FlowLayoutPanel Toolbar;
-		private Button Toolbar_Refresh;
-		private ComboBox Toolbar_Select;
-		private Button Toolbar_Open;
-		private Button Toolbar_Delete;
-		private TextBox Toolbar_Input;
-		private Button Toolbar_Create;
+		private ContentContainer Content;
 	}
 }

@@ -100,10 +100,22 @@ namespace MapCreator
 
 		public static Project OpenOrCreate(string projectFilePath)
 		{
+			return OpenOrCreate(projectFilePath, out _);
+		}
+
+		public static Project OpenOrCreate(string projectFilePath, out bool created)
+		{
+			created = false;
+
 			var project = Find(projectFilePath);
 
-			project ??= new Project(projectFilePath);
-			
+			if (project == null)
+			{
+				project = new Project(projectFilePath);
+
+				created = true;
+			}
+
 			if (!File.Exists(project.ProjectFile))
 			{
 				project.Save();
@@ -168,9 +180,9 @@ namespace MapCreator
 			}
 		}
 
-		private IProgress<ProgressUpdateEventArgs> _Progress;
+		private IProgress<ProjectProgressEventArgs> _Progress;
 
-		public Progress<ProgressUpdateEventArgs> Progress { get; }
+		public Progress<ProjectProgressEventArgs> Progress { get; }
 
 		public Logging Logger { get; } = new();
 
@@ -288,7 +300,7 @@ namespace MapCreator
 		{
 			ProjectFile = filePath;
 
-			_Progress = Progress = new Progress<ProgressUpdateEventArgs>();
+			_Progress = Progress = new Progress<ProjectProgressEventArgs>();
 
 			LoadImages();
 		}
@@ -331,8 +343,6 @@ namespace MapCreator
 				var dataDirectoryPath = DataDirectory;
 
 				XmlHelper.Save(Path.Combine(dataDirectoryPath, "Facet.xml"), Facet);
-				//XmlHelper.Save(Path.Combine(dataDirectoryPath, "Terrains.xml"), Terrains);
-				//XmlHelper.Save(Path.Combine(dataDirectoryPath, "Altitudes.xml"), Altitudes);
 				XmlHelper.Save(Path.Combine(dataDirectoryPath, "Transitions.xml"), Transitions);
 				XmlHelper.Save(Path.Combine(dataDirectoryPath, "Mutations.xml"), Mutations);
 				XmlHelper.Save(Path.Combine(dataDirectoryPath, "Structures.xml"), Facet);
@@ -829,7 +839,7 @@ namespace MapCreator
 			}
 
 			_Progress ??= Progress;
-			_Progress.Report(new ProgressUpdateEventArgs(this, title, summary, value, limit));
+			_Progress.Report(new ProjectProgressEventArgs(this, title, summary, value, limit));
 		}
 
 		private void ReportCompileProgress(string summary, long value, long limit, LogType? log)
@@ -920,6 +930,36 @@ namespace MapCreator
 			table.FillPallette(bitmap.Palette);
 
 			return bitmap;
+		}
+	}
+
+	public class ProjectEventArgs : EventArgs
+	{
+		public Project? Project { get; }
+
+		public ProjectEventArgs(Project? project)
+		{
+			Project = project;
+		}
+	}
+
+	public class ProjectProgressEventArgs : ProjectEventArgs
+	{
+		public string Title { get; }
+		public string Summary { get; }
+
+		public long Value { get; }
+		public long Limit { get; }
+
+		public bool IsComplete => Value >= Limit;
+
+		public ProjectProgressEventArgs(Project project, string title, string summary, long value, long limit)
+			: base(project)
+		{
+			Title = title;
+			Summary = summary;
+			Value = value;
+			Limit = limit;
 		}
 	}
 }

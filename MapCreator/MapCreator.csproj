@@ -29,6 +29,9 @@
 		<Compile Update="Interface\CanvasControlBox.cs">
 			<SubType>Form</SubType>
 		</Compile>
+		<Compile Update="Interface\ContentPage.cs">
+		  <SubType>UserControl</SubType>
+		</Compile>
 		<Compile Update="Interface\StaticSelector.cs">
 			<SubType>Form</SubType>
 		</Compile>

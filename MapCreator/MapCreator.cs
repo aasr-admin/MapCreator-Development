@@ -1,3 +1,5 @@
+using MapCreator.Interface;
+
 namespace MapCreator
 {
 	internal static partial class MapCreator

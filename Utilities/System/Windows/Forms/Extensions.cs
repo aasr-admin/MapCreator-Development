@@ -36,6 +36,38 @@ namespace System.Windows.Forms
 			}
 		}
 
+		public static void PreventFocusOutline<T>(this ContainerControl container) where T : Control
+		{
+			PreventFocusOutline<T>(container, true);
+		}
+
+		public static void PreventFocusOutline<T>(this ContainerControl container, bool recursive) where T : Control
+		{
+			foreach (var c in FindChildren<T>(container, recursive))
+			{
+				PreventFocusOutline(c);
+			}
+		}
+
+		public static void PreventFocusOutline(this Control control)
+		{
+			control.GotFocus -= InternalPreventFocusOutline;
+			control.GotFocus += InternalPreventFocusOutline;
+		}
+
+		private static void InternalPreventFocusOutline(object? sender, EventArgs e)
+		{
+			if (sender is Control control)
+			{
+				var form = control.FindForm();
+
+				if (form?.ActiveControl == control)
+				{
+					form.ActiveControl = control.Parent;
+				}
+			}
+		}
+
 		public static void Fill(this ListControl control, IEnumerable collection)
 		{
 			control.SuspendLayout();
