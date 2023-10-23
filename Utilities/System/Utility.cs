@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics;
+using System.Numerics;
+using System.Text.RegularExpressions;
 
 namespace System
 {
@@ -124,23 +126,6 @@ namespace System
 			}
 		}
 
-		public static string? FindDataFile(string dataPath, string search)
-		{
-			var fullName = Path.Combine(dataPath, search);
-
-			if (File.Exists(fullName))
-			{
-				return fullName;
-			}
-
-			foreach (var file in Directory.EnumerateFiles(dataPath, search, SearchOption.AllDirectories))
-			{
-				return file;
-			}
-
-			return null;
-		}
-
 		public static void InsertionSort<T>(T?[] array) where T : IComparable
 		{
 			var index1 = 0;
@@ -165,6 +150,86 @@ namespace System
 
 				array[index2 + 1] = array[index1];
 			}
+		}
+
+		public static string? FindDataFile(string dataPath, string search)
+		{
+			var fullName = Path.Combine(dataPath, search);
+
+			if (File.Exists(fullName))
+			{
+				return fullName;
+			}
+
+			foreach (var file in Directory.EnumerateFiles(dataPath, search, SearchOption.AllDirectories))
+			{
+				return file;
+			}
+
+			return null;
+		}
+
+		public static object? Launch(string uri, string? args = null, string? startIn = null, bool admin = false)
+		{
+			try
+			{
+				var isUri = IsWebUri(uri);
+
+				if (!isUri && !File.Exists(uri))
+				{
+					return false;
+				}
+
+				var info = new ProcessStartInfo(uri, args ?? String.Empty);
+
+				if (isUri)
+				{
+					info.UseShellExecute = true;
+				}
+				else
+				{
+					if (admin)
+					{
+						info.Verb = "runas";
+					}
+
+					if (String.IsNullOrWhiteSpace(startIn))
+					{
+						startIn = Path.GetDirectoryName(uri);
+					}
+
+					if (Directory.Exists(startIn))
+					{
+						info.WorkingDirectory = startIn;
+					}
+				}
+
+				return Process.Start(info);
+			}
+			catch (Exception x)
+			{
+				return x;
+			}
+		}
+
+		public static bool IsWebUri(string value)
+		{
+			if (Directory.Exists(value) || File.Exists(value))
+			{
+				return false;
+			}
+
+			if (Uri.IsWellFormedUriString(value, UriKind.Absolute))
+			{
+				return true;
+			}
+
+			if (Regex.IsMatch(value, String.Join("|", Uri.UriSchemeHttp, Uri.UriSchemeHttps)))
+			{
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

@@ -10,8 +10,8 @@
 		<StartupObject>MapCreator.MapCreator</StartupObject>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-		<OutputPath>..\Output</OutputPath>
 		<ApplicationIcon>Resources\icon\appicon.ico</ApplicationIcon>
+		<OutputPath>..\Output</OutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -23,16 +23,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Interface\_OLD\BuildLogger.cs">
-			<SubType>Form</SubType>
-		</Compile>
-		<Compile Update="Interface\_OLD\CanvasControlBox.cs">
-			<SubType>Form</SubType>
-		</Compile>
-		<Compile Update="Interface\ContentPage.cs" />
-		<Compile Update="Interface\_OLD\StaticSelector.cs">
-			<SubType>Form</SubType>
-		</Compile>
 		<Compile Update="Properties\Buttons.Designer.cs">
 		  <DependentUpon>Buttons.resx</DependentUpon>
 		  <DesignTime>True</DesignTime>

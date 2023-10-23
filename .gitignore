@@ -1,7 +1,4 @@
 
-/Cartography/bin
-/Cartography/obj
-
 /MapCreator/bin
 /MapCreator/obj
 
@@ -9,8 +6,6 @@
 /Utilities/obj
 
 /Output/*
-!/Output/MapCompiler
-!/Output/Development
 
 /.vs
 

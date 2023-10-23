@@ -10,8 +10,6 @@ namespace MapCreator.Interface
 
 		public static MapCreatorUI Instance => _Instance ??= new();
 
-		private Size _InitialSize;
-
 		protected override Size DefaultSize { get; } = new Size(548, 224);
 		protected override Size DefaultMinimumSize { get; } = new Size(548, 224);
 
@@ -37,8 +35,6 @@ namespace MapCreator.Interface
 			Menu_Icon.Click += HandleClickIcon;
 			Menu_Minimize.Click += HandleClickMinimize;
 			Menu_Exit.Click += HandleClickExit;
-
-			this.PreventFocusOutline<Button>();
 
 			ResumeLayout(false);
 		}
@@ -117,7 +113,7 @@ namespace MapCreator.Interface
 
 		private void HandleClickIcon(object? sender, EventArgs e)
 		{
-			// launch github link?
+			_ = Utility.Launch("https://github.com/aasr-admin/MapCreator-Development");
 		}
 
 		private void HandleClickMinimize(object? sender, EventArgs e)
@@ -136,7 +132,7 @@ namespace MapCreator.Interface
 		{
 			base.OnLoad(e);
 
-			_InitialSize = Size;
+			this.PreventFocusOutline<Button>();
 		}
 	}
 }
