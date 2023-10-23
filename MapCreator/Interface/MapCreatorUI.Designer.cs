@@ -49,7 +49,6 @@
 			Menu_Exit = new Button();
 			Content = new ContentContainer();
 			Menu.SuspendLayout();
-			Content.SuspendLayout();
 			SuspendLayout();
 			// 
 			// Menu
@@ -126,8 +125,11 @@
 			// Content
 			// 
 			Content.BackColor = Color.Transparent;
+			Content.ContentIndex = -1;
+			Content.ContentValue = null;
 			Content.Dock = DockStyle.Fill;
 			Content.Location = new Point(0, 38);
+			Content.Margin = new Padding(0);
 			Content.Name = "Content";
 			Content.Size = new Size(548, 186);
 			Content.TabIndex = 2;
@@ -137,7 +139,7 @@
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			BackgroundImage = Properties.Common.splash;
-			BackgroundImageLayout = ImageLayout.Zoom;
+			BackgroundImageLayout = ImageLayout.Tile;
 			ClientSize = new Size(548, 224);
 			ControlBox = false;
 			Controls.Add(Content);
@@ -146,13 +148,12 @@
 			FormBorderStyle = FormBorderStyle.None;
 			Icon = (Icon)resources.GetObject("$this.Icon");
 			MaximizeBox = false;
-			MinimizeBox = false;
+			MinimumSize = new Size(548, 224);
 			Name = "MapCreatorUI";
 			SizeGripStyle = SizeGripStyle.Hide;
-			StartPosition = FormStartPosition.CenterScreen;
+			StartPosition = FormStartPosition.WindowsDefaultLocation;
 			Text = "Map Creator";
 			Menu.ResumeLayout(false);
-			Content.ResumeLayout(false);
 			ResumeLayout(false);
 		}
 

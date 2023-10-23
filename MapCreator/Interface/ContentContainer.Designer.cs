@@ -32,11 +32,13 @@
 			// 
 			// ContentContainer
 			// 
+			AutoScaleDimensions = new SizeF(7F, 15F);
+			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = Color.Transparent;
 			DoubleBuffered = true;
 			Margin = new Padding(0);
 			Name = "ContentContainer";
-			Size = new Size(500, 100);
+			Size = new Size(548, 186);
 			ResumeLayout(false);
 		}
 

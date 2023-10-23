@@ -1,3 +1,6 @@
+using System.Timers;
+using System.Windows.Forms.Animation;
+
 namespace MapCreator.Interface
 {
 	public partial class MapCreatorUI : Form
@@ -5,6 +8,11 @@ namespace MapCreator.Interface
 		private static MapCreatorUI? _Instance;
 
 		public static MapCreatorUI Instance => _Instance ??= new();
+
+		private Size _InitialSize;
+
+		protected override Size DefaultSize { get; } = new Size(548, 224);
+		protected override Size DefaultMinimumSize { get; } = new Size(548, 224);
 
 		public ProjectBrowser ProjectBrowser { get; } = new();
 		public ProjectView ProjectView { get; } = new();
@@ -18,6 +26,9 @@ namespace MapCreator.Interface
 			AllowTransparency = true;
 
 			InitializeComponent();
+
+			SuspendLayout();
+
 			InitializeContent();
 
 			Menu.SetWindowDragHandle();
@@ -27,29 +38,50 @@ namespace MapCreator.Interface
 			Menu_Exit.Click += HandleClickExit;
 
 			this.PreventFocusOutline<Button>();
+
+			ResumeLayout(false);
 		}
 
 		private void InitializeContent()
 		{
-			ProjectBrowser.ProjectCreated += HandleProjectCreated;
-			ProjectBrowser.ProjectDeleted += HandleProjectDeleted;
-			ProjectBrowser.ProjectOpened += HandleProjectOpened;
-			ProjectBrowser.ProjectSelected += HandleProjectSelected;
-
-			ProjectView.ProjectChanged += HandleProjectChanged;
+			Content.SuspendLayout();
 
 			Content.AddContent(ProjectBrowser);
 			Content.AddContent(ProjectView);
 
 			Content.ResumeLayout(false);
 
-			ResumeLayout(false);
+			Content.ContentChanging += HandleContentChanging;
+			Content.ContentChanged += HandleContentChanged;
+
+			ProjectBrowser.ProjectCreated += HandleProjectCreated;
+			ProjectBrowser.ProjectDeleted += HandleProjectDeleted;
+			ProjectBrowser.ProjectOpened += HandleProjectOpened;
+			ProjectBrowser.ProjectSelected += HandleProjectSelected;
+
+			ProjectView.ProjectChanging += HandleProjectChanging;
+			ProjectView.ProjectChanged += HandleProjectChanged;
+		}
+
+		private void HandleContentChanging(object? sender, ContentChangingEventArgs e)
+		{
+			Content.Hide();
+		}
+
+		private void HandleContentChanged(object? sender, ContentChangedEventArgs e)
+		{
+			_ = this.AnimateResize(Content.MinimumSize, state => Content.Show());
+		}
+
+		private void HandleProjectChanging(object? sender, ProjectEventArgs e)
+		{
 		}
 
 		private void HandleProjectChanged(object? sender, ProjectEventArgs e)
 		{
 			if (e.Project == null)
 			{
+				BackgroundImage = Properties.Common.splash;
 				ContentPage = ProjectBrowser;
 			}
 			else
@@ -97,6 +129,13 @@ namespace MapCreator.Interface
 			Close();
 
 			Application.Exit();
+		}
+
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			_InitialSize = Size;
 		}
 	}
 }

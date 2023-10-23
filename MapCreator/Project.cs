@@ -394,8 +394,6 @@ namespace MapCreator
 				var dataDirectoryPath = DataDirectory;
 
 				XmlHelper.Load(Path.Combine(dataDirectoryPath, "Facet.xml"), Facet);
-				//XmlHelper.Load(Path.Combine(dataDirectoryPath, "Terrains.xml"), Terrains);
-				//XmlHelper.Load(Path.Combine(dataDirectoryPath, "Altitudes.xml"), Altitudes);
 				XmlHelper.Load(Path.Combine(dataDirectoryPath, "Transitions.xml"), Transitions);
 				XmlHelper.Load(Path.Combine(dataDirectoryPath, "Mutations.xml"), Mutations);
 				XmlHelper.Load(Path.Combine(dataDirectoryPath, "Structures.xml"), Facet);
@@ -412,6 +410,50 @@ namespace MapCreator
 			return Loaded;
 		}
 
+		public void Unload()
+		{
+			UnloadImages();
+			UnloadUltima();
+
+			Facet.Clear();
+			Terrains.Reset();
+			Altitudes.Reset();
+			Transitions.Clear();
+			Mutations.Clear();
+
+			Loaded = false;
+		}
+
+		public void UnloadImages()
+		{
+			TerrainImage?.Dispose();
+			TerrainImage = null!;
+
+			AltitudeImage?.Dispose();
+			AltitudeImage = null!;
+		}
+
+		public void UnloadUltima()
+		{
+			_UltimaArt?.Clear();
+			_UltimaArt = null;
+
+			_UltimaGumps?.Clear();
+			_UltimaGumps = null;
+
+			_UltimaHues?.Clear();
+			_UltimaHues = null;
+
+			_UltimaClilocs?.Clear();
+			_UltimaClilocs = null;
+
+			_UltimaTiles?.Clear();
+			_UltimaTiles = null;
+
+			_UltimaRadar?.Clear();
+			_UltimaRadar = null;
+		}
+
 		public void SaveImages()
 		{
 			CreateDirectories();
@@ -420,19 +462,15 @@ namespace MapCreator
 
 			var dataDirectoryPath = DataDirectory;
 
-			if (AltitudeImage != null)
-			{
-				Altitudes.SaveSwatch(Path.Combine(dataDirectoryPath, "Altitude.aco"), ColorFormat.RGB);
+			var terrainSwatchFilePath = Path.Combine(dataDirectoryPath, "Terrain.aco");
+			var terrainImageFilePath = Path.Combine(dataDirectoryPath, "Terrain.bmp");
 
-				AltitudeImage.Save(Path.Combine(dataDirectoryPath, "Altitude.bmp"), ImageFormat.Bmp);
-			}
+			SaveImage(TerrainImage, Terrains, terrainSwatchFilePath, terrainImageFilePath);
 
-			if (TerrainImage != null)
-			{
-				Terrains.SaveSwatch(Path.Combine(dataDirectoryPath, "Terrain.aco"), ColorFormat.RGB);
+			var altitudeSwatchFilePath = Path.Combine(dataDirectoryPath, "Altitude.aco");
+			var altitudeImageFilePath = Path.Combine(dataDirectoryPath, "Altitude.bmp");
 
-				TerrainImage.Save(Path.Combine(dataDirectoryPath, "Terrain.bmp"), ImageFormat.Bmp);
-			}
+			SaveImage(AltitudeImage, Altitudes, altitudeSwatchFilePath, altitudeImageFilePath);
 		}
 
 		public void LoadImages()
@@ -480,50 +518,6 @@ namespace MapCreator
 			}
 
 			return created;
-		}
-
-		public void Unload()
-		{
-			UnloadImages();
-			UnloadUltima();
-
-			Facet.Clear();
-			Terrains.Reset();
-			Altitudes.Reset();
-			Transitions.Clear();
-			Mutations.Clear();
-
-			Loaded = false;
-		}
-
-		public void UnloadImages()
-		{
-			TerrainImage?.Dispose();
-			TerrainImage = null!;
-
-			AltitudeImage?.Dispose();
-			AltitudeImage = null!;
-		}
-
-		public void UnloadUltima()
-		{
-			_UltimaArt?.Clear();
-			_UltimaArt = null;
-
-			_UltimaGumps?.Clear();
-			_UltimaGumps = null;
-
-			_UltimaHues?.Clear();
-			_UltimaHues = null;
-
-			_UltimaClilocs?.Clear();
-			_UltimaClilocs = null;
-
-			_UltimaTiles?.Clear();
-			_UltimaTiles = null;
-
-			_UltimaRadar?.Clear();
-			_UltimaRadar = null;
 		}
 
 		public void CreateDirectories()
@@ -890,6 +884,13 @@ namespace MapCreator
 			{
 				ReportProgress(title, e.Message, 1, 1, LogType.Error);
 			}
+		}
+
+		private static void SaveImage<T>(Bitmap? image, T table, string swatchPath, string imagePath) where T : IColorCollection
+		{
+			table.SaveSwatch(swatchPath, ColorFormat.RGB);
+
+			image?.Save(imagePath, ImageFormat.Bmp);
 		}
 
 		private static Bitmap? LoadImage<T>(T table, string swatchPath, string imagePath) where T : IColorCollection

@@ -109,9 +109,9 @@ namespace System.Timers
 
 		public TaskTimer(int delay, int interval, int repeat, Action callback)
 		{
-			_Delay = delay;
-			_Interval = interval;
-			_Repeat = repeat;
+			_Delay = Math.Max(0, delay);
+			_Interval = Math.Max(-1, interval);
+			_Repeat = Math.Max(-1, repeat);
 
 			Callback = callback;
 		}
@@ -153,20 +153,34 @@ namespace System.Timers
 				_Counter.Reset();
 
 				_Drift = 0;
-				_Elapsed = 0;
 
 				Next = 0;
+
+				OnStop();
 			}
+		}
+
+		protected virtual void OnStop()
+		{
 		}
 
 		public void Start()
 		{
 			if (!IsRunning)
 			{
+				_Elapsed = 0;
+				_Drift = 0;
+
 				_Counter.Start();
+
+				OnStart();
 
 				Run(_Delay, 0);
 			}
+		}
+
+		protected virtual void OnStart()
+		{
 		}
 
 		private int Delta(int state, int value)

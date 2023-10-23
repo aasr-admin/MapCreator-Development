@@ -26,6 +26,13 @@
 		public ProjectView()
 		{
 			InitializeComponent();
+
+			ProjectUndoButton.Click += HandleClickUndo;
+		}
+
+		private void HandleClickUndo(object? sender, EventArgs e)
+		{
+			Project = null;
 		}
 
 		protected virtual void OnProjectChanging(ProjectEventArgs e)

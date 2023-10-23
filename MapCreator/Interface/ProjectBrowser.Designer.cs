@@ -35,7 +35,10 @@
 			ProjectDeleteButton = new Button();
 			ProjectNameInput = new TextBox();
 			ProjectCreateButton = new Button();
+			splitContainer1 = new SplitContainer();
 			ProjectToolbar.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+			splitContainer1.SuspendLayout();
 			SuspendLayout();
 			// 
 			// ProjectToolbar
@@ -50,10 +53,10 @@
 			ProjectToolbar.Controls.Add(ProjectNameInput);
 			ProjectToolbar.Controls.Add(ProjectCreateButton);
 			ProjectToolbar.Dock = DockStyle.Bottom;
-			ProjectToolbar.Location = new Point(0, 71);
+			ProjectToolbar.Location = new Point(0, 157);
 			ProjectToolbar.Name = "ProjectToolbar";
 			ProjectToolbar.Padding = new Padding(3);
-			ProjectToolbar.Size = new Size(500, 29);
+			ProjectToolbar.Size = new Size(548, 29);
 			ProjectToolbar.TabIndex = 1;
 			ProjectToolbar.TabStop = true;
 			// 
@@ -149,17 +152,26 @@
 			ProjectCreateButton.TabIndex = 6;
 			ProjectCreateButton.UseVisualStyleBackColor = false;
 			// 
+			// splitContainer1
+			// 
+			splitContainer1.Dock = DockStyle.Fill;
+			splitContainer1.Location = new Point(0, 0);
+			splitContainer1.Name = "splitContainer1";
+			splitContainer1.Size = new Size(548, 157);
+			splitContainer1.SplitterDistance = 182;
+			splitContainer1.TabIndex = 2;
+			// 
 			// ProjectBrowser
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			BackgroundImage = Properties.Common.splash;
-			BackgroundImageLayout = ImageLayout.Zoom;
+			Controls.Add(splitContainer1);
 			Controls.Add(ProjectToolbar);
 			Name = "ProjectBrowser";
-			Size = new Size(548, 224);
 			ProjectToolbar.ResumeLayout(false);
 			ProjectToolbar.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+			splitContainer1.ResumeLayout(false);
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -173,5 +185,6 @@
 		private Button ProjectDeleteButton;
 		private TextBox ProjectNameInput;
 		private Button ProjectCreateButton;
+		private SplitContainer splitContainer1;
 	}
 }

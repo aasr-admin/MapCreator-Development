@@ -1,43 +1,68 @@
-﻿namespace MapCreator.Interface
+﻿using System.ComponentModel;
+using System.Windows.Forms.Animation;
+
+namespace MapCreator.Interface
 {
-	public partial class ContentContainer : Panel
+	[ToolboxItem(false)]
+	public partial class ContentContainer : UserControl
 	{
-		public event EventHandler<ContentEventArgs>? ContentChanging;
-		public event EventHandler<ContentEventArgs>? ContentChanged;
+		public event EventHandler<ContentChangingEventArgs>? ContentChanging;
+		public event EventHandler<ContentChangedEventArgs>? ContentChanged;
 		public event EventHandler<ContentEventArgs>? ContentAdded;
 		public event EventHandler<ContentEventArgs>? ContentRemoved;
 
+		protected override Size DefaultSize { get; } = new Size(548, 186);
+		protected override Size DefaultMinimumSize { get; } = new Size(548, 186);
+
+		[Browsable(false)]
 		public int ContentCount => Controls.Count;
 
-		private int _ContentIndex;
+		private int _ContentIndex = -1;
 
+		[Browsable(false)]
 		public int ContentIndex
 		{
 			get => _ContentIndex;
 			set
 			{
-				OnContentChanging(new ContentEventArgs(ContentValue));
+				Control? oldContent = null;
 
-				_ContentIndex = value;
-
-				SuspendLayout();
-
-				for (var i = 0; i < ContentCount; i++)
+				if (ContentIndex >= 0 && ContentIndex < ContentCount)
 				{
-					if (i != _ContentIndex)
-					{
-						Controls[i].Hide();
-					}
+					oldContent = Controls[ContentIndex];
 				}
 
-				ContentValue?.Show();
+				Control? newContent = null;
 
-				OnContentChanged(new ContentEventArgs(ContentValue));
+				if (value >= 0 && value < ContentCount)
+				{
+					newContent = Controls[value];
+				}
 
-				ResumeLayout(false);
+				if (oldContent == newContent)
+				{
+					return;
+				}
+
+				var changingArgs = new ContentChangingEventArgs(oldContent, newContent);
+
+				OnContentChanging(changingArgs);
+
+				if (changingArgs.PreventChange)
+				{
+					return;
+				}
+
+				_ContentIndex = Controls.IndexOf(newContent);
+
+				oldContent?.Hide();
+				newContent?.Show();
+
+				OnContentChanged(new ContentChangedEventArgs(oldContent, newContent));
 			}
 		}
 
+		[Browsable(false)]
 		public Control? ContentValue
 		{
 			get
@@ -52,46 +77,57 @@
 			set => ContentIndex = Controls.IndexOf(value);
 		}
 
+		private Size _InitialMinimumSize, _InitialSize;
+
 		public ContentContainer()
 		{
 			InitializeComponent();
 		}
 
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			_InitialMinimumSize = MinimumSize;
+			_InitialSize = Size;
+		}
+
 		public void AddContent(Control content)
 		{
-			SuspendLayout();
-
 			Controls.Add(content);
-
-			ResumeLayout(false);
 		}
 
 		public void RemoveContent(Control content)
 		{
-			SuspendLayout();
-
 			Controls.Remove(content);
-
-			ResumeLayout(false);
 		}
 
 		protected sealed override void OnControlAdded(ControlEventArgs e)
 		{
 			base.OnControlAdded(e);
 
-			if (e.Control != null)
+			if (e.Control != null && Controls.Contains(e.Control))
 			{
-				e.Control.Dock = DockStyle.Fill;
+				OnContentAdded(new ContentEventArgs(e.Control));
+
+				if (!Controls.Contains(e.Control))
+				{
+					return;
+				}
+
 				e.Control.Location = Point.Empty;
-				e.Control.Size = Size;
 				e.Control.TabIndex = ContentCount;
+				e.Control.Dock = DockStyle.Fill;
 
 				if (ContentCount > 1)
 				{
-					e.Control.Visible = false;
+					e.Control.Hide();
 				}
 
-				OnContentAdded(new ContentEventArgs(e.Control));
+				if (ContentCount == 1)
+				{
+					ContentValue = e.Control;
+				}
 			}
 		}
 
@@ -101,16 +137,30 @@
 
 			if (e.Control != null)
 			{
-				OnContentRemoved(new ContentEventArgs(e.Control));
+				if (!Controls.Contains(e.Control))
+				{
+					if (ContentValue == e.Control)
+					{
+						ContentValue = null;
+					}
+
+					OnContentRemoved(new ContentEventArgs(e.Control));
+				}
 			}
 		}
 
-		protected virtual void OnContentChanging(ContentEventArgs e)
+		protected virtual void OnContentChanging(ContentChangingEventArgs e)
 		{
 			ContentChanging?.Invoke(this, e);
+
+			if (!e.PreventChange)
+			{
+				MinimumSize = e.Content?.MinimumSize ?? _InitialMinimumSize;
+				Size = e.Content?.Size ?? _InitialSize;
+			}
 		}
 
-		protected virtual void OnContentChanged(ContentEventArgs e)
+		protected virtual void OnContentChanged(ContentChangedEventArgs e)
 		{
 			ContentChanged?.Invoke(this, e);
 		}
@@ -133,6 +183,30 @@
 		public ContentEventArgs(Control? content)
 		{
 			Content = content;
+		}
+	}
+
+	public class ContentChangingEventArgs : ContentEventArgs
+	{
+		public Control? OldContent { get; }
+
+		public bool PreventChange { get; set; }
+
+		public ContentChangingEventArgs(Control? oldContent, Control? newContent)
+			: base(newContent)
+		{
+			OldContent = oldContent;
+		}
+	}
+
+	public class ContentChangedEventArgs : ContentEventArgs
+	{
+		public Control? OldContent { get; }
+
+		public ContentChangedEventArgs(Control? oldContent, Control? newContent)
+			: base(newContent)
+		{
+			OldContent = oldContent;
 		}
 	}
 }
