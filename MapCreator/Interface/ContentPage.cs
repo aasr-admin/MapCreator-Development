@@ -12,5 +12,12 @@ namespace MapCreator.Interface
 		{
 			InitializeComponent();
 		}
+
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			this.PreventFocusOutline<Button>();
+		}
 	}
 }

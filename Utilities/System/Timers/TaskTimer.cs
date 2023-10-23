@@ -116,6 +116,19 @@ namespace System.Timers
 			Callback = callback;
 		}
 
+		protected void Reset()
+		{
+			_Elapsed = 0;
+			_Drift = 0;
+			_Count = 0;
+
+			OnReset();
+		}
+
+		protected virtual void OnReset()
+		{
+		}
+
 		private void Tick(Task t)
 		{
 			if (!_Break && t.IsCompleted && IsRunning)

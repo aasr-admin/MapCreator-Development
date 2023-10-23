@@ -61,7 +61,7 @@ namespace System.Windows.Forms
 			{
 				var form = control.FindForm();
 
-				if (form?.ActiveControl == control)
+				if (form != null)
 				{
 					form.ActiveControl = control.Parent;
 				}

@@ -90,6 +90,8 @@ namespace MapCreator.Interface
 
 			_InitialMinimumSize = MinimumSize;
 			_InitialSize = Size;
+
+			this.PreventFocusOutline<Button>();
 		}
 
 		public void AddContent(Control content)

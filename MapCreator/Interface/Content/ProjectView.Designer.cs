@@ -1,4 +1,4 @@
-﻿namespace MapCreator.Interface
+﻿namespace MapCreator.Interface.Content
 {
 	partial class ProjectView
 	{

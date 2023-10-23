@@ -1,4 +1,4 @@
-﻿namespace MapCreator.Interface
+﻿namespace MapCreator.Interface.Content
 {
 	partial class ProjectBrowser
 	{
@@ -35,10 +35,10 @@
 			ProjectDeleteButton = new Button();
 			ProjectNameInput = new TextBox();
 			ProjectCreateButton = new Button();
-			splitContainer1 = new SplitContainer();
+			Preview = new SplitContainer();
 			ProjectToolbar.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
-			splitContainer1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)Preview).BeginInit();
+			Preview.SuspendLayout();
 			SuspendLayout();
 			// 
 			// ProjectToolbar
@@ -152,26 +152,37 @@
 			ProjectCreateButton.TabIndex = 6;
 			ProjectCreateButton.UseVisualStyleBackColor = false;
 			// 
-			// splitContainer1
+			// Preview
 			// 
-			splitContainer1.Dock = DockStyle.Fill;
-			splitContainer1.Location = new Point(0, 0);
-			splitContainer1.Name = "splitContainer1";
-			splitContainer1.Size = new Size(548, 157);
-			splitContainer1.SplitterDistance = 182;
-			splitContainer1.TabIndex = 2;
+			Preview.Dock = DockStyle.Fill;
+			Preview.Location = new Point(0, 0);
+			Preview.Name = "Preview";
+			// 
+			// Preview.Panel1
+			// 
+			Preview.Panel1.BackgroundImageLayout = ImageLayout.Zoom;
+			Preview.Panel1MinSize = 273;
+			// 
+			// Preview.Panel2
+			// 
+			Preview.Panel2.BackgroundImageLayout = ImageLayout.Zoom;
+			Preview.Panel2MinSize = 273;
+			Preview.Size = new Size(548, 157);
+			Preview.SplitterDistance = 274;
+			Preview.SplitterWidth = 2;
+			Preview.TabIndex = 2;
 			// 
 			// ProjectBrowser
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			Controls.Add(splitContainer1);
+			Controls.Add(Preview);
 			Controls.Add(ProjectToolbar);
 			Name = "ProjectBrowser";
 			ProjectToolbar.ResumeLayout(false);
 			ProjectToolbar.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
-			splitContainer1.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)Preview).EndInit();
+			Preview.ResumeLayout(false);
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -185,6 +196,6 @@
 		private Button ProjectDeleteButton;
 		private TextBox ProjectNameInput;
 		private Button ProjectCreateButton;
-		private SplitContainer splitContainer1;
+		private SplitContainer Preview;
 	}
 }

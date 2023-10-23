@@ -12,10 +12,6 @@ namespace System.Windows.Forms.Animation
 
 		public static int DefaultFrameRate { get; set; } = 60;
 
-		public static int DefaultDelay { get; set; } = 0;
-
-		public static int DefaultDuration { get; set; } = 100;
-
 		public static event EventHandler<AnimationState>? AnimationStarted;
 		public static event EventHandler<AnimationState>? AnimationStopped;
 
@@ -83,24 +79,19 @@ namespace System.Windows.Forms.Animation
 			return count;
 		}
 
-		public static AnimationState Animate(this Control control, AnimationHandler animation, AnimationHandler? completed = null)
-		{
-			return Animate(control, DefaultDelay, animation, completed);
-		}
-
-		public static AnimationState Animate(this Control control, int delayMS, AnimationHandler animation, AnimationHandler? completed = null)
-		{
-			return Animate(control, delayMS, DefaultDuration, animation, completed);
-		}
-
 		public static AnimationState Animate(this Control control, int delayMS, int durationMS, AnimationHandler animation, AnimationHandler? completed = null)
 		{
-			return Animate(control, delayMS, durationMS, DefaultFrameRate, animation);
+			return Animate(control, delayMS, durationMS, 1, animation);
 		}
 
-		public static AnimationState Animate(this Control control, int delayMS, int durationMS, int frameRate, AnimationHandler animation, AnimationHandler? completed = null)
+		public static AnimationState Animate(this Control control, int delayMS, int durationMS, int count, AnimationHandler animation, AnimationHandler? completed = null)
 		{
-			var state = new AnimationState(control, animation, completed, delayMS, durationMS, frameRate);
+			return Animate(control, delayMS, durationMS, count, DefaultFrameRate, animation);
+		}
+
+		public static AnimationState Animate(this Control control, int delayMS, int durationMS, int count, int frameRate, AnimationHandler animation, AnimationHandler? completed = null)
+		{
+			var state = new AnimationState(control, animation, completed, delayMS, durationMS, count, frameRate);
 
 			try
 			{
@@ -112,24 +103,19 @@ namespace System.Windows.Forms.Animation
 			}
 		}
 
-		public static AnimationState<T> Animate<T>(this Control control, AnimationHandler<T> animation, T? @object, AnimationHandler<T>? completed = null)
-		{
-			return Animate(control, DefaultDelay, animation, @object, completed);
-		}
-
-		public static AnimationState<T> Animate<T>(this Control control, int delayMS, AnimationHandler<T> animation, T? @object, AnimationHandler<T>? completed = null)
-		{
-			return Animate(control, delayMS, DefaultDuration, animation, @object, completed);
-		}
-
 		public static AnimationState<T> Animate<T>(this Control control, int delayMS, int durationMS, AnimationHandler<T> animation, T? @object, AnimationHandler<T>? completed = null)
 		{
-			return Animate(control, delayMS, durationMS, DefaultFrameRate, animation, @object, completed);
+			return Animate(control, delayMS, durationMS, 1, animation, @object, completed);
 		}
 
-		public static AnimationState<T> Animate<T>(this Control control, int delayMS, int durationMS, int frameRate, AnimationHandler<T> animation, T? @object, AnimationHandler<T>? completed = null)
+		public static AnimationState<T> Animate<T>(this Control control, int delayMS, int durationMS, int count, AnimationHandler<T> animation, T? @object, AnimationHandler<T>? completed = null)
 		{
-			var state = new AnimationState<T>(control, animation, completed, delayMS, durationMS, frameRate, @object);
+			return Animate(control, delayMS, durationMS, count, DefaultFrameRate, animation, @object, completed);
+		}
+
+		public static AnimationState<T> Animate<T>(this Control control, int delayMS, int durationMS, int count, int frameRate, AnimationHandler<T> animation, T? @object, AnimationHandler<T>? completed = null)
+		{
+			var state = new AnimationState<T>(control, animation, completed, delayMS, durationMS, count, frameRate, @object);
 
 			try
 			{
@@ -145,12 +131,12 @@ namespace System.Windows.Forms.Animation
 
 		public static AnimationState<Size> AnimateResize(this Control control, Size targetSize, AnimationHandler<Size>? completed = null)
 		{
-			return AnimateResize(control, targetSize, DefaultDelay, completed);
+			return AnimateResize(control, targetSize, 0, completed);
 		}
 
 		public static AnimationState<Size> AnimateResize(this Control control, Size targetSize, int delayMS, AnimationHandler<Size>? completed = null)
 		{
-			return AnimateResize(control, targetSize, delayMS, DefaultDuration, completed);
+			return AnimateResize(control, targetSize, delayMS, 200, completed);
 		}
 
 		public static AnimationState<Size> AnimateResize(this Control control, Size targetSize, int delayMS, int durationMS, AnimationHandler<Size>? completed = null)
@@ -211,12 +197,12 @@ namespace System.Windows.Forms.Animation
 
 		public static AnimationState<Point> AnimateMove(this Control control, Point targetLocation, AnimationHandler<Point>? completed = null)
 		{
-			return AnimateMove(control, targetLocation, DefaultDelay, completed);
+			return AnimateMove(control, targetLocation, 0, completed);
 		}
 
 		public static AnimationState<Point> AnimateMove(this Control control, Point targetLocation, int delayMS, AnimationHandler<Point>? completed = null)
 		{
-			return AnimateMove(control, targetLocation, delayMS, DefaultDuration, completed);
+			return AnimateMove(control, targetLocation, delayMS, 200, completed);
 		}
 
 		public static AnimationState<Point> AnimateMove(this Control control, Point targetLocation, int delayMS, int durationMS, AnimationHandler<Point>? completed = null)
@@ -272,12 +258,12 @@ namespace System.Windows.Forms.Animation
 
 		public static AnimationState<Color> AnimateFadeIn(this Control control, Color overlayColor, AnimationHandler<Color>? completed = null)
 		{
-			return AnimateFadeIn(control, overlayColor, DefaultDelay, completed);
+			return AnimateFadeIn(control, overlayColor, 0, completed);
 		}
 
 		public static AnimationState<Color> AnimateFadeIn(this Control control, Color overlayColor, int delayMS, AnimationHandler<Color>? completed = null)
 		{
-			return AnimateFadeIn(control, overlayColor, delayMS, DefaultDuration, completed);
+			return AnimateFadeIn(control, overlayColor, delayMS, 300, completed);
 		}
 		
 		public static AnimationState<Color> AnimateFadeIn(this Control control, Color overlayColor, int delayMS, int durationMS, AnimationHandler<Color>? completed = null)
@@ -289,12 +275,12 @@ namespace System.Windows.Forms.Animation
 
 		public static AnimationState<Color> AnimateFadeOut(this Control control, Color overlayColor, AnimationHandler<Color>? completed = null)
 		{
-			return AnimateFadeOut(control, overlayColor, DefaultDelay, completed);
+			return AnimateFadeOut(control, overlayColor, 0, completed);
 		}
 
 		public static AnimationState<Color> AnimateFadeOut(this Control control, Color overlayColor, int delayMS, AnimationHandler<Color>? completed = null)
 		{
-			return AnimateFadeOut(control, overlayColor, delayMS, DefaultDuration, completed);
+			return AnimateFadeOut(control, overlayColor, delayMS, 300, completed);
 		}
 
 		public static AnimationState<Color> AnimateFadeOut(this Control control, Color overlayColor, int delayMS, int durationMS, AnimationHandler<Color>? completed = null)
@@ -321,5 +307,51 @@ namespace System.Windows.Forms.Animation
 		}
 
 		#endregion
+
+		#region Blink
+
+		public static AnimationState<ColorState> AnimateBackgroundBlink(this Control control, Color targetColor, int count, AnimationHandler<ColorState>? completed = null)
+		{
+			return AnimateBackgroundBlink(control, targetColor, 0, count, completed);
+		}
+
+		public static AnimationState<ColorState> AnimateBackgroundBlink(this Control control, Color targetColor, int delayMS, int count, AnimationHandler<ColorState>? completed = null)
+		{
+			return AnimateBackgroundBlink(control, targetColor, delayMS, 300, count, completed);
+		}
+
+		public static AnimationState<ColorState> AnimateBackgroundBlink(this Control control, Color targetColor, int delayMS, int durationMS, int count, AnimationHandler<ColorState>? completed = null)
+		{
+			var colors = new ColorState(control.BackColor, targetColor);
+
+			return Animate(control, delayMS, durationMS, count, HandleBackgroundBlinkAnimation, colors, s =>
+			{
+				s.Control.BackColor = s.Object.OldColor;
+				
+				completed?.Invoke(s);
+			});
+		}
+
+		private static void HandleBackgroundBlinkAnimation(AnimationState<ColorState> state)
+		{
+			var f = state.Progress;
+
+			if (f <= 0.5f)
+			{
+				var r = (int)Math.Ceiling(255 * (f / 0.5f));
+
+				state.Control.BackColor = state.Object.OldColor.Interpolate(state.Object.NewColor, r);
+			}
+			else
+			{
+				var r = (int)Math.Ceiling(255 * ((f - 0.5f) / 0.5f));
+
+				state.Control.BackColor = state.Object.NewColor.Interpolate(state.Object.OldColor, r);
+			}
+		}
+
+		#endregion
+
+		public readonly record struct ColorState(Color OldColor, Color NewColor);
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System.Timers;
+using System.Windows.Forms.Animation;
 
-namespace MapCreator.Interface
+namespace MapCreator.Interface.Content
 {
 	public partial class ProjectBrowser : ContentPage
 	{
@@ -52,8 +53,6 @@ namespace MapCreator.Interface
 			ProjectCreateButton.Click += HandleClickCreate;
 			ProjectOpenButton.Click += HandleClickOpen;
 			ProjectDeleteButton.Click += HandleClickDelete;
-
-			this.PreventFocusOutline<Button>();
 
 			InvalidateProjects();
 		}
@@ -115,22 +114,8 @@ namespace MapCreator.Interface
 
 		private void InvalidatePreviews()
 		{
-			/*
-			var box = new PictureBox();
-
-			((ISupportInitialize)box).BeginInit();
-
-			box.ErrorImage = (Image)resources.GetObject("pictureBox1.ErrorImage");
-			box.InitialImage = (Image)resources.GetObject("pictureBox1.InitialImage");
-			box.Location = new Point(3, 3);
-			box.Name = "pictureBox1";
-			box.Size = new Size(100, 50);
-			box.SizeMode = PictureBoxSizeMode.Zoom;
-			box.TabIndex = 0;
-			box.TabStop = false;
-
-			((ISupportInitialize)box).EndInit();
-			*/
+			Preview.Panel1.BackgroundImage = SelectedProject?.AltitudeImage;
+			Preview.Panel2.BackgroundImage = SelectedProject?.TerrainImage;
 		}
 
 		private void HandleClickRefresh(object? sender, EventArgs e)
@@ -142,31 +127,13 @@ namespace MapCreator.Interface
 		{
 			if (String.IsNullOrWhiteSpace(ProjectNameInput.Text))
 			{
-				var oldColor = ProjectNameInput.BackColor;
-				var newColor = Color.FromArgb(63, Color.OrangeRed);
-
-				_ = TaskTimer.DelayCall(TimeSpan.Zero, TimeSpan.FromMilliseconds(200), 6, Invoke, () =>
-				{
-					if (ProjectNameInput.BackColor == oldColor)
-					{
-						ProjectNameInput.BackColor = Color.Red;
-					}
-					else
-					{
-						ProjectNameInput.BackColor = oldColor;
-					}
-				});
+				ProjectNameInput.AnimateBackgroundBlink(Color.OrangeRed, 3);
 			}
 			else
 			{
 				var projectFilePath = Project.GetFilePath(ProjectNameInput.Text);
 
 				var project = Project.OpenOrCreate(projectFilePath, out var created);
-
-				if (created)
-				{
-					OnProjectCreated(new ProjectEventArgs(project));
-				}
 
 				var index = Projects.IndexOf(project);
 
@@ -177,6 +144,11 @@ namespace MapCreator.Interface
 				else
 				{
 					ProjectSelect.SelectedIndex = Projects.Add(project);
+				}
+
+				if (created)
+				{
+					OnProjectCreated(new ProjectEventArgs(project));
 				}
 			}
 		}

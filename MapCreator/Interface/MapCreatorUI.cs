@@ -1,5 +1,6 @@
-using System.Timers;
 using System.Windows.Forms.Animation;
+
+using MapCreator.Interface.Content;
 
 namespace MapCreator.Interface
 {

@@ -23,14 +23,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Interface\BuildLogger.cs">
+		<Compile Update="Interface\_OLD\BuildLogger.cs">
 			<SubType>Form</SubType>
 		</Compile>
-		<Compile Update="Interface\CanvasControlBox.cs">
+		<Compile Update="Interface\_OLD\CanvasControlBox.cs">
 			<SubType>Form</SubType>
 		</Compile>
 		<Compile Update="Interface\ContentPage.cs" />
-		<Compile Update="Interface\StaticSelector.cs">
+		<Compile Update="Interface\_OLD\StaticSelector.cs">
 			<SubType>Form</SubType>
 		</Compile>
 		<Compile Update="Properties\Buttons.Designer.cs">

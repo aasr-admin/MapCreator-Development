@@ -48,6 +48,8 @@ namespace System.Windows.Forms.Animation
 		{
 			base.OnStop();
 
+			_State.IsStopRequested = false;
+
 			_ = _Active.TryRemove(_State.Animation, out _);
 
 			Animations.NotifyAnimationStopped(_State);
@@ -58,11 +60,36 @@ namespace System.Windows.Forms.Animation
 			}
 		}
 
+		protected override void OnReset()
+		{
+			base.OnReset();
+
+			_State.IsResetRequested = false;
+
+			if (_State.RepeatCount > 0)
+			{
+				++_State.RepeatIndex;
+			}
+			else
+			{
+				_State.RepeatIndex = 0;
+			}
+
+			_State.FrameIndex = 0;
+			_State.Elapsed = 0;
+		}
+
 		protected override void OnTick()
 		{
-			_State.Update(Count, Elapsed - Delay);
+			_State.FrameIndex = Count;
+			_State.Elapsed = Elapsed - Delay;
 
 			base.OnTick();
+
+			if (_State.IsResetRequested)
+			{
+				Reset();
+			}
 
 			if (_State.IsStopRequested)
 			{

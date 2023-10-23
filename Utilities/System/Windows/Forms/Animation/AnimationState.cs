@@ -17,7 +17,13 @@ namespace System.Windows.Forms.Animation
 
 		private volatile int _FrameIndex;
 
-		public int FrameIndex => _FrameIndex;
+		public int FrameIndex { get => _FrameIndex; internal set => _FrameIndex = value; }
+
+		public int RepeatCount { get; }
+
+		private volatile int _RepeatIndex;
+
+		public int RepeatIndex { get => _RepeatIndex; internal set => _RepeatIndex = value; }
 
 		public int Delay { get; }
 		public int Duration { get; }
@@ -25,7 +31,7 @@ namespace System.Windows.Forms.Animation
 
 		private volatile int _Elapsed;
 
-		public int Elapsed => _Elapsed;
+		public int Elapsed { get => _Elapsed; internal set => _Elapsed = value; }
 
 		public float Frequency => _FrameIndex / (float)_Elapsed;
 
@@ -51,10 +57,6 @@ namespace System.Windows.Forms.Animation
 				return Frequency;
 			}
 		}
-
-		private volatile bool _IsStopRequested;
-
-		public bool IsStopRequested => _IsStopRequested;
 
 		public bool IsComplete => Progress >= 1f;
 
@@ -82,7 +84,15 @@ namespace System.Windows.Forms.Animation
 
 		public bool IsQueued { get => _IsQueued; internal set => _IsQueued = value; }
 
-		internal AnimationState(Control control, Delegate handler, Delegate? completionCallback, int delayMS, int durationMS, int frameRate)
+		private volatile bool _IsStopRequested;
+
+		public bool IsStopRequested { get => _IsStopRequested; internal set => _IsStopRequested = value; }
+
+		private volatile bool _IsResetRequested;
+
+		public bool IsResetRequested { get => _IsResetRequested; internal set => _IsResetRequested = value; }
+
+		internal AnimationState(Control control, Delegate handler, Delegate? completionCallback, int delayMS, int durationMS, int count, int frameRate)
 		{
 			Control = control;
 			Handler = handler;
@@ -90,6 +100,9 @@ namespace System.Windows.Forms.Animation
 
 			Delay = Math.Max(delayMS, 0);
 			Duration = Math.Max(durationMS, -1);
+
+			RepeatCount = Math.Max(count - 1, 0);
+
 			FrameRate = Math.Clamp(frameRate, 1, 100);
 
 			Interval = 1000 / FrameRate;
@@ -101,10 +114,9 @@ namespace System.Windows.Forms.Animation
 			_IsStopRequested = true;
 		}
 
-		internal void Update(int index, int elapsed)
+		public void Reset()
 		{
-			_FrameIndex = index;
-			_Elapsed = elapsed;
+			_IsResetRequested = true;
 		}
 
 		internal void Invoke()
@@ -126,7 +138,14 @@ namespace System.Windows.Forms.Animation
 
 			if (IsComplete)
 			{
-				Stop();
+				if (!_IsStopRequested && (RepeatCount < 0 || (RepeatCount > 0 && _RepeatIndex < RepeatCount)))
+				{
+					Reset();
+				}
+				else
+				{
+					Stop();
+				}
 			}
 		}
 
@@ -134,7 +153,7 @@ namespace System.Windows.Forms.Animation
 		{
 			Handler.DynamicInvoke(this);
 
-			if (IsComplete)
+			if (IsComplete && !_IsResetRequested)
 			{
 				CompletionCallback?.DynamicInvoke(this);
 			}
@@ -145,8 +164,8 @@ namespace System.Windows.Forms.Animation
 	{
 		public T? Object { get; }
 
-		internal AnimationState(Control control, Delegate handler, Delegate? completionCallback, int delayMS, int durationMS, int frameRate, T? @object)
-			: base(control, handler, completionCallback, delayMS, durationMS, frameRate)
+		internal AnimationState(Control control, Delegate handler, Delegate? completionCallback, int delayMS, int durationMS, int count, int frameRate, T? @object)
+			: base(control, handler, completionCallback, delayMS, durationMS, count, frameRate)
 		{
 			Object = @object;
 		}

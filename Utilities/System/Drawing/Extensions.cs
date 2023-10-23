@@ -1,6 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
-namespace System.Drawing.Imaging
+namespace System.Drawing
 {
 	public static class Extensions
 	{
@@ -21,6 +22,25 @@ namespace System.Drawing.Imaging
 			{
 				image.UnlockBits(bd);
 			}
+		}
+
+		public static Color Interpolate(this Color source, Color target, float percent)
+		{
+			if (percent <= 0.0)
+			{
+				return source;
+			}
+
+			if (percent >= 1.0)
+			{
+				return target;
+			}
+
+			var r = (int)(source.R + (target.R - source.R) * percent);
+			var g = (int)(source.G + (target.G - source.G) * percent);
+			var b = (int)(source.B + (target.B - source.B) * percent);
+
+			return Color.FromArgb(255, r, g, b);
 		}
 	}
 }
