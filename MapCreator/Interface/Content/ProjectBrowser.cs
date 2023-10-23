@@ -114,8 +114,8 @@ namespace MapCreator.Interface.Content
 
 		private void InvalidatePreviews()
 		{
-			Preview.Panel1.BackgroundImage = SelectedProject?.AltitudeImage;
-			Preview.Panel2.BackgroundImage = SelectedProject?.TerrainImage;
+			AltitudePreview.Image = SelectedProject?.AltitudeImage;
+			TerrainPreview.Image = SelectedProject?.TerrainImage;
 		}
 
 		private void HandleClickRefresh(object? sender, EventArgs e)
@@ -186,6 +186,7 @@ namespace MapCreator.Interface.Content
 				OnProjectSelected(new ProjectEventArgs(project));
 			}
 
+			InvalidatePreviews();
 			InvalidateToolbar();
 		}
 

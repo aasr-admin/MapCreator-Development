@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Timers;
 
 namespace MapCreator.Interface
 {
@@ -17,7 +18,7 @@ namespace MapCreator.Interface
 		{
 			base.OnLoad(e);
 
-			this.PreventFocusOutline<Button>();
+			_ = TaskTimer.DelayCall(TimeSpan.Zero, this.PreventFocusOutline<Button>);
 		}
 	}
 }

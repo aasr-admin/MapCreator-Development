@@ -35,10 +35,13 @@
 			ProjectDeleteButton = new Button();
 			ProjectNameInput = new TextBox();
 			ProjectCreateButton = new Button();
-			Preview = new SplitContainer();
+			Preview = new TableLayoutPanel();
+			AltitudePreview = new PictureBox();
+			TerrainPreview = new PictureBox();
 			ProjectToolbar.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)Preview).BeginInit();
 			Preview.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)AltitudePreview).BeginInit();
+			((System.ComponentModel.ISupportInitialize)TerrainPreview).BeginInit();
 			SuspendLayout();
 			// 
 			// ProjectToolbar
@@ -154,23 +157,46 @@
 			// 
 			// Preview
 			// 
+			Preview.ColumnCount = 2;
+			Preview.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+			Preview.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+			Preview.Controls.Add(TerrainPreview, 1, 0);
+			Preview.Controls.Add(AltitudePreview, 0, 0);
 			Preview.Dock = DockStyle.Fill;
+			Preview.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
 			Preview.Location = new Point(0, 0);
 			Preview.Name = "Preview";
-			// 
-			// Preview.Panel1
-			// 
-			Preview.Panel1.BackgroundImageLayout = ImageLayout.Zoom;
-			Preview.Panel1MinSize = 273;
-			// 
-			// Preview.Panel2
-			// 
-			Preview.Panel2.BackgroundImageLayout = ImageLayout.Zoom;
-			Preview.Panel2MinSize = 273;
+			Preview.Padding = new Padding(10);
+			Preview.RowCount = 1;
+			Preview.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
 			Preview.Size = new Size(548, 157);
-			Preview.SplitterDistance = 274;
-			Preview.SplitterWidth = 2;
 			Preview.TabIndex = 2;
+			// 
+			// AltitudePreview
+			// 
+			AltitudePreview.BackgroundImageLayout = ImageLayout.Zoom;
+			AltitudePreview.BorderStyle = BorderStyle.FixedSingle;
+			AltitudePreview.Dock = DockStyle.Fill;
+			AltitudePreview.ErrorImage = Properties.Common.image;
+			AltitudePreview.InitialImage = null;
+			AltitudePreview.Location = new Point(13, 13);
+			AltitudePreview.Name = "AltitudePreview";
+			AltitudePreview.Size = new Size(258, 131);
+			AltitudePreview.TabIndex = 0;
+			AltitudePreview.TabStop = false;
+			// 
+			// TerrainPreview
+			// 
+			TerrainPreview.BackgroundImageLayout = ImageLayout.Zoom;
+			TerrainPreview.BorderStyle = BorderStyle.FixedSingle;
+			TerrainPreview.Dock = DockStyle.Fill;
+			TerrainPreview.ErrorImage = Properties.Common.image;
+			TerrainPreview.InitialImage = null;
+			TerrainPreview.Location = new Point(277, 13);
+			TerrainPreview.Name = "TerrainPreview";
+			TerrainPreview.Size = new Size(258, 131);
+			TerrainPreview.TabIndex = 1;
+			TerrainPreview.TabStop = false;
 			// 
 			// ProjectBrowser
 			// 
@@ -181,8 +207,9 @@
 			Name = "ProjectBrowser";
 			ProjectToolbar.ResumeLayout(false);
 			ProjectToolbar.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)Preview).EndInit();
 			Preview.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)AltitudePreview).EndInit();
+			((System.ComponentModel.ISupportInitialize)TerrainPreview).EndInit();
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -196,6 +223,8 @@
 		private Button ProjectDeleteButton;
 		private TextBox ProjectNameInput;
 		private Button ProjectCreateButton;
-		private SplitContainer Preview;
+		private TableLayoutPanel Preview;
+		private PictureBox AltitudePreview;
+		private PictureBox TerrainPreview;
 	}
 }
