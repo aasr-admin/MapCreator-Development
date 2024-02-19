@@ -1,4 +1,6 @@
-﻿namespace MapCreator.Interface
+﻿using MapCreator.Interface.Content;
+
+namespace MapCreator.Interface
 {
 	public partial class MapCreatorUI
 	{

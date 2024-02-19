@@ -10,6 +10,49 @@ using System.Xml;
 
 namespace MapCreator
 {
+	public class ProjectEventArgs : EventArgs
+	{
+		public Project? Project { get; }
+
+		public ProjectEventArgs(Project? project)
+		{
+			Project = project;
+		}
+	}
+
+	public class ProjectChangingEventArgs : ProjectEventArgs
+	{
+		public Project? OldProject { get; }
+
+		public bool PreventChange { get; set; }
+
+		public ProjectChangingEventArgs(Project? oldProject, Project? newProject)
+			: base(newProject)
+		{
+			OldProject = oldProject;
+		}
+	}
+
+	public class ProjectProgressEventArgs : ProjectEventArgs
+	{
+		public string Title { get; }
+		public string Summary { get; }
+
+		public long Value { get; }
+		public long Limit { get; }
+
+		public bool IsComplete => Value >= Limit;
+
+		public ProjectProgressEventArgs(Project project, string title, string summary, long value, long limit)
+			: base(project)
+		{
+			Title = title;
+			Summary = summary;
+			Value = value;
+			Limit = limit;
+		}
+	}
+
 	public sealed class Project : IXmlEntry
 	{
 		public static HashSet<Project> Projects { get; } = new HashSet<Project>();
@@ -310,16 +353,6 @@ namespace MapCreator
 			return Name;
 		}
 
-		public void SaveXml(string filePath)
-		{
-			XmlHelper.Save(filePath, "Project", this);
-		}
-
-		public void Save(XmlDocument doc)
-		{
-			XmlHelper.Save(doc, "Project", this);
-		}
-
 		public void Save(XmlElement node)
 		{
 			XmlHelper.Save(node, nameof(Settings), Settings);
@@ -342,10 +375,10 @@ namespace MapCreator
 
 				var dataDirectoryPath = DataDirectory;
 
-				XmlHelper.Save(Path.Combine(dataDirectoryPath, "Facet.xml"), Facet);
-				XmlHelper.Save(Path.Combine(dataDirectoryPath, "Transitions.xml"), Transitions);
-				XmlHelper.Save(Path.Combine(dataDirectoryPath, "Mutations.xml"), Mutations);
-				XmlHelper.Save(Path.Combine(dataDirectoryPath, "Structures.xml"), Facet);
+				Facet.SaveXml(Path.Combine(dataDirectoryPath, "Facet.xml"));
+				Transitions.SaveXml(Path.Combine(dataDirectoryPath, "Transitions.xml"));
+				Mutations.SaveXml(Path.Combine(dataDirectoryPath, "Mutations.xml"));
+				Structures.SaveXml(Path.Combine(dataDirectoryPath, "Structures.xml"));
 
 				SaveImages();
 
@@ -357,16 +390,6 @@ namespace MapCreator
 			}
 
 			return Saved;
-		}
-
-		public bool LoadXml(string filePath)
-		{
-			return XmlHelper.Load(filePath, "Project", this);
-		}
-
-		public bool Load(XmlDocument doc)
-		{
-			return XmlHelper.Load(doc, "Project", this);
 		}
 
 		public void Load(XmlElement node)
@@ -393,10 +416,10 @@ namespace MapCreator
 
 				var dataDirectoryPath = DataDirectory;
 
-				XmlHelper.Load(Path.Combine(dataDirectoryPath, "Facet.xml"), Facet);
-				XmlHelper.Load(Path.Combine(dataDirectoryPath, "Transitions.xml"), Transitions);
-				XmlHelper.Load(Path.Combine(dataDirectoryPath, "Mutations.xml"), Mutations);
-				XmlHelper.Load(Path.Combine(dataDirectoryPath, "Structures.xml"), Facet);
+				_ = Facet.LoadXml(Path.Combine(dataDirectoryPath, "Facet.xml"));
+				_ = Transitions.LoadXml(Path.Combine(dataDirectoryPath, "Transitions.xml"));
+				_ = Mutations.LoadXml(Path.Combine(dataDirectoryPath, "Mutations.xml"));
+				_ = Structures.LoadXml(Path.Combine(dataDirectoryPath, "Structures.xml"));
 
 				LoadImages();
 
@@ -931,36 +954,6 @@ namespace MapCreator
 			table.FillPallette(bitmap.Palette);
 
 			return bitmap;
-		}
-	}
-
-	public class ProjectEventArgs : EventArgs
-	{
-		public Project? Project { get; }
-
-		public ProjectEventArgs(Project? project)
-		{
-			Project = project;
-		}
-	}
-
-	public class ProjectProgressEventArgs : ProjectEventArgs
-	{
-		public string Title { get; }
-		public string Summary { get; }
-
-		public long Value { get; }
-		public long Limit { get; }
-
-		public bool IsComplete => Value >= Limit;
-
-		public ProjectProgressEventArgs(Project project, string title, string summary, long value, long limit)
-			: base(project)
-		{
-			Title = title;
-			Summary = summary;
-			Value = value;
-			Limit = limit;
 		}
 	}
 }

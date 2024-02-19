@@ -13,8 +13,8 @@ namespace MapCreator.Interface
 		protected override Size DefaultSize { get; } = new Size(548, 224);
 		protected override Size DefaultMinimumSize { get; } = new Size(548, 224);
 
-		public ProjectBrowser ProjectBrowser { get; } = new();
-		public ProjectView ProjectView { get; } = new();
+		public ProjectBrowserPage ProjectBrowser { get; } = new();
+		public ProjectViewPage ProjectView { get; } = new();
 
 		public int ContentPageCount => Content.ContentCount;
 		public int ContentPageIndex { get => Content.ContentIndex; set => Content.ContentIndex = value; }
@@ -70,20 +70,19 @@ namespace MapCreator.Interface
 			_ = this.AnimateResize(Content.MinimumSize, state => Content.Show());
 		}
 
-		private void HandleProjectChanging(object? sender, ProjectEventArgs e)
+		private void HandleProjectChanging(object? sender, ProjectChangingEventArgs e)
 		{
 		}
 
 		private void HandleProjectChanged(object? sender, ProjectEventArgs e)
 		{
-			if (e.Project == null)
+			if (e.Project != null)
 			{
-				BackgroundImage = Properties.Common.splash;
-				ContentPage = ProjectBrowser;
+				ContentPage = ProjectView;
 			}
 			else
 			{
-				ContentPage = ProjectView;
+				ContentPage = ProjectBrowser;
 			}
 		}
 
@@ -91,7 +90,10 @@ namespace MapCreator.Interface
 		{
 			ProjectView.Project = e.Project;
 
-			ContentPage = ProjectView;
+			if (ContentPage == ProjectBrowser)
+			{
+				ContentPage = ProjectView;
+			}
 		}
 
 		private void HandleProjectDeleted(object? sender, ProjectEventArgs e)

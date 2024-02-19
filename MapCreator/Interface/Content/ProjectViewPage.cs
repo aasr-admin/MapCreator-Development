@@ -1,10 +1,10 @@
 ﻿namespace MapCreator.Interface.Content
 {
-	public partial class ProjectView : ContentPage
+	public partial class ProjectViewPage : ContentPage
 	{
-		public event EventHandler<ProjectEventArgs>? ProjectChanging;
+		public event EventHandler<ProjectChangingEventArgs>? ProjectChanging;
 		public event EventHandler<ProjectEventArgs>? ProjectChanged;
-
+		
 		private Project? _Project;
 
 		public Project? Project
@@ -14,7 +14,14 @@
 			{
 				if (_Project != value)
 				{
-					OnProjectChanging(new ProjectEventArgs(value));
+					var changingArgs = new ProjectChangingEventArgs(_Project, value);
+
+					OnProjectChanging(changingArgs);
+
+					if (changingArgs.PreventChange)
+					{
+						return;
+					}
 
 					_Project = value;
 
@@ -23,7 +30,7 @@
 			}
 		}
 
-		public ProjectView()
+		public ProjectViewPage()
 		{
 			InitializeComponent();
 
@@ -35,7 +42,7 @@
 			Project = null;
 		}
 
-		protected virtual void OnProjectChanging(ProjectEventArgs e)
+		protected virtual void OnProjectChanging(ProjectChangingEventArgs e)
 		{
 			ProjectChanging?.Invoke(this, e);
 		}

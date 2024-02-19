@@ -1,6 +1,6 @@
 ﻿namespace MapCreator.Interface.Content
 {
-	partial class ProjectView
+	partial class ProjectViewPage
 	{
 		/// <summary> 
 		/// Required designer variable.

@@ -4,7 +4,12 @@ namespace Cartography
 {
 	public sealed class Facet : IXmlEntry, IComparable<Facet>
 	{
+		public const byte INTERNAL_INDEX = 127;
+
 		public const int BLOCK_SIZE = 8;
+
+		public const int DEFAULT_WIDTH = 7168;
+		public const int DEFAULT_HEIGHT = 4096;
 
 		public byte Index { get; set; }
 
@@ -19,13 +24,13 @@ namespace Cartography
 
 		public int Area => Bounds.Width * Bounds.Height;
 
-		public bool IsValid => Area > 0 && !String.IsNullOrWhiteSpace(Name);
+		public bool IsValid => Index != INTERNAL_INDEX;
 
 		private readonly LandMatrix _LandMatrix;
 		private readonly StaticMatrix _StaticMatrix;
 
 		public Facet()
-			: this(7168, 4096)
+			: this(DEFAULT_WIDTH, DEFAULT_HEIGHT)
 		{
 		}
 
@@ -232,9 +237,9 @@ namespace Cartography
 			{
 				var staticsPosition = 0;
 
-				for (var x = 0; x < Width; x++)
+				for (var x = 0; x < Width; x += BLOCK_SIZE)
 				{
-					for (var y = 0; y < Height; y++)
+					for (var y = 0; y < Height; y += BLOCK_SIZE)
 					{
 						var length = 0;
 

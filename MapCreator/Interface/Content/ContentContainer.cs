@@ -1,18 +1,14 @@
 ﻿using System.ComponentModel;
-using System.Windows.Forms.Animation;
+using System.Timers;
 
-namespace MapCreator.Interface
+namespace MapCreator.Interface.Content
 {
-	[ToolboxItem(false)]
-	public partial class ContentContainer : UserControl
+	public class ContentContainer : UserControl
 	{
 		public event EventHandler<ContentChangingEventArgs>? ContentChanging;
 		public event EventHandler<ContentChangedEventArgs>? ContentChanged;
 		public event EventHandler<ContentEventArgs>? ContentAdded;
 		public event EventHandler<ContentEventArgs>? ContentRemoved;
-
-		protected override Size DefaultSize { get; } = new Size(548, 186);
-		protected override Size DefaultMinimumSize { get; } = new Size(548, 186);
 
 		[Browsable(false)]
 		public int ContentCount => Controls.Count;
@@ -79,19 +75,46 @@ namespace MapCreator.Interface
 
 		private Size _InitialMinimumSize, _InitialSize;
 
+		protected override Size DefaultSize => _InitialSize;
+		protected override Size DefaultMinimumSize => _InitialMinimumSize;
+
 		public ContentContainer()
 		{
 			InitializeComponent();
+		}
+
+		private void InitializeComponent()
+		{
+			SuspendLayout();
+
+			Name = "ContentContainer";
+
+			DoubleBuffered = true;
+
+			AutoScaleDimensions = new SizeF(7F, 15F);
+			AutoScaleMode = AutoScaleMode.Font;
+
+			BackColor = Color.Transparent;
+
+			Margin = Padding.Empty;
+			Padding = Padding.Empty;
+
+			Size = new Size(548, 186);
+
+			ResumeLayout(false);
 		}
 
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
 
-			_InitialMinimumSize = MinimumSize;
-			_InitialSize = Size;
+			_ = TaskTimer.DelayCall(TimeSpan.Zero, () =>
+			{
+				_InitialMinimumSize = MinimumSize;
+				_InitialSize = Size;
 
-			this.PreventFocusOutline<Button>();
+				this.PreventFocusOutline<Button>();
+			});
 		}
 
 		public void AddContent(Control content)
@@ -176,6 +199,20 @@ namespace MapCreator.Interface
 		{
 			ContentRemoved?.Invoke(this, e);
 		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				components?.Dispose();
+			}
+
+			base.Dispose(disposing);
+		}
+
+#pragma warning disable IDE0044 // Add readonly modifier
+		private IContainer components = null!;
+#pragma warning restore IDE0044 // Add readonly modifier
 	}
 
 	public class ContentEventArgs : EventArgs

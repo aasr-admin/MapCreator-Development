@@ -1,9 +1,8 @@
-﻿using System.Timers;
-using System.Windows.Forms.Animation;
+﻿using System.Windows.Forms.Animation;
 
 namespace MapCreator.Interface.Content
 {
-	public partial class ProjectBrowser : ContentPage
+	public partial class ProjectBrowserPage : ContentPage
 	{
 		public event EventHandler<ProjectEventArgs>? ProjectSelected;
 		public event EventHandler<ProjectEventArgs>? ProjectCreated;
@@ -32,7 +31,7 @@ namespace MapCreator.Interface.Content
 			set => SelectedProjectIndex = Projects.IndexOf(value);
 		}
 
-		public ProjectBrowser()
+		public ProjectBrowserPage()
 		{
 			InitializeComponent();
 
