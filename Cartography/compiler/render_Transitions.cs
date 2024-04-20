@@ -853,7 +853,7 @@ namespace Cartography.compiler
         public MapTile(XmlElement xmlInfo)
         {
             TileID = XmlConvert.ToUInt16(xmlInfo.GetAttribute("TileID"));
-            AltIDMod = XmlConvert.ToSByte(xmlInfo.GetAttribute("AltIDMod"));
+            AltIDMod = unchecked((sbyte)XmlConvert.ToInt32(xmlInfo.GetAttribute("AltIDMod")));
         }
 
         public void Save(XmlTextWriter xmlInfo)
@@ -1437,7 +1437,7 @@ namespace Cartography.compiler
         public StaticTile(XmlElement xmlInfo)
         {
             TileID = XmlConvert.ToUInt16(xmlInfo.GetAttribute("TileID"));
-            AltIDMod = XmlConvert.ToSByte(xmlInfo.GetAttribute("AltIDMod"));
+            AltIDMod = unchecked((sbyte)XmlConvert.ToInt32(xmlInfo.GetAttribute("AltIDMod")));
         }
 
         public void Save(XmlTextWriter xmlInfo)
