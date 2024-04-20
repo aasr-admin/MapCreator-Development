@@ -1,17 +1,7 @@
-﻿using Cartography.compiler;
-
-using UltimaSDK;
-
-namespace MapCreator.userPlugin
+﻿namespace MapCreator.userPlugin
 {
     public partial class canvasControlBox : Form
     {
-        private readonly ClsTerrainTable iTerrain;
-        private readonly RandomStatics iRandomStatic;
-        private readonly Art UOArt;
-        private readonly TileData UOStatic;
-        private readonly Point[,] StaticGrid;
-
         private bool dragging = false;
         private Point dragCursorPoint;
         private Point dragFormPoint;

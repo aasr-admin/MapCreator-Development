@@ -1,7 +1,9 @@
+#region References
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+#endregion
 
 namespace UltimaSDK
 {
@@ -13,10 +15,13 @@ namespace UltimaSDK
 		public List<StringEntry> Entries { get; set; }
 		public string Language { get; private set; }
 
+		private Dictionary<int, string> m_StringTable;
+		private Dictionary<int, StringEntry> m_EntryTable;
+
 		private static byte[] m_Buffer = new byte[1024];
 
 		/// <summary>
-		/// Initialize <see cref="StringList"/> of Language
+		///     Initialize <see cref="StringList" /> of Language
 		/// </summary>
 		/// <param name="language"></param>
 		public StringList(string language)
@@ -24,8 +29,9 @@ namespace UltimaSDK
 			Language = language;
 			LoadEntry(Files.GetFilePath(String.Format("cliloc.{0}", language)));
 		}
+
 		/// <summary>
-		/// Initialize <see cref="StringList"/> of Language from path
+		///     Initialize <see cref="StringList" /> of Language from path
 		/// </summary>
 		/// <param name="language"></param>
 		/// <param name="path"></param>
@@ -44,6 +50,8 @@ namespace UltimaSDK
 			}
 
 			Entries = new List<StringEntry>();
+			m_StringTable = new Dictionary<int, string>();
+			m_EntryTable = new Dictionary<int, StringEntry>();
 
 			using (var bin = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)))
 			{
@@ -52,8 +60,8 @@ namespace UltimaSDK
 
 				while (bin.BaseStream.Length != bin.BaseStream.Position)
 				{
-					var number = bin.ReadInt32();
-					var flag = bin.ReadByte();
+					int number = bin.ReadInt32();
+					byte flag = bin.ReadByte();
 					int length = bin.ReadInt16();
 
 					if (length > m_Buffer.Length)
@@ -61,16 +69,20 @@ namespace UltimaSDK
 						m_Buffer = new byte[(length + 1023) & ~1023];
 					}
 
-					_ = bin.Read(m_Buffer, 0, length);
-					var text = Encoding.UTF8.GetString(m_Buffer, 0, length);
+					bin.Read(m_Buffer, 0, length);
+					string text = Encoding.UTF8.GetString(m_Buffer, 0, length);
 
-					Entries.Add(new StringEntry(number, text, flag));
+					var se = new StringEntry(number, text, flag);
+					Entries.Add(se);
+
+					m_StringTable[number] = text;
+					m_EntryTable[number] = se;
 				}
 			}
 		}
 
 		/// <summary>
-		/// Saves <see cref="SaveStringList"/> to FileName
+		///     Saves <see cref="SaveStringList" /> to FileName
 		/// </summary>
 		/// <param name="FileName"></param>
 		public void SaveStringList(string FileName)
@@ -81,12 +93,12 @@ namespace UltimaSDK
 				{
 					bin.Write(m_Header1);
 					bin.Write(m_Header2);
-					Entries.Sort(new StringList.NumberComparer(false));
-					foreach (var entry in Entries)
+					Entries.Sort(new NumberComparer(false));
+					foreach (StringEntry entry in Entries)
 					{
 						bin.Write(entry.Number);
 						bin.Write((byte)entry.Flag);
-						var utf8String = Encoding.UTF8.GetBytes(entry.Text);
+						byte[] utf8String = Encoding.UTF8.GetBytes(entry.Text);
 						var length = (ushort)utf8String.Length;
 						bin.Write(length);
 						bin.Write(utf8String);
@@ -95,8 +107,27 @@ namespace UltimaSDK
 			}
 		}
 
-		#region SortComparer
+		public string GetString(int number)
+		{
+			if (m_StringTable == null || !m_StringTable.ContainsKey(number))
+			{
+				return null;
+			}
 
+			return m_StringTable[number];
+		}
+
+		public StringEntry GetEntry(int number)
+		{
+			if (m_EntryTable == null || !m_EntryTable.ContainsKey(number))
+			{
+				return null;
+			}
+
+			return m_EntryTable[number];
+		}
+
+		#region SortComparer
 		public class NumberComparer : IComparer<StringEntry>
 		{
 			private readonly bool m_desc;

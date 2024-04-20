@@ -1,4 +1,6 @@
+#region References
 using System.IO;
+#endregion
 
 // FileIDs
 //0 - map0.mul
@@ -52,7 +54,7 @@ namespace UltimaSDK
 					{
 						Patches = new Entry5D[bin.ReadInt32()];
 
-						for (var i = 0; i < Patches.Length; ++i)
+						for (int i = 0; i < Patches.Length; ++i)
 						{
 							Patches[i].file = bin.ReadInt32();
 							Patches[i].index = bin.ReadInt32();
@@ -62,7 +64,6 @@ namespace UltimaSDK
 						}
 					}
 				}
-
 				Stream.Close();
 			}
 		}
@@ -76,8 +77,7 @@ namespace UltimaSDK
 					Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
 				}
 			}
-
-			_ = Stream.Seek(lookup, SeekOrigin.Begin);
+			Stream.Seek(lookup, SeekOrigin.Begin);
 		}
 	}
 

@@ -1,39 +1,19 @@
+#region References
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+#endregion
 
 // ascii text support written by arul
+
 namespace UltimaSDK
 {
 	public sealed class ASCIIFont
 	{
-		#region Getters And Setters
-
-		public byte Header
-		{
-			get;
-			private set;
-		}
-
-		public byte[] Unk
-		{
-			get;
-			set;
-		}
-
-		public Bitmap[] Characters
-		{
-			get;
-			set;
-		}
-
-		public int Height
-		{
-			get;
-			set;
-		}
-
-		#endregion
+		public byte Header { get; private set; }
+		public byte[] Unk { get; set; }
+		public Bitmap[] Characters { get; set; }
+		public int Height { get; set; }
 
 		public ASCIIFont(byte header)
 		{
@@ -44,13 +24,13 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Gets Bitmap of given character
+		///     Gets Bitmap of given character
 		/// </summary>
 		/// <param name="character"></param>
 		/// <returns></returns>
 		public Bitmap GetBitmap(char character)
 		{
-			return Characters[((character - 0x20) & 0x7FFFFFFF) % 224];
+			return Characters[((((character) - 0x20) & 0x7FFFFFFF) % 224)];
 		}
 
 		public int GetWidth(string text)
@@ -60,9 +40,9 @@ namespace UltimaSDK
 				return 0;
 			}
 
-			var width = 0;
+			int width = 0;
 
-			for (var i = 0; i < text.Length; ++i)
+			for (int i = 0; i < text.Length; ++i)
 			{
 				width += GetBitmap(text[i]).Width;
 			}
@@ -97,31 +77,31 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Reads fonts.mul
+		///     Reads fonts.mul
 		/// </summary>
 		public static unsafe void Initialize()
 		{
-			var path = Files.GetFilePath("fonts.mul");
+			string path = Files.GetFilePath("fonts.mul");
 
 			if (path != null)
 			{
 				using (var reader = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
 					var buffer = new byte[(int)reader.Length];
-					_ = reader.Read(buffer, 0, (int)reader.Length);
+					reader.Read(buffer, 0, (int)reader.Length);
 					fixed (byte* bin = buffer)
 					{
-						var read = bin;
-						for (var i = 0; i < 10; ++i)
+						byte* read = bin;
+						for (int i = 0; i < 10; ++i)
 						{
-							var header = *read++;
+							byte header = *read++;
 							Fonts[i] = new ASCIIFont(header);
 
-							for (var k = 0; k < 224; ++k)
+							for (int k = 0; k < 224; ++k)
 							{
-								var width = *read++;
-								var height = *read++;
-								var unk = *read++; // delimeter?
+								byte width = *read++;
+								byte height = *read++;
+								byte unk = *read++; // delimeter?
 
 								if (width > 0 && height > 0)
 								{
@@ -131,14 +111,15 @@ namespace UltimaSDK
 									}
 
 									var bmp = new Bitmap(width, height);
-									var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
+									BitmapData bd = bmp.LockBits(
+										new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, Settings.PixelFormat);
 									var line = (ushort*)bd.Scan0;
-									var delta = bd.Stride >> 1;
+									int delta = bd.Stride >> 1;
 
-									for (var y = 0; y < height; ++y, line += delta)
+									for (int y = 0; y < height; ++y, line += delta)
 									{
-										var cur = line;
-										for (var x = 0; x < width; ++x)
+										ushort* cur = line;
+										for (int x = 0; x < width; ++x)
 										{
 											var pixel = (ushort)(*read++ | (*read++ << 8));
 											if (pixel == 0)
@@ -151,7 +132,6 @@ namespace UltimaSDK
 											}
 										}
 									}
-
 									bmp.UnlockBits(bd);
 									Fonts[i].Characters[k] = bmp;
 									Fonts[i].Unk[k] = unk;
@@ -169,22 +149,23 @@ namespace UltimaSDK
 			{
 				using (var bin = new BinaryWriter(fs))
 				{
-					for (var i = 0; i < 10; ++i)
+					for (int i = 0; i < 10; ++i)
 					{
 						bin.Write(Fonts[i].Header);
-						for (var k = 0; k < 224; ++k)
+						for (int k = 0; k < 224; ++k)
 						{
 							bin.Write((byte)Fonts[i].Characters[k].Width);
 							bin.Write((byte)Fonts[i].Characters[k].Height);
 							bin.Write(Fonts[i].Unk[k]);
-							var bmp = Fonts[i].Characters[k];
-							var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
+							Bitmap bmp = Fonts[i].Characters[k];
+							BitmapData bd = bmp.LockBits(
+								new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
 							var line = (ushort*)bd.Scan0;
-							var delta = bd.Stride >> 1;
-							for (var y = 0; y < bmp.Height; ++y, line += delta)
+							int delta = bd.Stride >> 1;
+							for (int y = 0; y < bmp.Height; ++y, line += delta)
 							{
-								var cur = line;
-								for (var x = 0; x < bmp.Width; ++x)
+								ushort* cur = line;
+								for (int x = 0; x < bmp.Width; ++x)
 								{
 									if (cur[x] == 0)
 									{
@@ -196,7 +177,6 @@ namespace UltimaSDK
 									}
 								}
 							}
-
 							bmp.UnlockBits(bd);
 						}
 					}
@@ -205,28 +185,27 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Draws Text with font in Bitmap and returns
+		///     Draws Text with font in Bitmap and returns
 		/// </summary>
 		/// <param name="fontId"></param>
 		/// <param name="text"></param>
 		/// <returns></returns>
 		public static Bitmap DrawText(int fontId, string text)
 		{
-			var font = ASCIIFont.GetFixed(fontId);
+			ASCIIFont font = ASCIIFont.GetFixed(fontId);
 			var result = new Bitmap(font.GetWidth(text) + 2, font.Height + 2);
 
-			var dx = 2;
-			var dy = font.Height + 2;
-			using (var graph = Graphics.FromImage(result))
+			int dx = 2;
+			int dy = font.Height + 2;
+			using (Graphics graph = Graphics.FromImage(result))
 			{
-				for (var i = 0; i < text.Length; ++i)
+				for (int i = 0; i < text.Length; ++i)
 				{
-					var bmp = font.GetBitmap(text[i]);
+					Bitmap bmp = font.GetBitmap(text[i]);
 					graph.DrawImage(bmp, dx, dy - bmp.Height);
 					dx += bmp.Width;
 				}
 			}
-
 			return result;
 		}
 	}

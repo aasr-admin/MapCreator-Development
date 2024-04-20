@@ -1,9 +1,11 @@
+#region References
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+#endregion
 
 namespace UltimaSDK
 {
@@ -19,12 +21,12 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Reads hues.mul and fills <see cref="List"/>
+		///     Reads hues.mul and fills <see cref="List" />
 		/// </summary>
 		public static void Initialize()
 		{
-			var path = Files.GetFilePath("hues.mul");
-			var index = 0;
+			string path = Files.GetFilePath("hues.mul");
+			int index = 0;
 
 			List = new Hue[3000];
 
@@ -32,43 +34,39 @@ namespace UltimaSDK
 			{
 				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					var blockCount = (int)fs.Length / 708;
+					int blockCount = (int)fs.Length / 708;
 
 					if (blockCount > 375)
 					{
 						blockCount = 375;
 					}
-
 					m_Header = new int[blockCount];
-					unsafe
+					int structsize = Marshal.SizeOf(typeof(HueDataMul));
+					var buffer = new byte[blockCount * (4 + 8 * structsize)];
+					GCHandle gc = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+					try
 					{
-						var structsize = Marshal.SizeOf(typeof(HueDataMul));
-						var buffer = new byte[blockCount * (4 + (8 * structsize))];
-						var gc = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-						try
+						fs.Read(buffer, 0, buffer.Length);
+						long currpos = 0;
+
+						for (int i = 0; i < blockCount; ++i)
 						{
-							_ = fs.Read(buffer, 0, buffer.Length);
-							long currpos = 0;
+							var ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
+							currpos += 4;
+							m_Header[i] = (int)Marshal.PtrToStructure(ptrheader, typeof(int));
 
-							for (var i = 0; i < blockCount; ++i)
+							for (int j = 0; j < 8; ++j, ++index)
 							{
-								var ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
-								currpos += 4;
-								m_Header[i] = (int)Marshal.PtrToStructure(ptrheader, typeof(int));
-
-								for (var j = 0; j < 8; ++j, ++index)
-								{
-									var ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
-									currpos += structsize;
-									var cur = (HueDataMul)Marshal.PtrToStructure(ptr, typeof(HueDataMul));
-									List[index] = new Hue(index, cur);
-								}
+								var ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
+								currpos += structsize;
+								var cur = (HueDataMul)Marshal.PtrToStructure(ptr, typeof(HueDataMul));
+								List[index] = new Hue(index, cur);
 							}
 						}
-						finally
-						{
-							gc.Free();
-						}
+					}
+					finally
+					{
+						gc.Free();
 					}
 				}
 			}
@@ -81,18 +79,18 @@ namespace UltimaSDK
 
 		public static void Save(string path)
 		{
-			var mul = Path.Combine(path, "hues.mul");
+			string mul = Path.Combine(path, "hues.mul");
 			using (var fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
 			{
 				using (var binmul = new BinaryWriter(fsmul))
 				{
-					var index = 0;
-					for (var i = 0; i < m_Header.Length; ++i)
+					int index = 0;
+					for (int i = 0; i < m_Header.Length; ++i)
 					{
 						binmul.Write(m_Header[i]);
-						for (var j = 0; j < 8; ++j, ++index)
+						for (int j = 0; j < 8; ++j, ++index)
 						{
-							for (var c = 0; c < 32; ++c)
+							for (int c = 0; c < 32; ++c)
 							{
 								binmul.Write((short)(List[index].Colors[c] ^ 0x8000));
 							}
@@ -102,15 +100,13 @@ namespace UltimaSDK
 							var b = new byte[20];
 							if (List[index].Name != null)
 							{
-								var bb = Encoding.Default.GetBytes(List[index].Name);
+								byte[] bb = Encoding.Default.GetBytes(List[index].Name);
 								if (bb.Length > 20)
 								{
 									Array.Resize(ref bb, 20);
 								}
-
 								bb.CopyTo(b, 0);
 							}
-
 							binmul.Write(b);
 						}
 					}
@@ -119,7 +115,7 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Returns <see cref="Hue"/>
+		///     Returns <see cref="Hue" />
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
@@ -136,7 +132,7 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Converts RGB value to Huecolor
+		///     Converts RGB value to Huecolor
 		/// </summary>
 		/// <param name="c"></param>
 		/// <returns></returns>
@@ -151,13 +147,11 @@ namespace UltimaSDK
 			{
 				newred = 1;
 			}
-
 			var newgreen = (ushort)(origgreen * scale);
 			if (newgreen == 0 && origgreen != 0)
 			{
 				newgreen = 1;
 			}
-
 			var newblue = (ushort)(origblue * scale);
 			if (newblue == 0 && origblue != 0)
 			{
@@ -168,47 +162,44 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Converts Huecolor to RGBColor
+		///     Converts Huecolor to RGBColor
 		/// </summary>
 		/// <param name="hue"></param>
 		/// <returns></returns>
 		public static Color HueToColor(short hue)
 		{
 			const int scale = 255 / 31;
-			return Color.FromArgb(
-				((hue & 0x7c00) >> 10) * scale,
-				((hue & 0x3e0) >> 5) * scale,
-				(hue & 0x1f) * scale
-				);
+			return Color.FromArgb((((hue & 0x7c00) >> 10) * scale), (((hue & 0x3e0) >> 5) * scale), ((hue & 0x1f) * scale));
 		}
 
 		public static int HueToColorR(short hue)
 		{
-			return ((hue & 0x7c00) >> 10) * (255 / 31);
+			return (((hue & 0x7c00) >> 10) * (255 / 31));
 		}
 
 		public static int HueToColorG(short hue)
 		{
-			return ((hue & 0x3e0) >> 5) * (255 / 31);
+			return (((hue & 0x3e0) >> 5) * (255 / 31));
 		}
 
 		public static int HueToColorB(short hue)
 		{
-			return (hue & 0x1f) * (255 / 31);
+			return ((hue & 0x1f) * (255 / 31));
 		}
 
 		public static unsafe void ApplyTo(Bitmap bmp, short[] Colors, bool onlyHueGrayPixels)
 		{
-			var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format16bppArgb1555);
+			BitmapData bd = bmp.LockBits(
+				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, Settings.PixelFormat);
 
-			var stride = bd.Stride >> 1;
-			var width = bd.Width;
-			var height = bd.Height;
-			var delta = stride - width;
+			int stride = bd.Stride >> 1;
+			int width = bd.Width;
+			int height = bd.Height;
+			int delta = stride - width;
 
 			var pBuffer = (ushort*)bd.Scan0;
-			var pLineEnd = pBuffer + width;
-			var pImageEnd = pBuffer + (stride * height);
+			ushort* pLineEnd = pBuffer + width;
+			ushort* pImageEnd = pBuffer + (stride * height);
 
 			if (onlyHueGrayPixels)
 			{
@@ -232,7 +223,6 @@ namespace UltimaSDK
 								*pBuffer = (ushort)Colors[(c >> 10) & 0x1F];
 							}
 						}
-
 						++pBuffer;
 					}
 
@@ -250,7 +240,6 @@ namespace UltimaSDK
 						{
 							*pBuffer = (ushort)Colors[(*pBuffer >> 10) & 0x1F];
 						}
-
 						++pBuffer;
 					}
 
@@ -287,6 +276,7 @@ namespace UltimaSDK
 
 		private static readonly byte[] m_StringBuffer = new byte[20];
 		private static byte[] m_Buffer = new byte[88];
+
 		public Hue(int index, BinaryReader bin)
 		{
 			Index = index;
@@ -298,11 +288,10 @@ namespace UltimaSDK
 				fixed (byte* buffer = m_Buffer)
 				{
 					var buf = (ushort*)buffer;
-					for (var i = 0; i < 32; ++i)
+					for (int i = 0; i < 32; ++i)
 					{
 						Colors[i] = (short)(*buf++ | 0x8000);
 					}
-
 					TableStart = (short)(*buf++ | 0x8000);
 					TableEnd = (short)(*buf++ | 0x8000);
 					var sbuf = (byte*)buf;
@@ -311,7 +300,6 @@ namespace UltimaSDK
 					{
 						m_StringBuffer[count] = *sbuf++;
 					}
-
 					Name = Encoding.Default.GetString(m_StringBuffer, 0, count);
 					Name = Name.Replace("\n", " ");
 				}
@@ -322,37 +310,34 @@ namespace UltimaSDK
 		{
 			Index = index;
 			Colors = new short[32];
-			unsafe
+			for (int i = 0; i < 32; ++i)
 			{
-				for (var i = 0; i < 32; ++i)
-				{
-					Colors[i] = (short)(mulstruct.colors[i] | 0x8000);
-				}
-
-				TableStart = (short)(mulstruct.tablestart | 0x8000);
-				TableEnd = (short)(mulstruct.tableend | 0x8000);
-				Name = NativeMethods.ReadNameString(mulstruct.name, 20);
-				Name = Name.Replace("\n", " ");
+				Colors[i] = (short)(mulstruct.colors[i] | 0x8000);
 			}
+			TableStart = (short)(mulstruct.tablestart | 0x8000);
+			TableEnd = (short)(mulstruct.tableend | 0x8000);
+			Name = NativeMethods.ReadNameString(mulstruct.name, 20);
+			Name = Name.Replace("\n", " ");
 		}
 
 		/// <summary>
-		/// Applies Hue to Bitmap
+		///     Applies Hue to Bitmap
 		/// </summary>
 		/// <param name="bmp"></param>
 		/// <param name="onlyHueGrayPixels"></param>
 		public unsafe void ApplyTo(Bitmap bmp, bool onlyHueGrayPixels)
 		{
-			var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format16bppArgb1555);
+			BitmapData bd = bmp.LockBits(
+				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, Settings.PixelFormat);
 
-			var stride = bd.Stride >> 1;
-			var width = bd.Width;
-			var height = bd.Height;
-			var delta = stride - width;
+			int stride = bd.Stride >> 1;
+			int width = bd.Width;
+			int height = bd.Height;
+			int delta = stride - width;
 
 			var pBuffer = (ushort*)bd.Scan0;
-			var pLineEnd = pBuffer + width;
-			var pImageEnd = pBuffer + (stride * height);
+			ushort* pLineEnd = pBuffer + width;
+			ushort* pImageEnd = pBuffer + (stride * height);
 
 			if (onlyHueGrayPixels)
 			{
@@ -376,7 +361,6 @@ namespace UltimaSDK
 								*pBuffer = (ushort)Colors[(c >> 10) & 0x1F];
 							}
 						}
-
 						++pBuffer;
 					}
 
@@ -394,7 +378,6 @@ namespace UltimaSDK
 						{
 							*pBuffer = (ushort)Colors[(*pBuffer >> 10) & 0x1F];
 						}
-
 						++pBuffer;
 					}
 
@@ -408,12 +391,14 @@ namespace UltimaSDK
 
 		public void Export(string FileName)
 		{
-			using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), System.Text.Encoding.GetEncoding(1252)))
+			using (
+				var Tex = new StreamWriter(
+					new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252)))
 			{
 				Tex.WriteLine(Name);
 				Tex.WriteLine(((short)(TableStart ^ 0x8000)).ToString());
 				Tex.WriteLine(((short)(TableEnd ^ 0x8000)).ToString());
-				for (var i = 0; i < Colors.Length; ++i)
+				for (int i = 0; i < Colors.Length; ++i)
 				{
 					Tex.WriteLine(((short)(Colors[i] ^ 0x8000)).ToString());
 				}
@@ -426,11 +411,10 @@ namespace UltimaSDK
 			{
 				return;
 			}
-
 			using (var sr = new StreamReader(FileName))
 			{
 				string line;
-				var i = -3;
+				int i = -3;
 				while ((line = sr.ReadLine()) != null)
 				{
 					line = line.Trim();
@@ -440,38 +424,40 @@ namespace UltimaSDK
 						{
 							break;
 						}
-
 						if (i == -3)
 						{
 							Name = line;
 						}
 						else if (i == -2)
 						{
-							TableStart = (short)(UInt16.Parse(line) | 0x8000);
+							TableStart = (short)(ushort.Parse(line) | 0x8000);
 						}
 						else if (i == -1)
 						{
-							TableEnd = (short)(UInt16.Parse(line) | 0x8000);
+							TableEnd = (short)(ushort.Parse(line) | 0x8000);
 						}
 						else
 						{
-							Colors[i] = (short)(UInt16.Parse(line) | 0x8000);
+							Colors[i] = (short)(ushort.Parse(line) | 0x8000);
 						}
-
 						++i;
 					}
-					catch { }
+					catch
+					{ }
 				}
 			}
 		}
 	}
-	[StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
-	public unsafe struct HueDataMul
+
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+	public struct HueDataMul
 	{
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
 		public ushort[] colors;
+
 		public ushort tablestart;
 		public ushort tableend;
+
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
 		public byte[] name;
 	}

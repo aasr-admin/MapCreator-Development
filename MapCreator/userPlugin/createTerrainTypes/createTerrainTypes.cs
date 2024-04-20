@@ -14,8 +14,6 @@ namespace MapCreator.userPlugin
         private readonly Point[,] StaticGrid;
         private readonly ClsTerrainTable iTerrain;
         private RandomStatics iRandomStatic;
-        private readonly Art UOArt;
-        private readonly TileData UOStatic;
 
         private communityCredits _communityCredits;
         private canvasControlBox _canvasControlBox;

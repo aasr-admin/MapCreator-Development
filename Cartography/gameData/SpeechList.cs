@@ -1,9 +1,12 @@
-﻿using System;
+﻿#region References
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+#endregion
 
 namespace UltimaSDK
 {
@@ -19,29 +22,28 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Loads speech.mul in <see cref="SpeechList.Entries"/>
+		///     Loads speech.mul in <see cref="SpeechList.Entries" />
 		/// </summary>
 		public static void Initialize()
 		{
-			var path = Files.GetFilePath("speech.mul");
+			string path = Files.GetFilePath("speech.mul");
 			if (path == null)
 			{
 				Entries = new List<SpeechEntry>(0);
 				return;
 			}
-
 			Entries = new List<SpeechEntry>();
 			using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
 				var buffer = new byte[fs.Length];
 				unsafe
 				{
-					var order = 0;
-					_ = fs.Read(buffer, 0, buffer.Length);
+					int order = 0;
+					fs.Read(buffer, 0, buffer.Length);
 					fixed (byte* data = buffer)
 					{
-						var bindat = data;
-						var bindatend = bindat + buffer.Length;
+						byte* bindat = data;
+						byte* bindatend = bindat + buffer.Length;
 
 						while (bindat != bindatend)
 						{
@@ -51,13 +53,11 @@ namespace UltimaSDK
 							{
 								length = 128;
 							}
-
-							for (var i = 0; i < length; ++i)
+							for (int i = 0; i < length; ++i)
 							{
 								m_Buffer[i] = *bindat++;
 							}
-
-							var keyword = Encoding.UTF8.GetString(m_Buffer, 0, length);
+							string keyword = Encoding.UTF8.GetString(m_Buffer, 0, length);
 							Entries.Add(new SpeechEntry(id, keyword, order));
 							++order;
 						}
@@ -67,7 +67,7 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Saves speech.mul to <see cref="FileName"/>
+		///     Saves speech.mul to <see cref="FileName" />
 		/// </summary>
 		/// <param name="FileName"></param>
 		public static void SaveSpeechList(string FileName)
@@ -77,10 +77,10 @@ namespace UltimaSDK
 			{
 				using (var bin = new BinaryWriter(fs))
 				{
-					foreach (var entry in Entries)
+					foreach (SpeechEntry entry in Entries)
 					{
 						bin.Write(NativeMethods.SwapEndian(entry.ID));
-						var utf8String = Encoding.UTF8.GetBytes(entry.KeyWord);
+						byte[] utf8String = Encoding.UTF8.GetBytes(entry.KeyWord);
 						var length = (short)utf8String.Length;
 						bin.Write(NativeMethods.SwapEndian(length));
 						bin.Write(utf8String);
@@ -91,10 +91,10 @@ namespace UltimaSDK
 
 		public static void ExportToCSV(string FileName)
 		{
-			using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), System.Text.Encoding.Unicode))
+			using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.Unicode))
 			{
 				Tex.WriteLine("Order;ID;KeyWord");
-				foreach (var entry in Entries)
+				foreach (SpeechEntry entry in Entries)
 				{
 					Tex.WriteLine(String.Format("{0};{1};{2}", entry.Order, entry.ID, entry.KeyWord));
 				}
@@ -108,7 +108,6 @@ namespace UltimaSDK
 			{
 				return;
 			}
-
 			using (var sr = new StreamReader(FileName))
 			{
 				string line;
@@ -118,27 +117,26 @@ namespace UltimaSDK
 					{
 						continue;
 					}
-
-					if (line.Contains("Order") && line.Contains("KeyWord"))
+					if ((line.Contains("Order")) && (line.Contains("KeyWord")))
 					{
 						continue;
 					}
-
 					try
 					{
-						var split = line.Split(';');
+						string[] split = line.Split(';');
 						if (split.Length < 3)
 						{
 							continue;
 						}
 
-						var order = ConvertStringToInt(split[0]);
-						var id = ConvertStringToInt(split[1]);
-						var word = split[2];
+						int order = ConvertStringToInt(split[0]);
+						int id = ConvertStringToInt(split[1]);
+						string word = split[2];
 						word = word.Replace("\"", "");
 						Entries.Add(new SpeechEntry((short)id, word, order));
 					}
-					catch { }
+					catch
+					{ }
 				}
 			}
 		}
@@ -148,12 +146,12 @@ namespace UltimaSDK
 			int result;
 			if (text.Contains("0x"))
 			{
-				var convert = text.Replace("0x", "");
-				_ = Int32.TryParse(convert, System.Globalization.NumberStyles.HexNumber, null, out result);
+				string convert = text.Replace("0x", "");
+				int.TryParse(convert, NumberStyles.HexNumber, null, out result);
 			}
 			else
 			{
-				_ = Int32.TryParse(text, System.Globalization.NumberStyles.Integer, null, out result);
+				int.TryParse(text, NumberStyles.Integer, null, out result);
 			}
 
 			return result;
@@ -222,9 +220,7 @@ namespace UltimaSDK
 				}
 			}
 		}
-
 		#endregion
-
 	}
 
 	public sealed class SpeechEntry
@@ -243,8 +239,8 @@ namespace UltimaSDK
 		}
 	}
 
-	[StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
-	public unsafe struct SpeechMul
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+	public struct SpeechMul
 	{
 		public short id;
 		public short length;

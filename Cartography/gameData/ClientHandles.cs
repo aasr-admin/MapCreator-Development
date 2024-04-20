@@ -1,6 +1,8 @@
-using Microsoft.Win32.SafeHandles;
-
+#region References
 using System;
+
+using Microsoft.Win32.SafeHandles;
+#endregion
 
 namespace UltimaSDK
 {
@@ -9,8 +11,7 @@ namespace UltimaSDK
 		public static ClientWindowHandle Invalid = new ClientWindowHandle(new IntPtr(-1));
 
 		public ClientWindowHandle()
-		{
-		}
+		{ }
 
 		public ClientWindowHandle(IntPtr value)
 		{
@@ -23,7 +24,6 @@ namespace UltimaSDK
 			{
 				return ReleaseHandle();
 			}
-
 			return true;
 		}
 	}
@@ -33,12 +33,9 @@ namespace UltimaSDK
 		public static ClientProcessHandle Invalid = new ClientProcessHandle(new IntPtr(-1));
 
 		public ClientProcessHandle()
-			: base()
-		{
-		}
+		{ }
 
 		public ClientProcessHandle(IntPtr value)
-			: base()
 		{
 			handle = value;
 		}
