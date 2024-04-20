@@ -123,7 +123,7 @@ namespace UltimaSDK
 
 			if ((Stream == null) || (!Stream.CanRead) || (!Stream.CanSeek))
 			{
-				Stream = new FileStream(MulPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+				Stream = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
 			}
 
 			if (Stream.Length < e.lookup)
