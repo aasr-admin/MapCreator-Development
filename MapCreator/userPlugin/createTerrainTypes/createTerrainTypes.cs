@@ -26,11 +26,6 @@ namespace MapCreator.userPlugin
 
         public createTerrainTypes()
         {
-            MaximizeBox = false;
-            MinimizeBox = false;
-
-            base.Load += new EventHandler(createTerrainTypes_Load);
-
             StaticGrid = new Point[13, 13];
             iTerrain = new ClsTerrainTable();
             iRandomStatic = new RandomStatics();
@@ -78,6 +73,15 @@ namespace MapCreator.userPlugin
         {
             iTerrain.Load();
             iTerrain.Display(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox);
+        }
+
+        private void createTerrainTypes_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _communityCredits?.Close();
+            _canvasControlBox?.Close();
+            _createTerrainTypes?.Close();
+            _facetBuilder?.Close();
+            _staticSelector?.Close();
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_Enter(object sender, EventArgs e)

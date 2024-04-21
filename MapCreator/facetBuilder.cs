@@ -26,28 +26,19 @@ namespace MapCreator
 
         public facetBuilder()
         {
-            InitializeComponent();
-
-            MaximizeBox = false;
-            MinimizeBox = false;
-
-            var facetBuilderForm = this;
-
-            base.Load += new EventHandler(facetBuilderForm.facetBuilder_Load);
-
             iTerrain = new ClsTerrainTable();
             iAltitude = new ClsAltitudeTable();
             iLogger = new buildLogger();
             i_RandomStatic = true;
+
+            InitializeComponent();
         }
 
-        private void facetBuilder_Load(object? sender, EventArgs e)
+        private void facetBuilder_Load(object sender, EventArgs e)
         {
             if (Visible == true)
             {
-                Control fBPW = facetBuilder_panel_workbench;
-                Thread.Sleep(25);
-                fBPW.Hide();
+                facetBuilder_panel_workbench.Hide();
             }
 
             #region Workbench Loading
@@ -56,7 +47,7 @@ namespace MapCreator
 
             IEnumerator enumerator = null;
 
-            iLogger.Show();
+            iLogger.Show(this);
 
             var x = iLogger.Location.X + 100;
             var location = iLogger.Location;
@@ -133,7 +124,7 @@ namespace MapCreator
             Hide();
 
             var colorTablesForm = new colorTables();
-            colorTablesForm.Show();
+            colorTablesForm.Show(this);
 
             iLogger.Close();
         }
@@ -175,7 +166,7 @@ namespace MapCreator
             Hide();
 
             var userPluginsForm = new userPlugins();
-            userPluginsForm.Show();
+            userPluginsForm.Show(this);
 
             iLogger.Close();
         }
@@ -188,7 +179,7 @@ namespace MapCreator
         private void facetBuilder_menuStrip_button_information_Click(object sender, EventArgs e)
         {
             var communityCreditsForm = new communityCredits();
-            communityCreditsForm.Show();
+            communityCreditsForm.Show(this);
 
             iLogger.Close();
         }
@@ -201,22 +192,12 @@ namespace MapCreator
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles_Click(object sender, EventArgs e)
         {
             /// Show These Controls
-            Control fBPW = facetBuilder_panel_workbench;
-            Thread.Sleep(25);
-            fBPW.Show();
-
-            Control cFBF = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles;
-            Thread.Sleep(25);
-            cFBF.Show();
+            facetBuilder_panel_workbench.Show();
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Show();
 
             /// Hide These Controls
-            Control sYAB = facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap;
-            Thread.Sleep(25);
-            sYAB.Hide();
-
-            Control cYNF = facetBuilder_panel_workbench_groupBox_compileYourNewFacet;
-            Thread.Sleep(25);
-            cYNF.Hide();
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Hide();
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Hide();
         }
 
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles_MouseLeave(object sender, EventArgs e)
@@ -437,22 +418,12 @@ namespace MapCreator
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap_Click(object sender, EventArgs e)
         {
             /// Show These Controls
-            Control fBPW = facetBuilder_panel_workbench;
-            Thread.Sleep(25);
-            fBPW.Show();
-
-            Control sYAB = facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap;
-            Thread.Sleep(25);
-            sYAB.Show();
+            facetBuilder_panel_workbench.Show();
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Show();
 
             /// Hide These Controls
-            Control cFBF = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles;
-            Thread.Sleep(25);
-            cFBF.Hide();
-
-            Control cYNF = facetBuilder_panel_workbench_groupBox_compileYourNewFacet;
-            Thread.Sleep(25);
-            cYNF.Hide();
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Hide();
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Hide();
         }
 
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap_MouseLeave(object sender, EventArgs e)
@@ -498,22 +469,12 @@ namespace MapCreator
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet_Click(object sender, EventArgs e)
         {
             /// Show These Controls
-            Control fBPW = facetBuilder_panel_workbench;
-            Thread.Sleep(25);
-            fBPW.Show();
-
-            Control cYNF = facetBuilder_panel_workbench_groupBox_compileYourNewFacet;
-            Thread.Sleep(25);
-            cYNF.Show();
+            facetBuilder_panel_workbench.Show();
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Show();
 
             /// Hide These Controls
-            Control cFBF = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles;
-            Thread.Sleep(25);
-            cFBF.Hide();
-
-            Control sYAB = facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap;
-            Thread.Sleep(25);
-            sYAB.Hide();
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Hide();
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Hide();
         }
 
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet_MouseLeave(object sender, EventArgs e)
