@@ -113,237 +113,50 @@ namespace MapCreator.userPlugin
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionNorth(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.NorthButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 2, false) == 0)
-            {
-                --y;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(0, -1);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionNorthEast(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.NorthEastButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 3, false) == 0)
-            {
-                ++x;
-                --y;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(1, -1);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionEast(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.EastButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 6, false) == 0)
-            {
-                ++x;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(1, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionSouthEast(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.SouthEastButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 9, false) == 0)
-            {
-                ++x; 
-                ++y;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(1, 1);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionSouth(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.SouthButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 8, false) == 0)
-            {
-                ++y;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(0, 1);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionSouthWest(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.SouthWestButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 7, false) == 0)
-            {
-                --x;
-                ++y;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(-1, 1);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionWest(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.WestButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 4, false) == 0)
-            {
-                --x;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(-1, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionNorthWest(object sender, EventArgs e)
         {
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(-1, -1);
+        }
+
+        private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(sbyte deltaX, sbyte deltaY)
+        {
             var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
             var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
 
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
+            RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
 
             if (selectedItem != null)
             {
@@ -351,16 +164,8 @@ namespace MapCreator.userPlugin
                 y = selectedItem.Y;
             }
 
-            object tag = _canvasControlBox.NorthWestButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 1, false) == 0)
-            {
-                --x;
-                --y;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
+            _canvasControlBox.xAxis_label_numUpDown.Value = Math.Clamp(x + deltaX, _canvasControlBox.xAxis_label_numUpDown.Minimum, _canvasControlBox.xAxis_label_numUpDown.Maximum);
+            _canvasControlBox.yAxis_label_numUpDown.Value = Math.Clamp(y + deltaY, _canvasControlBox.yAxis_label_numUpDown.Minimum, _canvasControlBox.yAxis_label_numUpDown.Maximum);
 
             if (selectedItem != null)
             {
@@ -368,7 +173,7 @@ namespace MapCreator.userPlugin
                 selectedItem.Y = y;
             }
 
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
         /// Form Top Menu Buttons

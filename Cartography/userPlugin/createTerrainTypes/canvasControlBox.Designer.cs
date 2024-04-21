@@ -71,7 +71,7 @@
             NorthWestButton.ImageTransparentColor = Color.Magenta;
             NorthWestButton.Name = "NorthWestButton";
             NorthWestButton.Size = new Size(36, 36);
-            NorthWestButton.Tag = "1";
+            NorthWestButton.Tag = 1;
             NorthWestButton.Text = "NorthWest";
             NorthWestButton.Click += NorthWestButton_Click;
             // 
@@ -82,7 +82,7 @@
             NorthButton.ImageTransparentColor = Color.Magenta;
             NorthButton.Name = "NorthButton";
             NorthButton.Size = new Size(36, 36);
-            NorthButton.Tag = "2";
+            NorthButton.Tag = 2;
             NorthButton.Text = "North";
             NorthButton.Click += NorthButton_Click;
             // 
@@ -93,7 +93,7 @@
             NorthEastButton.ImageTransparentColor = Color.Magenta;
             NorthEastButton.Name = "NorthEastButton";
             NorthEastButton.Size = new Size(36, 36);
-            NorthEastButton.Tag = "3";
+            NorthEastButton.Tag = 3;
             NorthEastButton.Text = "NorthEast";
             NorthEastButton.Click += NorthEastButton_Click;
             // 
@@ -104,7 +104,7 @@
             WestButton.ImageTransparentColor = Color.Magenta;
             WestButton.Name = "WestButton";
             WestButton.Size = new Size(36, 36);
-            WestButton.Tag = "4";
+            WestButton.Tag = 4;
             WestButton.Text = "West";
             WestButton.Click += WestButton_Click;
             // 
@@ -115,7 +115,7 @@
             NavIcon.ImageTransparentColor = Color.Magenta;
             NavIcon.Name = "NavIcon";
             NavIcon.Size = new Size(36, 36);
-            NavIcon.Tag = "5";
+            NavIcon.Tag = 5;
             NavIcon.Click += NavIcon_Click;
             // 
             // EastButton
@@ -125,7 +125,7 @@
             EastButton.ImageTransparentColor = Color.Magenta;
             EastButton.Name = "EastButton";
             EastButton.Size = new Size(36, 36);
-            EastButton.Tag = "6";
+            EastButton.Tag = 6;
             EastButton.Text = "East";
             EastButton.Click += EastButton_Click;
             // 
@@ -136,7 +136,7 @@
             SouthWestButton.ImageTransparentColor = Color.Magenta;
             SouthWestButton.Name = "SouthWestButton";
             SouthWestButton.Size = new Size(36, 36);
-            SouthWestButton.Tag = "7";
+            SouthWestButton.Tag = 7;
             SouthWestButton.Text = "SouthWest";
             SouthWestButton.Click += SouthWestButton_Click;
             // 
@@ -147,7 +147,7 @@
             SouthButton.ImageTransparentColor = Color.Magenta;
             SouthButton.Name = "SouthButton";
             SouthButton.Size = new Size(36, 36);
-            SouthButton.Tag = "8";
+            SouthButton.Tag = 8;
             SouthButton.Text = "South";
             SouthButton.Click += SouthButton_Click;
             // 
@@ -158,7 +158,7 @@
             SouthEastButton.ImageTransparentColor = Color.Magenta;
             SouthEastButton.Name = "SouthEastButton";
             SouthEastButton.Size = new Size(36, 36);
-            SouthEastButton.Tag = "9";
+            SouthEastButton.Tag = 9;
             SouthEastButton.Text = "SouthEast";
             SouthEastButton.Click += SouthEastButton_Click;
             // 

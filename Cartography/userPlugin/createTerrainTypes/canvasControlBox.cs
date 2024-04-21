@@ -64,41 +64,21 @@
         /// CanvasControlBox Buttons
         private void NorthWestButton_Click(object sender, EventArgs e)
         {
-            if (NorthWestButton == null)
-            {
-                return;
-            }
-
             ActionNorthWest?.Invoke(sender, e);
         }
 
         private void NorthButton_Click(object sender, EventArgs e)
         {
-            if (NorthButton == null)
-            {
-                return;
-            }
-
             ActionNorth?.Invoke(sender, e);
         }
 
         private void NorthEastButton_Click(object sender, EventArgs e)
         {
-            if (NorthEastButton == null)
-            {
-                return;
-            }
-
             ActionNorthEast?.Invoke(sender, e);
         }
 
         private void WestButton_Click(object sender, EventArgs e)
         {
-            if (WestButton == null)
-            {
-                return;
-            }
-
             ActionWest?.Invoke(sender, e);
         }
 
@@ -109,41 +89,21 @@
 
         private void EastButton_Click(object sender, EventArgs e)
         {
-            if (EastButton == null)
-            {
-                return;
-            }
-
             ActionEast?.Invoke(sender, e);
         }
 
         private void SouthWestButton_Click(object sender, EventArgs e)
         {
-            if (SouthWestButton == null)
-            {
-                return;
-            }
-
             ActionSouthWest?.Invoke(sender, e);
         }
 
         private void SouthButton_Click(object sender, EventArgs e)
         {
-            if (SouthButton == null)
-            {
-                return;
-            }
-
             ActionSouth?.Invoke(sender, e);
         }
 
         private void SouthEastButton_Click(object sender, EventArgs e)
         {
-            if (SouthEastButton == null)
-            {
-                return;
-            }
-
             ActionSouthEast?.Invoke(sender, e);
         }
     }
