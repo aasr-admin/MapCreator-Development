@@ -165,8 +165,8 @@
             // xAxis_label_numUpDown
             // 
             xAxis_label_numUpDown.Location = new Point(176, 23);
-            xAxis_label_numUpDown.Maximum = 12;
-            xAxis_label_numUpDown.Minimum = 0;
+            xAxis_label_numUpDown.Maximum = 6;
+            xAxis_label_numUpDown.Minimum = -6;
             xAxis_label_numUpDown.Name = "xAxis_label_numUpDown";
             xAxis_label_numUpDown.Size = new Size(60, 23);
             xAxis_label_numUpDown.TabIndex = 1;
@@ -176,8 +176,8 @@
             // yAxis_label_numUpDown
             // 
             yAxis_label_numUpDown.Location = new Point(176, 66);
-            yAxis_label_numUpDown.Maximum = 12;
-            yAxis_label_numUpDown.Minimum = 0;
+            yAxis_label_numUpDown.Maximum = 6;
+            yAxis_label_numUpDown.Minimum = -6;
             yAxis_label_numUpDown.Name = "yAxis_label_numUpDown";
             yAxis_label_numUpDown.Size = new Size(60, 23);
             yAxis_label_numUpDown.TabIndex = 2;

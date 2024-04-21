@@ -98,60 +98,60 @@ namespace MapCreator.userPlugin
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeX(object sender, EventArgs e)
         {
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            //createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeY(object sender, EventArgs e)
         {
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            //createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeZ(object sender, EventArgs e)
         {
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            //createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionNorth(object sender, EventArgs e)
         {
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(0, -1);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(0, -1, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionNorthEast(object sender, EventArgs e)
         {
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(1, -1);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(1, -1, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionEast(object sender, EventArgs e)
         {
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(1, 0);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(1, 0, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionSouthEast(object sender, EventArgs e)
         {
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(1, 1);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(1, 1, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionSouth(object sender, EventArgs e)
         {
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(0, 1);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(0, 1, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionSouthWest(object sender, EventArgs e)
         {
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(-1, 1);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(-1, 1, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionWest(object sender, EventArgs e)
         {
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(-1, 0);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(-1, 0, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionNorthWest(object sender, EventArgs e)
         {
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(-1, -1);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(-1, -1, 0);
         }
 
-        private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(sbyte deltaX, sbyte deltaY)
+        private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(sbyte deltaX, sbyte deltaY, sbyte deltaZ)
         {
             RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
 
@@ -159,12 +159,15 @@ namespace MapCreator.userPlugin
             {
                 var x = selectedItem.X;
                 var y = selectedItem.Y;
+                var z = selectedItem.Y;
 
-                x = (byte)Math.Clamp(x + deltaX, 0, 12);
-                y = (byte)Math.Clamp(y + deltaY, 0, 12);
+                x = (sbyte)Math.Clamp(x + deltaX, -6, 6);
+                y = (sbyte)Math.Clamp(y + deltaY, -6, 6);
+                z = (sbyte)Math.Clamp(z + deltaZ, -128, 127);
 
                 _canvasControlBox.xAxis_label_numUpDown.Value = selectedItem.X = x;
                 _canvasControlBox.yAxis_label_numUpDown.Value = selectedItem.Y = y;
+                _canvasControlBox.zAxis_label_numUpDown.Value = selectedItem.Z = z;
             }
             else
             {
@@ -180,7 +183,7 @@ namespace MapCreator.userPlugin
         private void createTerrainTypes_mainMenu_button_newTerrainType_Click(object sender, EventArgs e)
         {
             _createTerrainTypes ??= new createTerrainTypes();
-            _createTerrainTypes.Show();
+            _createTerrainTypes.Show(this);
 
             Hide();
         }
@@ -225,7 +228,7 @@ namespace MapCreator.userPlugin
         private void createTerrainTypes_mainMenu_button_facetBuilder_Click(object sender, EventArgs e)
         {
             _facetBuilder ??= new facetBuilder();
-            _facetBuilder.Show();
+            _facetBuilder.Show(this);
 
             Hide();
         }
@@ -233,7 +236,7 @@ namespace MapCreator.userPlugin
         private void createTerrainTypes_mainMenu_button_communityCredits_Click(object sender, EventArgs e)
         {
             _communityCredits ??= new communityCredits();
-            _communityCredits.Show();
+            _communityCredits.Show(this);
         }
 
         /// Terrain Grid Display (Connects To canvasControlBox Lines 195 and 196)
@@ -272,8 +275,8 @@ namespace MapCreator.userPlugin
             while (num <= 12);
             pen = new Pen(Color.Red);
 
-            var num4 = Convert.ToInt32(decimal.Add(new decimal(6L), /*this.Yaxis.Value*/0)); // Yaxis
-            var num5 = Convert.ToInt32(decimal.Add(new decimal(6L), /*this.Xaxis.Value*/0)); // Xaxis
+            var num4 = 6; // Yaxis
+            var num5 = 6; // Xaxis
 
             e.Graphics.DrawLine(pen, checked(StaticGrid[num4, num5].X - 22), StaticGrid[num4, num5].Y, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y + 22));
             e.Graphics.DrawLine(pen, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y + 22), checked(StaticGrid[num4, num5].X + 22), StaticGrid[num4, num5].Y);
@@ -287,8 +290,14 @@ namespace MapCreator.userPlugin
                 while (enumerator.MoveNext())
                 {
                     var current = (RandomStatic)enumerator.Current;
-                    var y = current.Y;
-                    var x = current.X;
+                    var y = 6 + current.Y;
+                    var x = 6 + current.X;
+
+                    if (x < 0 || x > 12)
+                    {
+                        continue;
+                    }
+
                     var @static = Art.GetStatic(current.TileID);
                     var point = new Point(checked((int)Math.Round(StaticGrid[y, x].X - ((double)@static.Width / 2))), checked(checked(StaticGrid[y, x].Y - @static.Height) + 22));
                     e.Graphics.DrawImage(@static, point);
@@ -389,7 +398,7 @@ namespace MapCreator.userPlugin
         {
             _staticSelector ??= new staticSelector();
             _staticSelector.Tag = staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll;
-            _staticSelector.Show();
+            _staticSelector.Show(this);
         }
 
         private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_MouseEnter(object sender, EventArgs e)
@@ -473,8 +482,8 @@ namespace MapCreator.userPlugin
                 }
 
                 var tileID = ushort.Parse(tileIDString);
-                var x = Convert.ToByte(_canvasControlBox?.xAxis_label_numUpDown.Value ?? 0);
-                var y = Convert.ToByte(_canvasControlBox?.yAxis_label_numUpDown.Value ?? 0);
+                var x = Convert.ToSByte(_canvasControlBox?.xAxis_label_numUpDown.Value ?? 0);
+                var y = Convert.ToSByte(_canvasControlBox?.yAxis_label_numUpDown.Value ?? 0);
                 var z = Convert.ToSByte(_canvasControlBox?.zAxis_label_numUpDown.Value ?? 0);
                 var hue = ushort.Parse(hueIDString);
 
