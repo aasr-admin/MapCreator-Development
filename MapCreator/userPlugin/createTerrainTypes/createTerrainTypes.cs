@@ -222,7 +222,7 @@ namespace MapCreator.userPlugin
             _openFileDialog.FilterIndex = 2;
             _openFileDialog.RestoreDirectory = true;
 
-            if (_openFileDialog.ShowDialog() == DialogResult.OK)
+            if (_openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 var fileInfo = new FileInfo(_openFileDialog.FileName);
                 createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox.Text = fileInfo.Name;
@@ -243,7 +243,7 @@ namespace MapCreator.userPlugin
             _saveFileDialog.FilterIndex = 2;
             _saveFileDialog.RestoreDirectory = true;
 
-            if (_saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (_saveFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 iRandomStatic.Save(_saveFileDialog.FileName);
             }
