@@ -29,8 +29,7 @@ namespace MapCreator.userPlugin
             MaximizeBox = false;
             MinimizeBox = false;
 
-            var cTT = this;
-            base.Load += new EventHandler(cTT.createTerrainTypes_Load);
+            base.Load += new EventHandler(createTerrainTypes_Load);
 
             StaticGrid = new Point[13, 13];
             iTerrain = new ClsTerrainTable();
@@ -59,6 +58,19 @@ namespace MapCreator.userPlugin
                 num2++;
             }
             while (num2 <= 12);
+        }
+
+        private void createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_ScrollGrid(sbyte x, sbyte y)
+        {
+            var gx = 6 + x; 
+            var gy = 6 + y;
+
+            var p = StaticGrid[gy, gx];
+
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar.Value = p.X;
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar.Value = p.Y;
+
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
         /// Form Load Operations
@@ -171,9 +183,17 @@ namespace MapCreator.userPlugin
             }
             else
             {
-                _canvasControlBox.xAxis_label_numUpDown.Value = 0;
-                _canvasControlBox.yAxis_label_numUpDown.Value = 0;
-                _canvasControlBox.zAxis_label_numUpDown.Value = 0;
+                var x = _canvasControlBox.xAxis_label_numUpDown.Value;
+                var y = _canvasControlBox.yAxis_label_numUpDown.Value;
+                var z = _canvasControlBox.zAxis_label_numUpDown.Value;
+
+                x = Math.Clamp(x + deltaX, -6, 6);
+                y = Math.Clamp(y + deltaY, -6, 6);
+                z = Math.Clamp(z + deltaZ, -128, 127);
+
+                _canvasControlBox.xAxis_label_numUpDown.Value = x;
+                _canvasControlBox.yAxis_label_numUpDown.Value = y;
+                _canvasControlBox.zAxis_label_numUpDown.Value = z;
             }
 
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
@@ -243,8 +263,8 @@ namespace MapCreator.userPlugin
         private void createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_Paint(object sender, PaintEventArgs e)
         {
             IEnumerator enumerator = null;
-            var graphics = e.Graphics;
-            var pen = new Pen(Color.Gray);
+
+            var pen = Pens.Gray;
             var selectedItem = (ClsTerrain)createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.SelectedItem;
 
             var num = 0;
@@ -273,7 +293,8 @@ namespace MapCreator.userPlugin
                 num++;
             }
             while (num <= 12);
-            pen = new Pen(Color.Red);
+
+            pen = Pens.Blue;
 
             var num4 = 6; // Yaxis
             var num5 = 6; // Xaxis
@@ -282,6 +303,19 @@ namespace MapCreator.userPlugin
             e.Graphics.DrawLine(pen, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y + 22), checked(StaticGrid[num4, num5].X + 22), StaticGrid[num4, num5].Y);
             e.Graphics.DrawLine(pen, checked(StaticGrid[num4, num5].X + 22), StaticGrid[num4, num5].Y, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y - 22));
             e.Graphics.DrawLine(pen, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y - 22), checked(StaticGrid[num4, num5].X - 22), StaticGrid[num4, num5].Y);
+
+            if (_canvasControlBox != null)
+            {
+                pen = Pens.Red;
+
+                num4 = (int)(6 + _canvasControlBox.yAxis_label_numUpDown.Value); // Yaxis
+                num5 = (int)(6 + _canvasControlBox.xAxis_label_numUpDown.Value); // Xaxis
+
+                e.Graphics.DrawLine(pen, checked(StaticGrid[num4, num5].X - 22), StaticGrid[num4, num5].Y, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y + 22));
+                e.Graphics.DrawLine(pen, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y + 22), checked(StaticGrid[num4, num5].X + 22), StaticGrid[num4, num5].Y);
+                e.Graphics.DrawLine(pen, checked(StaticGrid[num4, num5].X + 22), StaticGrid[num4, num5].Y, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y - 22));
+                e.Graphics.DrawLine(pen, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y - 22), checked(StaticGrid[num4, num5].X - 22), StaticGrid[num4, num5].Y);
+            }
 
             try
             {
@@ -310,8 +344,6 @@ namespace MapCreator.userPlugin
                     ((IDisposable)enumerator).Dispose();
                 }
             }
-
-            graphics = null;
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -413,7 +445,7 @@ namespace MapCreator.userPlugin
 
         private void UpdatePanel2()
         {
-            if (Art.GetStatic(staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value) != null && staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value < TileData.ItemTable.Length)
+            if (Art.IsValidStatic(staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value))
             {
                 createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.Text = staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value.ToString();
                 staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.Image = Art.GetStatic(staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value);
@@ -489,7 +521,7 @@ namespace MapCreator.userPlugin
 
                 selectedItem.Add(new RandomStatic(tileID, x, y, z, hue));
                 selectedItem.Display(staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList);
-                createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+                createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_ScrollGrid(x, y);
             }
         }
 

@@ -28,17 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(canvasControlBox));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(canvasControlBox));
             CanvasNavControl = new ToolStrip();
+            WestButton = new ToolStripButton();
             NorthWestButton = new ToolStripButton();
             NorthButton = new ToolStripButton();
-            NorthEastButton = new ToolStripButton();
-            WestButton = new ToolStripButton();
-            NavIcon = new ToolStripButton();
-            EastButton = new ToolStripButton();
             SouthWestButton = new ToolStripButton();
+            NavIcon = new ToolStripButton();
+            NorthEastButton = new ToolStripButton();
             SouthButton = new ToolStripButton();
             SouthEastButton = new ToolStripButton();
+            EastButton = new ToolStripButton();
             xAxis_label_numUpDown = new NumericUpDown();
             yAxis_label_numUpDown = new NumericUpDown();
             zAxis_label_numUpDown = new NumericUpDown();
@@ -56,13 +56,25 @@
             CanvasNavControl.AutoSize = false;
             CanvasNavControl.Dock = DockStyle.None;
             CanvasNavControl.ImageScalingSize = new Size(32, 32);
-            CanvasNavControl.Items.AddRange(new ToolStripItem[] { NorthWestButton, NorthButton, NorthEastButton, WestButton, NavIcon, EastButton, SouthWestButton, SouthButton, SouthEastButton });
+            CanvasNavControl.Items.AddRange(new ToolStripItem[] { WestButton, NorthWestButton, NorthButton, SouthWestButton, NavIcon, NorthEastButton, SouthButton, SouthEastButton, EastButton });
             CanvasNavControl.LayoutStyle = ToolStripLayoutStyle.Flow;
             CanvasNavControl.Location = new Point(16, 19);
             CanvasNavControl.Name = "CanvasNavControl";
             CanvasNavControl.Size = new Size(110, 118);
             CanvasNavControl.TabIndex = 0;
             CanvasNavControl.Text = "toolStrip1";
+            // 
+            // WestButton
+            // 
+            WestButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            WestButton.Image = (Image)resources.GetObject("WestButton.Image");
+            WestButton.ImageTransparentColor = Color.Magenta;
+            WestButton.Name = "WestButton";
+            WestButton.Size = new Size(36, 36);
+            WestButton.Tag = 1;
+            WestButton.Text = "West";
+            WestButton.ToolTipText = "West";
+            WestButton.Click += WestButton_Click;
             // 
             // NorthWestButton
             // 
@@ -71,8 +83,9 @@
             NorthWestButton.ImageTransparentColor = Color.Magenta;
             NorthWestButton.Name = "NorthWestButton";
             NorthWestButton.Size = new Size(36, 36);
-            NorthWestButton.Tag = 1;
+            NorthWestButton.Tag = 2;
             NorthWestButton.Text = "NorthWest";
+            NorthWestButton.ToolTipText = "NorthWest";
             NorthWestButton.Click += NorthWestButton_Click;
             // 
             // NorthButton
@@ -82,31 +95,22 @@
             NorthButton.ImageTransparentColor = Color.Magenta;
             NorthButton.Name = "NorthButton";
             NorthButton.Size = new Size(36, 36);
-            NorthButton.Tag = 2;
+            NorthButton.Tag = 3;
             NorthButton.Text = "North";
+            NorthButton.ToolTipText = "North";
             NorthButton.Click += NorthButton_Click;
             // 
-            // NorthEastButton
+            // SouthWestButton
             // 
-            NorthEastButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            NorthEastButton.Image = (Image)resources.GetObject("NorthEastButton.Image");
-            NorthEastButton.ImageTransparentColor = Color.Magenta;
-            NorthEastButton.Name = "NorthEastButton";
-            NorthEastButton.Size = new Size(36, 36);
-            NorthEastButton.Tag = 3;
-            NorthEastButton.Text = "NorthEast";
-            NorthEastButton.Click += NorthEastButton_Click;
-            // 
-            // WestButton
-            // 
-            WestButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            WestButton.Image = (Image)resources.GetObject("WestButton.Image");
-            WestButton.ImageTransparentColor = Color.Magenta;
-            WestButton.Name = "WestButton";
-            WestButton.Size = new Size(36, 36);
-            WestButton.Tag = 4;
-            WestButton.Text = "West";
-            WestButton.Click += WestButton_Click;
+            SouthWestButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            SouthWestButton.Image = (Image)resources.GetObject("SouthWestButton.Image");
+            SouthWestButton.ImageTransparentColor = Color.Magenta;
+            SouthWestButton.Name = "SouthWestButton";
+            SouthWestButton.Size = new Size(36, 36);
+            SouthWestButton.Tag = 4;
+            SouthWestButton.Text = "SouthWest";
+            SouthWestButton.ToolTipText = "SouthWest";
+            SouthWestButton.Click += SouthWestButton_Click;
             // 
             // NavIcon
             // 
@@ -118,27 +122,17 @@
             NavIcon.Tag = 5;
             NavIcon.Click += NavIcon_Click;
             // 
-            // EastButton
+            // NorthEastButton
             // 
-            EastButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            EastButton.Image = (Image)resources.GetObject("EastButton.Image");
-            EastButton.ImageTransparentColor = Color.Magenta;
-            EastButton.Name = "EastButton";
-            EastButton.Size = new Size(36, 36);
-            EastButton.Tag = 6;
-            EastButton.Text = "East";
-            EastButton.Click += EastButton_Click;
-            // 
-            // SouthWestButton
-            // 
-            SouthWestButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            SouthWestButton.Image = (Image)resources.GetObject("SouthWestButton.Image");
-            SouthWestButton.ImageTransparentColor = Color.Magenta;
-            SouthWestButton.Name = "SouthWestButton";
-            SouthWestButton.Size = new Size(36, 36);
-            SouthWestButton.Tag = 7;
-            SouthWestButton.Text = "SouthWest";
-            SouthWestButton.Click += SouthWestButton_Click;
+            NorthEastButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            NorthEastButton.Image = (Image)resources.GetObject("NorthEastButton.Image");
+            NorthEastButton.ImageTransparentColor = Color.Magenta;
+            NorthEastButton.Name = "NorthEastButton";
+            NorthEastButton.Size = new Size(36, 36);
+            NorthEastButton.Tag = 6;
+            NorthEastButton.Text = "NorthEast";
+            NorthEastButton.ToolTipText = "NorthEast";
+            NorthEastButton.Click += NorthEastButton_Click;
             // 
             // SouthButton
             // 
@@ -147,8 +141,9 @@
             SouthButton.ImageTransparentColor = Color.Magenta;
             SouthButton.Name = "SouthButton";
             SouthButton.Size = new Size(36, 36);
-            SouthButton.Tag = 8;
+            SouthButton.Tag = 7;
             SouthButton.Text = "South";
+            SouthButton.ToolTipText = "South";
             SouthButton.Click += SouthButton_Click;
             // 
             // SouthEastButton
@@ -158,15 +153,28 @@
             SouthEastButton.ImageTransparentColor = Color.Magenta;
             SouthEastButton.Name = "SouthEastButton";
             SouthEastButton.Size = new Size(36, 36);
-            SouthEastButton.Tag = 9;
+            SouthEastButton.Tag = 8;
             SouthEastButton.Text = "SouthEast";
+            SouthEastButton.ToolTipText = "SouthEast";
             SouthEastButton.Click += SouthEastButton_Click;
+            // 
+            // EastButton
+            // 
+            EastButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            EastButton.Image = (Image)resources.GetObject("EastButton.Image");
+            EastButton.ImageTransparentColor = Color.Magenta;
+            EastButton.Name = "EastButton";
+            EastButton.Size = new Size(36, 36);
+            EastButton.Tag = 9;
+            EastButton.Text = "East";
+            EastButton.ToolTipText = "East";
+            EastButton.Click += EastButton_Click;
             // 
             // xAxis_label_numUpDown
             // 
             xAxis_label_numUpDown.Location = new Point(176, 23);
-            xAxis_label_numUpDown.Maximum = 6;
-            xAxis_label_numUpDown.Minimum = -6;
+            xAxis_label_numUpDown.Maximum = new decimal(new int[] { 6, 0, 0, 0 });
+            xAxis_label_numUpDown.Minimum = new decimal(new int[] { 6, 0, 0, int.MinValue });
             xAxis_label_numUpDown.Name = "xAxis_label_numUpDown";
             xAxis_label_numUpDown.Size = new Size(60, 23);
             xAxis_label_numUpDown.TabIndex = 1;
@@ -176,8 +184,8 @@
             // yAxis_label_numUpDown
             // 
             yAxis_label_numUpDown.Location = new Point(176, 66);
-            yAxis_label_numUpDown.Maximum = 6;
-            yAxis_label_numUpDown.Minimum = -6;
+            yAxis_label_numUpDown.Maximum = new decimal(new int[] { 6, 0, 0, 0 });
+            yAxis_label_numUpDown.Minimum = new decimal(new int[] { 6, 0, 0, int.MinValue });
             yAxis_label_numUpDown.Name = "yAxis_label_numUpDown";
             yAxis_label_numUpDown.Size = new Size(60, 23);
             yAxis_label_numUpDown.TabIndex = 2;
@@ -187,8 +195,8 @@
             // zAxis_label_numUpDown
             // 
             zAxis_label_numUpDown.Location = new Point(176, 107);
-            zAxis_label_numUpDown.Maximum = 127;
-            zAxis_label_numUpDown.Minimum = -128;
+            zAxis_label_numUpDown.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
+            zAxis_label_numUpDown.Minimum = new decimal(new int[] { 128, 0, 0, int.MinValue });
             zAxis_label_numUpDown.Name = "zAxis_label_numUpDown";
             zAxis_label_numUpDown.Size = new Size(60, 23);
             zAxis_label_numUpDown.TabIndex = 3;
@@ -260,15 +268,15 @@
         #endregion
 
         private ToolStrip CanvasNavControl;
+        public ToolStripButton WestButton;
         public ToolStripButton NorthWestButton;
         public ToolStripButton NorthButton;
-        public ToolStripButton NorthEastButton;
-        public ToolStripButton WestButton;
-        private ToolStripButton NavIcon;
-        public ToolStripButton EastButton;
         public ToolStripButton SouthWestButton;
+        private ToolStripButton NavIcon;
+        public ToolStripButton NorthEastButton;
         public ToolStripButton SouthButton;
         public ToolStripButton SouthEastButton;
+        public ToolStripButton EastButton;
         public NumericUpDown xAxis_label_numUpDown;
         public NumericUpDown yAxis_label_numUpDown;
         public NumericUpDown zAxis_label_numUpDown;

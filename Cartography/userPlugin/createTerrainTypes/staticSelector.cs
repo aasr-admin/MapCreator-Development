@@ -6,7 +6,6 @@ namespace MapCreator.userPlugin
 {
     public partial class staticSelector : Form
     {
-        private readonly Art UOArt;
         private int iSelected;
 
         private bool dragging = false;
@@ -15,11 +14,6 @@ namespace MapCreator.userPlugin
 
         public staticSelector()
         {
-            MaximizeBox = false;
-            MinimizeBox = false;
-
-            iSelected = 0;
-
             InitializeComponent();
         }
 
@@ -131,10 +125,12 @@ namespace MapCreator.userPlugin
         private void staticSelector_staticPreview_Paint(object sender, PaintEventArgs e)
         {
             var font = new System.Drawing.Font("Arial", 8f);
-            var solidBrush = new SolidBrush(Color.Black);
-            var pen = new Pen(Color.Black);
+            var solidBrush = Brushes.Black;
+            var pen = Pens.Black;
             var graphics = e.Graphics;
             graphics.Clear(Color.LightGray);
+
+            var defImage = Art.GetStatic(0);
 
             var value = vScrollBar1.Value;
             var num = 0;
@@ -145,17 +141,22 @@ namespace MapCreator.userPlugin
                 do
                 {
                     graphics.DrawRectangle(pen, checked(num1 * 50), checked(num * 60), 48, 58);
-                    if (Art.GetStatic(value) != null)
+
+                    var image = defImage;
+
+                    if (Art.IsValidStatic(value))
                     {
-                        graphics.DrawString(value.ToString(), font, solidBrush, checked(checked(num1 * 50) + 1), checked(checked(num * 60) + 1));
-                        var rectangle = new Rectangle(checked(checked(num1 * 50) + 2), checked(checked(num * 60) + 12), 44, 44);
-                        var rectangle1 = new Rectangle(1, 1, 44, 44);
-                        graphics.DrawImage(Art.GetStatic(value), rectangle, rectangle1, GraphicsUnit.Pixel);
-                        value++;
+                        image = Art.GetStatic(value);
                     }
-                    else
+
+                    graphics.DrawString(value.ToString(), font, solidBrush, checked(checked(num1 * 50) + 1), checked(checked(num * 60) + 1));
+                    var rectangle = new Rectangle(checked(checked(num1 * 50) + 2), checked(checked(num * 60) + 12), 44, 44);
+                    var rectangle1 = new Rectangle(1, 1, 44, 44);
+                    graphics.DrawImage(image, rectangle, rectangle1, GraphicsUnit.Pixel);
+
+                    if (++value > vScrollBar1.Maximum)
                     {
-                        value++;
+                        return;
                     }
 
                     num1++;

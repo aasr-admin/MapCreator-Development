@@ -85,6 +85,7 @@
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
+            TopMost = true;
             Name = "staticSelector";
             StartPosition = FormStartPosition.CenterScreen;
             MouseDown += staticSelector_MouseDown;
