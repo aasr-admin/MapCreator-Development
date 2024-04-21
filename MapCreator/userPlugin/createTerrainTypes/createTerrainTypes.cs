@@ -88,7 +88,7 @@ namespace MapCreator.userPlugin
                 _canvasControlBox.ActionChangeZ += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeZ;
             }
 
-            _canvasControlBox.Show();
+            _canvasControlBox?.Show(this);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_Leave(object sender, EventArgs e)
@@ -153,24 +153,24 @@ namespace MapCreator.userPlugin
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(sbyte deltaX, sbyte deltaY)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
             RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
 
             if (selectedItem != null)
             {
-                x = selectedItem.X;
-                y = selectedItem.Y;
+                var x = selectedItem.X;
+                var y = selectedItem.Y;
+
+                x = (byte)Math.Clamp(x + deltaX, 0, 12);
+                y = (byte)Math.Clamp(y + deltaY, 0, 12);
+
+                _canvasControlBox.xAxis_label_numUpDown.Value = selectedItem.X = x;
+                _canvasControlBox.yAxis_label_numUpDown.Value = selectedItem.Y = y;
             }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = Math.Clamp(x + deltaX, _canvasControlBox.xAxis_label_numUpDown.Minimum, _canvasControlBox.xAxis_label_numUpDown.Maximum);
-            _canvasControlBox.yAxis_label_numUpDown.Value = Math.Clamp(y + deltaY, _canvasControlBox.yAxis_label_numUpDown.Minimum, _canvasControlBox.yAxis_label_numUpDown.Maximum);
-
-            if (selectedItem != null)
+            else
             {
-                selectedItem.X = x;
-                selectedItem.Y = y;
+                _canvasControlBox.xAxis_label_numUpDown.Value = 0;
+                _canvasControlBox.yAxis_label_numUpDown.Value = 0;
+                _canvasControlBox.zAxis_label_numUpDown.Value = 0;
             }
 
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
@@ -287,8 +287,8 @@ namespace MapCreator.userPlugin
                 while (enumerator.MoveNext())
                 {
                     var current = (RandomStatic)enumerator.Current;
-                    var y = checked(6 + current.Y);
-                    var x = checked(6 + current.X);
+                    var y = current.Y;
+                    var x = current.X;
                     var @static = Art.GetStatic(current.TileID);
                     var point = new Point(checked((int)Math.Round(StaticGrid[y, x].X - ((double)@static.Width / 2))), checked(checked(StaticGrid[y, x].Y - @static.Height) + 22));
                     e.Graphics.DrawImage(@static, point);

@@ -165,8 +165,8 @@
             // xAxis_label_numUpDown
             // 
             xAxis_label_numUpDown.Location = new Point(176, 23);
-            xAxis_label_numUpDown.Maximum = new decimal(new int[] { 6, 0, 0, 0 });
-            xAxis_label_numUpDown.Minimum = new decimal(new int[] { 6, 0, 0, int.MinValue });
+            xAxis_label_numUpDown.Maximum = 12;
+            xAxis_label_numUpDown.Minimum = 0;
             xAxis_label_numUpDown.Name = "xAxis_label_numUpDown";
             xAxis_label_numUpDown.Size = new Size(60, 23);
             xAxis_label_numUpDown.TabIndex = 1;
@@ -176,8 +176,8 @@
             // yAxis_label_numUpDown
             // 
             yAxis_label_numUpDown.Location = new Point(176, 66);
-            yAxis_label_numUpDown.Maximum = new decimal(new int[] { 6, 0, 0, 0 });
-            yAxis_label_numUpDown.Minimum = new decimal(new int[] { 6, 0, 0, int.MinValue });
+            yAxis_label_numUpDown.Maximum = 12;
+            yAxis_label_numUpDown.Minimum = 0;
             yAxis_label_numUpDown.Name = "yAxis_label_numUpDown";
             yAxis_label_numUpDown.Size = new Size(60, 23);
             yAxis_label_numUpDown.TabIndex = 2;
@@ -187,8 +187,8 @@
             // zAxis_label_numUpDown
             // 
             zAxis_label_numUpDown.Location = new Point(176, 107);
-            zAxis_label_numUpDown.Maximum = new decimal(new int[] { 6, 0, 0, 0 });
-            zAxis_label_numUpDown.Minimum = new decimal(new int[] { 6, 0, 0, int.MinValue });
+            zAxis_label_numUpDown.Maximum = 127;
+            zAxis_label_numUpDown.Minimum = -128;
             zAxis_label_numUpDown.Name = "zAxis_label_numUpDown";
             zAxis_label_numUpDown.Size = new Size(60, 23);
             zAxis_label_numUpDown.TabIndex = 3;
