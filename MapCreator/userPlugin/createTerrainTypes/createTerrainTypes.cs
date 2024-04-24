@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.ComponentModel;
 using System.IO;
 
 using Cartography.compiler;
@@ -15,10 +16,7 @@ namespace MapCreator.userPlugin
         private readonly ClsTerrainTable iTerrain;
         private RandomStatics iRandomStatic;
 
-        private communityCredits _communityCredits;
         private canvasControlBox _canvasControlBox;
-        private createTerrainTypes _createTerrainTypes;
-        private facetBuilder _facetBuilder;
         private staticSelector _staticSelector;
 
         private OpenFileDialog _openFileDialog;
@@ -32,8 +30,11 @@ namespace MapCreator.userPlugin
 
             InitializeComponent();
 
-            var num = 302;
-            var num1 = 246;
+            var rows = StaticGrid.GetLength(0);
+
+            var num = (rows * 44) / 2;
+            var num1 = 22;
+
             var num2 = 0;
 
             do
@@ -62,26 +63,42 @@ namespace MapCreator.userPlugin
 
             var p = StaticGrid[gy, gx];
 
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar.Value = p.X;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar.Value = p.Y;
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.HorizontalScroll.Value = p.X;
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.VerticalScroll.Value = p.Y;
 
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
         /// Form Load Operations
-        private void createTerrainTypes_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+
             iTerrain.Load();
             iTerrain.Display(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox);
         }
 
-        private void createTerrainTypes_FormClosing(object sender, FormClosingEventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
-            _communityCredits?.Close();
+            base.OnClosing(e);
+
             _canvasControlBox?.Close();
-            _createTerrainTypes?.Close();
-            _facetBuilder?.Close();
             _staticSelector?.Close();
+        }
+
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+
+            if (_canvasControlBox != null)
+            {
+                _canvasControlBox.Visible = Visible;
+            }
+
+            if (_staticSelector != null)
+            {
+                _staticSelector.Visible = Visible;
+            }
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_Enter(object sender, EventArgs e)
@@ -104,27 +121,78 @@ namespace MapCreator.userPlugin
                 _canvasControlBox.ActionChangeZ += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeZ;
             }
 
-            _canvasControlBox?.Show(this);
+            if (_canvasControlBox?.IsDisposed == false)
+            {
+                if (_canvasControlBox.Visible)
+                {
+                    _canvasControlBox.BringToFront();
+                }
+                else
+                {
+                    _canvasControlBox.Show(this);
+                }
+            }
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_Leave(object sender, EventArgs e)
         {
-            _canvasControlBox?.Hide();
+            if (_canvasControlBox?.IsDisposed == false)
+            {
+                _canvasControlBox.SendToBack();
+
+                if (_canvasControlBox.Visible)
+                {
+                    _canvasControlBox.Hide();
+                }
+            }
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeX(object sender, EventArgs e)
         {
-            //createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            var x = Math.Clamp(_canvasControlBox.xAxis_label_numUpDown.Value, -6, 6);
+
+            _canvasControlBox.xAxis_label_numUpDown.Value = x;
+
+            RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                selectedItem.X = (sbyte)x;
+            }
+
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeY(object sender, EventArgs e)
         {
-            //createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            var y = Math.Clamp(_canvasControlBox.yAxis_label_numUpDown.Value, -6, 6);
+
+            _canvasControlBox.yAxis_label_numUpDown.Value = y;
+
+            RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                selectedItem.Y = (sbyte)y;
+            }
+
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeZ(object sender, EventArgs e)
         {
-            //createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            var z = Math.Clamp(_canvasControlBox.zAxis_label_numUpDown.Value, -128, 127);
+            
+            _canvasControlBox.zAxis_label_numUpDown.Value = z;
+
+            RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                selectedItem.Z = (sbyte)z;
+            }
+            
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionNorth(object sender, EventArgs e)
@@ -206,10 +274,11 @@ namespace MapCreator.userPlugin
         /// Form Top Menu Buttons
         private void createTerrainTypes_mainMenu_button_newTerrainType_Click(object sender, EventArgs e)
         {
-            _createTerrainTypes ??= new createTerrainTypes();
-            _createTerrainTypes.Show(this);
+            var owner = Owner;
 
-            Hide();
+            Dispose();
+
+            StaticForm<createTerrainTypes>.Open(owner);
         }
 
         private void createTerrainTypes_mainMenu_button_loadTerrainType_Click(object sender, EventArgs e)
@@ -251,16 +320,14 @@ namespace MapCreator.userPlugin
 
         private void createTerrainTypes_mainMenu_button_facetBuilder_Click(object sender, EventArgs e)
         {
-            _facetBuilder ??= new facetBuilder();
-            _facetBuilder.Show(this);
-
             Hide();
+
+            StaticForm<facetBuilder>.Open();
         }
 
         private void createTerrainTypes_mainMenu_button_communityCredits_Click(object sender, EventArgs e)
         {
-            _communityCredits ??= new communityCredits();
-            _communityCredits.Show(this);
+            StaticForm<communityCredits>.Open();
         }
 
         /// Terrain Grid Display (Connects To canvasControlBox Lines 195 and 196)
@@ -355,23 +422,6 @@ namespace MapCreator.userPlugin
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
-        private void UpdatePanel1()
-        {
-            var tGD = createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay;
-            var point = new Point(checked(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar.Value * -1), checked(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar.Value * -1));
-            tGD.Location = point;
-        }
-
-        private void createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            UpdatePanel1();
-        }
-
-        private void createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            UpdatePanel1();
-        }
-
         /// Static Frequencies
         private void staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown_ValueChanged(object sender, EventArgs e)
         {
@@ -432,19 +482,44 @@ namespace MapCreator.userPlugin
         /// Entry Component List  (Connects To canvasControlBox Lines 365, 366, 367, 390)
         private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_Click(object sender, EventArgs e)
         {
-            _staticSelector ??= new staticSelector();
-            _staticSelector.Tag = staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll;
-            _staticSelector.Show(this);
+            if (_staticSelector?.IsDisposed != false)
+            {
+                _staticSelector = new staticSelector();
+
+                _staticSelector.SelectionChanged += staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_SelectionChanged;
+            }
+
+            if (_staticSelector?.IsDisposed == false)
+            {
+                _staticSelector.vScrollBar1.Value = staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value;
+                _staticSelector.Refresh();
+
+                if (_staticSelector.Visible)
+                {
+                    _staticSelector.BringToFront();
+                }
+                else
+                {
+                    _staticSelector.Show(this);
+                }
+            }
+        }
+
+        private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_SelectionChanged(object sender, int selection)
+        {
+            selection = Math.Clamp(selection, staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Minimum, staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Maximum);
+
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value = selection;
         }
 
         private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_MouseEnter(object sender, EventArgs e)
         {
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.ForeColor = System.Drawing.Color.LimeGreen;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.ForeColor = Color.LimeGreen;
         }
 
         private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_MouseLeave(object sender, EventArgs e)
         {
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.ForeColor = System.Drawing.Color.SlateGray;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.ForeColor = Color.SlateGray;
         }
 
         private void UpdatePanel2()

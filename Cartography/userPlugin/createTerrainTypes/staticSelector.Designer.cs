@@ -82,6 +82,7 @@
             Controls.Add(staticSelector_closeButton);
             Controls.Add(vScrollBar1);
             Controls.Add(panel1);
+            DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;

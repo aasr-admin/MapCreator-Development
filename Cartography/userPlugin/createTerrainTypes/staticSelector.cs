@@ -1,16 +1,14 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
-
-using UltimaSDK;
+﻿using UltimaSDK;
 
 namespace MapCreator.userPlugin
 {
     public partial class staticSelector : Form
     {
-        private int iSelected;
-
         private bool dragging = false;
         private Point dragCursorPoint;
         private Point dragFormPoint;
+
+        public event EventHandler<int> SelectionChanged;
 
         public staticSelector()
         {
@@ -53,7 +51,7 @@ namespace MapCreator.userPlugin
             var num = 0;
             var num1 = 0;
 
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 var x = e.X;
                 if (x is >= 0 and <= 49)
@@ -115,16 +113,15 @@ namespace MapCreator.userPlugin
                     num1 = 7;
                 }
 
-                iSelected = checked(checked(vScrollBar1.Value + checked(num1 * 6)) + num);
-                var tag = Tag;
-                var objArray = new object[] { iSelected };
-                LateBinding.LateSetComplex(tag, null, "Value", objArray, null, false, true);
+                var iSelected = checked(checked(vScrollBar1.Value + checked(num1 * 6)) + num);
+
+                SelectionChanged?.Invoke(this, iSelected);
             }
         }
 
         private void staticSelector_staticPreview_Paint(object sender, PaintEventArgs e)
         {
-            var font = new System.Drawing.Font("Arial", 8f);
+            var font = new Font("Arial", 8f);
             var solidBrush = Brushes.Black;
             var pen = Pens.Black;
             var graphics = e.Graphics;

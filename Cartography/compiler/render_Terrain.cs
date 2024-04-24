@@ -144,6 +144,11 @@ namespace Cartography.compiler
             TerrainHash = new Hashtable();
         }
 
+        public void Clear()
+        {
+            TerrainHash.Clear();
+        }
+
         public void Display(ListBox iList)
         {
             IEnumerator enumerator = null;

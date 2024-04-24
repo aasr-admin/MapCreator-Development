@@ -360,8 +360,6 @@
             Name = "userPlugins";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MapCreator: User Plugins";
-            TopMost = true;
-            Load += userPlugins_Load;
             ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_topDivider).EndInit();
             userPlugins_statusStrip.ResumeLayout(false);
             userPlugins_statusStrip.PerformLayout();

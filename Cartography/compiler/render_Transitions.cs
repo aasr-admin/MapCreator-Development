@@ -1230,6 +1230,15 @@ namespace Cartography.compiler
             InnerList.Remove(Value);
         }
 
+        protected override void OnClear()
+        {
+            base.OnClear();
+
+            m_Random.Clear();
+
+            Freq = 0;
+        }
+
         public RandomStatics()
         {
             m_Random = new Collection();

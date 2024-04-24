@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(createTerrainTypes));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(createTerrainTypes));
             userPlugins_pictureBox_topDivider = new PictureBox();
             createTerrainTypes_mainMenu = new MenuStrip();
             createTerrainTypes_mainMenu_button_newTerrainType = new ToolStripMenuItem();
@@ -49,8 +49,6 @@
             pictureBox1 = new PictureBox();
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain = new TabPage();
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox = new ComboBox();
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar = new HScrollBar();
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar = new VScrollBar();
             createTerrainTypes_groupBox_terrainPreview = new GroupBox();
             createTerrainTypes_groupBox_terrainPreview_panel = new Panel();
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay = new Panel();
@@ -305,8 +303,6 @@
             // createTerrainTypes_tabControl_tabPage_ConfigureTerrain
             // 
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar);
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_groupBox_terrainPreview);
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(staticPlacement_tabControl);
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox);
@@ -335,51 +331,34 @@
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.TabIndex = 12;
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.SelectedIndexChanged += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox_SelectedIndexChanged;
             // 
-            // createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar
-            // 
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar.Location = new Point(7, 315);
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar.Maximum = 1000;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar.Name = "createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar";
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar.Size = new Size(399, 17);
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar.TabIndex = 11;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar.Scroll += createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar_Scroll;
-            // 
-            // createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar
-            // 
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar.Location = new Point(408, 89);
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar.Maximum = 1000;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar.Name = "createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar";
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar.Size = new Size(17, 221);
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar.TabIndex = 10;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar.Scroll += createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar_Scroll;
-            // 
             // createTerrainTypes_groupBox_terrainPreview
             // 
             createTerrainTypes_groupBox_terrainPreview.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel);
             createTerrainTypes_groupBox_terrainPreview.Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point);
             createTerrainTypes_groupBox_terrainPreview.Location = new Point(8, 81);
             createTerrainTypes_groupBox_terrainPreview.Name = "createTerrainTypes_groupBox_terrainPreview";
-            createTerrainTypes_groupBox_terrainPreview.Size = new Size(396, 231);
+            createTerrainTypes_groupBox_terrainPreview.Size = new Size(416, 252);
             createTerrainTypes_groupBox_terrainPreview.TabIndex = 9;
             createTerrainTypes_groupBox_terrainPreview.TabStop = false;
             createTerrainTypes_groupBox_terrainPreview.Text = "Terrain Preview";
             // 
             // createTerrainTypes_groupBox_terrainPreview_panel
             // 
+            createTerrainTypes_groupBox_terrainPreview_panel.AutoScroll = true;
             createTerrainTypes_groupBox_terrainPreview_panel.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay);
             createTerrainTypes_groupBox_terrainPreview_panel.Dock = DockStyle.Fill;
             createTerrainTypes_groupBox_terrainPreview_panel.Location = new Point(3, 20);
             createTerrainTypes_groupBox_terrainPreview_panel.Name = "createTerrainTypes_groupBox_terrainPreview_panel";
-            createTerrainTypes_groupBox_terrainPreview_panel.Size = new Size(390, 208);
+            createTerrainTypes_groupBox_terrainPreview_panel.Size = new Size(410, 229);
             createTerrainTypes_groupBox_terrainPreview_panel.TabIndex = 0;
             // 
             // createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay
             // 
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.BackgroundImageLayout = ImageLayout.None;
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.BorderStyle = BorderStyle.FixedSingle;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Location = new Point(-1, -1);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Location = new Point(0, 0);
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Name = "createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay";
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Size = new Size(620, 820);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Size = new Size(572, 572);
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.TabIndex = 0;
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Paint += createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_Paint;
             // 
@@ -574,7 +553,7 @@
             // staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll
             // 
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Location = new Point(158, 9);
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Maximum = 65536;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Maximum = 65535;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll";
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Size = new Size(17, 100);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.TabIndex = 3;
@@ -768,6 +747,7 @@
             Controls.Add(userPlugins_pictureBox_bottomDivider);
             Controls.Add(userPlugins_pictureBox_topDivider);
             Controls.Add(createTerrainTypes_mainMenu);
+            DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = createTerrainTypes_mainMenu;
@@ -776,9 +756,6 @@
             Name = "createTerrainTypes";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MapCreator: Create Terrain Types";
-            TopMost = true;
-            Load += createTerrainTypes_Load;
-            FormClosing += createTerrainTypes_FormClosing;
             ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_topDivider).EndInit();
             createTerrainTypes_mainMenu.ResumeLayout(false);
             createTerrainTypes_mainMenu.PerformLayout();
@@ -845,8 +822,6 @@
         private TabPage staticPlacement_tabControl_tabPage_staticProperties;
         private GroupBox createTerrainTypes_groupBox_terrainPreview;
         private Panel createTerrainTypes_groupBox_terrainPreview_panel;
-        private HScrollBar createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar;
-        private VScrollBar createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar;
         private ComboBox createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox;
         private Label staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription;
         private Label staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency;

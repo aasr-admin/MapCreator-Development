@@ -914,8 +914,6 @@
             Name = "facetBuilder";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MapCreator: Facet Builder";
-            FormClosed += facetBuilder_FormClosed;
-            Load += facetBuilder_Load;
             facetBuilder_menuStrip.ResumeLayout(false);
             facetBuilder_menuStrip.PerformLayout();
             facetBuilder_statusStrip.ResumeLayout(false);

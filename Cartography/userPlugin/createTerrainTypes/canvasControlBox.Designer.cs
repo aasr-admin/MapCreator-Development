@@ -252,7 +252,6 @@
             Name = "canvasControlBox";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MapCreator: Static Placement";
-            TopMost = true;
             MouseDown += canvasControlBox_MouseDown;
             MouseMove += canvasControlBox_MouseMove;
             MouseUp += canvasControlBox_MouseUp;

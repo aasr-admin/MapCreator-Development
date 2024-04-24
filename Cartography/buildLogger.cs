@@ -9,20 +9,21 @@ namespace Compiler
         private string m_LogName;
         private DateTime m_Task_Start;
         private DateTime m_Task_End;
+
         private readonly PrintDocument document = new();
         private readonly PrintDialog dialog = new();
 
         public buildLogger()
         {
-            var buildLogger = this;
-            base.Load += new EventHandler(buildLogger.buildLogger_Load);
-            document.PrintPage += new PrintPageEventHandler(document_PrintPage);
-
             InitializeComponent();
+
+            document.PrintPage += document_PrintPage;
         }
 
-        private void buildLogger_Load(object? sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+
             var logMessageTarget = buildLogger_textBox_logDisplay;
 
             logMessageTarget.Text = string.Concat("MapCreator: Logger                      |  \r", DateTime.UtcNow.ToString("dd.MM.yyyy - hh:mm:ss tt\r\n"));
@@ -39,6 +40,7 @@ namespace Compiler
                 if (assembly.EntryPoint != null)
                 {
                     m_LogName = assembly.EntryPoint.DeclaringType.Name;
+
                     var name = assembly.GetName();
 
                     logMessageTarget = buildLogger_textBox_logDisplay;

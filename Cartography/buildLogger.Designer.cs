@@ -118,7 +118,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MapCreator: Logger";
-            this.Load += new System.EventHandler(this.buildLogger_Load);
             this.buildLogger_menuStrip.ResumeLayout(false);
             this.buildLogger_menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.buildLogger_pictureBox_backDrop)).EndInit();

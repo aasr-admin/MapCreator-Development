@@ -1,17 +1,4 @@
 ﻿using MapCreator.userPlugin;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Forms;
-using UltimaSDK;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace MapCreator
 {
@@ -29,8 +16,10 @@ namespace MapCreator
             userPlugins_panel_formLauncher.VerticalScroll.Maximum = 1000;
         }
 
-        private void userPlugins_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+
             userPlugins_pictureBox_pluginDescriptionDisplay.Show();
 
             userPlugins_pictureBox_pluginDescriptionDisplay_createTileTransitions.Hide();
@@ -39,25 +28,25 @@ namespace MapCreator
             userPlugins_pictureBox_pluginDescriptionDisplay_fileTypeConverters.Hide();
         }
 
-
         private void userPlugins_menuStrip_button_facetBuilder_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            Hide();
 
-            facetBuilder facetBuilderForm = new facetBuilder();
-            facetBuilderForm.Show();
+            StaticForm<facetBuilder>.Open();
         }
 
         private void userPlugins_menuStrip_button_information_Click(object sender, EventArgs e)
         {
-            communityCredits communityCreditsForm = new communityCredits();
-            communityCreditsForm.Show();
+            StaticForm<communityCredits>.Open();
         }
 
+        private void userPlugins_panel_formLauncher_button_createTileTransitions_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void userPlugins_panel_formLauncher_button_createTileTransitions_MouseEnter(object sender, EventArgs e)
         {
-
             userPlugins_pictureBox_pluginDescriptionDisplay.Hide();
 
             userPlugins_pictureBox_pluginDescriptionDisplay_createTileTransitions.Show();
@@ -65,13 +54,7 @@ namespace MapCreator
             userPlugins_pictureBox_pluginDescriptionDisplay_viewFacetAsPlanet.Hide();
             userPlugins_pictureBox_pluginDescriptionDisplay_fileTypeConverters.Hide();
 
-
-            userPlugins_panel_formLauncher_button_createTileTransitions.ForeColor = System.Drawing.Color.LimeGreen;
-        }
-
-        private void userPlugins_panel_formLauncher_button_createTileTransitions_Click(object sender, EventArgs e)
-        {
-
+            userPlugins_panel_formLauncher_button_createTileTransitions.ForeColor = Color.LimeGreen;
         }
 
         private void userPlugins_panel_formLauncher_button_createTileTransitions_MouseLeave(object sender, EventArgs e)
@@ -83,9 +66,13 @@ namespace MapCreator
             userPlugins_pictureBox_pluginDescriptionDisplay_viewFacetAsPlanet.Hide();
             userPlugins_pictureBox_pluginDescriptionDisplay_fileTypeConverters.Hide();
 
-            userPlugins_panel_formLauncher_button_createTileTransitions.ForeColor = System.Drawing.Color.SlateGray;
+            userPlugins_panel_formLauncher_button_createTileTransitions.ForeColor = Color.SlateGray;
         }
 
+        private void userPlugins_panel_formLauncher_button_createTerrainTypes_Click(object sender, EventArgs e)
+        {
+            StaticForm<createTerrainTypes>.Open();
+        }
 
         private void userPlugins_panel_formLauncher_button_createTerrainTypes_MouseEnter(object sender, EventArgs e)
         {
@@ -96,15 +83,7 @@ namespace MapCreator
             userPlugins_pictureBox_pluginDescriptionDisplay_viewFacetAsPlanet.Hide();
             userPlugins_pictureBox_pluginDescriptionDisplay_fileTypeConverters.Hide();
 
-            userPlugins_panel_formLauncher_button_createTerrainTypes.ForeColor = System.Drawing.Color.LimeGreen;
-        }
-
-        private void userPlugins_panel_formLauncher_button_createTerrainTypes_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-
-            createTerrainTypes createTerrainTypesForm = new createTerrainTypes();
-            createTerrainTypesForm.Show();
+            userPlugins_panel_formLauncher_button_createTerrainTypes.ForeColor = Color.LimeGreen;
         }
 
         private void userPlugins_panel_formLauncher_button_createTerrainTypes_MouseLeave(object sender, EventArgs e)
@@ -116,9 +95,13 @@ namespace MapCreator
             userPlugins_pictureBox_pluginDescriptionDisplay_viewFacetAsPlanet.Hide();
             userPlugins_pictureBox_pluginDescriptionDisplay_fileTypeConverters.Hide();
 
-            userPlugins_panel_formLauncher_button_createTerrainTypes.ForeColor = System.Drawing.Color.SlateGray;
+            userPlugins_panel_formLauncher_button_createTerrainTypes.ForeColor = Color.SlateGray;
         }
 
+        private void userPlugins_panel_formLauncher_button_viewFacetAsPlanet_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void userPlugins_panel_formLauncher_button_viewFacetAsPlanet_MouseEnter(object sender, EventArgs e)
         {
@@ -129,12 +112,7 @@ namespace MapCreator
             userPlugins_pictureBox_pluginDescriptionDisplay_viewFacetAsPlanet.Show();
             userPlugins_pictureBox_pluginDescriptionDisplay_fileTypeConverters.Hide();
 
-            userPlugins_panel_formLauncher_button_viewFacetAsPlanet.ForeColor = System.Drawing.Color.LimeGreen;
-        }
-
-        private void userPlugins_panel_formLauncher_button_viewFacetAsPlanet_Click(object sender, EventArgs e)
-        {
-
+            userPlugins_panel_formLauncher_button_viewFacetAsPlanet.ForeColor = Color.LimeGreen;
         }
 
         private void userPlugins_panel_formLauncher_button_viewFacetAsPlanet_MouseLeave(object sender, EventArgs e)
@@ -146,9 +124,13 @@ namespace MapCreator
             userPlugins_pictureBox_pluginDescriptionDisplay_viewFacetAsPlanet.Hide();
             userPlugins_pictureBox_pluginDescriptionDisplay_fileTypeConverters.Hide();
 
-            userPlugins_panel_formLauncher_button_viewFacetAsPlanet.ForeColor = System.Drawing.Color.SlateGray;
+            userPlugins_panel_formLauncher_button_viewFacetAsPlanet.ForeColor = Color.SlateGray;
         }
 
+        private void userPlugins_panel_formLauncher_button_fileTypeConverters_Click(object sender, EventArgs e)
+        {
+            StaticForm<fileTypeConverters>.Open();
+        }
 
         private void userPlugins_panel_formLauncher_button_fileTypeConverters_MouseEnter(object sender, EventArgs e)
         {
@@ -159,15 +141,7 @@ namespace MapCreator
             userPlugins_pictureBox_pluginDescriptionDisplay_viewFacetAsPlanet.Hide();
             userPlugins_pictureBox_pluginDescriptionDisplay_fileTypeConverters.Show();
 
-            userPlugins_panel_formLauncher_button_fileTypeConverters.ForeColor = System.Drawing.Color.LimeGreen;
-        }
-
-        private void userPlugins_panel_formLauncher_button_fileTypeConverters_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-
-            fileTypeConverters fileTypeConvertersForm = new fileTypeConverters();
-            fileTypeConvertersForm.Show();
+            userPlugins_panel_formLauncher_button_fileTypeConverters.ForeColor = Color.LimeGreen;
         }
 
         private void userPlugins_panel_formLauncher_button_fileTypeConverters_MouseLeave(object sender, EventArgs e)
@@ -179,7 +153,7 @@ namespace MapCreator
             userPlugins_pictureBox_pluginDescriptionDisplay_viewFacetAsPlanet.Hide();
             userPlugins_pictureBox_pluginDescriptionDisplay_fileTypeConverters.Hide();
 
-            userPlugins_panel_formLauncher_button_fileTypeConverters.ForeColor = System.Drawing.Color.SlateGray;
+            userPlugins_panel_formLauncher_button_fileTypeConverters.ForeColor = Color.SlateGray;
         }
     }
 }
