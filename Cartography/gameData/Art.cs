@@ -17,7 +17,8 @@ namespace UltimaSDK
 
 		private static Bitmap[] m_Cache;
 		private static bool[] m_Removed;
-		private static readonly Hashtable m_patched = new Hashtable();
+		private static bool[] m_Patched;
+
 		public static bool Modified = false;
 
 		private static byte[] m_StreamBuffer;
@@ -37,8 +38,9 @@ namespace UltimaSDK
 		static Art()
 		{
 			m_Cache = new Bitmap[0x14000];
-			m_Removed = new bool[0x14000];
-		}
+            m_Removed = new bool[0x14000];
+            m_Patched = new bool[0x14000];
+        }
 
 		public static int GetMaxItemID()
 		{
@@ -70,11 +72,13 @@ namespace UltimaSDK
 			if (checkmaxid)
 			{
 				int max = GetMaxItemID();
+
 				if (itemID > max)
 				{
 					return 0;
 				}
 			}
+
 			return (ushort)itemID;
 		}
 
@@ -88,11 +92,12 @@ namespace UltimaSDK
 		/// </summary>
 		public static void Reload()
 		{
-			m_FileIndex = new FileIndex(
-				"Artidx.mul", "Art.mul", "artLegacyMUL.uop", 0x14000, 4, ".tga", 0x13FDC, false);
+			m_FileIndex = new FileIndex("Artidx.mul", "Art.mul", "artLegacyMUL.uop", 0x14000, 4, ".tga", 0x13FDC, false);
+
 			m_Cache = new Bitmap[0x14000];
-			m_Removed = new bool[0x14000];
-			m_patched.Clear();
+            m_Removed = new bool[0x14000];
+            m_Patched = new bool[0x14000];
+
 			Modified = false;
 		}
 
@@ -107,11 +112,9 @@ namespace UltimaSDK
 			index += 0x4000;
 
 			m_Cache[index] = bmp;
-			m_Removed[index] = false;
-			if (m_patched.Contains(index))
-			{
-				m_patched.Remove(index);
-			}
+            m_Removed[index] = false;
+            m_Patched[index] = false;
+
 			Modified = true;
 		}
 
@@ -123,12 +126,11 @@ namespace UltimaSDK
 		public static void ReplaceLand(int index, Bitmap bmp)
 		{
 			index &= 0x3FFF;
+
 			m_Cache[index] = bmp;
-			m_Removed[index] = false;
-			if (m_patched.Contains(index))
-			{
-				m_patched.Remove(index);
-			}
+            m_Removed[index] = false;
+            m_Patched[index] = false;
+
 			Modified = true;
 		}
 
@@ -142,6 +144,7 @@ namespace UltimaSDK
 			index += 0x4000;
 
 			m_Removed[index] = true;
+
 			Modified = true;
 		}
 
@@ -152,16 +155,24 @@ namespace UltimaSDK
 		public static void RemoveLand(int index)
 		{
 			index &= 0x3FFF;
+
 			m_Removed[index] = true;
+
 			Modified = true;
 		}
 
 		/// <summary>
 		///     Tests if Static is definied (width and hight check)
 		/// </summary>
-		/// <param name="index"></param>
-		/// <returns></returns>
 		public static unsafe bool IsValidStatic(int index)
+		{
+			return IsValidStatic(index, false);
+		}
+
+        /// <summary>
+        ///     Tests if Static is definied (width and hight check)
+        /// </summary>
+        public static unsafe bool IsValidStatic(int index, bool isAsync)
 		{
 			index = GetLegalItemID(index);
 			index += 0x4000;
@@ -170,36 +181,37 @@ namespace UltimaSDK
 			{
 				return false;
 			}
+
 			if (m_Cache[index] != null)
 			{
 				return true;
 			}
 
-			int length, extra;
-			bool patched;
-			Stream stream = m_FileIndex.Seek(index, out length, out extra, out patched);
+			var stream = m_FileIndex.Seek(index, isAsync, out var length, out var extra, out var patched);
 
 			if (stream == null)
 			{
 				return false;
 			}
 
-			if (Validbuffer == null)
-			{
-				Validbuffer = new byte[4];
-			}
+			Validbuffer ??= new byte[4];
+
 			stream.Seek(4, SeekOrigin.Current);
 			stream.Read(Validbuffer, 0, 4);
-			fixed (byte* b = Validbuffer)
+
+			if (isAsync)
 			{
-				var dat = (short*)b;
-				if (*dat++ <= 0 || *dat <= 0)
-				{
-					return false;
-				}
-				return true;
+				stream.Close();
+				stream.Dispose();
 			}
-		}
+
+			fixed (byte* b = Validbuffer)
+            {
+                var dat = (short*)b;
+
+                return *dat++ > 0 && *dat > 0;
+            }
+        }
 
 		/// <summary>
 		///     Tests if LandTile is definied
@@ -209,173 +221,216 @@ namespace UltimaSDK
 		public static bool IsValidLand(int index)
 		{
 			index &= 0x3FFF;
+
 			if (m_Removed[index])
 			{
 				return false;
 			}
+
 			if (m_Cache[index] != null)
 			{
 				return true;
 			}
 
-			int length, extra;
-			bool patched;
-
-			return m_FileIndex.Valid(index, out length, out extra, out patched);
+			return m_FileIndex.Valid(index, out _, out _, out _);
 		}
 
-		/// <summary>
-		///     Returns Bitmap of LandTile (with Cache)
-		/// </summary>
-		/// <param name="index"></param>
-		/// <returns></returns>
-		public static Bitmap GetLand(int index)
+        /// <summary>
+        ///     Returns Bitmap of LandTile (with Cache)
+        /// </summary>
+        public static Bitmap GetLand(int index)
+        {
+            return GetLand(index, false);
+        }
+
+        /// <summary>
+        ///     Returns Bitmap of LandTile (with Cache)
+        /// </summary>
+        public static Bitmap GetLand(int index, bool isAsync)
 		{
-			bool patched;
-			return GetLand(index, out patched);
+			return GetLand(index, isAsync, out _);
 		}
 
 		/// <summary>
 		///     Returns Bitmap of LandTile (with Cache) and verdata bool
 		/// </summary>
-		/// <param name="index"></param>
-		/// <param name="patched"></param>
-		/// <returns></returns>
 		public static Bitmap GetLand(int index, out bool patched)
 		{
+			return GetLand(index, false, out patched);
+        }
+
+        public static Bitmap GetLand(int index, bool isAsync, out bool patched)
+		{
 			index &= 0x3FFF;
-			if (m_patched.Contains(index))
-			{
-				patched = (bool)m_patched[index];
-			}
-			else
-			{
-				patched = false;
-			}
+
+			patched = m_Patched[index];
 
 			if (m_Removed[index])
 			{
 				return null;
 			}
+
 			if (m_Cache[index] != null)
 			{
 				return m_Cache[index];
 			}
 
-			int length, extra;
-			Stream stream = m_FileIndex.Seek(index, out length, out extra, out patched);
+            var stream = m_FileIndex.Seek(index, isAsync, out var length, out _, out patched);
+
 			if (stream == null)
 			{
 				return null;
 			}
+
 			if (patched)
 			{
-				m_patched[index] = true;
+				m_Patched[index] = true;
 			}
+
+			var image = LoadLand(stream, length);
+
+            if (isAsync)
+            {
+                stream.Close();
+                stream.Dispose();
+            }
 
 			if (Files.CacheData)
 			{
-				return m_Cache[index] = LoadLand(stream, length);
-			}
-			else
-			{
-				return LoadLand(stream, length);
-			}
+				m_Cache[index] = image;
+            }
+
+            return image;
 		}
 
 		public static byte[] GetRawLand(int index)
 		{
+			return GetRawLand(index, false);
+        }
+
+        public static byte[] GetRawLand(int index, bool isAsync)
+		{
 			index &= 0x3FFF;
 
-			int length, extra;
-			bool patched;
-			Stream stream = m_FileIndex.Seek(index, out length, out extra, out patched);
+            var stream = m_FileIndex.Seek(index, isAsync, out var length, out _, out _);
+
 			if (stream == null)
 			{
 				return null;
 			}
+
 			var buffer = new byte[length];
+
 			stream.Read(buffer, 0, length);
-			stream.Close();
-			return buffer;
+
+            if (isAsync)
+            {
+                stream.Close();
+                stream.Dispose();
+            }
+
+            return buffer;
 		}
 
 		/// <summary>
 		///     Returns Bitmap of Static (with Cache)
 		/// </summary>
-		/// <param name="index"></param>
-		/// <returns></returns>
 		public static Bitmap GetStatic(int index, bool checkmaxid = true)
 		{
-			bool patched;
-			return GetStatic(index, out patched, checkmaxid);
-		}
+			return GetStatic(index, false, checkmaxid);
+        }
 
-		/// <summary>
-		///     Returns Bitmap of Static (with Cache) and verdata bool
-		/// </summary>
-		/// <param name="index"></param>
-		/// <param name="patched"></param>
-		/// <returns></returns>
-		public static Bitmap GetStatic(int index, out bool patched, bool checkmaxid = true)
+        /// <summary>
+        ///     Returns Bitmap of Static (with Cache)
+        /// </summary>
+        public static Bitmap GetStatic(int index, bool isAsync, bool checkmaxid = true)
+        {
+            return GetStatic(index, isAsync, out _, checkmaxid);
+        }
+
+        /// <summary>
+        ///     Returns Bitmap of Static (with Cache) and verdata bool
+        /// </summary>
+        public static Bitmap GetStatic(int index, out bool patched, bool checkmaxid = true)
+		{
+			return GetStatic(index, false, out patched, checkmaxid);
+        }
+
+        /// <summary>
+        ///     Returns Bitmap of Static (with Cache) and verdata bool
+        /// </summary>
+        public static Bitmap GetStatic(int index, bool isAsync, out bool patched, bool checkmaxid = true)
 		{
 			index = GetLegalItemID(index, checkmaxid);
 			index += 0x4000;
 
-			if (m_patched.Contains(index))
-			{
-				patched = (bool)m_patched[index];
-			}
-			else
-			{
-				patched = false;
-			}
+			patched = m_Patched[index];
 
 			if (m_Removed[index])
 			{
 				return null;
 			}
+
 			if (m_Cache[index] != null)
 			{
 				return m_Cache[index];
 			}
 
-			int length, extra;
-			Stream stream = m_FileIndex.Seek(index, out length, out extra, out patched);
+			var stream = m_FileIndex.Seek(index, isAsync, out var length, out _, out patched);
+
 			if (stream == null)
 			{
 				return null;
 			}
+
 			if (patched)
 			{
-				m_patched[index] = true;
+				m_Patched[index] = true;
+			}
+
+			var image = LoadStatic(stream, length);
+
+			if (isAsync)
+			{
+				stream.Close();
+				stream.Dispose();
 			}
 
 			if (Files.CacheData)
 			{
-				return m_Cache[index] = LoadStatic(stream, length);
+				m_Cache[index] = image;
 			}
-			else
-			{
-				return LoadStatic(stream, length);
-			}
+
+			return image;
 		}
 
 		public static byte[] GetRawStatic(int index)
 		{
+			return GetRawStatic(index, false);
+		}
+
+        public static byte[] GetRawStatic(int index, bool isAsync)
+		{
 			index = GetLegalItemID(index);
 			index += 0x4000;
 
-			int length, extra;
-			bool patched;
-			Stream stream = m_FileIndex.Seek(index, out length, out extra, out patched);
+            var stream = m_FileIndex.Seek(index, isAsync, out var length, out _, out _);
+
 			if (stream == null)
 			{
 				return null;
 			}
+
 			var buffer = new byte[length];
+
 			stream.Read(buffer, 0, length);
-			stream.Close();
+
+			if (isAsync)
+			{
+				stream.Close();
+				stream.Dispose();
+			}
+
 			return buffer;
 		}
 
@@ -389,8 +444,7 @@ namespace UltimaSDK
 				return;
 			}
 
-			BitmapData bd = bmp.LockBits(
-				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
+			BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
 
 			int delta = (bd.Stride >> 1) - bd.Width;
 			int lineDelta = bd.Stride >> 1;

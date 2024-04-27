@@ -27,7 +27,7 @@ namespace UltimaSDK
 {
 	public sealed class Verdata
 	{
-		public static Stream Stream { get; private set; }
+		public static FileStream Stream { get; private set; }
 		public static Entry5D[] Patches { get; private set; }
 
 		private static string path;
@@ -44,7 +44,7 @@ namespace UltimaSDK
 			if (path == null)
 			{
 				Patches = new Entry5D[0];
-				Stream = Stream.Null;
+				Stream = null;
 			}
 			else
 			{
@@ -70,13 +70,14 @@ namespace UltimaSDK
 
 		public static void Seek(int lookup)
 		{
-			if (Stream == null || !Stream.CanRead || !Stream.CanSeek)
-			{
-				if (path != null)
-				{
-					Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-				}
-			}
+            if (Stream == null || !Stream.CanRead || !Stream.CanSeek)
+            {
+                if (path != null)
+                {
+                    Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                }
+            }
+
 			Stream.Seek(lookup, SeekOrigin.Begin);
 		}
 	}

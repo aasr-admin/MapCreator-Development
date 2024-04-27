@@ -4,164 +4,237 @@ namespace MapCreator.userPlugin
 {
     public partial class staticSelector : Form
     {
-        private bool dragging = false;
-        private Point dragCursorPoint;
-        private Point dragFormPoint;
+        private static readonly Lazy<Bitmap> _emptyTile = new(() =>
+        {
+            var image = new Bitmap(64, 64);
 
-        public event EventHandler<int> SelectionChanged;
+            using var g = Graphics.FromImage(image);
+
+            var x = 10;
+            var y = 10;
+
+            g.FillPolygon(Brushes.Black, new[]
+            {
+                new Point(x + 22, y + 00), new Point(x + 43, y + 21),
+                new Point(x + 43, y + 22), new Point(x + 22, y + 43),
+                new Point(x + 21, y + 43), new Point(x + 00, y + 22),
+                new Point(x + 00, y + 21), new Point(x + 21, y + 00),
+            });
+
+            return image;
+        });
+
+        private event Action loadedCallback;
+
+        private bool dragging, loading = true;
+        private Point dragCursorPoint, dragFormPoint;
+
+        private string searchText;
+        private int searchIndex = -1;
+
+        public int Value
+        {
+            get => (int)valueSelector.Value;
+            set
+            {
+                if (loading)
+                {
+                    loadedCallback += () => valueSelector.Value = value;
+                }
+                else
+                {
+                    valueSelector.Value = value;
+                }
+            }
+        }
+
+        public event EventHandler ValueChanged
+        {
+            add => valueSelector.ValueChanged += value;
+            remove => valueSelector.ValueChanged -= value;
+        }
 
         public staticSelector()
         {
             InitializeComponent();
         }
 
-        private void staticSelector_MouseDown(object sender, MouseEventArgs e)
+        protected override async void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+
+            valueSelector.Enabled = false;
+            searchBox.Enabled = false;
+            searchButton.Enabled = false;
+
+            listView.Enabled = false;
+            listView.UseWaitCursor = true;
+
+            var length = (int)valueSelector.Maximum + 1;
+
+            var images = new Image[length];
+            var items = new ListViewItem[length];
+
+            await Task.Run(() =>
+            {
+                var max = Art.GetMaxItemID();
+
+                var empty = _emptyTile.Value;
+                var bounds = new Rectangle(Point.Empty, empty.Size);
+
+                var blocks = length / 1024;
+
+                Parallel.For(0, blocks, block =>
+                {
+                    var start = block * 1024;
+                    var end = start + 1024;
+
+                    for (var i = start; i < end; i++)
+                    {
+                        items[i] = new ListViewItem($"{i}", i);
+
+                        if (i <= max)
+                        {
+                            var image = Art.GetStatic(i, true, false);
+
+                            images[i] = image?.GetThumbnailImage(empty.Width, empty.Height, null, 0);
+
+                            /*
+                            if (image != null)
+                            {
+                                var icon = new Bitmap(empty.Width, empty.Height, image.PixelFormat);
+
+                                using var g = Graphics.FromImage(icon);
+
+                                g.DrawImage(image, bounds, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
+
+                                images[i] = icon;
+                            }
+                            */
+
+                            ref var data = ref TileData.ItemTable[i];
+
+                            if (!string.IsNullOrWhiteSpace(data.Name))
+                            {
+                                items[i].ToolTipText = data.Name;
+                            }
+                        }
+
+                        images[i] ??= empty;
+
+                        progressBar.BeginInvoke(progressBar.PerformStep);
+                    }
+                });
+            }).ConfigureAwait(true);
+
+            listView.SuspendLayout();
+
+            imageList.Images.AddRange(images);
+            listView.Items.AddRange(items);
+
+            listView.ResumeLayout();
+
+            listView.UseWaitCursor = false;
+            listView.Enabled = true;
+
+            progressBar.Visible = false;
+            progressBar.Value = 0;
+
+            valueSelector.Enabled = true;
+            searchBox.Enabled = true;
+            searchButton.Enabled = true;
+
+            loading = false;
+
+            loadedCallback?.Invoke();
+            loadedCallback = null;
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+
             dragging = true;
             dragCursorPoint = Cursor.Position;
             dragFormPoint = Location;
         }
 
-        private void staticSelector_MouseMove(object sender, MouseEventArgs e)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
+            base.OnMouseMove(e);
+
             if (dragging)
             {
                 var dif = Point.Subtract(Cursor.Position, new Size(dragCursorPoint));
+
                 Location = Point.Add(dragFormPoint, new Size(dif));
             }
         }
 
-        private void staticSelector_MouseUp(object sender, MouseEventArgs e)
+        protected override void OnMouseUp(MouseEventArgs e)
         {
+            base.OnMouseUp(e);
+            
             dragging = false;
         }
 
-        private void staticSelector_closeButton_Click(object sender, EventArgs e)
+        private void OnValueSelectionChanged(object sender, EventArgs e)
         {
-            Close();
-        }
+            listView.EnsureVisible(Value);
 
-        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
-        {
-            Refresh();
-        }
-
-        private void staticSelector_staticPreview_MouseDown(object sender, MouseEventArgs e)
-        {
-            var num = 0;
-            var num1 = 0;
-
-            if (e.Button == MouseButtons.Left)
+            if (searchIndex != Value)
             {
-                var x = e.X;
-                if (x is >= 0 and <= 49)
-                {
-                    num = 0;
-                }
-                else if (x is >= 50 and <= 99)
-                {
-                    num = 1;
-                }
-                else if (x is >= 100 and <= 149)
-                {
-                    num = 2;
-                }
-                else if (x is >= 150 and <= 199)
-                {
-                    num = 3;
-                }
-                else if (x is >= 200 and <= 249)
-                {
-                    num = 4;
-                }
-                else if (x is >= 250 and <= 399)
-                {
-                    num = 5;
-                }
-
-                var y = e.Y;
-                if (y is >= 0 and <= 59)
-                {
-                    num1 = 0;
-                }
-                else if (y is >= 60 and <= 118)
-                {
-                    num1 = 1;
-                }
-                else if (y is >= 120 and <= 177)
-                {
-                    num1 = 2;
-                }
-                else if (y is >= 180 and <= 236)
-                {
-                    num1 = 3;
-                }
-                else if (y is >= 240 and <= 295)
-                {
-                    num1 = 4;
-                }
-                else if (y is >= 300 and <= 354)
-                {
-                    num1 = 5;
-                }
-                else if (y is >= 360 and <= 413)
-                {
-                    num1 = 6;
-                }
-                else if (y is >= 420 and <= 472)
-                {
-                    num1 = 7;
-                }
-
-                var iSelected = checked(checked(vScrollBar1.Value + checked(num1 * 6)) + num);
-
-                SelectionChanged?.Invoke(this, iSelected);
+                searchIndex = -1;
             }
         }
 
-        private void staticSelector_staticPreview_Paint(object sender, PaintEventArgs e)
+        private void OnItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            var font = new Font("Arial", 8f);
-            var solidBrush = Brushes.Black;
-            var pen = Pens.Black;
-            var graphics = e.Graphics;
-            graphics.Clear(Color.LightGray);
-
-            var defImage = Art.GetStatic(0);
-
-            var value = vScrollBar1.Value;
-            var num = 0;
-
-            do
+            if (e.IsSelected)
             {
-                var num1 = 0;
-                do
-                {
-                    graphics.DrawRectangle(pen, checked(num1 * 50), checked(num * 60), 48, 58);
-
-                    var image = defImage;
-
-                    if (Art.IsValidStatic(value))
-                    {
-                        image = Art.GetStatic(value);
-                    }
-
-                    graphics.DrawString(value.ToString(), font, solidBrush, checked(checked(num1 * 50) + 1), checked(checked(num * 60) + 1));
-                    var rectangle = new Rectangle(checked(checked(num1 * 50) + 2), checked(checked(num * 60) + 12), 44, 44);
-                    var rectangle1 = new Rectangle(1, 1, 44, 44);
-                    graphics.DrawImage(image, rectangle, rectangle1, GraphicsUnit.Pixel);
-
-                    if (++value > vScrollBar1.Maximum)
-                    {
-                        return;
-                    }
-
-                    num1++;
-                }
-                while (num1 <= 5);
-                num++;
+                Value = (int)Math.Clamp(e.ItemIndex, valueSelector.Minimum, valueSelector.Maximum);
             }
-            while (num <= 7);
+        }
+
+        private void OnSearchClick(object sender, EventArgs e)
+        {
+            if (searchText != searchBox.Text)
+            {
+                searchIndex = -1;
+                searchText = searchBox.Text;
+            }
+
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                return;
+            }
+
+            var count = listView.Items.Count;
+
+            while (--count >= 0)
+            {
+                searchIndex = ++searchIndex % listView.Items.Count;
+
+                var item = listView.Items[searchIndex];
+
+                if (string.IsNullOrWhiteSpace(item.ToolTipText))
+                {
+                    continue;
+                }
+
+                if (item.ToolTipText.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                {
+                    Value = searchIndex;
+                    return;
+                }
+            }
+
+            searchIndex = -1;
+        }
+
+        private void OnCloseClick(object sender, EventArgs e)
+        {
+            Hide();
         }
     }
 }

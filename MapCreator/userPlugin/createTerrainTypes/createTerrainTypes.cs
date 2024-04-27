@@ -151,8 +151,6 @@ namespace MapCreator.userPlugin
         {
             var x = Math.Clamp(_canvasControlBox.xAxis_label_numUpDown.Value, -6, 6);
 
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-
             RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
 
             if (selectedItem != null)
@@ -166,8 +164,6 @@ namespace MapCreator.userPlugin
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeY(object sender, EventArgs e)
         {
             var y = Math.Clamp(_canvasControlBox.yAxis_label_numUpDown.Value, -6, 6);
-
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
 
             RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
 
@@ -183,8 +179,6 @@ namespace MapCreator.userPlugin
         {
             var z = Math.Clamp(_canvasControlBox.zAxis_label_numUpDown.Value, -128, 127);
             
-            _canvasControlBox.zAxis_label_numUpDown.Value = z;
-
             RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
 
             if (selectedItem != null)
@@ -237,6 +231,8 @@ namespace MapCreator.userPlugin
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(sbyte deltaX, sbyte deltaY, sbyte deltaZ)
         {
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.SuspendLayout();
+
             RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
 
             if (selectedItem != null)
@@ -268,7 +264,7 @@ namespace MapCreator.userPlugin
                 _canvasControlBox.zAxis_label_numUpDown.Value = z;
             }
 
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.ResumeLayout(true);
         }
 
         /// Form Top Menu Buttons
@@ -330,89 +326,101 @@ namespace MapCreator.userPlugin
             StaticForm<communityCredits>.Open();
         }
 
-        /// Terrain Grid Display (Connects To canvasControlBox Lines 195 and 196)
         private void createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_Paint(object sender, PaintEventArgs e)
         {
-            IEnumerator enumerator = null;
-
             var pen = Pens.Gray;
-            var selectedItem = (ClsTerrain)createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.SelectedItem;
 
-            var num = 0;
+            var terrain = (ClsTerrain)createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.SelectedItem;
+
+            var terrainImage = terrain != null ? Art.GetLand(terrain.TileID) : null;
+
+            var x = 0;
+            var y = 0;
 
             do
             {
-                var num1 = 0;
-
                 do
                 {
-                    var num2 = num1;
-                    var num3 = num;
+                    ref var p = ref StaticGrid[y, x];
 
-                    if (selectedItem != null)
+                    if (terrainImage != null)
                     {
-                        e.Graphics.DrawImage(Art.GetLand(selectedItem.TileID), checked(StaticGrid[num2, num3].X - 22), checked(StaticGrid[num2, num3].Y - 22));
+                        e.Graphics.DrawImage(terrainImage, p.X - 22, p.Y - 22);
                     }
 
-                    e.Graphics.DrawLine(pen, checked(StaticGrid[num2, num3].X - 22), StaticGrid[num2, num3].Y, StaticGrid[num2, num3].X, checked(StaticGrid[num2, num3].Y + 22));
-                    e.Graphics.DrawLine(pen, StaticGrid[num2, num3].X, checked(StaticGrid[num2, num3].Y + 22), checked(StaticGrid[num2, num3].X + 22), StaticGrid[num2, num3].Y);
-                    e.Graphics.DrawLine(pen, checked(StaticGrid[num2, num3].X + 22), StaticGrid[num2, num3].Y, StaticGrid[num2, num3].X, checked(StaticGrid[num2, num3].Y - 22));
-                    e.Graphics.DrawLine(pen, StaticGrid[num2, num3].X, checked(StaticGrid[num2, num3].Y - 22), checked(StaticGrid[num2, num3].X - 22), StaticGrid[num2, num3].Y);
-                    num1++;
+                    e.Graphics.DrawLine(pen, p.X - 22, p.Y, p.X, p.Y + 22);
+                    e.Graphics.DrawLine(pen, p.X, p.Y + 22, p.X + 22, p.Y);
+                    e.Graphics.DrawLine(pen, p.X + 22, p.Y, p.X, p.Y - 22);
+                    e.Graphics.DrawLine(pen, p.X, p.Y - 22, p.X - 22, p.Y);
                 }
-                while (num1 <= 12);
-                num++;
+                while (++y < 13);
+
+                y = 0;
             }
-            while (num <= 12);
+            while (++x < 13);
 
             pen = Pens.Blue;
 
-            var num4 = 6; // Yaxis
-            var num5 = 6; // Xaxis
+            ref var pCenter = ref StaticGrid[6, 6];
 
-            e.Graphics.DrawLine(pen, checked(StaticGrid[num4, num5].X - 22), StaticGrid[num4, num5].Y, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y + 22));
-            e.Graphics.DrawLine(pen, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y + 22), checked(StaticGrid[num4, num5].X + 22), StaticGrid[num4, num5].Y);
-            e.Graphics.DrawLine(pen, checked(StaticGrid[num4, num5].X + 22), StaticGrid[num4, num5].Y, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y - 22));
-            e.Graphics.DrawLine(pen, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y - 22), checked(StaticGrid[num4, num5].X - 22), StaticGrid[num4, num5].Y);
+            e.Graphics.DrawLine(pen, pCenter.X - 22, pCenter.Y, pCenter.X, pCenter.Y + 22);
+            e.Graphics.DrawLine(pen, pCenter.X, pCenter.Y + 22, pCenter.X + 22, pCenter.Y);
+            e.Graphics.DrawLine(pen, pCenter.X + 22, pCenter.Y, pCenter.X, pCenter.Y - 22);
+            e.Graphics.DrawLine(pen, pCenter.X, pCenter.Y - 22, pCenter.X - 22, pCenter.Y);
 
             if (_canvasControlBox != null)
             {
                 pen = Pens.Red;
 
-                num4 = (int)(6 + _canvasControlBox.yAxis_label_numUpDown.Value); // Yaxis
-                num5 = (int)(6 + _canvasControlBox.xAxis_label_numUpDown.Value); // Xaxis
+                var sy = (int)(6 + _canvasControlBox.yAxis_label_numUpDown.Value); // Yaxis
+                var sx = (int)(6 + _canvasControlBox.xAxis_label_numUpDown.Value); // Xaxis
 
-                e.Graphics.DrawLine(pen, checked(StaticGrid[num4, num5].X - 22), StaticGrid[num4, num5].Y, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y + 22));
-                e.Graphics.DrawLine(pen, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y + 22), checked(StaticGrid[num4, num5].X + 22), StaticGrid[num4, num5].Y);
-                e.Graphics.DrawLine(pen, checked(StaticGrid[num4, num5].X + 22), StaticGrid[num4, num5].Y, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y - 22));
-                e.Graphics.DrawLine(pen, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y - 22), checked(StaticGrid[num4, num5].X - 22), StaticGrid[num4, num5].Y);
+                ref var pSelected = ref StaticGrid[sy, sx];
+
+                e.Graphics.DrawLine(pen, pSelected.X - 22, pSelected.Y, pSelected.X, pSelected.Y + 22);
+                e.Graphics.DrawLine(pen, pSelected.X, pSelected.Y + 22, pSelected.X + 22, pSelected.Y);
+                e.Graphics.DrawLine(pen, pSelected.X + 22, pSelected.Y, pSelected.X, pSelected.Y - 22);
+                e.Graphics.DrawLine(pen, pSelected.X, pSelected.Y - 22, pSelected.X - 22, pSelected.Y);
             }
 
-            try
+            foreach (RandomStatic current in staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Items)
             {
-                enumerator = staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Items.GetEnumerator();
+                var sy = 6 + current.Y;
+                var sx = 6 + current.X;
 
-                while (enumerator.MoveNext())
+                if (sx < 0 || sx >= 13)
                 {
-                    var current = (RandomStatic)enumerator.Current;
-                    var y = 6 + current.Y;
-                    var x = 6 + current.X;
-
-                    if (x < 0 || x > 12)
-                    {
-                        continue;
-                    }
-
-                    var @static = Art.GetStatic(current.TileID);
-                    var point = new Point(checked((int)Math.Round(StaticGrid[y, x].X - ((double)@static.Width / 2))), checked(checked(StaticGrid[y, x].Y - @static.Height) + 22));
-                    e.Graphics.DrawImage(@static, point);
+                    continue;
                 }
-            }
-            finally
-            {
-                if (enumerator is IDisposable)
+
+                var image = Art.GetStatic(current.TileID);
+                var dispose = false;
+
+                if (current.Hue > 0)
                 {
-                    ((IDisposable)enumerator).Dispose();
+                    var hue = Hues.GetHue(current.Hue & 0x3FFF);
+
+                    if (hue != null)
+                    {
+                        image = new Bitmap(image);
+
+                        dispose = true;
+
+                        ref var data = ref TileData.ItemTable[current.TileID];
+
+                        var partial = data.Flags.HasFlag(TileFlag.PartialHue) || (current.Hue & 0x8000) != 0;
+
+                        hue.ApplyTo(image, partial);
+                    }
+                }
+
+                ref var sp = ref StaticGrid[sy, sx];
+
+                e.Graphics.DrawImage(image, sp.X - (image.Width / 2f), sp.Y - image.Height + 22f);
+
+                if (dispose)
+                {
+                    image.Dispose();
                 }
             }
         }
@@ -479,20 +487,18 @@ namespace MapCreator.userPlugin
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
-        /// Entry Component List  (Connects To canvasControlBox Lines 365, 366, 367, 390)
         private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_Click(object sender, EventArgs e)
         {
             if (_staticSelector?.IsDisposed != false)
             {
                 _staticSelector = new staticSelector();
 
-                _staticSelector.SelectionChanged += staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_SelectionChanged;
+                _staticSelector.ValueChanged += staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_SelectionChanged;
             }
 
             if (_staticSelector?.IsDisposed == false)
             {
-                _staticSelector.vScrollBar1.Value = staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value;
-                _staticSelector.Refresh();
+                _staticSelector.Value = staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value;
 
                 if (_staticSelector.Visible)
                 {
@@ -505,11 +511,9 @@ namespace MapCreator.userPlugin
             }
         }
 
-        private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_SelectionChanged(object sender, int selection)
+        private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_SelectionChanged(object sender, EventArgs e)
         {
-            selection = Math.Clamp(selection, staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Minimum, staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Maximum);
-
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value = selection;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value = _staticSelector.Value;
         }
 
         private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_MouseEnter(object sender, EventArgs e)

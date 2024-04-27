@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.WebSockets;
 using System.Runtime.InteropServices;
 #endregion
 
@@ -10,11 +11,16 @@ namespace UltimaSDK
 	public sealed class FileIndex
 	{
 		public Entry3D[] Index { get; private set; }
-		public Stream Stream { get; private set; }
+		public FileStream Stream { get; private set; }
 		public long IdxLength { get; private set; }
 		private readonly string MulPath;
 
-		public Stream Seek(int index, out int length, out int extra, out bool patched)
+		public FileStream Seek(int index, out int length, out int extra, out bool patched)
+		{ 
+			return Seek(index, false, out length, out extra, out patched);
+		}
+
+        public FileStream Seek(int index, bool newStream, out int length, out int extra, out bool patched)
 		{
 			if (index < 0 || index >= Index.Length)
 			{
@@ -39,7 +45,20 @@ namespace UltimaSDK
 			{
 				patched = true;
 				Verdata.Seek(e.lookup);
-				return Verdata.Stream;
+
+				var vs = Verdata.Stream;
+
+				if (newStream)
+				{
+					var vp = vs.Position;
+
+                    vs = new FileStream(vs.Name, FileMode.Open, FileAccess.Read, FileShare.Read)
+                    {
+                        Position = vp
+                    };
+                }
+
+				return vs;
 			}
 
 			if (e.length < 0)
@@ -76,11 +95,24 @@ namespace UltimaSDK
 
 			patched = false;
 
-			Stream.Seek(e.lookup, SeekOrigin.Begin);
-			return Stream;
+			var s = Stream;
+
+			if (newStream)
+			{
+				var sp = s.Position;
+
+				s = new FileStream(s.Name, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)
+				{
+					Position = sp
+				};
+			}
+
+            s.Seek(e.lookup, SeekOrigin.Begin);
+
+			return s;
 		}
 
-		public bool Valid(int index, out int length, out int extra, out bool patched)
+        public bool Valid(int index, out int length, out int extra, out bool patched)
 		{
 			if (index < 0 || index >= Index.Length)
 			{
