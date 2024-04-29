@@ -52,6 +52,7 @@
             createTerrainTypes_groupBox_terrainPreview = new GroupBox();
             createTerrainTypes_groupBox_terrainPreview_panel = new Panel();
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay = new Panel();
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker = new Panel();
             staticPlacement_tabControl = new TabControl();
             staticPlacement_tabControl_tabPage_staticEntries = new TabPage();
             staticPlacement_tabControl_tabPage_staticList_entryListBox_Control = new Panel();
@@ -101,6 +102,7 @@
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.SuspendLayout();
             createTerrainTypes_groupBox_terrainPreview.SuspendLayout();
             createTerrainTypes_groupBox_terrainPreview_panel.SuspendLayout();
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.SuspendLayout();
             staticPlacement_tabControl.SuspendLayout();
             staticPlacement_tabControl_tabPage_staticEntries.SuspendLayout();
             staticPlacement_tabControl_tabPage_staticList_entryListBox_Control.SuspendLayout();
@@ -201,7 +203,7 @@
             // 
             userPlugins_statusStrip_label_mapCreatorVersioning.AutoSize = true;
             userPlugins_statusStrip_label_mapCreatorVersioning.BackColor = SystemColors.Control;
-            userPlugins_statusStrip_label_mapCreatorVersioning.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            userPlugins_statusStrip_label_mapCreatorVersioning.Font = new Font("Segoe UI", 10F);
             userPlugins_statusStrip_label_mapCreatorVersioning.ForeColor = Color.SlateGray;
             userPlugins_statusStrip_label_mapCreatorVersioning.ImeMode = ImeMode.NoControl;
             userPlugins_statusStrip_label_mapCreatorVersioning.Location = new Point(12, 424);
@@ -214,7 +216,7 @@
             // 
             userPlugins_statusStrip_label_mapCreatorBuildDate.AutoSize = true;
             userPlugins_statusStrip_label_mapCreatorBuildDate.BackColor = SystemColors.Control;
-            userPlugins_statusStrip_label_mapCreatorBuildDate.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            userPlugins_statusStrip_label_mapCreatorBuildDate.Font = new Font("Segoe UI", 10F);
             userPlugins_statusStrip_label_mapCreatorBuildDate.ForeColor = Color.SlateGray;
             userPlugins_statusStrip_label_mapCreatorBuildDate.ImeMode = ImeMode.NoControl;
             userPlugins_statusStrip_label_mapCreatorBuildDate.Location = new Point(640, 424);
@@ -251,7 +253,7 @@
             // 
             label1.AutoSize = true;
             label1.BackColor = Color.Black;
-            label1.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Font = new Font("Segoe UI", 15F);
             label1.ForeColor = SystemColors.ControlDarkDark;
             label1.Location = new Point(257, 280);
             label1.Name = "label1";
@@ -334,7 +336,7 @@
             // createTerrainTypes_groupBox_terrainPreview
             // 
             createTerrainTypes_groupBox_terrainPreview.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel);
-            createTerrainTypes_groupBox_terrainPreview.Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            createTerrainTypes_groupBox_terrainPreview.Font = new Font("Comic Sans MS", 9F);
             createTerrainTypes_groupBox_terrainPreview.Location = new Point(8, 81);
             createTerrainTypes_groupBox_terrainPreview.Name = "createTerrainTypes_groupBox_terrainPreview";
             createTerrainTypes_groupBox_terrainPreview.Size = new Size(416, 252);
@@ -356,11 +358,20 @@
             // 
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.BackgroundImageLayout = ImageLayout.None;
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.BorderStyle = BorderStyle.FixedSingle;
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker);
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Location = new Point(0, 0);
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Name = "createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay";
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Size = new Size(572, 572);
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.TabIndex = 0;
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Paint += createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_Paint;
+            // 
+            // createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker
+            // 
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Location = new Point(0, 0);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Margin = new Padding(0);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Name = "createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker";
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Size = new Size(1, 1);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.TabIndex = 0;
             // 
             // staticPlacement_tabControl
             // 
@@ -510,7 +521,7 @@
             // staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription
             // 
             staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.AutoSize = true;
-            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point);
+            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
             staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Location = new Point(4, 11);
             staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Name = "staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription";
             staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Size = new Size(306, 15);
@@ -564,7 +575,7 @@
             // staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector
             // 
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.BackgroundImage = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.BackgroundImage");
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Font = new Font("Segoe UI", 10.5F);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.ForeColor = Color.SlateGray;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Location = new Point(179, 9);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector";
@@ -752,10 +763,9 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = createTerrainTypes_mainMenu;
             MaximizeBox = false;
-            MinimizeBox = false;
             Name = "createTerrainTypes";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "MapCreator: Create Terrain Types";
+            Text = "Terrain Types";
             ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_topDivider).EndInit();
             createTerrainTypes_mainMenu.ResumeLayout(false);
             createTerrainTypes_mainMenu.PerformLayout();
@@ -771,6 +781,7 @@
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.PerformLayout();
             createTerrainTypes_groupBox_terrainPreview.ResumeLayout(false);
             createTerrainTypes_groupBox_terrainPreview_panel.ResumeLayout(false);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.ResumeLayout(false);
             staticPlacement_tabControl.ResumeLayout(false);
             staticPlacement_tabControl_tabPage_staticEntries.ResumeLayout(false);
             staticPlacement_tabControl_tabPage_staticEntries.PerformLayout();
@@ -855,5 +866,6 @@
         private ToolStripMenuItem createTerrainTypes_mainMenu_button_communityCredits;
         public VScrollBar staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll;
         public Panel createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay;
+        private Panel createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker;
     }
 }

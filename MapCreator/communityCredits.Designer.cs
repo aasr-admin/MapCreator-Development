@@ -42,7 +42,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(communityCredits));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(communityCredits));
             communityCredits_pictureBox_backDrop = new PictureBox();
             communityCredits_label_thankDeveloper = new Label();
             communityCredits_label_thankSubmitter = new Label();
@@ -76,7 +76,7 @@
             // 
             communityCredits_label_thankDeveloper.AutoSize = true;
             communityCredits_label_thankDeveloper.BackColor = Color.Transparent;
-            communityCredits_label_thankDeveloper.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            communityCredits_label_thankDeveloper.Font = new Font("Segoe UI", 11F);
             communityCredits_label_thankDeveloper.ForeColor = Color.LightSlateGray;
             communityCredits_label_thankDeveloper.Location = new Point(4, 14);
             communityCredits_label_thankDeveloper.Name = "communityCredits_label_thankDeveloper";
@@ -88,7 +88,7 @@
             // 
             communityCredits_label_thankSubmitter.AutoSize = true;
             communityCredits_label_thankSubmitter.BackColor = Color.Transparent;
-            communityCredits_label_thankSubmitter.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            communityCredits_label_thankSubmitter.Font = new Font("Segoe UI", 11F);
             communityCredits_label_thankSubmitter.ForeColor = Color.LightSlateGray;
             communityCredits_label_thankSubmitter.Location = new Point(6, 187);
             communityCredits_label_thankSubmitter.Name = "communityCredits_label_thankSubmitter";
@@ -109,7 +109,7 @@
             // communityCredits_label_thankDeveloper_textBox
             // 
             communityCredits_label_thankDeveloper_textBox.BackColor = Color.LightGray;
-            communityCredits_label_thankDeveloper_textBox.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            communityCredits_label_thankDeveloper_textBox.Font = new Font("Segoe UI", 11F);
             communityCredits_label_thankDeveloper_textBox.ForeColor = Color.Navy;
             communityCredits_label_thankDeveloper_textBox.Location = new Point(10, 51);
             communityCredits_label_thankDeveloper_textBox.Multiline = true;
@@ -123,7 +123,7 @@
             // communityCredits_label_thankSubmitter_textBox
             // 
             communityCredits_label_thankSubmitter_textBox.BackColor = Color.LightGray;
-            communityCredits_label_thankSubmitter_textBox.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            communityCredits_label_thankSubmitter_textBox.Font = new Font("Segoe UI", 11F);
             communityCredits_label_thankSubmitter_textBox.ForeColor = Color.Navy;
             communityCredits_label_thankSubmitter_textBox.Location = new Point(10, 223);
             communityCredits_label_thankSubmitter_textBox.Multiline = true;
@@ -157,7 +157,7 @@
             // communityCredits_label_mapCreator
             // 
             communityCredits_label_mapCreator.AutoSize = true;
-            communityCredits_label_mapCreator.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            communityCredits_label_mapCreator.Font = new Font("Segoe UI", 11F);
             communityCredits_label_mapCreator.ForeColor = Color.LightSlateGray;
             communityCredits_label_mapCreator.Location = new Point(256, 290);
             communityCredits_label_mapCreator.Name = "communityCredits_label_mapCreator";
@@ -168,7 +168,7 @@
             // communityCredits_label_mapCreatorVersioning
             // 
             communityCredits_label_mapCreatorVersioning.AutoSize = true;
-            communityCredits_label_mapCreatorVersioning.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point);
+            communityCredits_label_mapCreatorVersioning.Font = new Font("Segoe UI", 9.5F);
             communityCredits_label_mapCreatorVersioning.ForeColor = Color.LightSlateGray;
             communityCredits_label_mapCreatorVersioning.Location = new Point(266, 310);
             communityCredits_label_mapCreatorVersioning.Name = "communityCredits_label_mapCreatorVersioning";
@@ -179,7 +179,7 @@
             // communityCredits_label_mapCreatorBuildDate
             // 
             communityCredits_label_mapCreatorBuildDate.AutoSize = true;
-            communityCredits_label_mapCreatorBuildDate.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point);
+            communityCredits_label_mapCreatorBuildDate.Font = new Font("Segoe UI", 9.5F);
             communityCredits_label_mapCreatorBuildDate.ForeColor = Color.LightSlateGray;
             communityCredits_label_mapCreatorBuildDate.Location = new Point(248, 328);
             communityCredits_label_mapCreatorBuildDate.Name = "communityCredits_label_mapCreatorBuildDate";
@@ -190,7 +190,7 @@
             // communityCredits_linkLabel_uoAvocation
             // 
             communityCredits_linkLabel_uoAvocation.AutoSize = true;
-            communityCredits_linkLabel_uoAvocation.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            communityCredits_linkLabel_uoAvocation.Font = new Font("Segoe UI", 10F);
             communityCredits_linkLabel_uoAvocation.ForeColor = Color.LightSlateGray;
             communityCredits_linkLabel_uoAvocation.LinkColor = Color.FromArgb(192, 192, 255);
             communityCredits_linkLabel_uoAvocation.Location = new Point(257, 127);
@@ -205,7 +205,7 @@
             // 
             communityCredits_button_close.BackgroundImage = (Image)resources.GetObject("communityCredits_button_close.BackgroundImage");
             communityCredits_button_close.BackgroundImageLayout = ImageLayout.Stretch;
-            communityCredits_button_close.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            communityCredits_button_close.Font = new Font("Segoe UI", 11F);
             communityCredits_button_close.ForeColor = Color.SlateGray;
             communityCredits_button_close.Location = new Point(249, 240);
             communityCredits_button_close.Name = "communityCredits_button_close";
@@ -239,12 +239,9 @@
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MinimizeBox = false;
             Name = "communityCredits";
-            ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "MapCreator: Credits";
-            TopMost = true;
+            Text = "Community Credits";
             ((System.ComponentModel.ISupportInitialize)communityCredits_pictureBox_backDrop).EndInit();
             ((System.ComponentModel.ISupportInitialize)communityCredits_pictureBox_mapCreatorLogo).EndInit();
             ((System.ComponentModel.ISupportInitialize)communityCredits_pictureBox_dividerBottom).EndInit();

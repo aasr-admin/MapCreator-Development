@@ -42,7 +42,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(colorTables));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(colorTables));
             colorTables_menuStrip = new MenuStrip();
             colorTables_menuStrip_button_getAdobePhotoshop = new ToolStripMenuItem();
             colorTables_menuStrip_button_openExportLocation = new ToolStripMenuItem();
@@ -88,7 +88,7 @@
             // 
             // colorTables_menuStrip
             // 
-            colorTables_menuStrip.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
+            colorTables_menuStrip.Font = new Font("Segoe UI", 13F);
             colorTables_menuStrip.ImageScalingSize = new Size(20, 20);
             colorTables_menuStrip.Items.AddRange(new ToolStripItem[] { colorTables_menuStrip_button_getAdobePhotoshop, colorTables_menuStrip_button_openExportLocation, colorTables_menuStrip_button_export, colorTables_menuStrip_button_facetBuilder, colorTables_menuStrip_button_information });
             colorTables_menuStrip.Location = new Point(0, 0);
@@ -124,7 +124,7 @@
             // colorTables_menuStrip_button_export_terrain
             // 
             colorTables_menuStrip_button_export_terrain.DropDownItems.AddRange(new ToolStripItem[] { colorTables_menuStrip_button_export_terrain_adobeColorTableACT, colorTables_menuStrip_button_export_terrain_adobeSwatchFileACO });
-            colorTables_menuStrip_button_export_terrain.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            colorTables_menuStrip_button_export_terrain.Font = new Font("Segoe UI", 12F);
             colorTables_menuStrip_button_export_terrain.Name = "colorTables_menuStrip_button_export_terrain";
             colorTables_menuStrip_button_export_terrain.Size = new Size(203, 26);
             colorTables_menuStrip_button_export_terrain.Text = "Save Terrain As...";
@@ -146,7 +146,7 @@
             // colorTables_menuStrip_button_export_altitude
             // 
             colorTables_menuStrip_button_export_altitude.DropDownItems.AddRange(new ToolStripItem[] { colorTables_menuStrip_button_export_altitude_adobeColorTableACT, colorTables_menuStrip_button_export_altitude_adobeSwatchFileACO });
-            colorTables_menuStrip_button_export_altitude.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            colorTables_menuStrip_button_export_altitude.Font = new Font("Segoe UI", 12F);
             colorTables_menuStrip_button_export_altitude.Name = "colorTables_menuStrip_button_export_altitude";
             colorTables_menuStrip_button_export_altitude.Size = new Size(203, 26);
             colorTables_menuStrip_button_export_altitude.Text = "Save Altitude As...";
@@ -217,7 +217,7 @@
             // 
             // colorTables_statusStrip_sizeElevenSpacer
             // 
-            colorTables_statusStrip_sizeElevenSpacer.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            colorTables_statusStrip_sizeElevenSpacer.Font = new Font("Segoe UI", 11F);
             colorTables_statusStrip_sizeElevenSpacer.Name = "colorTables_statusStrip_sizeElevenSpacer";
             colorTables_statusStrip_sizeElevenSpacer.Size = new Size(13, 20);
             colorTables_statusStrip_sizeElevenSpacer.Text = " ";
@@ -237,7 +237,7 @@
             // 
             colorTables_label_adobePhotoshopColorPalette.AutoSize = true;
             colorTables_label_adobePhotoshopColorPalette.BackColor = Color.Transparent;
-            colorTables_label_adobePhotoshopColorPalette.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
+            colorTables_label_adobePhotoshopColorPalette.Font = new Font("Segoe UI", 14F);
             colorTables_label_adobePhotoshopColorPalette.ForeColor = Color.Lavender;
             colorTables_label_adobePhotoshopColorPalette.Location = new Point(13, 48);
             colorTables_label_adobePhotoshopColorPalette.Name = "colorTables_label_adobePhotoshopColorPalette";
@@ -266,7 +266,7 @@
             // colorTables_statusStrip_label_mapCreatorBuildDate
             // 
             colorTables_statusStrip_label_mapCreatorBuildDate.AutoSize = true;
-            colorTables_statusStrip_label_mapCreatorBuildDate.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            colorTables_statusStrip_label_mapCreatorBuildDate.Font = new Font("Segoe UI", 10F);
             colorTables_statusStrip_label_mapCreatorBuildDate.ForeColor = Color.SlateGray;
             colorTables_statusStrip_label_mapCreatorBuildDate.ImeMode = ImeMode.NoControl;
             colorTables_statusStrip_label_mapCreatorBuildDate.Location = new Point(640, 424);
@@ -278,7 +278,7 @@
             // colorTables_statusStrip_label_mapCreatorVersioning
             // 
             colorTables_statusStrip_label_mapCreatorVersioning.AutoSize = true;
-            colorTables_statusStrip_label_mapCreatorVersioning.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            colorTables_statusStrip_label_mapCreatorVersioning.Font = new Font("Segoe UI", 10F);
             colorTables_statusStrip_label_mapCreatorVersioning.ForeColor = Color.SlateGray;
             colorTables_statusStrip_label_mapCreatorVersioning.ImeMode = ImeMode.NoControl;
             colorTables_statusStrip_label_mapCreatorVersioning.Location = new Point(12, 424);
@@ -302,7 +302,7 @@
             // 
             colorTables_pictureBox_notificationBox_label_fileUsability.AutoSize = true;
             colorTables_pictureBox_notificationBox_label_fileUsability.BackColor = Color.Black;
-            colorTables_pictureBox_notificationBox_label_fileUsability.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point);
+            colorTables_pictureBox_notificationBox_label_fileUsability.Font = new Font("Segoe UI", 9.5F);
             colorTables_pictureBox_notificationBox_label_fileUsability.ForeColor = Color.Ivory;
             colorTables_pictureBox_notificationBox_label_fileUsability.Location = new Point(31, 341);
             colorTables_pictureBox_notificationBox_label_fileUsability.Name = "colorTables_pictureBox_notificationBox_label_fileUsability";
@@ -315,7 +315,7 @@
             // 
             colorTables_pictureBox_notificationBox_label_altitudeGradient.AutoSize = true;
             colorTables_pictureBox_notificationBox_label_altitudeGradient.BackColor = Color.Black;
-            colorTables_pictureBox_notificationBox_label_altitudeGradient.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point);
+            colorTables_pictureBox_notificationBox_label_altitudeGradient.Font = new Font("Segoe UI", 9.5F);
             colorTables_pictureBox_notificationBox_label_altitudeGradient.ForeColor = Color.Ivory;
             colorTables_pictureBox_notificationBox_label_altitudeGradient.Location = new Point(44, 341);
             colorTables_pictureBox_notificationBox_label_altitudeGradient.Name = "colorTables_pictureBox_notificationBox_label_altitudeGradient";
@@ -379,7 +379,7 @@
             // colorTables_button_loadTerrainColorTables_label
             // 
             colorTables_button_loadTerrainColorTables_label.AutoSize = true;
-            colorTables_button_loadTerrainColorTables_label.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            colorTables_button_loadTerrainColorTables_label.Font = new Font("Microsoft Sans Serif", 10F);
             colorTables_button_loadTerrainColorTables_label.ForeColor = Color.Ivory;
             colorTables_button_loadTerrainColorTables_label.Location = new Point(617, 335);
             colorTables_button_loadTerrainColorTables_label.Name = "colorTables_button_loadTerrainColorTables_label";
@@ -390,7 +390,7 @@
             // colorTables_button_loadAltitudeColorTables_label
             // 
             colorTables_button_loadAltitudeColorTables_label.AutoSize = true;
-            colorTables_button_loadAltitudeColorTables_label.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            colorTables_button_loadAltitudeColorTables_label.Font = new Font("Microsoft Sans Serif", 10F);
             colorTables_button_loadAltitudeColorTables_label.ForeColor = Color.Ivory;
             colorTables_button_loadAltitudeColorTables_label.Location = new Point(616, 378);
             colorTables_button_loadAltitudeColorTables_label.Name = "colorTables_button_loadAltitudeColorTables_label";
@@ -427,11 +427,9 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = colorTables_menuStrip;
             MaximizeBox = false;
-            MinimizeBox = false;
             Name = "colorTables";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "MapCreator: Create Color Tables";
-            TopMost = true;
+            Text = "Color Tables";
             colorTables_menuStrip.ResumeLayout(false);
             colorTables_menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)colorTables_pictureBox_topDivider).EndInit();

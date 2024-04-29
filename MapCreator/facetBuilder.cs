@@ -9,8 +9,6 @@ using System.Xml;
 using Cartography.compiler;
 using Cartography.groupBoxControls;
 
-using Compiler;
-
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 

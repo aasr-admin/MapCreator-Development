@@ -42,7 +42,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(userPlugins));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(userPlugins));
             userPlugins_pictureBox_topDivider = new PictureBox();
             userPlugins_statusStrip = new StatusStrip();
             userPlugins_statusStrip_sizeElevenSpacer = new ToolStripStatusLabel();
@@ -102,7 +102,7 @@
             // userPlugins_statusStrip_sizeElevenSpacer
             // 
             userPlugins_statusStrip_sizeElevenSpacer.BackColor = SystemColors.Control;
-            userPlugins_statusStrip_sizeElevenSpacer.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            userPlugins_statusStrip_sizeElevenSpacer.Font = new Font("Segoe UI", 11F);
             userPlugins_statusStrip_sizeElevenSpacer.Name = "userPlugins_statusStrip_sizeElevenSpacer";
             userPlugins_statusStrip_sizeElevenSpacer.Size = new Size(13, 20);
             userPlugins_statusStrip_sizeElevenSpacer.Text = " ";
@@ -123,7 +123,7 @@
             // 
             userPlugins_statusStrip_label_mapCreatorVersioning.AutoSize = true;
             userPlugins_statusStrip_label_mapCreatorVersioning.BackColor = SystemColors.Control;
-            userPlugins_statusStrip_label_mapCreatorVersioning.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            userPlugins_statusStrip_label_mapCreatorVersioning.Font = new Font("Segoe UI", 10F);
             userPlugins_statusStrip_label_mapCreatorVersioning.ForeColor = Color.SlateGray;
             userPlugins_statusStrip_label_mapCreatorVersioning.ImeMode = ImeMode.NoControl;
             userPlugins_statusStrip_label_mapCreatorVersioning.Location = new Point(12, 424);
@@ -136,7 +136,7 @@
             // 
             userPlugins_statusStrip_label_mapCreatorBuildDate.AutoSize = true;
             userPlugins_statusStrip_label_mapCreatorBuildDate.BackColor = SystemColors.Control;
-            userPlugins_statusStrip_label_mapCreatorBuildDate.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            userPlugins_statusStrip_label_mapCreatorBuildDate.Font = new Font("Segoe UI", 10F);
             userPlugins_statusStrip_label_mapCreatorBuildDate.ForeColor = Color.SlateGray;
             userPlugins_statusStrip_label_mapCreatorBuildDate.ImeMode = ImeMode.NoControl;
             userPlugins_statusStrip_label_mapCreatorBuildDate.Location = new Point(640, 424);
@@ -162,7 +162,7 @@
             userPlugins_panel_formLauncher_button_createTileTransitions.BackColor = Color.Transparent;
             userPlugins_panel_formLauncher_button_createTileTransitions.BackgroundImage = (Image)resources.GetObject("userPlugins_panel_formLauncher_button_createTileTransitions.BackgroundImage");
             userPlugins_panel_formLauncher_button_createTileTransitions.BackgroundImageLayout = ImageLayout.Stretch;
-            userPlugins_panel_formLauncher_button_createTileTransitions.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            userPlugins_panel_formLauncher_button_createTileTransitions.Font = new Font("Segoe UI", 11F);
             userPlugins_panel_formLauncher_button_createTileTransitions.ForeColor = Color.SlateGray;
             userPlugins_panel_formLauncher_button_createTileTransitions.Location = new Point(16, 22);
             userPlugins_panel_formLauncher_button_createTileTransitions.Name = "userPlugins_panel_formLauncher_button_createTileTransitions";
@@ -179,7 +179,7 @@
             userPlugins_panel_formLauncher_button_createTerrainTypes.BackColor = Color.Transparent;
             userPlugins_panel_formLauncher_button_createTerrainTypes.BackgroundImage = (Image)resources.GetObject("userPlugins_panel_formLauncher_button_createTerrainTypes.BackgroundImage");
             userPlugins_panel_formLauncher_button_createTerrainTypes.BackgroundImageLayout = ImageLayout.Stretch;
-            userPlugins_panel_formLauncher_button_createTerrainTypes.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            userPlugins_panel_formLauncher_button_createTerrainTypes.Font = new Font("Segoe UI", 11F);
             userPlugins_panel_formLauncher_button_createTerrainTypes.ForeColor = Color.SlateGray;
             userPlugins_panel_formLauncher_button_createTerrainTypes.Location = new Point(16, 79);
             userPlugins_panel_formLauncher_button_createTerrainTypes.Name = "userPlugins_panel_formLauncher_button_createTerrainTypes";
@@ -211,7 +211,7 @@
             userPlugins_panel_formLauncher_button_viewFacetAsPlanet.BackColor = Color.Transparent;
             userPlugins_panel_formLauncher_button_viewFacetAsPlanet.BackgroundImage = (Image)resources.GetObject("userPlugins_panel_formLauncher_button_viewFacetAsPlanet.BackgroundImage");
             userPlugins_panel_formLauncher_button_viewFacetAsPlanet.BackgroundImageLayout = ImageLayout.Stretch;
-            userPlugins_panel_formLauncher_button_viewFacetAsPlanet.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            userPlugins_panel_formLauncher_button_viewFacetAsPlanet.Font = new Font("Segoe UI", 11F);
             userPlugins_panel_formLauncher_button_viewFacetAsPlanet.ForeColor = Color.SlateGray;
             userPlugins_panel_formLauncher_button_viewFacetAsPlanet.Location = new Point(16, 137);
             userPlugins_panel_formLauncher_button_viewFacetAsPlanet.Name = "userPlugins_panel_formLauncher_button_viewFacetAsPlanet";
@@ -228,7 +228,7 @@
             userPlugins_panel_formLauncher_button_fileTypeConverters.BackColor = Color.Transparent;
             userPlugins_panel_formLauncher_button_fileTypeConverters.BackgroundImage = (Image)resources.GetObject("userPlugins_panel_formLauncher_button_fileTypeConverters.BackgroundImage");
             userPlugins_panel_formLauncher_button_fileTypeConverters.BackgroundImageLayout = ImageLayout.Stretch;
-            userPlugins_panel_formLauncher_button_fileTypeConverters.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            userPlugins_panel_formLauncher_button_fileTypeConverters.Font = new Font("Segoe UI", 11F);
             userPlugins_panel_formLauncher_button_fileTypeConverters.ForeColor = Color.SlateGray;
             userPlugins_panel_formLauncher_button_fileTypeConverters.Location = new Point(16, 194);
             userPlugins_panel_formLauncher_button_fileTypeConverters.Name = "userPlugins_panel_formLauncher_button_fileTypeConverters";
@@ -268,7 +268,7 @@
             // 
             // userPlugins_menuStrip
             // 
-            userPlugins_menuStrip.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
+            userPlugins_menuStrip.Font = new Font("Segoe UI", 13F);
             userPlugins_menuStrip.ImageScalingSize = new Size(20, 20);
             userPlugins_menuStrip.Items.AddRange(new ToolStripItem[] { userPlugins_menuStrip_button_facetBuilder, userPlugins_menuStrip_button_information });
             userPlugins_menuStrip.Location = new Point(0, 0);
@@ -356,10 +356,9 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = userPlugins_menuStrip;
             MaximizeBox = false;
-            MinimizeBox = false;
             Name = "userPlugins";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "MapCreator: User Plugins";
+            Text = "User Plugins";
             ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_topDivider).EndInit();
             userPlugins_statusStrip.ResumeLayout(false);
             userPlugins_statusStrip.PerformLayout();

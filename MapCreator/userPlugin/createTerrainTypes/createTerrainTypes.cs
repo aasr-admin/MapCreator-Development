@@ -30,43 +30,38 @@ namespace MapCreator.userPlugin
 
             InitializeComponent();
 
-            var rows = StaticGrid.GetLength(0);
+            var col = 13 * 22;
+            var row = 22;
 
-            var num = (rows * 44) / 2;
-            var num1 = 22;
-
-            var num2 = 0;
+            var gx = 0;
+            var gy = 0;
 
             do
             {
-                var num3 = 0;
-
                 do
                 {
-                    var staticGrid = StaticGrid;
-                    var point = new Point(checked(num - checked(num3 * 22)), checked(num1 + checked(num3 * 22)));
-                    staticGrid[num3, num2] = point;
-                    num3++;
+                    ref var p = ref StaticGrid[gy, gx];
+
+                    p.X = col - (gy * 22);
+                    p.Y = row + (gy * 22);
                 }
-                while (num3 <= 12);
-                num = checked(num + 22);
-                num1 = checked(num1 + 22);
-                num2++;
+                while (++gy < 13);
+
+                gy = 0;
+
+                col += 22;
+                row += 22;
             }
-            while (num2 <= 12);
+            while (++gx < 13);
+
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_ScrollGrid(0, 0);
         }
 
         private void createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_ScrollGrid(sbyte x, sbyte y)
         {
-            var gx = 6 + x; 
-            var gy = 6 + y;
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Location = StaticGrid[6 + y, 6 + x];
 
-            var p = StaticGrid[gy, gx];
-
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.HorizontalScroll.Value = p.X;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.VerticalScroll.Value = p.Y;
-
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.ScrollControlIntoView(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker);
         }
 
         /// Form Load Operations
@@ -140,39 +135,38 @@ namespace MapCreator.userPlugin
             {
                 _canvasControlBox.SendToBack();
 
-                if (_canvasControlBox.Visible)
-                {
-                    _canvasControlBox.Hide();
-                }
+                _canvasControlBox.Visible = false;
             }
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeX(object sender, EventArgs e)
         {
-            var x = Math.Clamp(_canvasControlBox.xAxis_label_numUpDown.Value, -6, 6);
+            var x = (sbyte)Math.Clamp(_canvasControlBox.xAxis_label_numUpDown.Value, -6, 6);
+            var y = (sbyte)Math.Clamp(_canvasControlBox.yAxis_label_numUpDown.Value, -6, 6);
 
             RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
 
             if (selectedItem != null)
             {
-                selectedItem.X = (sbyte)x;
+                selectedItem.X = x;
             }
 
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_ScrollGrid(x, y);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeY(object sender, EventArgs e)
         {
-            var y = Math.Clamp(_canvasControlBox.yAxis_label_numUpDown.Value, -6, 6);
+            var x = (sbyte)Math.Clamp(_canvasControlBox.xAxis_label_numUpDown.Value, -6, 6);
+            var y = (sbyte)Math.Clamp(_canvasControlBox.yAxis_label_numUpDown.Value, -6, 6);
 
             RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
 
             if (selectedItem != null)
             {
-                selectedItem.Y = (sbyte)y;
+                selectedItem.Y = y;
             }
 
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_ScrollGrid(x, y);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeZ(object sender, EventArgs e)

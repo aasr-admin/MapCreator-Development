@@ -248,7 +248,7 @@ namespace UltimaSDK
         /// </summary>
         public static Bitmap GetLand(int index, bool isAsync)
 		{
-			return GetLand(index, isAsync, out _);
+			return GetLand(index, out _, isAsync);
 		}
 
 		/// <summary>
@@ -256,11 +256,11 @@ namespace UltimaSDK
 		/// </summary>
 		public static Bitmap GetLand(int index, out bool patched)
 		{
-			return GetLand(index, false, out patched);
+			return GetLand(index, out patched, false);
         }
 
-        public static Bitmap GetLand(int index, bool isAsync, out bool patched)
-		{
+        public static Bitmap GetLand(int index, out bool patched, bool isAsync)
+        {
 			index &= 0x3FFF;
 
 			patched = m_Patched[index];
@@ -330,37 +330,45 @@ namespace UltimaSDK
             }
 
             return buffer;
-		}
-
-		/// <summary>
-		///     Returns Bitmap of Static (with Cache)
-		/// </summary>
-		public static Bitmap GetStatic(int index, bool checkmaxid = true)
-		{
-			return GetStatic(index, false, checkmaxid);
         }
 
         /// <summary>
         ///     Returns Bitmap of Static (with Cache)
         /// </summary>
-        public static Bitmap GetStatic(int index, bool isAsync, bool checkmaxid = true)
+        public static Bitmap GetStatic(int index)
         {
-            return GetStatic(index, isAsync, out _, checkmaxid);
+            return GetStatic(index, true);
+        }
+
+        /// <summary>
+        ///     Returns Bitmap of Static (with Cache)
+        /// </summary>
+        public static Bitmap GetStatic(int index, bool checkmaxid)
+		{
+			return GetStatic(index, checkmaxid, false);
+        }
+
+        /// <summary>
+        ///     Returns Bitmap of Static (with Cache)
+        /// </summary>
+        public static Bitmap GetStatic(int index, bool checkmaxid, bool isAsync)
+        {
+            return GetStatic(index, out _, checkmaxid, isAsync);
         }
 
         /// <summary>
         ///     Returns Bitmap of Static (with Cache) and verdata bool
         /// </summary>
-        public static Bitmap GetStatic(int index, out bool patched, bool checkmaxid = true)
+        public static Bitmap GetStatic(int index, out bool patched, bool checkmaxid)
 		{
-			return GetStatic(index, false, out patched, checkmaxid);
+			return GetStatic(index, out patched, checkmaxid, false);
         }
 
         /// <summary>
         ///     Returns Bitmap of Static (with Cache) and verdata bool
         /// </summary>
-        public static Bitmap GetStatic(int index, bool isAsync, out bool patched, bool checkmaxid = true)
-		{
+        public static Bitmap GetStatic(int index, out bool patched, bool checkmaxid, bool isAsync)
+        {
 			index = GetLegalItemID(index, checkmaxid);
 			index += 0x4000;
 

@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<Nullable>disable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -32,10 +32,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="buildLogger.cs">
+		  <SubType>Form</SubType>
+		</Compile>
 		<Compile Update="Properties\Resources.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="userPlugin\createTerrainTypes\canvasControlBox.cs">
+		  <SubType>Form</SubType>
+		</Compile>
+		<Compile Update="userPlugin\createTerrainTypes\staticSelector.cs">
+		  <SubType>Form</SubType>
 		</Compile>
 	</ItemGroup>
 
