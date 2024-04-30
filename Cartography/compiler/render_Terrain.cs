@@ -48,7 +48,7 @@ namespace Cartography.compiler
             GroupID = XmlConvert.ToByte(xmlInfo.GetAttribute("ID"));
             TileID = XmlConvert.ToUInt16(xmlInfo.GetAttribute("TileID"));
             Colour = Color.FromArgb(XmlConvert.ToByte(xmlInfo.GetAttribute("R")), XmlConvert.ToByte(xmlInfo.GetAttribute("G")), XmlConvert.ToByte(xmlInfo.GetAttribute("B")));
-            AltID = XmlConvert.ToSByte(xmlInfo.GetAttribute("Base"));
+            AltID = unchecked((sbyte)XmlConvert.ToInt32(xmlInfo.GetAttribute("Base")));
             var attribute = xmlInfo.GetAttribute("Random");
             if (StringType.StrCmp(attribute, "False", false) == 0)
             {
@@ -142,6 +142,11 @@ namespace Cartography.compiler
         public ClsTerrainTable()
         {
             TerrainHash = new Hashtable();
+        }
+
+        public void Clear()
+        {
+            TerrainHash.Clear();
         }
 
         public void Display(ListBox iList)

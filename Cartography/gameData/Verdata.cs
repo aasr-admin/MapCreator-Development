@@ -1,4 +1,6 @@
+#region References
 using System.IO;
+#endregion
 
 // FileIDs
 //0 - map0.mul
@@ -25,7 +27,7 @@ namespace UltimaSDK
 {
 	public sealed class Verdata
 	{
-		public static Stream Stream { get; private set; }
+		public static FileStream Stream { get; private set; }
 		public static Entry5D[] Patches { get; private set; }
 
 		private static string path;
@@ -42,7 +44,7 @@ namespace UltimaSDK
 			if (path == null)
 			{
 				Patches = new Entry5D[0];
-				Stream = Stream.Null;
+				Stream = null;
 			}
 			else
 			{
@@ -52,7 +54,7 @@ namespace UltimaSDK
 					{
 						Patches = new Entry5D[bin.ReadInt32()];
 
-						for (var i = 0; i < Patches.Length; ++i)
+						for (int i = 0; i < Patches.Length; ++i)
 						{
 							Patches[i].file = bin.ReadInt32();
 							Patches[i].index = bin.ReadInt32();
@@ -62,22 +64,21 @@ namespace UltimaSDK
 						}
 					}
 				}
-
 				Stream.Close();
 			}
 		}
 
 		public static void Seek(int lookup)
 		{
-			if (Stream == null || !Stream.CanRead || !Stream.CanSeek)
-			{
-				if (path != null)
-				{
-					Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-				}
-			}
+            if (Stream == null || !Stream.CanRead || !Stream.CanSeek)
+            {
+                if (path != null)
+                {
+                    Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                }
+            }
 
-			_ = Stream.Seek(lookup, SeekOrigin.Begin);
+			Stream.Seek(lookup, SeekOrigin.Begin);
 		}
 	}
 

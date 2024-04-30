@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(facetBuilder));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(facetBuilder));
             facetBuilder_menuStrip = new MenuStrip();
             facetBuilder_menuStrip_button_gettingStarted = new ToolStripMenuItem();
             facetBuilder_menuStrip_button_gettingStarted_createColorTables = new ToolStripMenuItem();
@@ -117,7 +117,7 @@
             // 
             // facetBuilder_menuStrip
             // 
-            facetBuilder_menuStrip.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_menuStrip.Font = new Font("Segoe UI", 12F);
             facetBuilder_menuStrip.ImageScalingSize = new Size(20, 20);
             facetBuilder_menuStrip.Items.AddRange(new ToolStripItem[] { facetBuilder_menuStrip_button_gettingStarted, facetBuilder_menuStrip_button_drawingTools, facetBuilder_menuStrip_button_facetTutorials, facetBuilder_menuStrip_button_userPlugins, facetBuilder_menuStrip_button_uploadPlugin, facetBuilder_menuStrip_button_information });
             facetBuilder_menuStrip.Location = new Point(0, 0);
@@ -137,7 +137,7 @@
             // 
             // facetBuilder_menuStrip_button_gettingStarted_createColorTables
             // 
-            facetBuilder_menuStrip_button_gettingStarted_createColorTables.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_menuStrip_button_gettingStarted_createColorTables.Font = new Font("Segoe UI", 11F);
             facetBuilder_menuStrip_button_gettingStarted_createColorTables.Name = "facetBuilder_menuStrip_button_gettingStarted_createColorTables";
             facetBuilder_menuStrip_button_gettingStarted_createColorTables.Size = new Size(211, 24);
             facetBuilder_menuStrip_button_gettingStarted_createColorTables.Text = "Create Color Tables";
@@ -145,7 +145,7 @@
             // 
             // facetBuilder_menuStrip_button_gettingStarted_mapCreatorManual
             // 
-            facetBuilder_menuStrip_button_gettingStarted_mapCreatorManual.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_menuStrip_button_gettingStarted_mapCreatorManual.Font = new Font("Segoe UI", 11F);
             facetBuilder_menuStrip_button_gettingStarted_mapCreatorManual.Name = "facetBuilder_menuStrip_button_gettingStarted_mapCreatorManual";
             facetBuilder_menuStrip_button_gettingStarted_mapCreatorManual.Size = new Size(211, 24);
             facetBuilder_menuStrip_button_gettingStarted_mapCreatorManual.Text = "MapCreator Manual";
@@ -162,7 +162,7 @@
             // 
             // facetBuilder_menuStrip_button_drawingTools_adobePhotoshop
             // 
-            facetBuilder_menuStrip_button_drawingTools_adobePhotoshop.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_menuStrip_button_drawingTools_adobePhotoshop.Font = new Font("Segoe UI", 11F);
             facetBuilder_menuStrip_button_drawingTools_adobePhotoshop.Name = "facetBuilder_menuStrip_button_drawingTools_adobePhotoshop";
             facetBuilder_menuStrip_button_drawingTools_adobePhotoshop.Size = new Size(211, 24);
             facetBuilder_menuStrip_button_drawingTools_adobePhotoshop.Text = "Adobe Photoshop™";
@@ -170,7 +170,7 @@
             // 
             // facetBuilder_menuStrip_button_drawingTools_freePaintSoftware
             // 
-            facetBuilder_menuStrip_button_drawingTools_freePaintSoftware.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_menuStrip_button_drawingTools_freePaintSoftware.Font = new Font("Segoe UI", 11F);
             facetBuilder_menuStrip_button_drawingTools_freePaintSoftware.Name = "facetBuilder_menuStrip_button_drawingTools_freePaintSoftware";
             facetBuilder_menuStrip_button_drawingTools_freePaintSoftware.Size = new Size(211, 24);
             facetBuilder_menuStrip_button_drawingTools_freePaintSoftware.Text = "Free Paint Software";
@@ -221,7 +221,7 @@
             // 
             // facetBuilder_statusStrip_sizeElevenSpacer
             // 
-            facetBuilder_statusStrip_sizeElevenSpacer.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_statusStrip_sizeElevenSpacer.Font = new Font("Segoe UI", 11F);
             facetBuilder_statusStrip_sizeElevenSpacer.Name = "facetBuilder_statusStrip_sizeElevenSpacer";
             facetBuilder_statusStrip_sizeElevenSpacer.Size = new Size(13, 20);
             facetBuilder_statusStrip_sizeElevenSpacer.Text = " ";
@@ -253,7 +253,7 @@
             // facetBuilder_statusStrip_label_mapCreatorVersioning
             // 
             facetBuilder_statusStrip_label_mapCreatorVersioning.AutoSize = true;
-            facetBuilder_statusStrip_label_mapCreatorVersioning.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_statusStrip_label_mapCreatorVersioning.Font = new Font("Segoe UI", 10F);
             facetBuilder_statusStrip_label_mapCreatorVersioning.ForeColor = Color.SlateGray;
             facetBuilder_statusStrip_label_mapCreatorVersioning.ImeMode = ImeMode.NoControl;
             facetBuilder_statusStrip_label_mapCreatorVersioning.Location = new Point(12, 424);
@@ -265,7 +265,7 @@
             // facetBuilder_statusStrip_label_mapCreatorBuildDate
             // 
             facetBuilder_statusStrip_label_mapCreatorBuildDate.AutoSize = true;
-            facetBuilder_statusStrip_label_mapCreatorBuildDate.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_statusStrip_label_mapCreatorBuildDate.Font = new Font("Segoe UI", 10F);
             facetBuilder_statusStrip_label_mapCreatorBuildDate.ForeColor = Color.SlateGray;
             facetBuilder_statusStrip_label_mapCreatorBuildDate.ImeMode = ImeMode.NoControl;
             facetBuilder_statusStrip_label_mapCreatorBuildDate.Location = new Point(640, 424);
@@ -320,7 +320,7 @@
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Controls.Add(facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Controls.Add(facetBuilder_panel_workbench_groupBox_compileYourNewFacet_button_locateProject);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Controls.Add(facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation);
-            facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Font = new Font("Segoe UI", 11F);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet.ForeColor = Color.Red;
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Location = new Point(9, 9);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Name = "facetBuilder_panel_workbench_groupBox_compileYourNewFacet";
@@ -332,7 +332,7 @@
             // facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_directions
             // 
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_directions.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_directions.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_directions.Font = new Font("Segoe UI", 9F);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_directions.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_directions.Location = new Point(13, 218);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_directions.Name = "facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_directions";
@@ -353,7 +353,7 @@
             // facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_off
             // 
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_off.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_off.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_off.Font = new Font("Segoe UI", 9.5F);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_off.ForeColor = Color.ForestGreen;
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_off.Location = new Point(142, 173);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_off.Name = "facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_off";
@@ -367,7 +367,7 @@
             // facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_on
             // 
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_on.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_on.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_on.Font = new Font("Segoe UI", 9.5F);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_on.ForeColor = Color.ForestGreen;
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_on.Location = new Point(142, 150);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_on.Name = "facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics_radioButton_on";
@@ -381,7 +381,7 @@
             // facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics
             // 
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics.Font = new Font("Segoe UI", 9.5F);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics.Location = new Point(6, 150);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics.Name = "facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_toggleFacetStatics";
@@ -391,7 +391,7 @@
             // 
             // facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap_textBox
             // 
-            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap_textBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap_textBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap_textBox.Location = new Point(157, 109);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap_textBox.Name = "facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap_textBox";
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap_textBox.Size = new Size(116, 25);
@@ -400,7 +400,7 @@
             // 
             // facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap_textBox
             // 
-            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap_textBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap_textBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap_textBox.Location = new Point(10, 109);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap_textBox.Name = "facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap_textBox";
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap_textBox.Size = new Size(116, 25);
@@ -423,7 +423,7 @@
             // facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap
             // 
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap.Font = new Font("Segoe UI", 10.5F);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap.Location = new Point(157, 86);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap.Name = "facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_altitudeBitmap";
@@ -434,7 +434,7 @@
             // facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap
             // 
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap.Font = new Font("Segoe UI", 10.5F);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap.Location = new Point(6, 86);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap.Name = "facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_terrainBitmap";
@@ -444,7 +444,7 @@
             // 
             // facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox
             // 
-            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Location = new Point(10, 54);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Name = "facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox";
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Size = new Size(264, 25);
@@ -466,7 +466,7 @@
             // facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation
             // 
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation.Font = new Font("Segoe UI", 10.5F);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation.Location = new Point(6, 31);
             facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation.Name = "facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation";
@@ -492,7 +492,7 @@
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Controls.Add(facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Controls.Add(facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Controls.Add(facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation);
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Font = new Font("Segoe UI", 11F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.ForeColor = Color.Red;
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Location = new Point(9, 9);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles";
@@ -504,7 +504,7 @@
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox
             // 
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.Location = new Point(176, 278);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox";
@@ -515,7 +515,7 @@
             // 
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox
             // 
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox.FormattingEnabled = true;
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox.Location = new Point(103, 246);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox";
@@ -524,7 +524,7 @@
             // 
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox
             // 
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.FormattingEnabled = true;
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.Location = new Point(103, 215);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox";
@@ -543,7 +543,7 @@
             // 
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName_textBox
             // 
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName_textBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName_textBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName_textBox.Location = new Point(103, 184);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName_textBox.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName_textBox";
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName_textBox.Size = new Size(224, 25);
@@ -551,7 +551,7 @@
             // 
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap_textBox
             // 
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap_textBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap_textBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap_textBox.Location = new Point(157, 109);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap_textBox.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap_textBox";
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap_textBox.Size = new Size(116, 25);
@@ -560,7 +560,7 @@
             // 
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap_textBox
             // 
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap_textBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap_textBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap_textBox.Location = new Point(10, 109);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap_textBox.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap_textBox";
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap_textBox.Size = new Size(116, 25);
@@ -569,7 +569,7 @@
             // 
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox
             // 
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Location = new Point(10, 54);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox";
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Size = new Size(264, 25);
@@ -604,7 +604,7 @@
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain
             // 
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain.Font = new Font("Segoe UI", 10.5F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain.Location = new Point(5, 248);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain";
@@ -615,7 +615,7 @@
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize
             // 
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize.Font = new Font("Segoe UI", 10.5F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize.Location = new Point(6, 216);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize";
@@ -626,7 +626,7 @@
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName
             // 
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName.Font = new Font("Segoe UI", 10.5F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName.Location = new Point(6, 185);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetName";
@@ -637,7 +637,7 @@
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap
             // 
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap.Font = new Font("Segoe UI", 10.5F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap.Location = new Point(157, 86);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap";
@@ -648,7 +648,7 @@
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap
             // 
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap.Font = new Font("Segoe UI", 10.5F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap.Location = new Point(6, 86);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap";
@@ -659,7 +659,7 @@
             // facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation
             // 
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation.Font = new Font("Segoe UI", 10.5F);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation.Location = new Point(6, 31);
             facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation.Name = "facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation";
@@ -680,7 +680,7 @@
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Controls.Add(facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Controls.Add(facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Controls.Add(facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation);
-            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Font = new Font("Segoe UI", 11F);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.ForeColor = Color.Red;
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Location = new Point(9, 9);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Name = "facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap";
@@ -692,7 +692,7 @@
             // facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_failureWarning
             // 
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_failureWarning.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_failureWarning.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_failureWarning.Font = new Font("Segoe UI", 9.5F);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_failureWarning.Location = new Point(10, 275);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_failureWarning.Name = "facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_failureWarning";
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_failureWarning.Size = new Size(301, 17);
@@ -702,7 +702,7 @@
             // facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_directions
             // 
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_directions.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_directions.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_directions.Font = new Font("Segoe UI", 9F);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_directions.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_directions.Location = new Point(10, 183);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_directions.Name = "facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_directions";
@@ -722,7 +722,7 @@
             // 
             // facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap_textBox
             // 
-            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap_textBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap_textBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap_textBox.Location = new Point(157, 109);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap_textBox.Name = "facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap_textBox";
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap_textBox.Size = new Size(116, 25);
@@ -731,7 +731,7 @@
             // 
             // facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap_textBox
             // 
-            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap_textBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap_textBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap_textBox.Location = new Point(10, 109);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap_textBox.Name = "facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap_textBox";
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap_textBox.Size = new Size(116, 25);
@@ -740,7 +740,7 @@
             // 
             // facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox
             // 
-            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Font = new Font("Segoe UI", 10F);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Location = new Point(10, 54);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Name = "facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox";
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Size = new Size(264, 25);
@@ -775,7 +775,7 @@
             // facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap
             // 
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap.Font = new Font("Segoe UI", 10.5F);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap.Location = new Point(157, 86);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap.Name = "facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap";
@@ -786,7 +786,7 @@
             // facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap
             // 
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap.Font = new Font("Segoe UI", 10.5F);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap.Location = new Point(6, 86);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap.Name = "facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap";
@@ -797,7 +797,7 @@
             // facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation
             // 
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation.AutoSize = true;
-            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation.Font = new Font("Segoe UI", 10.5F);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation.ForeColor = Color.LightGray;
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation.Location = new Point(6, 31);
             facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation.Name = "facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation";
@@ -822,7 +822,7 @@
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld.Controls.Add(facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet);
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld.Controls.Add(facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap);
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld.Controls.Add(facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles);
-            facetBuilder_panel_workbench_selection_groupBox_createYourWorld.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_selection_groupBox_createYourWorld.Font = new Font("Segoe UI", 12F);
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld.ForeColor = Color.Gold;
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld.Location = new Point(12, 11);
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld.Name = "facetBuilder_panel_workbench_selection_groupBox_createYourWorld";
@@ -835,7 +835,7 @@
             // 
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet.BackgroundImage = (Image)resources.GetObject("facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet.BackgroundImage");
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet.BackgroundImageLayout = ImageLayout.Stretch;
-            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet.Font = new Font("Segoe UI", 11F);
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet.ForeColor = Color.SlateGray;
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet.Location = new Point(10, 126);
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet.Name = "facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet";
@@ -851,7 +851,7 @@
             // 
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap.BackgroundImage = (Image)resources.GetObject("facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap.BackgroundImage");
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap.BackgroundImageLayout = ImageLayout.Stretch;
-            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap.Font = new Font("Segoe UI", 11F);
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap.ForeColor = Color.SlateGray;
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap.Location = new Point(10, 78);
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap.Name = "facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap";
@@ -867,7 +867,7 @@
             // 
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles.BackgroundImage = (Image)resources.GetObject("facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles.BackgroundImage");
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles.BackgroundImageLayout = ImageLayout.Stretch;
-            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles.Font = new Font("Segoe UI", 11F);
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles.ForeColor = Color.SlateGray;
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles.Location = new Point(10, 30);
             facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles.Name = "facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles";
@@ -910,12 +910,9 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = facetBuilder_menuStrip;
             MaximizeBox = false;
-            MinimizeBox = false;
             Name = "facetBuilder";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "MapCreator: Facet Builder";
-            FormClosed += facetBuilder_FormClosed;
-            Load += facetBuilder_Load;
+            Text = "Facet Builder";
             facetBuilder_menuStrip.ResumeLayout(false);
             facetBuilder_menuStrip.PerformLayout();
             facetBuilder_statusStrip.ResumeLayout(false);

@@ -1,5 +1,7 @@
+#region References
 using System.Collections;
 using System.IO;
+#endregion
 
 namespace UltimaSDK
 {
@@ -8,15 +10,7 @@ namespace UltimaSDK
 		private static int[] m_Header;
 		private static byte[] m_Unknown;
 
-		#region Getters And Setters
-
-		public static Hashtable AnimData
-		{
-			get;
-			set;
-		}
-
-		#endregion
+		public static Hashtable AnimData { get; set; }
 
 		static Animdata()
 		{
@@ -24,12 +18,12 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Reads animdata.mul and fills <see cref="AnimData"/>
+		///     Reads animdata.mul and fills <see cref="AnimData" />
 		/// </summary>
 		public static void Initialize()
 		{
 			AnimData = new Hashtable();
-			var path = Files.GetFilePath("animdata.mul");
+			string path = Files.GetFilePath("animdata.mul");
 			if (path != null)
 			{
 				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -38,30 +32,29 @@ namespace UltimaSDK
 					{
 						unsafe
 						{
-							var id = 0;
-							var h = 0;
+							int id = 0;
+							int h = 0;
 							byte unk;
 							byte fcount;
 							byte finter;
 							byte fstart;
 							sbyte[] fdata;
-							m_Header = new int[bin.BaseStream.Length / (4 + (8 * (64 + 4)))];
-							while (h < m_Header.Length/*bin.BaseStream.Length != bin.BaseStream.Position*/)
+							m_Header = new int[bin.BaseStream.Length / (4 + 8 * (64 + 4))];
+							while (h < m_Header.Length /*bin.BaseStream.Length != bin.BaseStream.Position*/)
 							{
 								m_Header[h++] = bin.ReadInt32(); // chunk header
-																 // Read 8 tiles
-								var buffer = bin.ReadBytes(544);
+								// Read 8 tiles
+								byte[] buffer = bin.ReadBytes(544);
 								fixed (byte* buf = buffer)
 								{
-									var data = buf;
-									for (var i = 0; i < 8; ++i, ++id)
+									byte* data = buf;
+									for (int i = 0; i < 8; ++i, ++id)
 									{
 										fdata = new sbyte[64];
-										for (var j = 0; j < 64; ++j)
+										for (int j = 0; j < 64; ++j)
 										{
 											fdata[j] = (sbyte)*data++;
 										}
-
 										unk = *data++;
 										fcount = *data++;
 										finter = *data++;
@@ -73,7 +66,6 @@ namespace UltimaSDK
 									}
 								}
 							}
-
 							var remaining = (int)(bin.BaseStream.Length - bin.BaseStream.Position);
 							if (remaining > 0)
 							{
@@ -86,7 +78,7 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Gets Animation <see cref="Data"/>
+		///     Gets Animation <see cref="Data" />
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
@@ -94,7 +86,7 @@ namespace UltimaSDK
 		{
 			if (AnimData.Contains(id))
 			{
-				return (Data)AnimData[id];
+				return ((Data)AnimData[id]);
 			}
 			else
 			{
@@ -104,20 +96,20 @@ namespace UltimaSDK
 
 		public static void Save(string path)
 		{
-			var FileName = Path.Combine(path, "animdata.mul");
+			string FileName = Path.Combine(path, "animdata.mul");
 			using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
 			{
 				using (var bin = new BinaryWriter(fs))
 				{
-					var id = 0;
-					var h = 0;
+					int id = 0;
+					int h = 0;
 					while (id < m_Header.Length * 8)
 					{
 						bin.Write(m_Header[h++]);
-						for (var i = 0; i < 8; ++i, ++id)
+						for (int i = 0; i < 8; ++i, ++id)
 						{
-							var data = GetAnimData(id);
-							for (var j = 0; j < 64; ++j)
+							Data data = GetAnimData(id);
+							for (int j = 0; j < 64; ++j)
 							{
 								if (data != null)
 								{
@@ -128,7 +120,6 @@ namespace UltimaSDK
 									bin.Write((sbyte)0);
 								}
 							}
-
 							if (data != null)
 							{
 								bin.Write(data.Unknown);
@@ -145,7 +136,6 @@ namespace UltimaSDK
 							}
 						}
 					}
-
 					if (m_Unknown != null)
 					{
 						bin.Write(m_Unknown);

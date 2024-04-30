@@ -42,52 +42,52 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.Windows.Forms.Timer splashScreen_closeTimer;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(splashScreen));
-            this.splashScreen_pictureBox_titleImage = new System.Windows.Forms.PictureBox();
-            splashScreen_closeTimer = new System.Windows.Forms.Timer(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.splashScreen_pictureBox_titleImage)).BeginInit();
-            this.SuspendLayout();
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(splashScreen));
+            splashScreen_pictureBox_titleImage = new PictureBox();
+            splashScreen_closeTimer = new System.Windows.Forms.Timer(components);
+            ((System.ComponentModel.ISupportInitialize)splashScreen_pictureBox_titleImage).BeginInit();
+            SuspendLayout();
             // 
             // splashScreen_closeTimer
             // 
             splashScreen_closeTimer.Interval = 1500;
-            splashScreen_closeTimer.Tick += new System.EventHandler(this.splashScreen_closeTimer_Tick);
+            splashScreen_closeTimer.Tick += splashScreen_closeTimer_Tick;
             // 
             // splashScreen_pictureBox_titleImage
             // 
-            this.splashScreen_pictureBox_titleImage.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.splashScreen_pictureBox_titleImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splashScreen_pictureBox_titleImage.Image = ((System.Drawing.Image)(resources.GetObject("splashScreen_pictureBox_titleImage.Image")));
-            this.splashScreen_pictureBox_titleImage.Location = new System.Drawing.Point(0, 0);
-            this.splashScreen_pictureBox_titleImage.Name = "splashScreen_pictureBox_titleImage";
-            this.splashScreen_pictureBox_titleImage.Size = new System.Drawing.Size(546, 224);
-            this.splashScreen_pictureBox_titleImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.splashScreen_pictureBox_titleImage.TabIndex = 0;
-            this.splashScreen_pictureBox_titleImage.TabStop = false;
+            splashScreen_pictureBox_titleImage.BackColor = SystemColors.ActiveCaptionText;
+            splashScreen_pictureBox_titleImage.Dock = DockStyle.Fill;
+            splashScreen_pictureBox_titleImage.Image = (Image)resources.GetObject("splashScreen_pictureBox_titleImage.Image");
+            splashScreen_pictureBox_titleImage.Location = new Point(0, 0);
+            splashScreen_pictureBox_titleImage.Name = "splashScreen_pictureBox_titleImage";
+            splashScreen_pictureBox_titleImage.Size = new Size(546, 224);
+            splashScreen_pictureBox_titleImage.SizeMode = PictureBoxSizeMode.StretchImage;
+            splashScreen_pictureBox_titleImage.TabIndex = 0;
+            splashScreen_pictureBox_titleImage.TabStop = false;
             // 
             // splashScreen
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(546, 224);
-            this.ControlBox = false;
-            this.Controls.Add(this.splashScreen_pictureBox_titleImage);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "splashScreen";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.TopMost = true;
-            this.Shown += new System.EventHandler(this.splashScreen_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.splashScreen_pictureBox_titleImage)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(546, 224);
+            ControlBox = false;
+            Controls.Add(splashScreen_pictureBox_titleImage);
+            FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "splashScreen";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            SizeGripStyle = SizeGripStyle.Hide;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Map Creator";
+            TopMost = true;
+            Shown += splashScreen_Shown;
+            ((System.ComponentModel.ISupportInitialize)splashScreen_pictureBox_titleImage).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
@@ -7,8 +8,6 @@ using System.Xml;
 
 using Cartography.compiler;
 using Cartography.groupBoxControls;
-
-using Compiler;
 
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -21,33 +20,24 @@ namespace MapCreator
         private readonly ClsTerrainTable iTerrain;
         private Bitmap i_Altitude;
         private readonly ClsAltitudeTable iAltitude;
-        private readonly buildLogger iLogger;
         private bool i_RandomStatic;
 
         public facetBuilder()
         {
-            InitializeComponent();
-
-            MaximizeBox = false;
-            MinimizeBox = false;
-
-            var facetBuilderForm = this;
-
-            base.Load += new EventHandler(facetBuilderForm.facetBuilder_Load);
-
             iTerrain = new ClsTerrainTable();
             iAltitude = new ClsAltitudeTable();
-            iLogger = new buildLogger();
             i_RandomStatic = true;
+
+            InitializeComponent();
         }
 
-        private void facetBuilder_Load(object? sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
-            if (Visible == true)
+            base.OnLoad(e);
+
+            if (Visible && facetBuilder_panel_workbench.Visible)
             {
-                Control fBPW = facetBuilder_panel_workbench;
-                Thread.Sleep(25);
-                fBPW.Hide();
+                facetBuilder_panel_workbench.Hide();
             }
 
             #region Workbench Loading
@@ -56,7 +46,7 @@ namespace MapCreator
 
             IEnumerator enumerator = null;
 
-            iLogger.Show();
+            var iLogger = StaticForm<buildLogger>.Open(this);
 
             var x = iLogger.Location.X + 100;
             var location = iLogger.Location;
@@ -128,14 +118,21 @@ namespace MapCreator
             #endregion
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            Application.Exit();
+        }
+
         private void facetBuilder_menuStrip_button_gettingStarted_createColorTables_Click(object sender, EventArgs e)
         {
-            Hide();
-
-            var colorTablesForm = new colorTables();
-            colorTablesForm.Show();
-
-            iLogger.Close();
+            StaticForm<colorTables>.Open();
         }
 
         private void facetBuilder_menuStrip_button_gettingStarted_mapCreatorManual_Click(object sender, EventArgs e)
@@ -172,12 +169,7 @@ namespace MapCreator
 
         private void facetBuilder_menuStrip_button_userPlugins_Click(object sender, EventArgs e)
         {
-            Hide();
-
-            var userPluginsForm = new userPlugins();
-            userPluginsForm.Show();
-
-            iLogger.Close();
+            StaticForm<userPlugins>.Open();
         }
 
         private void facetBuilder_menuStrip_button_uploadPlugin_Click(object sender, EventArgs e)
@@ -187,41 +179,28 @@ namespace MapCreator
 
         private void facetBuilder_menuStrip_button_information_Click(object sender, EventArgs e)
         {
-            var communityCreditsForm = new communityCredits();
-            communityCreditsForm.Show();
-
-            iLogger.Close();
+            StaticForm<communityCredits>.Open();
         }
 
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles_MouseEnter(object sender, EventArgs e)
         {
-            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles.ForeColor = System.Drawing.Color.LimeGreen;
+            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles.ForeColor = Color.LimeGreen;
         }
 
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles_Click(object sender, EventArgs e)
         {
             /// Show These Controls
-            Control fBPW = facetBuilder_panel_workbench;
-            Thread.Sleep(25);
-            fBPW.Show();
-
-            Control cFBF = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles;
-            Thread.Sleep(25);
-            cFBF.Show();
+            facetBuilder_panel_workbench.Show();
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Show();
 
             /// Hide These Controls
-            Control sYAB = facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap;
-            Thread.Sleep(25);
-            sYAB.Hide();
-
-            Control cYNF = facetBuilder_panel_workbench_groupBox_compileYourNewFacet;
-            Thread.Sleep(25);
-            cYNF.Hide();
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Hide();
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Hide();
         }
 
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles_MouseLeave(object sender, EventArgs e)
         {
-            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles.ForeColor = System.Drawing.Color.SlateGray;
+            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles.ForeColor = Color.SlateGray;
         }
 
         #region GroupBox Functionality
@@ -233,7 +212,7 @@ namespace MapCreator
                 SelectedPath = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text
             };
 
-            if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text = folderBrowserDialog.SelectedPath;
             }
@@ -241,6 +220,8 @@ namespace MapCreator
 
         private void facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_button_createFacetBitmapFiles_Click(object sender, EventArgs e)
         {
+            var iLogger = StaticForm<buildLogger>.Open(this);
+
             sbyte altID;
             byte groupID;
 
@@ -431,33 +412,23 @@ namespace MapCreator
 
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap_MouseEnter(object sender, EventArgs e)
         {
-            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap.ForeColor = System.Drawing.Color.LimeGreen;
+            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap.ForeColor = Color.LimeGreen;
         }
 
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap_Click(object sender, EventArgs e)
         {
             /// Show These Controls
-            Control fBPW = facetBuilder_panel_workbench;
-            Thread.Sleep(25);
-            fBPW.Show();
-
-            Control sYAB = facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap;
-            Thread.Sleep(25);
-            sYAB.Show();
+            facetBuilder_panel_workbench.Show();
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Show();
 
             /// Hide These Controls
-            Control cFBF = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles;
-            Thread.Sleep(25);
-            cFBF.Hide();
-
-            Control cYNF = facetBuilder_panel_workbench_groupBox_compileYourNewFacet;
-            Thread.Sleep(25);
-            cYNF.Hide();
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Hide();
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Hide();
         }
 
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap_MouseLeave(object sender, EventArgs e)
         {
-            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap.ForeColor = System.Drawing.Color.SlateGray;
+            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_syncYourAltitudeBitmap.ForeColor = Color.SlateGray;
         }
 
         #region GroupBox Functionality
@@ -468,7 +439,7 @@ namespace MapCreator
             {
                 SelectedPath = facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text
             };
-            if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text = folderBrowserDialog.SelectedPath;
             }
@@ -476,49 +447,38 @@ namespace MapCreator
 
         private async void facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_button_syncAltitudeBitmapFile_Click(object sender, EventArgs e)
         {
-            var progress = new Progress<int>(i => { facetBuilder_panel_workbench_progressBar.Value = Math.Abs(i); }); // TODO: temporary fix, i didn't get why it put -73
-            var logger = new Progress<string>(iLogger.LogMessage);
-            var resetProgress = new Task(() =>
-            {
-                Thread.Sleep(1000);
-                ((IProgress<int>)progress).Report(0);
-            });
-            await Task.Run(() => EncodeAltitudeBitmapHelper.MakeAltitudeImage(facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text, facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap_textBox.Text, facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap_textBox.Text, iAltitude, iTerrain, progress, logger)).ContinueWith(c => resetProgress.Start());
+            var iLogger = StaticForm<buildLogger>.Open(this);
 
-            /// await Task.Run(() => EncodeAltitudeBitmapHelper.MakeAltitudeImage(mainMenu_groupBox01_createYourWorld_panel02_workBench_groupBox01_syncYourAltitudeBitmap_textBox01_projectPath.Text, mainMenu_groupBox01_createYourWorld_panel02_workBench_groupBox01_syncYourAltitudeBitmap_textBox02_terrainBitmap.Text, mainMenu_groupBox01_createYourWorld_panel02_workBench_groupBox01_syncYourAltitudeBitmap_textBox03_altitudeBitmap.Text, iAltitude, iTerrain, progress, logger)).ContinueWith(c => resetProgress.Start());
+            IProgress<string> logger = new Progress<string>(iLogger.LogMessage);
+
+            IProgress<int> progress = new Progress<int>(i => facetBuilder_panel_workbench_progressBar.Value = Math.Abs(i)); // TODO: temporary fix, i didn't get why it put -73
+            
+            await Task.Run(() => EncodeAltitudeBitmapHelper.MakeAltitudeImage(facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text, facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_terrainBitmap_textBox.Text, facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_altitudeBitmap_textBox.Text, iAltitude, iTerrain, progress, logger));
+            
+            progress.Report(0);
         }
 
         #endregion
 
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet_MouseEnter(object sender, EventArgs e)
         {
-            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet.ForeColor = System.Drawing.Color.LimeGreen;
+            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet.ForeColor = Color.LimeGreen;
         }
 
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet_Click(object sender, EventArgs e)
         {
             /// Show These Controls
-            Control fBPW = facetBuilder_panel_workbench;
-            Thread.Sleep(25);
-            fBPW.Show();
-
-            Control cYNF = facetBuilder_panel_workbench_groupBox_compileYourNewFacet;
-            Thread.Sleep(25);
-            cYNF.Show();
+            facetBuilder_panel_workbench.Show();
+            facetBuilder_panel_workbench_groupBox_compileYourNewFacet.Show();
 
             /// Hide These Controls
-            Control cFBF = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles;
-            Thread.Sleep(25);
-            cFBF.Hide();
-
-            Control sYAB = facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap;
-            Thread.Sleep(25);
-            sYAB.Hide();
+            facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles.Hide();
+            facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap.Hide();
         }
 
         private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet_MouseLeave(object sender, EventArgs e)
         {
-            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet.ForeColor = System.Drawing.Color.SlateGray;
+            facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_compileYourNewFacet.ForeColor = Color.SlateGray;
         }
 
         #region GroupBox Functionality
@@ -565,6 +525,8 @@ namespace MapCreator
 
         private void CreateFacet_mul_Files()
         {
+            var iLogger = StaticForm<buildLogger>.Open(this);
+
             sbyte altID = 0;
             string str;
             IEnumerator enumerator = null;
@@ -952,10 +914,5 @@ namespace MapCreator
         }
 
         #endregion
-
-        private void facetBuilder_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Application.Exit();
-        }
     }
 }

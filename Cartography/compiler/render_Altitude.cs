@@ -35,7 +35,7 @@ namespace Cartography.compiler
         {
             Key = XmlConvert.ToInt32(xmlInfo.GetAttribute("Key"));
             Type = xmlInfo.GetAttribute("Type");
-            GetAltitude = XmlConvert.ToSByte(xmlInfo.GetAttribute("Altitude"));
+            GetAltitude = unchecked((sbyte)XmlConvert.ToInt32(xmlInfo.GetAttribute("Altitude")));
             AltitudeColor = Color.FromArgb(XmlConvert.ToByte(xmlInfo.GetAttribute("R")), XmlConvert.ToByte(xmlInfo.GetAttribute("G")), XmlConvert.ToByte(xmlInfo.GetAttribute("B")));
         }
 

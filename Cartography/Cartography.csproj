@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<Nullable>disable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -20,10 +20,6 @@
 		<Compile Remove="res\**" />
 		<EmbeddedResource Remove="res\**" />
 		<None Remove="res\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="gameData\" />
 	</ItemGroup>
 
 	<ItemGroup>

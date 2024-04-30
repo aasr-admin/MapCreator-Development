@@ -1,6 +1,8 @@
+#region References
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+#endregion
 
 namespace UltimaSDK
 {
@@ -12,7 +14,7 @@ namespace UltimaSDK
 		private static byte[] m_StreamBuffer;
 
 		/// <summary>
-		/// ReReads light.mul
+		///     ReReads light.mul
 		/// </summary>
 		public static void Reload()
 		{
@@ -22,17 +24,16 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Gets count of definied lights
+		///     Gets count of definied lights
 		/// </summary>
 		/// <returns></returns>
 		public static int GetCount()
 		{
-			var idxPath = Files.GetFilePath("lightidx.mul");
+			string idxPath = Files.GetFilePath("lightidx.mul");
 			if (idxPath == null)
 			{
 				return 0;
 			}
-
 			using (var index = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
 				return (int)(index.Length / 12);
@@ -40,7 +41,7 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Tests if given index is valid
+		///     Tests if given index is valid
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
@@ -50,23 +51,23 @@ namespace UltimaSDK
 			{
 				return false;
 			}
-
 			if (m_Cache[index] != null)
 			{
 				return true;
 			}
 
-			int extra;
-			var stream = m_FileIndex.Seek(index, out _, out extra, out _);
+			int length, extra;
+			bool patched;
+
+			Stream stream = m_FileIndex.Seek(index, out length, out extra, out patched);
 
 			if (stream == null)
 			{
 				return false;
 			}
-
 			stream.Close();
-			var width = extra & 0xFFFF;
-			var height = (extra >> 16) & 0xFFFF;
+			int width = (extra & 0xFFFF);
+			int height = ((extra >> 16) & 0xFFFF);
 			if ((width > 0) && (height > 0))
 			{
 				return true;
@@ -76,7 +77,7 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Removes Light <see cref="m_Removed"/>
+		///     Removes Light <see cref="m_Removed" />
 		/// </summary>
 		/// <param name="index"></param>
 		public static void Remove(int index)
@@ -85,7 +86,7 @@ namespace UltimaSDK
 		}
 
 		/// <summary>
-		/// Replaces Light
+		///     Replaces Light
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="bmp"></param>
@@ -95,7 +96,7 @@ namespace UltimaSDK
 			m_Removed[index] = false;
 		}
 
-		public static unsafe byte[] GetRawLight(int index, out int width, out int height)
+		public static byte[] GetRawLight(int index, out int width, out int height)
 		{
 			width = 0;
 			height = 0;
@@ -103,24 +104,26 @@ namespace UltimaSDK
 			{
 				return null;
 			}
-
 			int length, extra;
-			var stream = m_FileIndex.Seek(index, out length, out extra, out _);
+			bool patched;
+
+			Stream stream = m_FileIndex.Seek(index, out length, out extra, out patched);
 
 			if (stream == null)
 			{
 				return null;
 			}
 
-			width = extra & 0xFFFF;
-			height = (extra >> 16) & 0xFFFF;
+			width = (extra & 0xFFFF);
+			height = ((extra >> 16) & 0xFFFF);
 			var buffer = new byte[length];
-			_ = stream.Read(buffer, 0, length);
+			stream.Read(buffer, 0, length);
 			stream.Close();
 			return buffer;
 		}
+
 		/// <summary>
-		/// Returns Bitmap of given index
+		///     Returns Bitmap of given index
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
@@ -130,7 +133,6 @@ namespace UltimaSDK
 			{
 				return null;
 			}
-
 			if (m_Cache[index] != null)
 			{
 				return m_Cache[index];
@@ -139,41 +141,41 @@ namespace UltimaSDK
 			int length, extra;
 			bool patched;
 
-			var stream = m_FileIndex.Seek(index, out length, out extra, out patched);
+			Stream stream = m_FileIndex.Seek(index, out length, out extra, out patched);
 
 			if (stream == null)
 			{
 				return null;
 			}
 
-			var width = extra & 0xFFFF;
-			var height = (extra >> 16) & 0xFFFF;
+			int width = (extra & 0xFFFF);
+			int height = ((extra >> 16) & 0xFFFF);
 
 			if (m_StreamBuffer == null || m_StreamBuffer.Length < length)
 			{
 				m_StreamBuffer = new byte[length];
 			}
+			stream.Read(m_StreamBuffer, 0, length);
 
-			_ = stream.Read(m_StreamBuffer, 0, length);
-
-			var bmp = new Bitmap(width, height, PixelFormat.Format16bppArgb1555);
-			var bd = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
+			var bmp = new Bitmap(width, height, Settings.PixelFormat);
+			BitmapData bd = bmp.LockBits(
+				new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, Settings.PixelFormat);
 
 			var line = (ushort*)bd.Scan0;
-			var delta = bd.Stride >> 1;
+			int delta = bd.Stride >> 1;
 
 			fixed (byte* data = m_StreamBuffer)
 			{
 				var bindat = (sbyte*)data;
-				for (var y = 0; y < height; ++y, line += delta)
+				for (int y = 0; y < height; ++y, line += delta)
 				{
-					var cur = line;
-					var end = cur + width;
+					ushort* cur = line;
+					ushort* end = cur + width;
 
 					while (cur < end)
 					{
-						var value = *bindat++;
-						*cur++ = (ushort)(((0x1f + value) << 10) + ((0x1F + value) << 5) + 0x1F + value);
+						sbyte value = *bindat++;
+						*cur++ = (ushort)(((0x1f + value) << 10) + ((0x1F + value) << 5) + (0x1F + value));
 					}
 				}
 			}
@@ -192,24 +194,23 @@ namespace UltimaSDK
 
 		public static unsafe void Save(string path)
 		{
-			var idx = Path.Combine(path, "lightidx.mul");
-			var mul = Path.Combine(path, "light.mul");
-			using (FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
-							  fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+			string idx = Path.Combine(path, "lightidx.mul");
+			string mul = Path.Combine(path, "light.mul");
+			using (
+				FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
+						   fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
 			{
-				using (BinaryWriter binidx = new BinaryWriter(fsidx),
-									binmul = new BinaryWriter(fsmul))
+				using (BinaryWriter binidx = new BinaryWriter(fsidx), binmul = new BinaryWriter(fsmul))
 				{
-					for (var index = 0; index < m_Cache.Length; index++)
+					for (int index = 0; index < m_Cache.Length; index++)
 					{
 						if (m_Cache[index] == null)
 						{
 							m_Cache[index] = GetLight(index);
 						}
+						Bitmap bmp = m_Cache[index];
 
-						var bmp = m_Cache[index];
-
-						if ((bmp == null) || m_Removed[index])
+						if ((bmp == null) || (m_Removed[index]))
 						{
 							binidx.Write(-1); // lookup
 							binidx.Write(-1); // length
@@ -217,17 +218,18 @@ namespace UltimaSDK
 						}
 						else
 						{
-							var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
+							BitmapData bd = bmp.LockBits(
+								new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
 							var line = (ushort*)bd.Scan0;
-							var delta = bd.Stride >> 1;
+							int delta = bd.Stride >> 1;
 
 							binidx.Write((int)fsmul.Position); //lookup
 							var length = (int)fsmul.Position;
 
-							for (var Y = 0; Y < bmp.Height; ++Y, line += delta)
+							for (int Y = 0; Y < bmp.Height; ++Y, line += delta)
 							{
-								var cur = line;
-								var end = cur + bmp.Width;
+								ushort* cur = line;
+								ushort* end = cur + bmp.Width;
 								while (cur < end)
 								{
 									var value = (sbyte)(((*cur++ >> 10) & 0xffff) - 0x1f);
@@ -235,11 +237,9 @@ namespace UltimaSDK
 									{
 										--value;
 									}
-
 									binmul.Write(value);
 								}
 							}
-
 							length = (int)fsmul.Position - length;
 							binidx.Write(length);
 							binidx.Write((bmp.Width << 16) + bmp.Height);

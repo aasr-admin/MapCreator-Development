@@ -1,5 +1,7 @@
+#region References
 using System;
 using System.IO;
+#endregion
 
 namespace UltimaSDK
 {
@@ -13,10 +15,6 @@ namespace UltimaSDK
 		protected int m_Position;
 
 		public abstract ClientProcessHandle ProcessID { get; }
-
-		public ProcessStream()
-		{
-		}
 
 		public virtual bool BeginAccess()
 		{
@@ -43,18 +41,17 @@ namespace UltimaSDK
 		}
 
 		public override void Flush()
-		{
-		}
+		{ }
 
 		public override int Read(byte[] buffer, int offset, int count)
 		{
-			var end = !BeginAccess();
+			bool end = !BeginAccess();
 
-			var res = 0;
+			int res = 0;
 
 			fixed (byte* p = buffer)
 			{
-				_ = NativeMethods.ReadProcessMemory(m_Process, m_Position, p + offset, count, ref res);
+				NativeMethods.ReadProcessMemory(m_Process, m_Position, p + offset, count, ref res);
 			}
 
 			m_Position += count;
@@ -69,11 +66,11 @@ namespace UltimaSDK
 
 		public override void Write(byte[] buffer, int offset, int count)
 		{
-			var end = !BeginAccess();
+			bool end = !BeginAccess();
 
 			fixed (byte* p = buffer)
 			{
-				_ = NativeMethods.WriteProcessMemory(m_Process, m_Position, p + offset, count, 0);
+				NativeMethods.WriteProcessMemory(m_Process, m_Position, p + offset, count, 0);
 			}
 
 			m_Position += count;
@@ -84,12 +81,12 @@ namespace UltimaSDK
 			}
 		}
 
-		public override bool CanRead => true;
-		public override bool CanWrite => true;
-		public override bool CanSeek => true;
+		public override bool CanRead { get { return true; } }
+		public override bool CanWrite { get { return true; } }
+		public override bool CanSeek { get { return true; } }
 
-		public override long Length => throw new NotSupportedException();
-		public override long Position { get => m_Position; set => m_Position = (int)value; }
+		public override long Length { get { throw new NotSupportedException(); } }
+		public override long Position { get { return m_Position; } set { m_Position = (int)value; } }
 
 		public override void SetLength(long value)
 		{
@@ -100,9 +97,14 @@ namespace UltimaSDK
 		{
 			switch (origin)
 			{
-				case SeekOrigin.Begin: m_Position = (int)offset; break;
-				case SeekOrigin.Current: m_Position += (int)offset; break;
-				case SeekOrigin.End: throw new NotSupportedException();
+				case SeekOrigin.Begin:
+					m_Position = (int)offset;
+					break;
+				case SeekOrigin.Current:
+					m_Position += (int)offset;
+					break;
+				case SeekOrigin.End:
+					throw new NotSupportedException();
 			}
 
 			return m_Position;

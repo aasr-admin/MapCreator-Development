@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.ComponentModel;
 using System.IO;
 
 using Cartography.compiler;
@@ -14,13 +15,8 @@ namespace MapCreator.userPlugin
         private readonly Point[,] StaticGrid;
         private readonly ClsTerrainTable iTerrain;
         private RandomStatics iRandomStatic;
-        private readonly Art UOArt;
-        private readonly TileData UOStatic;
 
-        private communityCredits _communityCredits;
         private canvasControlBox _canvasControlBox;
-        private createTerrainTypes _createTerrainTypes;
-        private facetBuilder _facetBuilder;
         private staticSelector _staticSelector;
 
         private OpenFileDialog _openFileDialog;
@@ -28,46 +24,76 @@ namespace MapCreator.userPlugin
 
         public createTerrainTypes()
         {
-            MaximizeBox = false;
-            MinimizeBox = false;
-
-            var cTT = this;
-            base.Load += new EventHandler(cTT.createTerrainTypes_Load);
-
             StaticGrid = new Point[13, 13];
             iTerrain = new ClsTerrainTable();
             iRandomStatic = new RandomStatics();
 
             InitializeComponent();
 
-            var num = 302;
-            var num1 = 246;
-            var num2 = 0;
+            var col = 13 * 22;
+            var row = 22;
+
+            var gx = 0;
+            var gy = 0;
 
             do
             {
-                var num3 = 0;
-
                 do
                 {
-                    var staticGrid = StaticGrid;
-                    var point = new Point(checked(num - checked(num3 * 22)), checked(num1 + checked(num3 * 22)));
-                    staticGrid[num3, num2] = point;
-                    num3++;
+                    ref var p = ref StaticGrid[gy, gx];
+
+                    p.X = col - (gy * 22);
+                    p.Y = row + (gy * 22);
                 }
-                while (num3 <= 12);
-                num = checked(num + 22);
-                num1 = checked(num1 + 22);
-                num2++;
+                while (++gy < 13);
+
+                gy = 0;
+
+                col += 22;
+                row += 22;
             }
-            while (num2 <= 12);
+            while (++gx < 13);
+
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_ScrollGrid(0, 0);
+        }
+
+        private void createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_ScrollGrid(sbyte x, sbyte y)
+        {
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Location = StaticGrid[6 + y, 6 + x];
+
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.ScrollControlIntoView(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker);
         }
 
         /// Form Load Operations
-        private void createTerrainTypes_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+
             iTerrain.Load();
             iTerrain.Display(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox);
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+
+            _canvasControlBox?.Close();
+            _staticSelector?.Close();
+        }
+
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+
+            if (_canvasControlBox != null)
+            {
+                _canvasControlBox.Visible = Visible;
+            }
+
+            if (_staticSelector != null)
+            {
+                _staticSelector.Visible = Visible;
+            }
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_Enter(object sender, EventArgs e)
@@ -90,296 +116,159 @@ namespace MapCreator.userPlugin
                 _canvasControlBox.ActionChangeZ += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeZ;
             }
 
-            _canvasControlBox.Show();
+            if (_canvasControlBox?.IsDisposed == false)
+            {
+                if (_canvasControlBox.Visible)
+                {
+                    _canvasControlBox.BringToFront();
+                }
+                else
+                {
+                    _canvasControlBox.Show(this);
+                }
+            }
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_Leave(object sender, EventArgs e)
         {
-            _canvasControlBox?.Hide();
+            if (_canvasControlBox?.IsDisposed == false)
+            {
+                _canvasControlBox.SendToBack();
+
+                _canvasControlBox.Visible = false;
+            }
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeX(object sender, EventArgs e)
         {
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            var x = (sbyte)Math.Clamp(_canvasControlBox.xAxis_label_numUpDown.Value, -6, 6);
+            var y = (sbyte)Math.Clamp(_canvasControlBox.yAxis_label_numUpDown.Value, -6, 6);
+
+            RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                selectedItem.X = x;
+            }
+
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_ScrollGrid(x, y);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeY(object sender, EventArgs e)
         {
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            var x = (sbyte)Math.Clamp(_canvasControlBox.xAxis_label_numUpDown.Value, -6, 6);
+            var y = (sbyte)Math.Clamp(_canvasControlBox.yAxis_label_numUpDown.Value, -6, 6);
+
+            RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                selectedItem.Y = y;
+            }
+
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_ScrollGrid(x, y);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionChangeZ(object sender, EventArgs e)
         {
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            var z = Math.Clamp(_canvasControlBox.zAxis_label_numUpDown.Value, -128, 127);
+            
+            RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                selectedItem.Z = (sbyte)z;
+            }
+            
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionNorth(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.NorthButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 2, false) == 0)
-            {
-                --y;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(0, -1, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionNorthEast(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.NorthEastButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 3, false) == 0)
-            {
-                ++x;
-                --y;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(1, -1, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionEast(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.EastButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 6, false) == 0)
-            {
-                ++x;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(1, 0, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionSouthEast(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.SouthEastButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 9, false) == 0)
-            {
-                ++x; 
-                ++y;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(1, 1, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionSouth(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.SouthButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 8, false) == 0)
-            {
-                ++y;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(0, 1, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionSouthWest(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.SouthWestButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 7, false) == 0)
-            {
-                --x;
-                ++y;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(-1, 1, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionWest(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
-
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
-
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.WestButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 4, false) == 0)
-            {
-                --x;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
-
-            if (selectedItem != null)
-            {
-                selectedItem.X = x;
-                selectedItem.Y = y;
-            }
-
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(-1, 0, 0);
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_ActionNorthWest(object sender, EventArgs e)
         {
-            var x = Convert.ToByte(_canvasControlBox.xAxis_label_numUpDown.Value);
-            var y = Convert.ToByte(_canvasControlBox.yAxis_label_numUpDown.Value);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(-1, -1, 0);
+        }
 
-            RandomStatic selectedItem = (RandomStatic)this.staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
+        private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_MoveTerrainTile(sbyte deltaX, sbyte deltaY, sbyte deltaZ)
+        {
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.SuspendLayout();
 
-            if (selectedItem != null)
-            {
-                x = selectedItem.X;
-                y = selectedItem.Y;
-            }
-
-            object tag = _canvasControlBox.NorthWestButton.Tag;
-
-            if (ObjectType.ObjTst(tag, 1, false) == 0)
-            {
-                --x;
-                --y;
-            }
-
-            _canvasControlBox.xAxis_label_numUpDown.Value = x;
-            _canvasControlBox.yAxis_label_numUpDown.Value = y;
+            RandomStatic selectedItem = (RandomStatic)staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem;
 
             if (selectedItem != null)
             {
-                selectedItem.X = x;
-                selectedItem.Y = y;
+                var x = selectedItem.X;
+                var y = selectedItem.Y;
+                var z = selectedItem.Y;
+
+                x = (sbyte)Math.Clamp(x + deltaX, -6, 6);
+                y = (sbyte)Math.Clamp(y + deltaY, -6, 6);
+                z = (sbyte)Math.Clamp(z + deltaZ, -128, 127);
+
+                _canvasControlBox.xAxis_label_numUpDown.Value = selectedItem.X = x;
+                _canvasControlBox.yAxis_label_numUpDown.Value = selectedItem.Y = y;
+                _canvasControlBox.zAxis_label_numUpDown.Value = selectedItem.Z = z;
+            }
+            else
+            {
+                var x = _canvasControlBox.xAxis_label_numUpDown.Value;
+                var y = _canvasControlBox.yAxis_label_numUpDown.Value;
+                var z = _canvasControlBox.zAxis_label_numUpDown.Value;
+
+                x = Math.Clamp(x + deltaX, -6, 6);
+                y = Math.Clamp(y + deltaY, -6, 6);
+                z = Math.Clamp(z + deltaZ, -128, 127);
+
+                _canvasControlBox.xAxis_label_numUpDown.Value = x;
+                _canvasControlBox.yAxis_label_numUpDown.Value = y;
+                _canvasControlBox.zAxis_label_numUpDown.Value = z;
             }
 
-            this.createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.ResumeLayout(true);
         }
 
         /// Form Top Menu Buttons
         private void createTerrainTypes_mainMenu_button_newTerrainType_Click(object sender, EventArgs e)
         {
-            _createTerrainTypes ??= new createTerrainTypes();
-            _createTerrainTypes.Show();
+            var owner = Owner;
 
-            Hide();
+            Dispose();
+
+            StaticForm<createTerrainTypes>.Open(owner);
         }
 
         private void createTerrainTypes_mainMenu_button_loadTerrainType_Click(object sender, EventArgs e)
@@ -392,7 +281,7 @@ namespace MapCreator.userPlugin
             _openFileDialog.FilterIndex = 2;
             _openFileDialog.RestoreDirectory = true;
 
-            if (_openFileDialog.ShowDialog() == DialogResult.OK)
+            if (_openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 var fileInfo = new FileInfo(_openFileDialog.FileName);
                 createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox.Text = fileInfo.Name;
@@ -413,7 +302,7 @@ namespace MapCreator.userPlugin
             _saveFileDialog.FilterIndex = 2;
             _saveFileDialog.RestoreDirectory = true;
 
-            if (_saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (_saveFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 iRandomStatic.Save(_saveFileDialog.FileName);
             }
@@ -421,107 +310,118 @@ namespace MapCreator.userPlugin
 
         private void createTerrainTypes_mainMenu_button_facetBuilder_Click(object sender, EventArgs e)
         {
-            _facetBuilder ??= new facetBuilder();
-            _facetBuilder.Show();
-
             Hide();
+
+            StaticForm<facetBuilder>.Open();
         }
 
         private void createTerrainTypes_mainMenu_button_communityCredits_Click(object sender, EventArgs e)
         {
-            _communityCredits ??= new communityCredits();
-            _communityCredits.Show();
+            StaticForm<communityCredits>.Open();
         }
 
-        /// Terrain Grid Display (Connects To canvasControlBox Lines 195 and 196)
         private void createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_Paint(object sender, PaintEventArgs e)
         {
-            IEnumerator enumerator = null;
-            var graphics = e.Graphics;
-            var pen = new Pen(Color.Gray);
-            var selectedItem = (ClsTerrain)createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.SelectedItem;
+            var pen = Pens.Gray;
 
-            var num = 0;
+            var terrain = (ClsTerrain)createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.SelectedItem;
+
+            var terrainImage = terrain != null ? Art.GetLand(terrain.TileID) : null;
+
+            var x = 0;
+            var y = 0;
 
             do
             {
-                var num1 = 0;
-
                 do
                 {
-                    var num2 = num1;
-                    var num3 = num;
+                    ref var p = ref StaticGrid[y, x];
 
-                    if (selectedItem != null)
+                    if (terrainImage != null)
                     {
-                        e.Graphics.DrawImage(Art.GetLand(selectedItem.TileID), checked(StaticGrid[num2, num3].X - 22), checked(StaticGrid[num2, num3].Y - 22));
+                        e.Graphics.DrawImage(terrainImage, p.X - 22, p.Y - 22);
                     }
 
-                    e.Graphics.DrawLine(pen, checked(StaticGrid[num2, num3].X - 22), StaticGrid[num2, num3].Y, StaticGrid[num2, num3].X, checked(StaticGrid[num2, num3].Y + 22));
-                    e.Graphics.DrawLine(pen, StaticGrid[num2, num3].X, checked(StaticGrid[num2, num3].Y + 22), checked(StaticGrid[num2, num3].X + 22), StaticGrid[num2, num3].Y);
-                    e.Graphics.DrawLine(pen, checked(StaticGrid[num2, num3].X + 22), StaticGrid[num2, num3].Y, StaticGrid[num2, num3].X, checked(StaticGrid[num2, num3].Y - 22));
-                    e.Graphics.DrawLine(pen, StaticGrid[num2, num3].X, checked(StaticGrid[num2, num3].Y - 22), checked(StaticGrid[num2, num3].X - 22), StaticGrid[num2, num3].Y);
-                    num1++;
+                    e.Graphics.DrawLine(pen, p.X - 22, p.Y, p.X, p.Y + 22);
+                    e.Graphics.DrawLine(pen, p.X, p.Y + 22, p.X + 22, p.Y);
+                    e.Graphics.DrawLine(pen, p.X + 22, p.Y, p.X, p.Y - 22);
+                    e.Graphics.DrawLine(pen, p.X, p.Y - 22, p.X - 22, p.Y);
                 }
-                while (num1 <= 12);
-                num++;
+                while (++y < 13);
+
+                y = 0;
             }
-            while (num <= 12);
-            pen = new Pen(Color.Red);
+            while (++x < 13);
 
-            var num4 = Convert.ToInt32(decimal.Add(new decimal(6L), /*this.Yaxis.Value*/0)); // Yaxis
-            var num5 = Convert.ToInt32(decimal.Add(new decimal(6L), /*this.Xaxis.Value*/0)); // Xaxis
+            pen = Pens.Blue;
 
-            e.Graphics.DrawLine(pen, checked(StaticGrid[num4, num5].X - 22), StaticGrid[num4, num5].Y, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y + 22));
-            e.Graphics.DrawLine(pen, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y + 22), checked(StaticGrid[num4, num5].X + 22), StaticGrid[num4, num5].Y);
-            e.Graphics.DrawLine(pen, checked(StaticGrid[num4, num5].X + 22), StaticGrid[num4, num5].Y, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y - 22));
-            e.Graphics.DrawLine(pen, StaticGrid[num4, num5].X, checked(StaticGrid[num4, num5].Y - 22), checked(StaticGrid[num4, num5].X - 22), StaticGrid[num4, num5].Y);
+            ref var pCenter = ref StaticGrid[6, 6];
 
-            try
+            e.Graphics.DrawLine(pen, pCenter.X - 22, pCenter.Y, pCenter.X, pCenter.Y + 22);
+            e.Graphics.DrawLine(pen, pCenter.X, pCenter.Y + 22, pCenter.X + 22, pCenter.Y);
+            e.Graphics.DrawLine(pen, pCenter.X + 22, pCenter.Y, pCenter.X, pCenter.Y - 22);
+            e.Graphics.DrawLine(pen, pCenter.X, pCenter.Y - 22, pCenter.X - 22, pCenter.Y);
+
+            if (_canvasControlBox != null)
             {
-                enumerator = staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Items.GetEnumerator();
+                pen = Pens.Red;
 
-                while (enumerator.MoveNext())
-                {
-                    var current = (RandomStatic)enumerator.Current;
-                    var y = checked(6 + current.Y);
-                    var x = checked(6 + current.X);
-                    var @static = Art.GetStatic(current.TileID);
-                    var point = new Point(checked((int)Math.Round(StaticGrid[y, x].X - ((double)@static.Width / 2))), checked(checked(StaticGrid[y, x].Y - @static.Height) + 22));
-                    e.Graphics.DrawImage(@static, point);
-                }
+                var sy = (int)(6 + _canvasControlBox.yAxis_label_numUpDown.Value); // Yaxis
+                var sx = (int)(6 + _canvasControlBox.xAxis_label_numUpDown.Value); // Xaxis
+
+                ref var pSelected = ref StaticGrid[sy, sx];
+
+                e.Graphics.DrawLine(pen, pSelected.X - 22, pSelected.Y, pSelected.X, pSelected.Y + 22);
+                e.Graphics.DrawLine(pen, pSelected.X, pSelected.Y + 22, pSelected.X + 22, pSelected.Y);
+                e.Graphics.DrawLine(pen, pSelected.X + 22, pSelected.Y, pSelected.X, pSelected.Y - 22);
+                e.Graphics.DrawLine(pen, pSelected.X, pSelected.Y - 22, pSelected.X - 22, pSelected.Y);
             }
-            finally
+
+            foreach (RandomStatic current in staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Items)
             {
-                if (enumerator is IDisposable)
+                var sy = 6 + current.Y;
+                var sx = 6 + current.X;
+
+                if (sx < 0 || sx >= 13)
                 {
-                    ((IDisposable)enumerator).Dispose();
+                    continue;
+                }
+
+                var image = Art.GetStatic(current.TileID);
+                var dispose = false;
+
+                if (current.Hue > 0)
+                {
+                    var hue = Hues.GetHue(current.Hue & 0x3FFF);
+
+                    if (hue != null)
+                    {
+                        image = new Bitmap(image);
+
+                        dispose = true;
+
+                        ref var data = ref TileData.ItemTable[current.TileID];
+
+                        var partial = data.Flags.HasFlag(TileFlag.PartialHue) || (current.Hue & 0x8000) != 0;
+
+                        hue.ApplyTo(image, partial);
+                    }
+                }
+
+                ref var sp = ref StaticGrid[sy, sx];
+
+                e.Graphics.DrawImage(image, sp.X - (image.Width / 2f), sp.Y - image.Height + 22f);
+
+                if (dispose)
+                {
+                    image.Dispose();
                 }
             }
-
-            graphics = null;
         }
 
         private void createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
-        }
-
-        private void UpdatePanel1()
-        {
-            var tGD = createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay;
-            var point = new Point(checked(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar.Value * -1), checked(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar.Value * -1));
-            tGD.Location = point;
-        }
-
-        private void createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_vScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            UpdatePanel1();
-        }
-
-        private void createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_hScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            UpdatePanel1();
         }
 
         /// Static Frequencies
@@ -581,27 +481,48 @@ namespace MapCreator.userPlugin
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
         }
 
-        /// Entry Component List  (Connects To canvasControlBox Lines 365, 366, 367, 390)
         private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_Click(object sender, EventArgs e)
         {
-            _staticSelector ??= new staticSelector();
-            _staticSelector.Tag = staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll;
-            _staticSelector.Show();
+            if (_staticSelector?.IsDisposed != false)
+            {
+                _staticSelector = new staticSelector();
+
+                _staticSelector.ValueChanged += staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_SelectionChanged;
+            }
+
+            if (_staticSelector?.IsDisposed == false)
+            {
+                _staticSelector.Value = staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value;
+
+                if (_staticSelector.Visible)
+                {
+                    _staticSelector.BringToFront();
+                }
+                else
+                {
+                    _staticSelector.Show(this);
+                }
+            }
+        }
+
+        private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_SelectionChanged(object sender, EventArgs e)
+        {
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value = _staticSelector.Value;
         }
 
         private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_MouseEnter(object sender, EventArgs e)
         {
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.ForeColor = System.Drawing.Color.LimeGreen;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.ForeColor = Color.LimeGreen;
         }
 
         private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_MouseLeave(object sender, EventArgs e)
         {
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.ForeColor = System.Drawing.Color.SlateGray;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.ForeColor = Color.SlateGray;
         }
 
         private void UpdatePanel2()
         {
-            if (Art.GetStatic(staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value) != null && staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value < TileData.ItemTable.Length)
+            if (Art.IsValidStatic(staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value))
             {
                 createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.Text = staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value.ToString();
                 staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.Image = Art.GetStatic(staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value);
@@ -670,14 +591,14 @@ namespace MapCreator.userPlugin
                 }
 
                 var tileID = ushort.Parse(tileIDString);
-                var x = Convert.ToByte(_canvasControlBox?.xAxis_label_numUpDown.Value ?? 0);
-                var y = Convert.ToByte(_canvasControlBox?.yAxis_label_numUpDown.Value ?? 0);
+                var x = Convert.ToSByte(_canvasControlBox?.xAxis_label_numUpDown.Value ?? 0);
+                var y = Convert.ToSByte(_canvasControlBox?.yAxis_label_numUpDown.Value ?? 0);
                 var z = Convert.ToSByte(_canvasControlBox?.zAxis_label_numUpDown.Value ?? 0);
                 var hue = ushort.Parse(hueIDString);
 
                 selectedItem.Add(new RandomStatic(tileID, x, y, z, hue));
                 selectedItem.Display(staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList);
-                createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Refresh();
+                createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_ScrollGrid(x, y);
             }
         }
 

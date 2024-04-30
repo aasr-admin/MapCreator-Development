@@ -1,6 +1,8 @@
+#region References
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+#endregion
 
 namespace UltimaSDK
 {
@@ -24,31 +26,27 @@ namespace UltimaSDK
 			{
 				return false;
 			}
-
 			if (LandBlocks[x] == null)
 			{
 				return false;
 			}
-
 			if (LandBlocks[x][y] == null)
 			{
 				return false;
 			}
-
 			return true;
 		}
+
 		public Tile[] GetLandBlock(int x, int y)
 		{
 			if (x < 0 || y < 0 || x >= BlockWidth || y >= BlockHeight)
 			{
 				return TileMatrix.InvalidLandBlock;
 			}
-
 			if (LandBlocks[x] == null)
 			{
 				return TileMatrix.InvalidLandBlock;
 			}
-
 			return LandBlocks[x][y];
 		}
 
@@ -63,17 +61,14 @@ namespace UltimaSDK
 			{
 				return false;
 			}
-
 			if (StaticBlocks[x] == null)
 			{
 				return false;
 			}
-
 			if (StaticBlocks[x][y] == null)
 			{
 				return false;
 			}
-
 			return true;
 		}
 
@@ -83,12 +78,10 @@ namespace UltimaSDK
 			{
 				return TileMatrix.EmptyStaticBlock;
 			}
-
 			if (StaticBlocks[x] == null)
 			{
 				return TileMatrix.EmptyStaticBlock;
 			}
-
 			return StaticBlocks[x][y];
 		}
 
@@ -116,7 +109,6 @@ namespace UltimaSDK
 				{
 					mapDataPath = null;
 				}
-
 				mapIndexPath = Path.Combine(path, String.Format("mapdifl{0}.mul", index));
 				if (!File.Exists(mapIndexPath))
 				{
@@ -144,13 +136,11 @@ namespace UltimaSDK
 				{
 					staDataPath = null;
 				}
-
 				staIndexPath = Path.Combine(path, String.Format("stadifl{0}.mul", index));
 				if (!File.Exists(staIndexPath))
 				{
 					staIndexPath = null;
 				}
-
 				staLookupPath = Path.Combine(path, String.Format("stadifi{0}.mul", index));
 				if (!File.Exists(staLookupPath))
 				{
@@ -165,26 +155,27 @@ namespace UltimaSDK
 			}
 		}
 
-		private unsafe int PatchLand(TileMatrix matrix, string dataPath, string indexPath)
+		private int PatchLand(TileMatrix matrix, string dataPath, string indexPath)
 		{
-			using (FileStream fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read),
-							  fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+			using (
+				FileStream fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read),
+						   fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
 				using (var indexReader = new BinaryReader(fsIndex))
 				{
 					var count = (int)(indexReader.BaseStream.Length / 4);
 
-					for (var i = 0; i < count; ++i)
+					for (int i = 0; i < count; ++i)
 					{
-						var blockID = indexReader.ReadInt32();
-						var x = blockID / matrix.BlockHeight;
-						var y = blockID % matrix.BlockHeight;
+						int blockID = indexReader.ReadInt32();
+						int x = blockID / matrix.BlockHeight;
+						int y = blockID % matrix.BlockHeight;
 
-						_ = fsData.Seek(4, SeekOrigin.Current);
+						fsData.Seek(4, SeekOrigin.Current);
 
 						var tiles = new Tile[64];
 
-						var gc = GCHandle.Alloc(tiles, GCHandleType.Pinned);
+						GCHandle gc = GCHandle.Alloc(tiles, GCHandleType.Pinned);
 						try
 						{
 							if (m_Buffer == null || m_Buffer.Length < 192)
@@ -192,7 +183,7 @@ namespace UltimaSDK
 								m_Buffer = new byte[192];
 							}
 
-							_ = fsData.Read(m_Buffer, 0, 192);
+							fsData.Read(m_Buffer, 0, 192);
 
 							Marshal.Copy(m_Buffer, 0, gc.AddrOfPinnedObject(), 192);
 						}
@@ -200,53 +191,49 @@ namespace UltimaSDK
 						{
 							gc.Free();
 						}
-
 						if (LandBlocks[x] == null)
 						{
 							LandBlocks[x] = new Tile[matrix.BlockHeight][];
 						}
-
 						LandBlocks[x][y] = tiles;
 					}
-
 					return count;
 				}
 			}
 		}
 
-		private unsafe int PatchStatics(TileMatrix matrix, string dataPath, string indexPath, string lookupPath)
+		private int PatchStatics(TileMatrix matrix, string dataPath, string indexPath, string lookupPath)
 		{
-			using (FileStream fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read),
-							  fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read),
-							  fsLookup = new FileStream(lookupPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+			using (
+				FileStream fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read),
+						   fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read),
+						   fsLookup = new FileStream(lookupPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
-				using (BinaryReader indexReader = new BinaryReader(fsIndex),
-									lookupReader = new BinaryReader(fsLookup))
+				using (BinaryReader indexReader = new BinaryReader(fsIndex), lookupReader = new BinaryReader(fsLookup))
 				{
-					var count = Math.Min((int)(indexReader.BaseStream.Length / 4),
-										(int)(lookupReader.BaseStream.Length / 12));
+					int count = Math.Min((int)(indexReader.BaseStream.Length / 4), (int)(lookupReader.BaseStream.Length / 12));
 
 					var lists = new HuedTileList[8][];
 
-					for (var x = 0; x < 8; ++x)
+					for (int x = 0; x < 8; ++x)
 					{
 						lists[x] = new HuedTileList[8];
 
-						for (var y = 0; y < 8; ++y)
+						for (int y = 0; y < 8; ++y)
 						{
 							lists[x][y] = new HuedTileList();
 						}
 					}
 
-					for (var i = 0; i < count; ++i)
+					for (int i = 0; i < count; ++i)
 					{
-						var blockID = indexReader.ReadInt32();
-						var blockX = blockID / matrix.BlockHeight;
-						var blockY = blockID % matrix.BlockHeight;
+						int blockID = indexReader.ReadInt32();
+						int blockX = blockID / matrix.BlockHeight;
+						int blockY = blockID % matrix.BlockHeight;
 
-						var offset = lookupReader.ReadInt32();
-						var length = lookupReader.ReadInt32();
-						_ = lookupReader.ReadInt32(); // Extra
+						int offset = lookupReader.ReadInt32();
+						int length = lookupReader.ReadInt32();
+						lookupReader.ReadInt32(); // Extra
 
 						if (offset < 0 || length <= 0)
 						{
@@ -259,18 +246,18 @@ namespace UltimaSDK
 							continue;
 						}
 
-						_ = fsData.Seek(offset, SeekOrigin.Begin);
+						fsData.Seek(offset, SeekOrigin.Begin);
 
-						var tileCount = length / 7;
+						int tileCount = length / 7;
 
 						if (m_TileBuffer.Length < tileCount)
 						{
 							m_TileBuffer = new StaticTile[tileCount];
 						}
 
-						var staTiles = m_TileBuffer;
+						StaticTile[] staTiles = m_TileBuffer;
 
-						var gc = GCHandle.Alloc(staTiles, GCHandleType.Pinned);
+						GCHandle gc = GCHandle.Alloc(staTiles, GCHandleType.Pinned);
 						try
 						{
 							if (m_Buffer == null || m_Buffer.Length < length)
@@ -278,23 +265,23 @@ namespace UltimaSDK
 								m_Buffer = new byte[length];
 							}
 
-							_ = fsData.Read(m_Buffer, 0, length);
+							fsData.Read(m_Buffer, 0, length);
 
 							Marshal.Copy(m_Buffer, 0, gc.AddrOfPinnedObject(), length);
 
-							for (var j = 0; j < tileCount; ++j)
+							for (int j = 0; j < tileCount; ++j)
 							{
-								var cur = staTiles[j];
+								StaticTile cur = staTiles[j];
 								lists[cur.m_X & 0x7][cur.m_Y & 0x7].Add(Art.GetLegalItemID(cur.m_ID), cur.m_Hue, cur.m_Z);
 							}
 
 							var tiles = new HuedTile[8][][];
 
-							for (var x = 0; x < 8; ++x)
+							for (int x = 0; x < 8; ++x)
 							{
 								tiles[x] = new HuedTile[8][];
 
-								for (var y = 0; y < 8; ++y)
+								for (int y = 0; y < 8; ++y)
 								{
 									tiles[x][y] = lists[x][y].ToArray();
 								}

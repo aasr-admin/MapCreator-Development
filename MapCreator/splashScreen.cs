@@ -1,5 +1,4 @@
-using System;
-using System.Windows.Forms;
+
 using Timer = System.Windows.Forms.Timer;
 
 namespace MapCreator
@@ -11,23 +10,22 @@ namespace MapCreator
             InitializeComponent();
         }
 
-        private void splashScreen_Shown(object? sender, EventArgs e)
+        private void splashScreen_Shown(object sender, EventArgs e)
         {
             splashScreen_closeTimer = new Timer();
-            splashScreen_closeTimer.Interval = 1500; // This Screen Will Pop-Up For Two (1.5) Seconds
+            splashScreen_closeTimer.Interval = 1500; // This Screen Will Pop-Up For (1.5) Seconds
+            splashScreen_closeTimer.Tick += splashScreen_closeTimer_Tick;
 
             splashScreen_closeTimer.Start();
-            splashScreen_closeTimer.Tick += new EventHandler(splashScreen_closeTimer_Tick);
         }
 
-        private void splashScreen_closeTimer_Tick(object? sender, EventArgs e)
+        private void splashScreen_closeTimer_Tick(object sender, EventArgs e)
         {
             splashScreen_closeTimer.Stop();
 
-            this.Hide();
+            Hide();
 
-            facetBuilder facetBuilderForm = new facetBuilder();
-            facetBuilderForm.Show();
+            StaticForm<facetBuilder>.Open();
         }
     }
 }

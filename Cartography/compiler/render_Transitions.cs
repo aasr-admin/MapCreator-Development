@@ -853,7 +853,7 @@ namespace Cartography.compiler
         public MapTile(XmlElement xmlInfo)
         {
             TileID = XmlConvert.ToUInt16(xmlInfo.GetAttribute("TileID"));
-            AltIDMod = XmlConvert.ToSByte(xmlInfo.GetAttribute("AltIDMod"));
+            AltIDMod = unchecked((sbyte)XmlConvert.ToInt32(xmlInfo.GetAttribute("AltIDMod")));
         }
 
         public void Save(XmlTextWriter xmlInfo)
@@ -992,9 +992,9 @@ namespace Cartography.compiler
 
         public ushort TileID { get; set; }
 
-        public byte X { get; set; }
+        public sbyte X { get; set; }
 
-        public byte Y { get; set; }
+        public sbyte Y { get; set; }
 
         public sbyte Z { get; set; }
 
@@ -1006,7 +1006,7 @@ namespace Cartography.compiler
         {
         }
 
-        public RandomStatic(ushort iTileID, byte iXMod, byte iYMod, sbyte iZMod, ushort iHueMod)
+        public RandomStatic(ushort iTileID, sbyte iXMod, sbyte iYMod, sbyte iZMod, ushort iHueMod)
         {
             TileID = iTileID;
             X = iXMod;
@@ -1020,8 +1020,8 @@ namespace Cartography.compiler
             try
             {
                 TileID = XmlConvert.ToUInt16(xmlInfo.GetAttribute("TileID"));
-                X = XmlConvert.ToByte(xmlInfo.GetAttribute("X"));
-                Y = XmlConvert.ToByte(xmlInfo.GetAttribute("Y"));
+                X = XmlConvert.ToSByte(xmlInfo.GetAttribute("X"));
+                Y = XmlConvert.ToSByte(xmlInfo.GetAttribute("Y"));
                 Z = XmlConvert.ToSByte(xmlInfo.GetAttribute("Z"));
                 Hue = XmlConvert.ToUInt16(xmlInfo.GetAttribute("Hue"));
             }
@@ -1228,6 +1228,15 @@ namespace Cartography.compiler
         public void Remove(RandomStaticCollection Value)
         {
             InnerList.Remove(Value);
+        }
+
+        protected override void OnClear()
+        {
+            base.OnClear();
+
+            m_Random.Clear();
+
+            Freq = 0;
         }
 
         public RandomStatics()
@@ -1437,7 +1446,7 @@ namespace Cartography.compiler
         public StaticTile(XmlElement xmlInfo)
         {
             TileID = XmlConvert.ToUInt16(xmlInfo.GetAttribute("TileID"));
-            AltIDMod = XmlConvert.ToSByte(xmlInfo.GetAttribute("AltIDMod"));
+            AltIDMod = unchecked((sbyte)XmlConvert.ToInt32(xmlInfo.GetAttribute("AltIDMod")));
         }
 
         public void Save(XmlTextWriter xmlInfo)

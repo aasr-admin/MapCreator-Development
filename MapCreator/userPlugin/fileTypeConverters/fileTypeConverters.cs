@@ -97,16 +97,14 @@ namespace MapCreator.userPlugin
 
         private void sToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            Hide();
 
-            facetBuilder facetBuilderForm = new facetBuilder();
-            facetBuilderForm.Show();
+            StaticForm<facetBuilder>.Open();
         }
 
         private void sToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            communityCredits communityCreditsForm = new communityCredits();
-            communityCreditsForm.Show();
+            StaticForm<communityCredits>.Open();
         }
 
         /// .MUL <-> .UOP

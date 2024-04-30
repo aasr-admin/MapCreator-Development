@@ -1,16 +1,7 @@
 ﻿using Cartography.compiler;
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 using UltimaSDK;
 
@@ -25,30 +16,23 @@ namespace MapCreator
 
         public colorTables()
         {
-            MaximizeBox = false;
-            MinimizeBox = false;
-
-            colorTables cTWB = this;
-
-            base.Load += new EventHandler(cTWB.colorTables_Load);
-            this.i_Menu = 0;
-            this.i_Altitude = new ClsAltitudeTable();
-            this.i_Terrain = new ClsTerrainTable();
+            i_Altitude = new ClsAltitudeTable();
+            i_Terrain = new ClsTerrainTable();
 
             InitializeComponent();
         }
 
-        private void colorTables_Load(object? sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
-            this.i_Menu = 0;
+            base.OnLoad(e);
 
-            this.colorTables_pictureBox_tileDisplay.Visible = false;
-            this.colorTables_pictureBox_altitudeDisplay.Visible = false;
+            colorTables_pictureBox_tileDisplay.Visible = false;
+            colorTables_pictureBox_altitudeDisplay.Visible = false;
 
-            this.colorTables_pictureBox_notificationBox_label_fileUsability.Show();
-            this.colorTables_pictureBox_notificationBox_label_altitudeGradient.Hide();
+            colorTables_pictureBox_notificationBox_label_fileUsability.Show();
+            colorTables_pictureBox_notificationBox_label_altitudeGradient.Hide();
 
-            this.colorTables_pictureBox_colorPalette.Show();
+            colorTables_pictureBox_colorPalette.Show();
 
             /// Label Transparency: Adobe Photoshop Color Palette
             colorTables_label_adobePhotoshopColorPalette.FlatStyle = FlatStyle.Standard;
@@ -90,90 +74,88 @@ namespace MapCreator
 
         private void colorTables_menuStrip_button_export_terrain_adobeColorTableACT_Click(object sender, EventArgs e)
         {
-            this.i_Terrain.SaveACT();
+            i_Terrain.SaveACT();
         }
 
         private void colorTables_menuStrip_button_export_terrain_adobeSwatchFileACO_Click(object sender, EventArgs e)
         {
-            this.i_Terrain.SaveACO();
+            i_Terrain.SaveACO();
         }
 
         private void colorTables_menuStrip_button_export_altitude_adobeColorTableACT_Click(object sender, EventArgs e)
         {
-            this.i_Altitude.SaveACT();
+            i_Altitude.SaveACT();
         }
 
         private void colorTables_menuStrip_button_export_altitude_adobeSwatchFileACO_Click(object sender, EventArgs e)
         {
-            this.i_Altitude.SaveACO();
+            i_Altitude.SaveACO();
         }
 
         #endregion
 
         private void colorTables_menuStrip_button_facetBuilder_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            Hide();
 
-            facetBuilder facetBuilderForm = new facetBuilder();
-            facetBuilderForm.Show();
+            StaticForm<facetBuilder>.Open();
         }
 
         private void colorTables_menuStrip_button_information_Click(object sender, EventArgs e)
         {
-            communityCredits communityCreditsForm = new communityCredits();
-            communityCreditsForm.Show();
+            StaticForm<communityCredits>.Open();
         }
 
         private void colorTables_button_loadTerrainColorTables_Click(object sender, EventArgs e)
         {
-            this.i_Menu = 0;
-            this.colorTables_label_adobePhotoshopColorPalette.Text = "Terrain Color Table";
+            i_Menu = 0;
+            colorTables_label_adobePhotoshopColorPalette.Text = "Terrain Color Table";
 
-            this.i_Terrain.Load();
-            this.i_Terrain.Display(this.colorTables_listBox_colorTableList);
+            i_Terrain.Load();
+            i_Terrain.Display(colorTables_listBox_colorTableList);
 
-            this.colorTables_pictureBox_colorPalette.Hide();
-            this.colorTables_pictureBox_altitudeDisplay.Visible = false;
-            this.colorTables_pictureBox_tileDisplay.Visible = true;
+            colorTables_pictureBox_colorPalette.Hide();
+            colorTables_pictureBox_altitudeDisplay.Visible = false;
+            colorTables_pictureBox_tileDisplay.Visible = true;
 
-            this.colorTables_pictureBox_notificationBox_label_fileUsability.Show();
-            this.colorTables_pictureBox_notificationBox_label_altitudeGradient.Hide();
-            this.colorTables_pictureBox_altitudeDisplay.Hide();
+            colorTables_pictureBox_notificationBox_label_fileUsability.Show();
+            colorTables_pictureBox_notificationBox_label_altitudeGradient.Hide();
+            colorTables_pictureBox_altitudeDisplay.Hide();
         }
 
         private void colorTables_button_loadAltitudeColorTables_Click(object sender, EventArgs e)
         {
-            this.i_Menu = 1;
-            this.colorTables_label_adobePhotoshopColorPalette.Text = "Altitude Color Table";
+            i_Menu = 1;
+            colorTables_label_adobePhotoshopColorPalette.Text = "Altitude Color Table";
 
-            this.i_Altitude.Load();
-            this.i_Altitude.Display(this.colorTables_listBox_colorTableList);
+            i_Altitude.Load();
+            i_Altitude.Display(colorTables_listBox_colorTableList);
 
-            this.colorTables_pictureBox_colorPalette.Hide();
-            this.colorTables_pictureBox_tileDisplay.Visible = false;
-            this.colorTables_pictureBox_altitudeDisplay.Visible = true;
+            colorTables_pictureBox_colorPalette.Hide();
+            colorTables_pictureBox_tileDisplay.Visible = false;
+            colorTables_pictureBox_altitudeDisplay.Visible = true;
 
-            this.colorTables_pictureBox_notificationBox_label_fileUsability.Hide();
-            this.colorTables_pictureBox_notificationBox_label_altitudeGradient.Show();
+            colorTables_pictureBox_notificationBox_label_fileUsability.Hide();
+            colorTables_pictureBox_notificationBox_label_altitudeGradient.Show();
         }
 
         private void colorTables_listBox_colorTableList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (this.colorTables_listBox_colorTableList.SelectedItem != null)
+            if (colorTables_listBox_colorTableList.SelectedItem != null)
             {
-                switch (this.i_Menu)
+                switch (i_Menu)
                 {
                     case 0:
                         {
-                            ClsTerrain selectedItem = (ClsTerrain)this.colorTables_listBox_colorTableList.SelectedItem;
-                            this.colorTables_propertyGrid_colorTableProperties.SelectedObject = selectedItem;
-                            this.colorTables_pictureBox_tileDisplay.Image = Art.GetLand(selectedItem.TileID);
+                            ClsTerrain selectedItem = (ClsTerrain)colorTables_listBox_colorTableList.SelectedItem;
+                            colorTables_propertyGrid_colorTableProperties.SelectedObject = selectedItem;
+                            colorTables_pictureBox_tileDisplay.Image = Art.GetLand(selectedItem.TileID);
                             break;
                         }
                     case 1:
                         {
-                            ClsAltitude clsAltitude = (ClsAltitude)this.colorTables_listBox_colorTableList.SelectedItem;
-                            this.colorTables_propertyGrid_colorTableProperties.SelectedObject = clsAltitude;
+                            ClsAltitude clsAltitude = (ClsAltitude)colorTables_listBox_colorTableList.SelectedItem;
+                            colorTables_propertyGrid_colorTableProperties.SelectedObject = clsAltitude;
                             break;
                         }
                 }
