@@ -12,17 +12,22 @@ namespace UltimaSDK
 {
 	public sealed class Art
 	{
-		private static FileIndex m_FileIndex = new FileIndex(
-			"Artidx.mul", "Art.mul", "artLegacyMUL.uop", 0x14000, 4, ".tga", 0x13FDC, false);
+		[ThreadStatic]
+		private static FileIndex m_FileIndex;
 
-		private static Bitmap[] m_Cache;
+		public static FileIndex Index => m_FileIndex ??= new FileIndex("Artidx.mul", "Art.mul", "artLegacyMUL.uop", 0x14000, 4, ".tga", 0x13FDC, false);
+
+        private static Bitmap[] m_Cache;
 		private static bool[] m_Removed;
 		private static bool[] m_Patched;
 
 		public static bool Modified = false;
 
-		private static byte[] m_StreamBuffer;
-		private static byte[] Validbuffer;
+        [ThreadStatic]
+        private static byte[] m_StreamBuffer;
+
+        [ThreadStatic]
+        private static byte[] Validbuffer;
 
 		private struct CheckSums
 		{
@@ -84,7 +89,7 @@ namespace UltimaSDK
 
 		public static int GetIdxLength()
 		{
-			return (int)(m_FileIndex.IdxLength / 12);
+			return (int)(Index.IdxLength / 12);
 		}
 
 		/// <summary>
@@ -92,7 +97,7 @@ namespace UltimaSDK
 		/// </summary>
 		public static void Reload()
 		{
-			m_FileIndex = new FileIndex("Artidx.mul", "Art.mul", "artLegacyMUL.uop", 0x14000, 4, ".tga", 0x13FDC, false);
+			m_FileIndex = null;
 
 			m_Cache = new Bitmap[0x14000];
             m_Removed = new bool[0x14000];
@@ -187,7 +192,7 @@ namespace UltimaSDK
 				return true;
 			}
 
-			var stream = m_FileIndex.Seek(index, isAsync, out var length, out var extra, out var patched);
+			var stream = Index.Seek(index, isAsync, out var length, out var extra, out var patched);
 
 			if (stream == null)
 			{
@@ -232,7 +237,7 @@ namespace UltimaSDK
 				return true;
 			}
 
-			return m_FileIndex.Valid(index, out _, out _, out _);
+			return Index.Valid(index, out _, out _, out _);
 		}
 
         /// <summary>
@@ -275,7 +280,7 @@ namespace UltimaSDK
 				return m_Cache[index];
 			}
 
-            var stream = m_FileIndex.Seek(index, isAsync, out var length, out _, out patched);
+            var stream = Index.Seek(index, isAsync, out var length, out _, out patched);
 
 			if (stream == null)
 			{
@@ -312,7 +317,7 @@ namespace UltimaSDK
 		{
 			index &= 0x3FFF;
 
-            var stream = m_FileIndex.Seek(index, isAsync, out var length, out _, out _);
+            var stream = Index.Seek(index, isAsync, out var length, out _, out _);
 
 			if (stream == null)
 			{
@@ -384,7 +389,7 @@ namespace UltimaSDK
 				return m_Cache[index];
 			}
 
-			var stream = m_FileIndex.Seek(index, isAsync, out var length, out _, out patched);
+			var stream = Index.Seek(index, isAsync, out var length, out _, out patched);
 
 			if (stream == null)
 			{
@@ -412,7 +417,7 @@ namespace UltimaSDK
 			return image;
 		}
 
-		public static byte[] GetRawStatic(int index)
+        public static byte[] GetRawStatic(int index)
 		{
 			return GetRawStatic(index, false);
 		}
@@ -422,7 +427,7 @@ namespace UltimaSDK
 			index = GetLegalItemID(index);
 			index += 0x4000;
 
-            var stream = m_FileIndex.Seek(index, isAsync, out var length, out _, out _);
+            var stream = Index.Seek(index, isAsync, out var length, out _, out _);
 
 			if (stream == null)
 			{

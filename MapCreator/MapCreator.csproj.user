@@ -11,6 +11,9 @@
     <Compile Update="facetBuilder.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="CustomControls.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="splashScreen.cs">
       <SubType>Form</SubType>
     </Compile>

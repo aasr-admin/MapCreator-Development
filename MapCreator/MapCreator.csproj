@@ -6,7 +6,6 @@
 		<Nullable>disable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<UseWPF>True</UseWPF>
 		<StartupObject>MapCreator.Program</StartupObject>
 		<ApplicationIcon>res\exeicon\mC_0001ico.ico</ApplicationIcon>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>

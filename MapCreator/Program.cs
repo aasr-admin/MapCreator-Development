@@ -12,16 +12,52 @@ namespace MapCreator
         [STAThread]
         static void Main()
         {
-            try
-            {
-                var clientPath = File.ReadAllText("ClientPath.cfg");
+            var clientPath = Files.RootDir = string.Empty;
 
-                if (Directory.Exists(clientPath))
-                {
-                    Files.SetMulPath(clientPath);
-                }
+            var cfg = Path.Combine("ClientPath.cfg");
+
+            if (File.Exists(cfg))
+            {
+                clientPath = File.ReadAllText(cfg);
             }
-            catch { }
+            
+            FolderBrowserDialog browser = null;
+
+            while (!Directory.Exists(clientPath))
+            {
+                var result = MessageBox.Show("Ultima Online files could not be found.\r\nClick retry to manually select a path.", "Missing Files", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+
+                if (result == DialogResult.Retry)
+                {
+                    browser ??= new FolderBrowserDialog()
+                    {
+                        Description = "Select an Ultima Online directory",
+                        ShowNewFolderButton = false,
+                        AddToRecent = false,
+                        RootFolder = Environment.SpecialFolder.ProgramFilesX86
+                    };
+
+                    result = browser.ShowDialog();
+
+                    if (result == DialogResult.OK)
+                    {
+                        clientPath = browser.SelectedPath;
+                        continue;
+                    }
+                }
+
+                break;
+            }
+
+            if (!Directory.Exists(clientPath))
+            {
+                Application.Exit();
+                return;
+            }
+
+            File.WriteAllText(cfg, clientPath);
+
+            Files.SetMulPath(clientPath);
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.

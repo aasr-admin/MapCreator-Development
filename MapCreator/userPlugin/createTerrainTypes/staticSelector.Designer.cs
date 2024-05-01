@@ -29,221 +29,183 @@
         private void InitializeComponent()
         {
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(staticSelector));
-            listView = new ListView();
-            toolsPanel = new TableLayoutPanel();
+            tileView = new FastTileView();
+            contentTable = new TableLayoutPanel();
             previewImage = new PictureBox();
-            flowPanel1 = new FlowLayoutPanel();
-            valueSelector = new NumericUpDown();
+            controlsPanel = new FlowLayoutPanel();
+            clearButton = new Button();
             searchBox = new TextBox();
             searchButton = new Button();
+            valueSelector = new NumericUpDown();
             closeButton = new Button();
-            progressBar = new ProgressBar();
-            progressLabel = new Label();
-            panel1 = new Panel();
-            progressLayout = new TableLayoutPanel();
-            toolsPanel.SuspendLayout();
+            progressBar = new FastProgressBar();
+            contentTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)previewImage).BeginInit();
-            flowPanel1.SuspendLayout();
+            controlsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)valueSelector).BeginInit();
-            progressLayout.SuspendLayout();
             SuspendLayout();
             // 
-            // listView
+            // tileView
             // 
-            listView.Alignment = ListViewAlignment.Default;
-            listView.Dock = DockStyle.Fill;
-            listView.GridLines = true;
-            listView.HeaderStyle = ColumnHeaderStyle.None;
-            listView.Location = new Point(0, 0);
-            listView.MultiSelect = false;
-            listView.Name = "listView";
-            listView.OwnerDraw = true;
-            listView.ShowGroups = false;
-            listView.ShowItemToolTips = true;
-            listView.Size = new Size(584, 311);
-            listView.TabIndex = 0;
-            listView.TileSize = new Size(44, 44);
-            listView.UseCompatibleStateImageBehavior = false;
-            listView.View = View.Tile;
-            listView.VirtualListSize = 65536;
-            listView.DrawItem += OnDrawItem;
-            listView.ItemSelectionChanged += OnItemSelectionChanged;
+            tileView.Dock = DockStyle.Fill;
+            tileView.Location = new Point(103, 3);
+            tileView.Name = "tileView";
+            tileView.Size = new Size(378, 249);
+            tileView.TabIndex = 0;
+            tileView.TileSize = new Size(44, 44);
+            tileView.UseCompatibleStateImageBehavior = false;
+            tileView.View = View.Tile;
+            tileView.ItemSelectionChanged += OnItemSelectionChanged;
+            tileView.DoubleClick += OnCloseClick;
             // 
-            // toolsPanel
+            // contentTable
             // 
-            toolsPanel.AutoSize = true;
-            toolsPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            toolsPanel.ColumnCount = 2;
-            toolsPanel.ColumnStyles.Add(new ColumnStyle());
-            toolsPanel.ColumnStyles.Add(new ColumnStyle());
-            toolsPanel.Controls.Add(previewImage, 0, 0);
-            toolsPanel.Controls.Add(flowPanel1, 1, 0);
-            toolsPanel.Dock = DockStyle.Bottom;
-            toolsPanel.Font = new Font("Segoe UI", 11F);
-            toolsPanel.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            toolsPanel.Location = new Point(0, 311);
-            toolsPanel.Name = "toolsPanel";
-            toolsPanel.RowCount = 1;
-            toolsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            toolsPanel.Size = new Size(584, 50);
-            toolsPanel.TabIndex = 5;
+            contentTable.ColumnCount = 2;
+            contentTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100F));
+            contentTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            contentTable.Controls.Add(previewImage, 0, 0);
+            contentTable.Controls.Add(tileView, 1, 0);
+            contentTable.Controls.Add(controlsPanel, 1, 1);
+            contentTable.Controls.Add(progressBar, 0, 1);
+            contentTable.Dock = DockStyle.Fill;
+            contentTable.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
+            contentTable.Location = new Point(0, 0);
+            contentTable.Name = "contentTable";
+            contentTable.RowCount = 2;
+            contentTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            contentTable.RowStyles.Add(new RowStyle());
+            contentTable.Size = new Size(484, 284);
+            contentTable.TabIndex = 0;
             // 
             // previewImage
             // 
+            previewImage.BorderStyle = BorderStyle.Fixed3D;
             previewImage.Dock = DockStyle.Fill;
             previewImage.Location = new Point(3, 3);
             previewImage.Name = "previewImage";
-            previewImage.Size = new Size(44, 44);
-            previewImage.TabIndex = 6;
+            previewImage.Size = new Size(94, 249);
+            previewImage.SizeMode = PictureBoxSizeMode.CenterImage;
+            previewImage.TabIndex = 0;
             previewImage.TabStop = false;
             // 
-            // flowPanel1
+            // controlsPanel
             // 
-            flowPanel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            flowPanel1.AutoSize = true;
-            flowPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            flowPanel1.Controls.Add(valueSelector);
-            flowPanel1.Controls.Add(searchBox);
-            flowPanel1.Controls.Add(searchButton);
-            flowPanel1.Controls.Add(closeButton);
-            flowPanel1.Location = new Point(185, 17);
-            flowPanel1.Margin = new Padding(0);
-            flowPanel1.Name = "flowPanel1";
-            flowPanel1.Size = new Size(399, 33);
-            flowPanel1.TabIndex = 4;
-            flowPanel1.WrapContents = false;
+            controlsPanel.AutoSize = true;
+            controlsPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            controlsPanel.Controls.Add(clearButton);
+            controlsPanel.Controls.Add(searchBox);
+            controlsPanel.Controls.Add(searchButton);
+            controlsPanel.Controls.Add(valueSelector);
+            controlsPanel.Controls.Add(closeButton);
+            controlsPanel.Dock = DockStyle.Right;
+            controlsPanel.Location = new Point(140, 255);
+            controlsPanel.Margin = new Padding(0);
+            controlsPanel.Name = "controlsPanel";
+            controlsPanel.Size = new Size(344, 29);
+            controlsPanel.TabIndex = 0;
+            controlsPanel.WrapContents = false;
             // 
-            // valueSelector
+            // clearButton
             // 
-            valueSelector.Location = new Point(3, 3);
-            valueSelector.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
-            valueSelector.Name = "valueSelector";
-            valueSelector.Size = new Size(117, 27);
-            valueSelector.TabIndex = 3;
-            valueSelector.ValueChanged += OnValueSelectionChanged;
+            clearButton.BackgroundImage = (Image)resources.GetObject("clearButton.BackgroundImage");
+            clearButton.BackgroundImageLayout = ImageLayout.Zoom;
+            clearButton.Location = new Point(3, 3);
+            clearButton.Margin = new Padding(3, 3, 0, 3);
+            clearButton.Name = "clearButton";
+            clearButton.Size = new Size(23, 23);
+            clearButton.TabIndex = 0;
+            clearButton.UseVisualStyleBackColor = true;
+            clearButton.Click += OnClearClick;
             // 
             // searchBox
             // 
-            searchBox.Location = new Point(126, 3);
+            searchBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            searchBox.Location = new Point(26, 3);
+            searchBox.Margin = new Padding(0, 3, 0, 3);
             searchBox.MaxLength = 20;
             searchBox.Name = "searchBox";
             searchBox.PlaceholderText = "Name";
-            searchBox.Size = new Size(140, 27);
-            searchBox.TabIndex = 4;
+            searchBox.Size = new Size(140, 23);
+            searchBox.TabIndex = 0;
             searchBox.WordWrap = false;
             // 
             // searchButton
             // 
-            searchButton.Location = new Point(272, 3);
+            searchButton.BackgroundImage = (Image)resources.GetObject("searchButton.BackgroundImage");
+            searchButton.BackgroundImageLayout = ImageLayout.Zoom;
+            searchButton.Location = new Point(166, 3);
+            searchButton.Margin = new Padding(0, 3, 3, 3);
             searchButton.Name = "searchButton";
-            searchButton.Size = new Size(63, 27);
-            searchButton.TabIndex = 5;
-            searchButton.Text = "Search";
+            searchButton.Size = new Size(23, 23);
+            searchButton.TabIndex = 0;
             searchButton.UseVisualStyleBackColor = true;
             searchButton.Click += OnSearchClick;
             // 
+            // valueSelector
+            // 
+            valueSelector.Location = new Point(195, 3);
+            valueSelector.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
+            valueSelector.Name = "valueSelector";
+            valueSelector.Size = new Size(117, 23);
+            valueSelector.TabIndex = 0;
+            valueSelector.ValueChanged += OnValueSelectionChanged;
+            // 
             // closeButton
             // 
-            closeButton.Location = new Point(341, 3);
+            closeButton.BackgroundImage = (Image)resources.GetObject("closeButton.BackgroundImage");
+            closeButton.BackgroundImageLayout = ImageLayout.Zoom;
+            closeButton.Location = new Point(318, 3);
             closeButton.Name = "closeButton";
-            closeButton.Size = new Size(55, 27);
-            closeButton.TabIndex = 2;
-            closeButton.Text = "Close";
+            closeButton.Size = new Size(23, 23);
+            closeButton.TabIndex = 0;
             closeButton.UseVisualStyleBackColor = true;
             closeButton.Click += OnCloseClick;
             // 
             // progressBar
             // 
+            progressBar.BarColor = SystemColors.Highlight;
+            progressBar.BorderStyle = BorderStyle.FixedSingle;
             progressBar.Dock = DockStyle.Fill;
-            progressBar.Location = new Point(3, 23);
-            progressBar.Maximum = 65536;
+            progressBar.Location = new Point(3, 258);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(578, 23);
-            progressBar.Step = 1;
-            progressBar.TabIndex = 6;
-            // 
-            // progressLabel
-            // 
-            progressLabel.AutoSize = true;
-            progressLabel.Dock = DockStyle.Fill;
-            progressLabel.Font = new Font("Segoe UI", 11F);
-            progressLabel.Location = new Point(3, 0);
-            progressLabel.Name = "progressLabel";
-            progressLabel.Size = new Size(578, 20);
-            progressLabel.TabIndex = 7;
-            progressLabel.Text = "65536";
-            progressLabel.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // panel1
-            // 
-            panel1.AutoSize = true;
-            panel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panel1.Location = new Point(173, 204);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(0, 0);
-            panel1.TabIndex = 8;
-            // 
-            // progressLayout
-            // 
-            progressLayout.AutoSize = true;
-            progressLayout.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            progressLayout.ColumnCount = 1;
-            progressLayout.ColumnStyles.Add(new ColumnStyle());
-            progressLayout.Controls.Add(progressLabel, 0, 0);
-            progressLayout.Controls.Add(progressBar, 0, 1);
-            progressLayout.Dock = DockStyle.Top;
-            progressLayout.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            progressLayout.Location = new Point(0, 0);
-            progressLayout.Name = "progressLayout";
-            progressLayout.RowCount = 2;
-            progressLayout.RowStyles.Add(new RowStyle());
-            progressLayout.RowStyles.Add(new RowStyle());
-            progressLayout.Size = new Size(584, 49);
-            progressLayout.TabIndex = 10;
+            progressBar.Size = new Size(94, 23);
+            progressBar.TabIndex = 0;
+            progressBar.Text = "";
             // 
             // staticSelector
             // 
+            AcceptButton = closeButton;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(584, 361);
+            CancelButton = closeButton;
+            ClientSize = new Size(484, 284);
             ControlBox = false;
-            Controls.Add(progressLayout);
-            Controls.Add(panel1);
-            Controls.Add(listView);
-            Controls.Add(toolsPanel);
+            Controls.Add(contentTable);
             DoubleBuffered = true;
-            FormBorderStyle = FormBorderStyle.SizableToolWindow;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MinimumSize = new Size(420, 120);
+            MinimumSize = new Size(500, 300);
             Name = "staticSelector";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Static Selector";
-            toolsPanel.ResumeLayout(false);
-            toolsPanel.PerformLayout();
+            contentTable.ResumeLayout(false);
+            contentTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)previewImage).EndInit();
-            flowPanel1.ResumeLayout(false);
-            flowPanel1.PerformLayout();
+            controlsPanel.ResumeLayout(false);
+            controlsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)valueSelector).EndInit();
-            progressLayout.ResumeLayout(false);
-            progressLayout.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-        private ListView listView;
-        private TableLayoutPanel toolsPanel;
-        private ProgressBar progressBar;
+        private FastTileView tileView;
+        private TableLayoutPanel contentTable;
         private PictureBox previewImage;
-        private FlowLayoutPanel flowPanel1;
+        private FlowLayoutPanel controlsPanel;
         private NumericUpDown valueSelector;
         private TextBox searchBox;
         private Button searchButton;
         private Button closeButton;
-        private Label label1;
-        private Panel panel1;
-        private FlowLayoutPanel flowLayoutPanel1;
-        private TableLayoutPanel progressLayout;
-        private Label progressLabel;
+        private Button clearButton;
+        private FastProgressBar progressBar;
     }
 }

@@ -1,4 +1,6 @@
-﻿using UltimaSDK;
+﻿using System.Collections.Concurrent;
+
+using UltimaSDK;
 
 namespace MapCreator
 {
@@ -42,154 +44,156 @@ namespace MapCreator
         {
             InitializeComponent();
 
-            progressLayout.Visible = false;
+            progressBar.Limit = Capacity;
         }
 
         protected override async void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
+            closeButton.Select();
+
+            UseWaitCursor = true;
+
             valueSelector.Enabled = false;
             searchBox.Enabled = false;
             searchButton.Enabled = false;
 
-            listView.Enabled = false;
-            listView.UseWaitCursor = true;
+            tileView.Enabled = false;
 
-            var max = progressBar.Maximum = Capacity;
+            var staticGroup = tileView.DefaultGroup;
 
-            progressBar.Value = 0;
-            progressLabel.Text = $"{progressBar.Value} / {progressBar.Maximum}";
-            progressLayout.Visible = true;
+            staticGroup.Header = "Statics";
 
-            var size = listView.TileSize;
+            var emptyGroup = tileView.InvalidGroup;
 
-            var items = new ListViewItem[max];
+            emptyGroup.Name = "Empty";
 
-            var complete = new HashSet<string>();
+            var items = new ListViewItem[Capacity];
 
-            await Task.Factory.StartNew(() =>
+            var complete = new ConcurrentBag<string>();
+
+            var tasks = new Task[32];
+
+            var chunk = (int)Math.Ceiling(items.Length / (double)tasks.Length);
+
+            for (var i = 0; i < tasks.Length; i++)
             {
-                for (var index = 0; index < max; index++)
+                var start = i * chunk;
+                var end = Math.Min(start + chunk, items.Length);
+
+                tasks[i] = Task.Factory.StartNew(() =>
                 {
-                    var image = Art.GetStatic(index, false);
-
-                    image?.MakeTransparent(Color.White);
-
-                    var item = new ListViewItem($"{index}")
+                    for (var index = start; index < end; index++)
                     {
-                        Tag = image
-                    };
+                        var image = Art.GetStatic(index, false);
 
-                    ref var data = ref TileData.ItemTable[index];
+                        image?.MakeTransparent(Color.White);
 
-                    if (!string.IsNullOrWhiteSpace(data.Name))
+                        ListViewItem item;
+
+                        if (image != null)
+                        {
+                            item = new ListViewItem($"{index}", staticGroup)
+                            {
+                                Tag = image
+                            };
+
+                            ref var data = ref TileData.ItemTable[index];
+
+                            if (!string.IsNullOrWhiteSpace(data.Name))
+                            {
+                                item.ToolTipText = item.Name = data.Name;
+
+                                complete.Add(data.Name.Trim().ToLowerInvariant());
+                            }
+                        }
+                        else
+                        {
+                            item = new ListViewItem($"{index}", emptyGroup);
+                        }
+
+                        items[index] = item;
+
+                        BeginInvoke(progressBar.Step);
+                    }
+                }, TaskCreationOptions.LongRunning);
+            }
+
+            await Task.WhenAll(tasks);
+            
+            await Task.Run(() =>
+            {
+                while (progressBar.Value < progressBar.Limit)
+                {
+                    Thread.Yield();
+                }
+            });
+
+            BeginInvoke(() =>
+            {
+                tileView.Groups.Add(staticGroup);
+                tileView.Groups.Add(emptyGroup);
+
+                if (!complete.IsEmpty)
+                {
+                    var pruned = new HashSet<string>(complete.Count);
+
+                    pruned.UnionWith(complete);
+
+                    complete.Clear();
+
+                    var auto = new AutoCompleteStringCollection();
+
+                    foreach (var match in pruned)
                     {
-                        item.ToolTipText = data.Name;
-
-                        complete.Add(data.Name.ToLowerInvariant());
+                        auto.Add(match);
                     }
 
-                    items[index] = item;
+                    pruned.Clear();
+                    pruned.TrimExcess();
 
-                    Invoke(PushProgress);
-                }
-            }, TaskCreationOptions.LongRunning).ConfigureAwait(true);
-
-            if (complete.Count > 0)
-            {
-                var auto = new AutoCompleteStringCollection();
-
-                foreach (var match in complete)
-                {
-                    auto.Add(match);
+                    searchBox.AutoCompleteCustomSource = auto;
+                    searchBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
                 }
 
-                complete.Clear();
-                complete.TrimExcess();
+                tileView.BeginUpdate();
+                tileView.Items.AddRange(items);
+                tileView.EndUpdate();
 
-                searchBox.AutoCompleteCustomSource = auto;
-                searchBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                searchBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            }
+                progressBar.Visible = false;
 
-            listView.BeginUpdate();
-            listView.Items.AddRange(items);
-            listView.EndUpdate();
+                tileView.Enabled = true;
 
-            listView.UseWaitCursor = false;
-            listView.Enabled = true;
+                valueSelector.Enabled = true;
+                searchBox.Enabled = true;
+                searchButton.Enabled = true;
 
-            progressLayout.Visible = false;
+                UseWaitCursor = false;
 
-            valueSelector.Enabled = true;
-            searchBox.Enabled = true;
-            searchButton.Enabled = true;
+                loading = false;
 
-            loading = false;
-
-            loadedCallback?.Invoke();
-            loadedCallback = null;
-        }
-
-        private void PushProgress()
-        {
-            progressBar.PerformStep();
-            progressLabel.Text = $"{progressBar.Value} / {progressBar.Maximum}";
-        }
-
-        private void OnDrawItem(object sender, DrawListViewItemEventArgs e)
-        {
-            if (e.Item.Selected)
-            {
-                e.Graphics.FillRectangle(Brushes.LightSkyBlue, e.Bounds);
-                e.Graphics.DrawRectangle(Pens.DeepSkyBlue, e.Bounds);
-            }
-            else
-            {
-                e.Graphics.DrawRectangle(Pens.LightSkyBlue, e.Bounds);
-            }
-
-            if (e.Item.Tag is Image image)
-            {
-                var srcWidth = Math.Min(e.Bounds.Width, image.Width);
-                var srcHeight = Math.Min(e.Bounds.Height, image.Height);
-
-                e.Graphics.DrawImage(image, e.Bounds, 0, 0, srcWidth, srcHeight, GraphicsUnit.Pixel);
-            }
-
-            using var trans = new SolidBrush(Color.FromArgb(96, Color.Black));
-
-            var size = e.Graphics.MeasureString(e.Item.Text, e.Item.Font);
-
-            var height = size.Height;
-
-            var rect = new RectangleF(e.Bounds.Location, e.Bounds.Size);
-
-            rect.Y = rect.Bottom - height;
-            rect.Height = height;
-
-            e.Graphics.FillRectangle(trans, rect);
-
-            e.Graphics.DrawString(e.Item.Text, e.Item.Font, Brushes.WhiteSmoke, rect);
+                loadedCallback?.Invoke();
+                loadedCallback = null;
+            });
         }
 
         private void OnValueSelectionChanged(object sender, EventArgs e)
         {
-            listView.SelectedIndices.Clear();
-
-            if (Value >= 0 && Value < listView.Items.Count)
-            {
-                listView.SelectedIndices.Add(Value);
-
-                listView.EnsureVisible(Value);
-
-                previewImage.Image = listView.Items[Value].Tag as Image;
-            }
-
             if (searchIndex != Value)
             {
                 searchIndex = -1;
+            }
+
+            tileView.SelectedIndices.Clear();
+
+            if (Value >= 0 && Value < tileView.Items.Count)
+            {
+                tileView.SelectedIndices.Add(Value);
+
+                tileView.EnsureVisible(Value);
+
+                previewImage.Image = tileView.Items[Value].Tag as Image;
             }
         }
 
@@ -199,6 +203,12 @@ namespace MapCreator
             {
                 Value = (int)Math.Clamp(e.ItemIndex, valueSelector.Minimum, valueSelector.Maximum);
             }
+        }
+
+        private void OnClearClick(object sender, EventArgs e)
+        {
+            searchIndex = -1;
+            searchText = searchBox.Text = null;
         }
 
         private void OnSearchClick(object sender, EventArgs e)
@@ -214,13 +224,13 @@ namespace MapCreator
                 return;
             }
 
-            var count = listView.Items.Count;
+            var count = tileView.Items.Count;
 
             while (--count >= 0)
             {
-                searchIndex = ++searchIndex % listView.Items.Count;
+                searchIndex = ++searchIndex % tileView.Items.Count;
 
-                var item = listView.Items[searchIndex];
+                var item = tileView.Items[searchIndex];
 
                 if (string.IsNullOrWhiteSpace(item.ToolTipText))
                 {
