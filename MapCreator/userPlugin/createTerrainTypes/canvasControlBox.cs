@@ -1,110 +1,237 @@
-﻿namespace MapCreator
+﻿
+namespace MapCreator
 {
-    public partial class canvasControlBox : Form
+    public partial class CanvasControlBox : Form
     {
-        private bool dragging = false;
-        private Point dragCursorPoint;
-        private Point dragFormPoint;
+        private bool _initialized, _suppressEvent;
 
-        public event EventHandler ActionNorth;
-        public event EventHandler ActionNorthEast;
-        public event EventHandler ActionEast;
-        public event EventHandler ActionSouthEast;
-        public event EventHandler ActionSouth;
-        public event EventHandler ActionSouthWest;
-        public event EventHandler ActionWest;
-        public event EventHandler ActionNorthWest;
+        private bool _dragging = false;
+        private Point _dragStart, _dragCursor;
 
-        public event EventHandler ActionChangeX;
-        public event EventHandler ActionChangeY;
-        public event EventHandler ActionChangeZ;
+        public sbyte XAxisValue
+        {
+            get => (sbyte)xAxis_label_numUpDown.Value;
+            protected set => xAxis_label_numUpDown.Value = Math.Clamp(value, xAxis_label_numUpDown.Minimum, xAxis_label_numUpDown.Maximum);
+        }
 
-        public canvasControlBox()
+        public sbyte XAxisMinimum
+        {
+            get => (sbyte)xAxis_label_numUpDown.Minimum;
+            set => xAxis_label_numUpDown.Minimum = Math.Min(value, xAxis_label_numUpDown.Maximum);
+        }
+
+        public sbyte XAxisMaximum
+        {
+            get => (sbyte)xAxis_label_numUpDown.Maximum;
+            set => xAxis_label_numUpDown.Maximum = Math.Max(value, xAxis_label_numUpDown.Minimum);
+        }
+
+        public sbyte YAxisValue
+        {
+            get => (sbyte)yAxis_label_numUpDown.Value;
+            protected set => yAxis_label_numUpDown.Value = Math.Clamp(value, yAxis_label_numUpDown.Minimum, yAxis_label_numUpDown.Maximum);
+        }
+
+        public sbyte YAxisMinimum
+        {
+            get => (sbyte)yAxis_label_numUpDown.Minimum;
+            set => yAxis_label_numUpDown.Minimum = Math.Min(value, yAxis_label_numUpDown.Maximum);
+        }
+
+        public sbyte YAxisMaximum
+        {
+            get => (sbyte)yAxis_label_numUpDown.Maximum;
+            set => yAxis_label_numUpDown.Maximum = Math.Max(value, yAxis_label_numUpDown.Minimum);
+        }
+
+        public sbyte ZAxisValue
+        {
+            get => (sbyte)zAxis_label_numUpDown.Value;
+            protected set => zAxis_label_numUpDown.Value = Math.Clamp(value, zAxis_label_numUpDown.Minimum, zAxis_label_numUpDown.Maximum);
+        }
+
+        public sbyte ZAxisMinimum
+        {
+            get => (sbyte)zAxis_label_numUpDown.Minimum;
+            set => zAxis_label_numUpDown.Minimum = Math.Min(value, zAxis_label_numUpDown.Maximum);
+        }
+
+        public sbyte ZAxisMaximum
+        {
+            get => (sbyte)zAxis_label_numUpDown.Maximum;
+            set => zAxis_label_numUpDown.Maximum = Math.Max(value, zAxis_label_numUpDown.Minimum);
+        }
+
+        public event EventHandler XAxisValueChanged
+        {
+            add => xAxis_label_numUpDown.ValueChanged += value;
+            remove => xAxis_label_numUpDown.ValueChanged -= value;
+        }
+
+        public event EventHandler YAxisValueChanged
+        {
+            add => yAxis_label_numUpDown.ValueChanged += value;
+            remove => yAxis_label_numUpDown.ValueChanged -= value;
+        }
+
+        public event EventHandler ZAxisValueChanged
+        {
+            add => zAxis_label_numUpDown.ValueChanged += value;
+            remove => zAxis_label_numUpDown.ValueChanged -= value;
+        }
+
+        public event EventHandler AxisValueChanged;
+
+        public CanvasControlBox()
         {
             InitializeComponent();
         }
 
-        private void canvasControlBox_MouseDown(object sender, MouseEventArgs e)
+        private void OnSingleValueChanged(object sender, EventArgs e)
         {
-            dragging = true;
-            dragCursorPoint = Cursor.Position;
-            dragFormPoint = Location;
-        }
-
-        private void canvasControlBox_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (dragging)
+            if (!_suppressEvent && sender is NumericUpDown num)
             {
-                var dif = Point.Subtract(Cursor.Position, new Size(dragCursorPoint));
-                Location = Point.Add(dragFormPoint, new Size(dif));
+                AxisValueChanged?.Invoke(num, EventArgs.Empty);
             }
         }
 
-        private void canvasControlBox_MouseUp(object sender, MouseEventArgs e)
+        public bool OffsetAxis(sbyte? x, sbyte? y, sbyte? z)
         {
-            dragging = false;
+            if (x != null)
+            {
+                x += XAxisValue;
+            }
+
+            if (y != null)
+            {
+                y += YAxisValue;
+            }
+
+            if (z != null)
+            {
+                z += ZAxisValue;
+            }
+
+            return UpdateAxis(x, y, z);
         }
 
-        /// NumericUpDown: ValueChanged
-        private void xAxis_label_numUpDown_ValueChanged(object sender, EventArgs e)
+        public bool UpdateAxis(sbyte? x, sbyte? y, sbyte? z)
         {
-            ActionChangeX?.Invoke(sender, e);
+            var updated = !_initialized;
+
+            _suppressEvent = true;
+
+            try
+            {
+                if (x != null)
+                {
+                    XAxisValue = x.Value;
+                    updated = true;
+                }
+
+                if (y != null)
+                {
+                    YAxisValue = y.Value;
+                    updated = true;
+                }
+
+                if (z != null)
+                {
+                    ZAxisValue = z.Value;
+                    updated = true;
+                }
+
+                return updated;
+            }
+            finally
+            {
+                _initialized = true;
+                _suppressEvent = false;
+
+                if (updated)
+                {
+                    AxisValueChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
         }
 
-        private void yAxis_label_numUpDown_ValueChanged(object sender, EventArgs e)
+        private void OnAxisButtonClick(object sender, EventArgs e)
         {
-            ActionChangeY?.Invoke(sender, e);
+            if (sender is ToolStripButton button && button.Tag is int index)
+            {
+                switch (index)
+                {
+                    case 1: // W
+                    OffsetAxis(-1, 0, 0);
+                    break;
+
+                    case 2: // NW
+                    OffsetAxis(-1, -1, 0);
+                    break;
+
+                    case 3: // N
+                    OffsetAxis(0, -1, 0);
+                    break;
+
+                    case 4: // SW
+                    OffsetAxis(-1, 1, 0);
+                    break;
+
+                    case 5: // Center
+                    UpdateAxis(0, 0, 0);
+                    break;
+
+                    case 6: // NE
+                    OffsetAxis(1, -1, 0);
+                    break;
+
+                    case 7: // S
+                    OffsetAxis(0, 1, 0);
+                    break;
+
+                    case 8: // SE
+                    OffsetAxis(1, 1, 0);
+                    break;
+
+                    case 9: // E
+                    OffsetAxis(1, 0, 0);
+                    break;
+                }
+            }
         }
 
-        private void zAxis_label_numUpDown_ValueChanged(object sender, EventArgs e)
+        protected override void OnMouseDown(MouseEventArgs e)
         {
-            ActionChangeZ?.Invoke(sender, e);
+            if (e.Button == MouseButtons.Left)
+            {
+                _dragging = true;
+                _dragStart = Location;
+                _dragCursor = Cursor.Position;
+            }
+
+            base.OnMouseDown(e);
         }
 
-        /// CanvasControlBox Buttons
-        private void NorthWestButton_Click(object sender, EventArgs e)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
-            ActionNorthWest?.Invoke(sender, e);
+            if (_dragging)
+            {
+                var loc = Cursor.Position;
+
+                loc.Offset(-_dragCursor.X, -_dragCursor.Y);
+                loc.Offset(_dragStart.X, _dragStart.Y);
+
+                Location = loc;
+            }
+
+            base.OnMouseMove(e);
         }
 
-        private void NorthButton_Click(object sender, EventArgs e)
+        protected override void OnMouseUp(MouseEventArgs e)
         {
-            ActionNorth?.Invoke(sender, e);
-        }
+            _dragging = false;
 
-        private void NorthEastButton_Click(object sender, EventArgs e)
-        {
-            ActionNorthEast?.Invoke(sender, e);
-        }
-
-        private void WestButton_Click(object sender, EventArgs e)
-        {
-            ActionWest?.Invoke(sender, e);
-        }
-
-        private void NavIcon_Click(object sender, EventArgs e)
-        {
-            /// ToDo: Idea To Bring Up A Compass
-        }
-
-        private void EastButton_Click(object sender, EventArgs e)
-        {
-            ActionEast?.Invoke(sender, e);
-        }
-
-        private void SouthWestButton_Click(object sender, EventArgs e)
-        {
-            ActionSouthWest?.Invoke(sender, e);
-        }
-
-        private void SouthButton_Click(object sender, EventArgs e)
-        {
-            ActionSouth?.Invoke(sender, e);
-        }
-
-        private void SouthEastButton_Click(object sender, EventArgs e)
-        {
-            ActionSouthEast?.Invoke(sender, e);
+            base.OnMouseUp(e);
         }
     }
 }

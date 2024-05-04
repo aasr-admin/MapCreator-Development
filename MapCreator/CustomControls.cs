@@ -4,6 +4,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace System.Windows.Forms
 {
+    public class FastPanel : Panel
+    {
+        public FastPanel()
+        {
+            DoubleBuffered = true;
+
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+        }
+    }
+
     public class FastProgressBar : Panel
     {
         protected override Size DefaultSize { get; } = new Size(100, 30);

@@ -1,6 +1,6 @@
-﻿namespace MapCreator.userPlugin
+﻿namespace MapCreator
 {
-    partial class createTerrainTypes
+    partial class CreateTerrainTypes
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(createTerrainTypes));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateTerrainTypes));
             userPlugins_pictureBox_topDivider = new PictureBox();
             createTerrainTypes_mainMenu = new MenuStrip();
             createTerrainTypes_mainMenu_button_newTerrainType = new ToolStripMenuItem();
@@ -48,11 +48,18 @@
             pictureBox2 = new PictureBox();
             pictureBox1 = new PictureBox();
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain = new TabPage();
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox = new ComboBox();
-            createTerrainTypes_groupBox_terrainPreview = new GroupBox();
             createTerrainTypes_groupBox_terrainPreview_panel = new Panel();
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay = new Panel();
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay = new FastPanel();
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker = new Panel();
+            panel2 = new Panel();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType = new Label();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox = new ComboBox();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox = new TextBox();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain = new Label();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID = new Label();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox = new TextBox();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID = new Label();
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox = new TextBox();
             staticPlacement_tabControl = new TabControl();
             staticPlacement_tabControl_tabPage_staticEntries = new TabPage();
             staticPlacement_tabControl_tabPage_staticList_entryListBox_Control = new Panel();
@@ -83,13 +90,6 @@
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon = new ToolStripButton();
             staticPlacement_tabControl_tabPage_staticProperties = new TabPage();
             staticPlacement_tabControl_tabPage_staticProperties_propertyGrid = new PropertyGrid();
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox = new TextBox();
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox = new TextBox();
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID = new Label();
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID = new Label();
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain = new Label();
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType = new Label();
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox = new TextBox();
             ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_topDivider).BeginInit();
             createTerrainTypes_mainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_bottomDivider).BeginInit();
@@ -100,9 +100,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.SuspendLayout();
-            createTerrainTypes_groupBox_terrainPreview.SuspendLayout();
             createTerrainTypes_groupBox_terrainPreview_panel.SuspendLayout();
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.SuspendLayout();
+            panel2.SuspendLayout();
             staticPlacement_tabControl.SuspendLayout();
             staticPlacement_tabControl_tabPage_staticEntries.SuspendLayout();
             staticPlacement_tabControl_tabPage_staticList_entryListBox_Control.SuspendLayout();
@@ -120,6 +119,7 @@
             // userPlugins_pictureBox_topDivider
             // 
             userPlugins_pictureBox_topDivider.BackColor = SystemColors.ActiveCaptionText;
+            userPlugins_pictureBox_topDivider.Dock = DockStyle.Top;
             userPlugins_pictureBox_topDivider.Image = (Image)resources.GetObject("userPlugins_pictureBox_topDivider.Image");
             userPlugins_pictureBox_topDivider.ImeMode = ImeMode.NoControl;
             userPlugins_pictureBox_topDivider.Location = new Point(0, 28);
@@ -182,6 +182,7 @@
             // userPlugins_pictureBox_bottomDivider
             // 
             userPlugins_pictureBox_bottomDivider.BackColor = SystemColors.ActiveCaptionText;
+            userPlugins_pictureBox_bottomDivider.Dock = DockStyle.Bottom;
             userPlugins_pictureBox_bottomDivider.Image = (Image)resources.GetObject("userPlugins_pictureBox_bottomDivider.Image");
             userPlugins_pictureBox_bottomDivider.ImeMode = ImeMode.NoControl;
             userPlugins_pictureBox_bottomDivider.Location = new Point(0, 410);
@@ -196,6 +197,7 @@
             statusStrip1.Location = new Point(0, 422);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(773, 22);
+            statusStrip1.SizingGrip = false;
             statusStrip1.TabIndex = 10;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -229,10 +231,11 @@
             // 
             userPlugin_createTerrainTypes.Controls.Add(userPlugin_createTerrainTypesTitle);
             userPlugin_createTerrainTypes.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain);
-            userPlugin_createTerrainTypes.Location = new Point(0, 42);
+            userPlugin_createTerrainTypes.Dock = DockStyle.Fill;
+            userPlugin_createTerrainTypes.Location = new Point(0, 40);
             userPlugin_createTerrainTypes.Name = "userPlugin_createTerrainTypes";
             userPlugin_createTerrainTypes.SelectedIndex = 0;
-            userPlugin_createTerrainTypes.Size = new Size(770, 368);
+            userPlugin_createTerrainTypes.Size = new Size(773, 370);
             userPlugin_createTerrainTypes.TabIndex = 16;
             // 
             // userPlugin_createTerrainTypesTitle
@@ -245,7 +248,7 @@
             userPlugin_createTerrainTypesTitle.Location = new Point(4, 24);
             userPlugin_createTerrainTypesTitle.Name = "userPlugin_createTerrainTypesTitle";
             userPlugin_createTerrainTypesTitle.Padding = new Padding(3);
-            userPlugin_createTerrainTypesTitle.Size = new Size(762, 340);
+            userPlugin_createTerrainTypesTitle.Size = new Size(765, 342);
             userPlugin_createTerrainTypesTitle.TabIndex = 0;
             userPlugin_createTerrainTypesTitle.UseVisualStyleBackColor = true;
             // 
@@ -297,91 +300,158 @@
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(3, 3);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(756, 334);
+            pictureBox1.Size = new Size(759, 336);
             pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
             // createTerrainTypes_tabControl_tabPage_ConfigureTerrain
             // 
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_groupBox_terrainPreview);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(panel2);
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(staticPlacement_tabControl);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox);
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Location = new Point(4, 24);
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain";
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Padding = new Padding(3);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Size = new Size(762, 340);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Size = new Size(765, 342);
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.TabIndex = 1;
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Text = "Configure Terrain";
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.UseVisualStyleBackColor = true;
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Enter += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_Enter;
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Leave += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_Leave;
             // 
-            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox
-            // 
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.FormattingEnabled = true;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.Location = new Point(91, 44);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox";
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.Size = new Size(204, 23);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.TabIndex = 12;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.SelectedIndexChanged += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox_SelectedIndexChanged;
-            // 
-            // createTerrainTypes_groupBox_terrainPreview
-            // 
-            createTerrainTypes_groupBox_terrainPreview.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel);
-            createTerrainTypes_groupBox_terrainPreview.Font = new Font("Comic Sans MS", 9F);
-            createTerrainTypes_groupBox_terrainPreview.Location = new Point(8, 81);
-            createTerrainTypes_groupBox_terrainPreview.Name = "createTerrainTypes_groupBox_terrainPreview";
-            createTerrainTypes_groupBox_terrainPreview.Size = new Size(416, 252);
-            createTerrainTypes_groupBox_terrainPreview.TabIndex = 9;
-            createTerrainTypes_groupBox_terrainPreview.TabStop = false;
-            createTerrainTypes_groupBox_terrainPreview.Text = "Terrain Preview";
-            // 
             // createTerrainTypes_groupBox_terrainPreview_panel
             // 
             createTerrainTypes_groupBox_terrainPreview_panel.AutoScroll = true;
+            createTerrainTypes_groupBox_terrainPreview_panel.BackColor = Color.Black;
             createTerrainTypes_groupBox_terrainPreview_panel.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay);
+            createTerrainTypes_groupBox_terrainPreview_panel.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker);
             createTerrainTypes_groupBox_terrainPreview_panel.Dock = DockStyle.Fill;
-            createTerrainTypes_groupBox_terrainPreview_panel.Location = new Point(3, 20);
+            createTerrainTypes_groupBox_terrainPreview_panel.Location = new Point(0, 58);
             createTerrainTypes_groupBox_terrainPreview_panel.Name = "createTerrainTypes_groupBox_terrainPreview_panel";
-            createTerrainTypes_groupBox_terrainPreview_panel.Size = new Size(410, 229);
+            createTerrainTypes_groupBox_terrainPreview_panel.Size = new Size(442, 284);
             createTerrainTypes_groupBox_terrainPreview_panel.TabIndex = 0;
             // 
             // createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay
             // 
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.BackgroundImageLayout = ImageLayout.None;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.BorderStyle = BorderStyle.FixedSingle;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.BackColor = Color.Transparent;
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Location = new Point(0, 0);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Margin = new Padding(0);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.MaximumSize = new Size(572, 572);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.MinimumSize = new Size(572, 572);
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Name = "createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay";
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Size = new Size(572, 572);
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.TabIndex = 0;
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.MouseClick += CreateTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_MouseClick;
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Paint += createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_Paint;
             // 
             // createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker
             // 
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Location = new Point(0, 0);
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Margin = new Padding(0);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.MaximumSize = new Size(44, 44);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.MinimumSize = new Size(44, 44);
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Name = "createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker";
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Size = new Size(1, 1);
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Size = new Size(44, 44);
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.TabIndex = 0;
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType);
+            panel2.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox);
+            panel2.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox);
+            panel2.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain);
+            panel2.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID);
+            panel2.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox);
+            panel2.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID);
+            panel2.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(0, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(442, 58);
+            panel2.TabIndex = 13;
+            // 
+            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType
+            // 
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType.AutoSize = true;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType.Location = new Point(5, 6);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType";
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType.Size = new Size(72, 15);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType.TabIndex = 1;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType.Text = "Terrain Type:";
+            // 
+            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox
+            // 
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.FormattingEnabled = true;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.Location = new Point(83, 32);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox";
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.Size = new Size(239, 23);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.Sorted = true;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.TabIndex = 12;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.SelectedIndexChanged += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox_SelectedIndexChanged;
+            // 
+            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox
+            // 
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox.Location = new Point(83, 3);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox";
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox.Size = new Size(239, 23);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox.TabIndex = 0;
+            // 
+            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain
+            // 
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain.AutoSize = true;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain.Location = new Point(5, 35);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain";
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain.Size = new Size(72, 15);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain.TabIndex = 3;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain.Text = "Base Terrain:";
+            // 
+            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID
+            // 
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID.AutoSize = true;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID.Location = new Point(328, 6);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID";
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID.Size = new Size(45, 15);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID.TabIndex = 4;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID.Text = "TILE ID:";
+            // 
+            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox
+            // 
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox.Location = new Point(380, 32);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox";
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox.Size = new Size(56, 23);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox.TabIndex = 7;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox.TextAlign = HorizontalAlignment.Center;
+            // 
+            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID
+            // 
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID.AutoSize = true;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID.Location = new Point(328, 35);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID";
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID.Size = new Size(46, 15);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID.TabIndex = 5;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID.Text = "Hue ID:";
+            // 
+            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox
+            // 
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.Location = new Point(380, 3);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox";
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.Size = new Size(56, 23);
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.TabIndex = 6;
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.TextAlign = HorizontalAlignment.Center;
             // 
             // staticPlacement_tabControl
             // 
             staticPlacement_tabControl.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries);
             staticPlacement_tabControl.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList);
             staticPlacement_tabControl.Controls.Add(staticPlacement_tabControl_tabPage_staticProperties);
-            staticPlacement_tabControl.Location = new Point(430, 13);
+            staticPlacement_tabControl.Dock = DockStyle.Right;
+            staticPlacement_tabControl.Location = new Point(442, 0);
+            staticPlacement_tabControl.Multiline = true;
             staticPlacement_tabControl.Name = "staticPlacement_tabControl";
             staticPlacement_tabControl.SelectedIndex = 0;
-            staticPlacement_tabControl.Size = new Size(323, 320);
+            staticPlacement_tabControl.Size = new Size(323, 342);
             staticPlacement_tabControl.TabIndex = 8;
             // 
             // staticPlacement_tabControl_tabPage_staticEntries
@@ -397,7 +467,7 @@
             staticPlacement_tabControl_tabPage_staticEntries.Location = new Point(4, 24);
             staticPlacement_tabControl_tabPage_staticEntries.Name = "staticPlacement_tabControl_tabPage_staticEntries";
             staticPlacement_tabControl_tabPage_staticEntries.Padding = new Padding(3);
-            staticPlacement_tabControl_tabPage_staticEntries.Size = new Size(315, 292);
+            staticPlacement_tabControl_tabPage_staticEntries.Size = new Size(315, 314);
             staticPlacement_tabControl_tabPage_staticEntries.TabIndex = 0;
             staticPlacement_tabControl_tabPage_staticEntries.Text = "Static Entries";
             staticPlacement_tabControl_tabPage_staticEntries.UseVisualStyleBackColor = true;
@@ -536,7 +606,7 @@
             staticPlacement_tabControl_tabPage_entryCompnentList.Location = new Point(4, 24);
             staticPlacement_tabControl_tabPage_entryCompnentList.Name = "staticPlacement_tabControl_tabPage_entryCompnentList";
             staticPlacement_tabControl_tabPage_entryCompnentList.Padding = new Padding(3);
-            staticPlacement_tabControl_tabPage_entryCompnentList.Size = new Size(315, 292);
+            staticPlacement_tabControl_tabPage_entryCompnentList.Size = new Size(315, 314);
             staticPlacement_tabControl_tabPage_entryCompnentList.TabIndex = 1;
             staticPlacement_tabControl_tabPage_entryCompnentList.Text = "Entry Component List";
             staticPlacement_tabControl_tabPage_entryCompnentList.UseVisualStyleBackColor = true;
@@ -672,7 +742,7 @@
             staticPlacement_tabControl_tabPage_staticProperties.Location = new Point(4, 24);
             staticPlacement_tabControl_tabPage_staticProperties.Name = "staticPlacement_tabControl_tabPage_staticProperties";
             staticPlacement_tabControl_tabPage_staticProperties.Padding = new Padding(3);
-            staticPlacement_tabControl_tabPage_staticProperties.Size = new Size(315, 292);
+            staticPlacement_tabControl_tabPage_staticProperties.Size = new Size(315, 314);
             staticPlacement_tabControl_tabPage_staticProperties.TabIndex = 2;
             staticPlacement_tabControl_tabPage_staticProperties.Text = "Static Properties";
             staticPlacement_tabControl_tabPage_staticProperties.UseVisualStyleBackColor = true;
@@ -683,70 +753,11 @@
             staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.HelpVisible = false;
             staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.Location = new Point(3, 3);
             staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.Name = "staticPlacement_tabControl_tabPage_staticProperties_propertyGrid";
-            staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.Size = new Size(309, 286);
+            staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.Size = new Size(309, 308);
             staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.TabIndex = 0;
             staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.ToolbarVisible = false;
             // 
-            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox
-            // 
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox.Location = new Point(362, 44);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox";
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox.Size = new Size(50, 23);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox.TabIndex = 7;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox.TextAlign = HorizontalAlignment.Center;
-            // 
-            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox
-            // 
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.Location = new Point(362, 13);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox";
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.Size = new Size(50, 23);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.TabIndex = 6;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.TextAlign = HorizontalAlignment.Center;
-            // 
-            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID
-            // 
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID.AutoSize = true;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID.Location = new Point(310, 47);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID";
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID.Size = new Size(46, 15);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID.TabIndex = 5;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID.Text = "Hue ID:";
-            // 
-            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID
-            // 
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID.AutoSize = true;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID.Location = new Point(310, 16);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID";
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID.Size = new Size(45, 15);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID.TabIndex = 4;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID.Text = "TILE ID:";
-            // 
-            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain
-            // 
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain.AutoSize = true;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain.Location = new Point(15, 47);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain";
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain.Size = new Size(72, 15);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain.TabIndex = 3;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain.Text = "Base Terrain:";
-            // 
-            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType
-            // 
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType.AutoSize = true;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType.Location = new Point(15, 16);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType";
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType.Size = new Size(72, 15);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType.TabIndex = 1;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType.Text = "Terrain Type:";
-            // 
-            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox
-            // 
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox.Location = new Point(91, 13);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox";
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox.Size = new Size(204, 23);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_terrainType_textBox.TabIndex = 0;
-            // 
-            // createTerrainTypes
+            // CreateTerrainTypes
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -754,16 +765,14 @@
             Controls.Add(userPlugin_createTerrainTypes);
             Controls.Add(userPlugins_statusStrip_label_mapCreatorBuildDate);
             Controls.Add(userPlugins_statusStrip_label_mapCreatorVersioning);
-            Controls.Add(statusStrip1);
             Controls.Add(userPlugins_pictureBox_bottomDivider);
             Controls.Add(userPlugins_pictureBox_topDivider);
             Controls.Add(createTerrainTypes_mainMenu);
+            Controls.Add(statusStrip1);
             DoubleBuffered = true;
-            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = createTerrainTypes_mainMenu;
-            MaximizeBox = false;
-            Name = "createTerrainTypes";
+            Name = "CreateTerrainTypes";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Terrain Types";
             ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_topDivider).EndInit();
@@ -778,10 +787,9 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain.ResumeLayout(false);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.PerformLayout();
-            createTerrainTypes_groupBox_terrainPreview.ResumeLayout(false);
             createTerrainTypes_groupBox_terrainPreview_panel.ResumeLayout(false);
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             staticPlacement_tabControl.ResumeLayout(false);
             staticPlacement_tabControl_tabPage_staticEntries.ResumeLayout(false);
             staticPlacement_tabControl_tabPage_staticEntries.PerformLayout();
@@ -831,7 +839,6 @@
         private TextBox createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID_textBox;
         private TextBox createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox;
         private TabPage staticPlacement_tabControl_tabPage_staticProperties;
-        private GroupBox createTerrainTypes_groupBox_terrainPreview;
         private Panel createTerrainTypes_groupBox_terrainPreview_panel;
         private ComboBox createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox;
         private Label staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription;
@@ -865,7 +872,8 @@
         private ToolStripMenuItem createTerrainTypes_mainMenu_button_facetBuilder;
         private ToolStripMenuItem createTerrainTypes_mainMenu_button_communityCredits;
         public VScrollBar staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll;
-        public Panel createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay;
         private Panel createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker;
+        private FastPanel createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay;
+        private Panel panel2;
     }
 }

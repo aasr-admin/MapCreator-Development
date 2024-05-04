@@ -2,12 +2,8 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Xml;
-
-using Cartography.compiler;
-using Cartography.groupBoxControls;
 
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -222,7 +218,7 @@ namespace MapCreator
         {
             var iLogger = StaticForm<buildLogger>.Open(this);
 
-            sbyte altID;
+            byte altID;
             byte groupID;
 
             var selectedItem = (MapInfo)facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_facetSize_comboBox.SelectedItem;
@@ -359,7 +355,7 @@ namespace MapCreator
             return bitmap;
         }
 
-        public Bitmap MakeAltitudeBitmapFile(int xSize, int ySize, sbyte DefaultAlt, bool Dungeon)
+        public Bitmap MakeAltitudeBitmapFile(int xSize, int ySize, byte DefaultAlt, bool Dungeon)
         {
             var bitmap = new Bitmap(xSize, ySize, PixelFormat.Format8bppIndexed)
             {
@@ -379,7 +375,7 @@ namespace MapCreator
                     var num1 = ySize - 1;
                     for (var j = 0; j <= num1; j++)
                     {
-                        defaultAlt[(j * xSize) + i] = (byte)DefaultAlt;
+                        defaultAlt[(j * xSize) + i] = DefaultAlt;
                     }
                 }
             }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Drawing.Imaging;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 using Microsoft.VisualBasic;
@@ -1019,11 +1020,29 @@ namespace Cartography.compiler
         {
             try
             {
-                TileID = XmlConvert.ToUInt16(xmlInfo.GetAttribute("TileID"));
+                
+
+                var idAttr = xmlInfo.GetAttribute("TileID");
+
+                if (!ushort.TryParse(idAttr, out var tileID))
+                {
+                    tileID = ushort.Parse(idAttr, System.Globalization.NumberStyles.HexNumber);
+                }
+
+                TileID = tileID;
+
                 X = XmlConvert.ToSByte(xmlInfo.GetAttribute("X"));
                 Y = XmlConvert.ToSByte(xmlInfo.GetAttribute("Y"));
                 Z = XmlConvert.ToSByte(xmlInfo.GetAttribute("Z"));
-                Hue = XmlConvert.ToUInt16(xmlInfo.GetAttribute("Hue"));
+
+                var hueAttr = xmlInfo.GetAttribute("Hue");
+
+                if (!ushort.TryParse(hueAttr, out var hue))
+                {
+                    hue = ushort.Parse(hueAttr, System.Globalization.NumberStyles.HexNumber);
+                }
+
+                Hue = hue;
             }
             catch (Exception expr_AC)
             {

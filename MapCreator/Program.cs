@@ -1,5 +1,3 @@
-using System.IO;
-
 using UltimaSDK;
 
 namespace MapCreator

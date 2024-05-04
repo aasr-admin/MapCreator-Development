@@ -1,6 +1,6 @@
 ﻿namespace MapCreator
 {
-    partial class staticSelector
+    partial class StaticSelector
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(staticSelector));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(StaticSelector));
             tileView = new FastTileView();
             contentTable = new TableLayoutPanel();
             previewImage = new PictureBox();

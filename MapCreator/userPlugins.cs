@@ -1,6 +1,4 @@
-﻿using MapCreator.userPlugin;
-
-namespace MapCreator
+﻿namespace MapCreator
 {
     public partial class userPlugins : Form
     {
@@ -71,7 +69,7 @@ namespace MapCreator
 
         private void userPlugins_panel_formLauncher_button_createTerrainTypes_Click(object sender, EventArgs e)
         {
-            StaticForm<createTerrainTypes>.Open();
+            StaticForm<CreateTerrainTypes>.Open();
         }
 
         private void userPlugins_panel_formLauncher_button_createTerrainTypes_MouseEnter(object sender, EventArgs e)

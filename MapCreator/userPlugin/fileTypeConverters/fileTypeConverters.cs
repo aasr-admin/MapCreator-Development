@@ -10,9 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Formats.Tar;
-using Cartography.userPlugin.fileTypeConverters;
 
-namespace MapCreator.userPlugin
+namespace MapCreator
 {
     public partial class fileTypeConverters : Form
     {

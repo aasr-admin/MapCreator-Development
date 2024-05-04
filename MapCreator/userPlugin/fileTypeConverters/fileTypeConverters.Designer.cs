@@ -1,4 +1,4 @@
-﻿namespace MapCreator.userPlugin
+﻿namespace MapCreator
 {
     partial class fileTypeConverters
     {
@@ -496,8 +496,7 @@
             MinimizeBox = false;
             Name = "fileTypeConverters";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "MapCreator: File Type Converters";
-            TopMost = true;
+            Text = "File Type Converters";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_topDivider).EndInit();

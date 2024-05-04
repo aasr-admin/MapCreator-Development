@@ -4,9 +4,9 @@ using UltimaSDK;
 
 namespace MapCreator
 {
-    public partial class staticSelector : Form
+    public partial class StaticSelector : Form
     {
-        private event Action loadedCallback;
+        private Action _loadedCallback;
 
         private bool loading = true;
 
@@ -20,7 +20,7 @@ namespace MapCreator
             {
                 if (loading)
                 {
-                    loadedCallback += () => valueSelector.Value = value;
+                    _loadedCallback += () => valueSelector.Value = value;
                 }
                 else
                 {
@@ -40,7 +40,7 @@ namespace MapCreator
             remove => valueSelector.ValueChanged -= value;
         }
 
-        public staticSelector()
+        public StaticSelector()
         {
             InitializeComponent();
 
@@ -173,8 +173,8 @@ namespace MapCreator
 
                 loading = false;
 
-                loadedCallback?.Invoke();
-                loadedCallback = null;
+                _loadedCallback?.Invoke();
+                _loadedCallback = null;
             });
         }
 

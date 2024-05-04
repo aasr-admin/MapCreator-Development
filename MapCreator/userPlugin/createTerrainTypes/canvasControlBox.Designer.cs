@@ -1,6 +1,6 @@
 ﻿namespace MapCreator
 {
-    partial class canvasControlBox
+    partial class CanvasControlBox
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(canvasControlBox));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(CanvasControlBox));
             CanvasNavControl = new ToolStrip();
             WestButton = new ToolStripButton();
             NorthWestButton = new ToolStripButton();
@@ -74,7 +74,7 @@
             WestButton.Tag = 1;
             WestButton.Text = "West";
             WestButton.ToolTipText = "West";
-            WestButton.Click += WestButton_Click;
+            WestButton.Click += OnAxisButtonClick;
             // 
             // NorthWestButton
             // 
@@ -86,7 +86,7 @@
             NorthWestButton.Tag = 2;
             NorthWestButton.Text = "NorthWest";
             NorthWestButton.ToolTipText = "NorthWest";
-            NorthWestButton.Click += NorthWestButton_Click;
+            NorthWestButton.Click += OnAxisButtonClick;
             // 
             // NorthButton
             // 
@@ -98,7 +98,7 @@
             NorthButton.Tag = 3;
             NorthButton.Text = "North";
             NorthButton.ToolTipText = "North";
-            NorthButton.Click += NorthButton_Click;
+            NorthButton.Click += OnAxisButtonClick;
             // 
             // SouthWestButton
             // 
@@ -110,7 +110,7 @@
             SouthWestButton.Tag = 4;
             SouthWestButton.Text = "SouthWest";
             SouthWestButton.ToolTipText = "SouthWest";
-            SouthWestButton.Click += SouthWestButton_Click;
+            SouthWestButton.Click += OnAxisButtonClick;
             // 
             // NavIcon
             // 
@@ -120,7 +120,7 @@
             NavIcon.Name = "NavIcon";
             NavIcon.Size = new Size(36, 36);
             NavIcon.Tag = 5;
-            NavIcon.Click += NavIcon_Click;
+            NavIcon.Click += OnAxisButtonClick;
             // 
             // NorthEastButton
             // 
@@ -132,7 +132,7 @@
             NorthEastButton.Tag = 6;
             NorthEastButton.Text = "NorthEast";
             NorthEastButton.ToolTipText = "NorthEast";
-            NorthEastButton.Click += NorthEastButton_Click;
+            NorthEastButton.Click += OnAxisButtonClick;
             // 
             // SouthButton
             // 
@@ -144,7 +144,7 @@
             SouthButton.Tag = 7;
             SouthButton.Text = "South";
             SouthButton.ToolTipText = "South";
-            SouthButton.Click += SouthButton_Click;
+            SouthButton.Click += OnAxisButtonClick;
             // 
             // SouthEastButton
             // 
@@ -156,7 +156,7 @@
             SouthEastButton.Tag = 8;
             SouthEastButton.Text = "SouthEast";
             SouthEastButton.ToolTipText = "SouthEast";
-            SouthEastButton.Click += SouthEastButton_Click;
+            SouthEastButton.Click += OnAxisButtonClick;
             // 
             // EastButton
             // 
@@ -168,40 +168,40 @@
             EastButton.Tag = 9;
             EastButton.Text = "East";
             EastButton.ToolTipText = "East";
-            EastButton.Click += EastButton_Click;
+            EastButton.Click += OnAxisButtonClick;
             // 
             // xAxis_label_numUpDown
             // 
             xAxis_label_numUpDown.Location = new Point(176, 23);
-            xAxis_label_numUpDown.Maximum = new decimal(new int[] { 6, 0, 0, 0 });
-            xAxis_label_numUpDown.Minimum = new decimal(new int[] { 6, 0, 0, int.MinValue });
+            xAxis_label_numUpDown.Maximum = sbyte.MaxValue;
+            xAxis_label_numUpDown.Minimum = sbyte.MinValue;
             xAxis_label_numUpDown.Name = "xAxis_label_numUpDown";
             xAxis_label_numUpDown.Size = new Size(60, 23);
             xAxis_label_numUpDown.TabIndex = 1;
             xAxis_label_numUpDown.TextAlign = HorizontalAlignment.Right;
-            xAxis_label_numUpDown.ValueChanged += xAxis_label_numUpDown_ValueChanged;
+            xAxis_label_numUpDown.ValueChanged += OnSingleValueChanged;
             // 
             // yAxis_label_numUpDown
             // 
             yAxis_label_numUpDown.Location = new Point(176, 66);
-            yAxis_label_numUpDown.Maximum = new decimal(new int[] { 6, 0, 0, 0 });
-            yAxis_label_numUpDown.Minimum = new decimal(new int[] { 6, 0, 0, int.MinValue });
+            yAxis_label_numUpDown.Maximum = sbyte.MaxValue;
+            yAxis_label_numUpDown.Minimum = sbyte.MinValue;
             yAxis_label_numUpDown.Name = "yAxis_label_numUpDown";
             yAxis_label_numUpDown.Size = new Size(60, 23);
             yAxis_label_numUpDown.TabIndex = 2;
             yAxis_label_numUpDown.TextAlign = HorizontalAlignment.Right;
-            yAxis_label_numUpDown.ValueChanged += yAxis_label_numUpDown_ValueChanged;
+            yAxis_label_numUpDown.ValueChanged += OnSingleValueChanged;
             // 
             // zAxis_label_numUpDown
             // 
             zAxis_label_numUpDown.Location = new Point(176, 107);
-            zAxis_label_numUpDown.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
-            zAxis_label_numUpDown.Minimum = new decimal(new int[] { 128, 0, 0, int.MinValue });
+            zAxis_label_numUpDown.Maximum = sbyte.MaxValue;
+            zAxis_label_numUpDown.Minimum = sbyte.MinValue;
             zAxis_label_numUpDown.Name = "zAxis_label_numUpDown";
             zAxis_label_numUpDown.Size = new Size(60, 23);
             zAxis_label_numUpDown.TabIndex = 3;
             zAxis_label_numUpDown.TextAlign = HorizontalAlignment.Right;
-            zAxis_label_numUpDown.ValueChanged += zAxis_label_numUpDown_ValueChanged;
+            zAxis_label_numUpDown.ValueChanged += OnSingleValueChanged;
             // 
             // xAxis_label
             // 
@@ -253,9 +253,6 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Static Placement";
-            MouseDown += canvasControlBox_MouseDown;
-            MouseMove += canvasControlBox_MouseMove;
-            MouseUp += canvasControlBox_MouseUp;
             CanvasNavControl.ResumeLayout(false);
             CanvasNavControl.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)xAxis_label_numUpDown).EndInit();
@@ -268,18 +265,18 @@
         #endregion
 
         private ToolStrip CanvasNavControl;
-        public ToolStripButton WestButton;
-        public ToolStripButton NorthWestButton;
-        public ToolStripButton NorthButton;
-        public ToolStripButton SouthWestButton;
+        private ToolStripButton WestButton;
+        private ToolStripButton NorthWestButton;
+        private ToolStripButton NorthButton;
+        private ToolStripButton SouthWestButton;
         private ToolStripButton NavIcon;
-        public ToolStripButton NorthEastButton;
-        public ToolStripButton SouthButton;
-        public ToolStripButton SouthEastButton;
-        public ToolStripButton EastButton;
-        public NumericUpDown xAxis_label_numUpDown;
-        public NumericUpDown yAxis_label_numUpDown;
-        public NumericUpDown zAxis_label_numUpDown;
+        private ToolStripButton NorthEastButton;
+        private ToolStripButton SouthButton;
+        private ToolStripButton SouthEastButton;
+        private ToolStripButton EastButton;
+        private NumericUpDown xAxis_label_numUpDown;
+        private NumericUpDown yAxis_label_numUpDown;
+        private NumericUpDown zAxis_label_numUpDown;
         private Label xAxis_label;
         private Label yAxis_label;
         private Label zAxis_label;
