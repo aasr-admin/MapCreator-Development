@@ -62,27 +62,26 @@
             createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox = new TextBox();
             staticPlacement_tabControl = new TabControl();
             staticPlacement_tabControl_tabPage_staticEntries = new TabPage();
-            staticPlacement_tabControl_tabPage_staticList_entryListBox_Control = new Panel();
+            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList = new ListBox();
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip = new ToolStrip();
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics = new ToolStripButton();
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics = new ToolStripButton();
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics = new ToolStripButton();
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon = new ToolStripButton();
-            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList = new ListBox();
-            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown = new NumericUpDown();
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown = new NumericUpDown();
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency = new Label();
+            tableLayoutPanel1 = new TableLayoutPanel();
             staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency = new Label();
-            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox = new TextBox();
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown = new NumericUpDown();
             staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription = new Label();
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown = new NumericUpDown();
+            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox = new TextBox();
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency = new Label();
             staticPlacement_tabControl_tabPage_entryCompnentList = new TabPage();
             staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList = new ListBox();
             staticPlacement_tabControl_tabPage_entryCompnentList_panel = new Panel();
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll = new VScrollBar();
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector = new Button();
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription = new TextBox();
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll = new VScrollBar();
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox = new PictureBox();
-            panel1 = new Panel();
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription = new TextBox();
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip = new ToolStrip();
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics = new ToolStripButton();
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics = new ToolStripButton();
@@ -104,14 +103,13 @@
             panel2.SuspendLayout();
             staticPlacement_tabControl.SuspendLayout();
             staticPlacement_tabControl_tabPage_staticEntries.SuspendLayout();
-            staticPlacement_tabControl_tabPage_staticList_entryListBox_Control.SuspendLayout();
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown).BeginInit();
             ((System.ComponentModel.ISupportInitialize)staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown).BeginInit();
             staticPlacement_tabControl_tabPage_entryCompnentList.SuspendLayout();
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox).BeginInit();
-            panel1.SuspendLayout();
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.SuspendLayout();
             staticPlacement_tabControl_tabPage_staticProperties.SuspendLayout();
             SuspendLayout();
@@ -342,8 +340,8 @@
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Name = "createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay";
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Size = new Size(572, 572);
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.TabIndex = 0;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.MouseClick += CreateTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_MouseClick;
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Paint += createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_Paint;
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.MouseClick += CreateTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_MouseClick;
             // 
             // createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker
             // 
@@ -456,38 +454,36 @@
             // 
             // staticPlacement_tabControl_tabPage_staticEntries
             // 
-            staticPlacement_tabControl_tabPage_staticEntries.Controls.Add(staticPlacement_tabControl_tabPage_staticList_entryListBox_Control);
             staticPlacement_tabControl_tabPage_staticEntries.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList);
-            staticPlacement_tabControl_tabPage_staticEntries.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown);
-            staticPlacement_tabControl_tabPage_staticEntries.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown);
-            staticPlacement_tabControl_tabPage_staticEntries.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency);
-            staticPlacement_tabControl_tabPage_staticEntries.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency);
-            staticPlacement_tabControl_tabPage_staticEntries.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox);
-            staticPlacement_tabControl_tabPage_staticEntries.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription);
+            staticPlacement_tabControl_tabPage_staticEntries.Controls.Add(tableLayoutPanel1);
+            staticPlacement_tabControl_tabPage_staticEntries.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_toolStrip);
             staticPlacement_tabControl_tabPage_staticEntries.Location = new Point(4, 24);
             staticPlacement_tabControl_tabPage_staticEntries.Name = "staticPlacement_tabControl_tabPage_staticEntries";
-            staticPlacement_tabControl_tabPage_staticEntries.Padding = new Padding(3);
             staticPlacement_tabControl_tabPage_staticEntries.Size = new Size(315, 314);
             staticPlacement_tabControl_tabPage_staticEntries.TabIndex = 0;
             staticPlacement_tabControl_tabPage_staticEntries.Text = "Static Entries";
             staticPlacement_tabControl_tabPage_staticEntries.UseVisualStyleBackColor = true;
             // 
-            // staticPlacement_tabControl_tabPage_staticList_entryListBox_Control
+            // staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList
             // 
-            staticPlacement_tabControl_tabPage_staticList_entryListBox_Control.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_toolStrip);
-            staticPlacement_tabControl_tabPage_staticList_entryListBox_Control.Location = new Point(6, 254);
-            staticPlacement_tabControl_tabPage_staticList_entryListBox_Control.Name = "staticPlacement_tabControl_tabPage_staticList_entryListBox_Control";
-            staticPlacement_tabControl_tabPage_staticList_entryListBox_Control.Size = new Size(303, 32);
-            staticPlacement_tabControl_tabPage_staticList_entryListBox_Control.TabIndex = 7;
+            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Dock = DockStyle.Fill;
+            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.ItemHeight = 15;
+            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Location = new Point(0, 0);
+            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Name = "staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList";
+            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.ScrollAlwaysVisible = true;
+            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Size = new Size(315, 181);
+            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.TabIndex = 6;
+            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.SelectedIndexChanged += staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList_SelectedIndexChanged;
             // 
             // staticPlacement_tabControl_tabPage_staticEntries_toolStrip
             // 
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Dock = DockStyle.Fill;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Dock = DockStyle.Bottom;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.GripStyle = ToolStripGripStyle.Hidden;
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.ImageScalingSize = new Size(24, 24);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Items.AddRange(new ToolStripItem[] { staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics, staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics, staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics, staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon });
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Location = new Point(0, 0);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Location = new Point(0, 283);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Size = new Size(303, 32);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Size = new Size(315, 31);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.TabIndex = 0;
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Text = "toolStrip1";
             // 
@@ -498,7 +494,7 @@
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.ImageTransparentColor = Color.Magenta;
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Margin = new Padding(2, 1, 5, 2);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Size = new Size(28, 29);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Size = new Size(28, 28);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Tag = "Add";
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Text = "Add";
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Click += staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics_Click;
@@ -510,7 +506,7 @@
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.ImageTransparentColor = Color.Magenta;
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Margin = new Padding(0, 1, 5, 2);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Size = new Size(28, 29);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Size = new Size(28, 28);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Tag = "delete";
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Text = "delete";
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Click += staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics_Click;
@@ -522,7 +518,7 @@
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.ImageTransparentColor = Color.Magenta;
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Margin = new Padding(0, 1, 5, 2);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Size = new Size(28, 29);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Size = new Size(28, 28);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Tag = "Refresh";
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Text = "Refresh";
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Click += staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics_Click;
@@ -534,75 +530,103 @@
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.ImageTransparentColor = Color.Magenta;
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Margin = new Padding(147, 1, 0, 2);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Size = new Size(28, 29);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Size = new Size(28, 28);
             // 
-            // staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList
+            // tableLayoutPanel1
             // 
-            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.ItemHeight = 15;
-            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Location = new Point(6, 124);
-            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Name = "staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList";
-            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Size = new Size(303, 124);
-            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.TabIndex = 6;
-            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.SelectedIndexChanged += staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList_SelectedIndexChanged;
-            // 
-            // staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown
-            // 
-            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.Location = new Point(228, 92);
-            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.Name = "staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown";
-            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.Size = new Size(81, 23);
-            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.TabIndex = 5;
-            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.TextAlign = HorizontalAlignment.Right;
-            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.ValueChanged += staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown_ValueChanged;
-            // 
-            // staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown
-            // 
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.Location = new Point(228, 61);
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.Name = "staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown";
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.Size = new Size(81, 23);
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.TabIndex = 4;
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.TextAlign = HorizontalAlignment.Right;
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.ValueChanged += staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown_ValueChanged;
-            // 
-            // staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency
-            // 
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.AutoSize = true;
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.Location = new Point(77, 63);
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.Name = "staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency";
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.Size = new Size(145, 15);
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.TabIndex = 3;
-            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.Text = "Random Static Frequency:";
+            tableLayoutPanel1.AutoSize = true;
+            tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanel1.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency, 0, 3);
+            tableLayoutPanel1.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown, 1, 3);
+            tableLayoutPanel1.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription, 0, 0);
+            tableLayoutPanel1.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown, 1, 2);
+            tableLayoutPanel1.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox, 0, 1);
+            tableLayoutPanel1.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency, 0, 2);
+            tableLayoutPanel1.Dock = DockStyle.Bottom;
+            tableLayoutPanel1.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
+            tableLayoutPanel1.Location = new Point(0, 181);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 4;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.Size = new Size(315, 102);
+            tableLayoutPanel1.TabIndex = 7;
             // 
             // staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency
             // 
             staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency.AutoSize = true;
-            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency.Location = new Point(77, 93);
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency.Dock = DockStyle.Fill;
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency.Location = new Point(3, 73);
             staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency.Name = "staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency";
-            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency.Size = new Size(145, 15);
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency.Size = new Size(145, 29);
             staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency.TabIndex = 2;
             staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency.Text = "Selected  Entry Frequency:";
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox
+            // staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown
             // 
-            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox.Location = new Point(6, 29);
-            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox.Name = "staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox";
-            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox.Size = new Size(303, 23);
-            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox.TabIndex = 1;
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.AutoSize = true;
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.Dock = DockStyle.Fill;
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.Location = new Point(154, 76);
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.Name = "staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown";
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.Size = new Size(158, 23);
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.TabIndex = 5;
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.TextAlign = HorizontalAlignment.Right;
+            staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.ValueChanged += staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown_ValueChanged;
             // 
             // staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription
             // 
-            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.AutoSize = true;
+            tableLayoutPanel1.SetColumnSpan(staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription, 2);
+            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Dock = DockStyle.Fill;
             staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
-            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Location = new Point(4, 11);
+            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Location = new Point(3, 0);
             staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Name = "staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription";
-            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Size = new Size(306, 15);
+            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Size = new Size(309, 15);
             staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.TabIndex = 0;
-            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Text = "Provide A Description of the Static Entry You Wish To Add";
+            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.Text = "Provide a description of the static entry you wish to add";
+            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown
+            // 
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.AutoSize = true;
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.Dock = DockStyle.Fill;
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.Location = new Point(154, 47);
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.Name = "staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown";
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.Size = new Size(158, 23);
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.TabIndex = 4;
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.TextAlign = HorizontalAlignment.Right;
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown.ValueChanged += staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown_ValueChanged;
+            // 
+            // staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox
+            // 
+            tableLayoutPanel1.SetColumnSpan(staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox, 2);
+            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox.Dock = DockStyle.Fill;
+            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox.Location = new Point(3, 18);
+            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox.Name = "staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox";
+            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox.Size = new Size(309, 23);
+            staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox.TabIndex = 1;
+            // 
+            // staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency
+            // 
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.AutoSize = true;
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.Dock = DockStyle.Fill;
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.Location = new Point(3, 44);
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.Name = "staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency";
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.Size = new Size(145, 29);
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.TabIndex = 3;
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.Text = "Random Static Frequency:";
+            staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.TextAlign = ContentAlignment.MiddleRight;
             // 
             // staticPlacement_tabControl_tabPage_entryCompnentList
             // 
             staticPlacement_tabControl_tabPage_entryCompnentList.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList);
             staticPlacement_tabControl_tabPage_entryCompnentList.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_panel);
-            staticPlacement_tabControl_tabPage_entryCompnentList.Controls.Add(panel1);
+            staticPlacement_tabControl_tabPage_entryCompnentList.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip);
             staticPlacement_tabControl_tabPage_entryCompnentList.Location = new Point(4, 24);
             staticPlacement_tabControl_tabPage_entryCompnentList.Name = "staticPlacement_tabControl_tabPage_entryCompnentList";
             staticPlacement_tabControl_tabPage_entryCompnentList.Padding = new Padding(3);
@@ -613,81 +637,87 @@
             // 
             // staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList
             // 
+            staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Dock = DockStyle.Fill;
             staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.ItemHeight = 15;
-            staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Location = new Point(6, 4);
+            staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Location = new Point(3, 3);
             staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList";
-            staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Size = new Size(303, 109);
+            staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.ScrollAlwaysVisible = true;
+            staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Size = new Size(309, 77);
             staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.TabIndex = 0;
             staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedIndexChanged += staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList_SelectedIndexChanged;
             // 
             // staticPlacement_tabControl_tabPage_entryCompnentList_panel
             // 
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel.BorderStyle = BorderStyle.FixedSingle;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector);
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox);
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Location = new Point(6, 110);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Dock = DockStyle.Bottom;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Location = new Point(3, 80);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel";
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Size = new Size(303, 140);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Size = new Size(309, 200);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.TabIndex = 1;
-            // 
-            // staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll
-            // 
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Location = new Point(158, 9);
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Maximum = 65535;
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll";
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Size = new Size(17, 100);
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.TabIndex = 3;
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value = 1;
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Scroll += staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll_Scroll;
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.ValueChanged += staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll_ValueChanged;
             // 
             // staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector
             // 
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.BackgroundImage = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.BackgroundImage");
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Font = new Font("Segoe UI", 10.5F);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Dock = DockStyle.Right;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.FlatStyle = FlatStyle.Flat;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Font = new Font("Segoe UI", 11F);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.ForeColor = Color.SlateGray;
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Location = new Point(179, 9);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Image = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Image");
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Location = new Point(169, 0);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector";
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Size = new Size(122, 100);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Size = new Size(138, 175);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.TabIndex = 2;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Text = "Static Selector";
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.TextAlign = ContentAlignment.TopCenter;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.UseVisualStyleBackColor = true;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Click += staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_Click;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.MouseEnter += staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_MouseEnter;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.MouseLeave += staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector_MouseLeave;
             // 
-            // staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription
+            // staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll
             // 
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Location = new Point(2, 114);
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription";
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Size = new Size(299, 23);
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.TabIndex = 1;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Dock = DockStyle.Left;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Location = new Point(152, 0);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Maximum = 65535;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll";
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Size = new Size(17, 175);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.TabIndex = 3;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value = 1;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Scroll += staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll_Scroll;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.ValueChanged += staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll_ValueChanged;
             // 
             // staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox
             // 
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.Location = new Point(2, 9);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.BackColor = SystemColors.Control;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.Dock = DockStyle.Left;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.Location = new Point(0, 0);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox";
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.Size = new Size(152, 100);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.Size = new Size(152, 175);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.TabIndex = 0;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.TabStop = false;
             // 
-            // panel1
+            // staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription
             // 
-            panel1.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip);
-            panel1.Location = new Point(6, 254);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(303, 32);
-            panel1.TabIndex = 1;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Dock = DockStyle.Bottom;
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Location = new Point(0, 175);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription";
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Size = new Size(307, 23);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.TabIndex = 1;
             // 
             // staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip
             // 
-            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Dock = DockStyle.Fill;
+            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Dock = DockStyle.Bottom;
+            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.GripStyle = ToolStripGripStyle.Hidden;
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.ImageScalingSize = new Size(24, 24);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Items.AddRange(new ToolStripItem[] { staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics, staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics, staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_refreshStatics, staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon });
-            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Location = new Point(0, 0);
+            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Location = new Point(3, 280);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip";
-            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Size = new Size(303, 32);
+            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Size = new Size(309, 31);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.TabIndex = 2;
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Text = "Static Selector";
             // 
@@ -698,7 +728,7 @@
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics.ImageTransparentColor = Color.Magenta;
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics.Margin = new Padding(2, 1, 5, 2);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics";
-            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics.Size = new Size(28, 29);
+            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics.Size = new Size(28, 28);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics.Tag = "Add";
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics.Text = "Add";
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics.Click += staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics_Click;
@@ -710,7 +740,7 @@
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics.ImageTransparentColor = Color.Magenta;
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics.Margin = new Padding(0, 1, 5, 2);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics";
-            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics.Size = new Size(28, 29);
+            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics.Size = new Size(28, 28);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics.Tag = "Delete";
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics.Text = "Delete";
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics.Click += staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics_Click;
@@ -722,7 +752,7 @@
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_refreshStatics.ImageTransparentColor = Color.Magenta;
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_refreshStatics.Margin = new Padding(0, 1, 5, 2);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_refreshStatics.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_refreshStatics";
-            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_refreshStatics.Size = new Size(28, 29);
+            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_refreshStatics.Size = new Size(28, 28);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_refreshStatics.Tag = "Refresh";
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_refreshStatics.Text = "Refresh";
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_refreshStatics.Click += staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_refreshStatics_Click;
@@ -734,7 +764,7 @@
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.ImageTransparentColor = Color.Magenta;
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.Margin = new Padding(147, 1, 0, 2);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon";
-            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.Size = new Size(28, 29);
+            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.Size = new Size(28, 28);
             // 
             // staticPlacement_tabControl_tabPage_staticProperties
             // 
@@ -793,18 +823,17 @@
             staticPlacement_tabControl.ResumeLayout(false);
             staticPlacement_tabControl_tabPage_staticEntries.ResumeLayout(false);
             staticPlacement_tabControl_tabPage_staticEntries.PerformLayout();
-            staticPlacement_tabControl_tabPage_staticList_entryListBox_Control.ResumeLayout(false);
-            staticPlacement_tabControl_tabPage_staticList_entryListBox_Control.PerformLayout();
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.ResumeLayout(false);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown).EndInit();
             ((System.ComponentModel.ISupportInitialize)staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown).EndInit();
             staticPlacement_tabControl_tabPage_entryCompnentList.ResumeLayout(false);
+            staticPlacement_tabControl_tabPage_entryCompnentList.PerformLayout();
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.ResumeLayout(false);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox).EndInit();
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.ResumeLayout(false);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.PerformLayout();
             staticPlacement_tabControl_tabPage_staticProperties.ResumeLayout(false);
@@ -848,7 +877,6 @@
         private NumericUpDown staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown;
         private NumericUpDown staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown;
         private ListBox staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList;
-        private Panel staticPlacement_tabControl_tabPage_staticList_entryListBox_Control;
         private ToolStrip staticPlacement_tabControl_tabPage_staticEntries_toolStrip;
         private ToolStripButton staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics;
         private ToolStripButton staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics;
@@ -875,5 +903,6 @@
         private Panel createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker;
         private FastPanel createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay;
         private Panel panel2;
+        private TableLayoutPanel tableLayoutPanel1;
     }
 }
