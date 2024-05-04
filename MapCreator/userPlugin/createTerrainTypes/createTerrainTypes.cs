@@ -681,13 +681,15 @@ namespace MapCreator
 
         private void UpdatePanel2()
         {
-            if (Art.IsValidStatic(staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value))
-            {
-                createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.Text = staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value.ToString();
-                staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.Image = Art.GetStatic(staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value);
-                staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.SelectedObject = TileData.ItemTable[staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value];
-                staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Text = $"{TileData.ItemTable[staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value].Name} ({staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value})";
-            }
+            var index = staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll.Value;
+
+            createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID_textBox.Text = $"{index}";
+
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox.Image = Art.GetStatic(index);
+
+            staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.SelectedObject = TileData.ItemTable[index];
+
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Text = $"[{index:D5}] {TileData.ItemTable[index].Name}";
         }
 
         private void staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox_vScroll_Scroll(object sender, ScrollEventArgs e)

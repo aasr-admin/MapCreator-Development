@@ -63,11 +63,6 @@
             staticPlacement_tabControl = new TabControl();
             staticPlacement_tabControl_tabPage_staticEntries = new TabPage();
             staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList = new ListBox();
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip = new ToolStrip();
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics = new ToolStripButton();
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics = new ToolStripButton();
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics = new ToolStripButton();
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon = new ToolStripButton();
             tableLayoutPanel1 = new TableLayoutPanel();
             staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency = new Label();
             staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown = new NumericUpDown();
@@ -75,6 +70,11 @@
             staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown = new NumericUpDown();
             staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox = new TextBox();
             staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency = new Label();
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip = new ToolStrip();
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics = new ToolStripButton();
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics = new ToolStripButton();
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics = new ToolStripButton();
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon = new ToolStripButton();
             staticPlacement_tabControl_tabPage_entryCompnentList = new TabPage();
             staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList = new ListBox();
             staticPlacement_tabControl_tabPage_entryCompnentList_panel = new Panel();
@@ -103,10 +103,10 @@
             panel2.SuspendLayout();
             staticPlacement_tabControl.SuspendLayout();
             staticPlacement_tabControl_tabPage_staticEntries.SuspendLayout();
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown).BeginInit();
             ((System.ComponentModel.ISupportInitialize)staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown).BeginInit();
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.SuspendLayout();
             staticPlacement_tabControl_tabPage_entryCompnentList.SuspendLayout();
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox).BeginInit();
@@ -475,63 +475,6 @@
             staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.TabIndex = 6;
             staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.SelectedIndexChanged += staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList_SelectedIndexChanged;
             // 
-            // staticPlacement_tabControl_tabPage_staticEntries_toolStrip
-            // 
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Dock = DockStyle.Bottom;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.GripStyle = ToolStripGripStyle.Hidden;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.ImageScalingSize = new Size(24, 24);
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Items.AddRange(new ToolStripItem[] { staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics, staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics, staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics, staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon });
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Location = new Point(0, 283);
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Size = new Size(315, 31);
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.TabIndex = 0;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Text = "toolStrip1";
-            // 
-            // staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics
-            // 
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Image = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Image");
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.ImageTransparentColor = Color.Magenta;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Margin = new Padding(2, 1, 5, 2);
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Size = new Size(28, 28);
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Tag = "Add";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Text = "Add";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Click += staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics_Click;
-            // 
-            // staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics
-            // 
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Image = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Image");
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.ImageTransparentColor = Color.Magenta;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Margin = new Padding(0, 1, 5, 2);
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Size = new Size(28, 28);
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Tag = "delete";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Text = "delete";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Click += staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics_Click;
-            // 
-            // staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics
-            // 
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Image = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Image");
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.ImageTransparentColor = Color.Magenta;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Margin = new Padding(0, 1, 5, 2);
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Size = new Size(28, 28);
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Tag = "Refresh";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Text = "Refresh";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Click += staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics_Click;
-            // 
-            // staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon
-            // 
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Image = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Image");
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.ImageTransparentColor = Color.Magenta;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Margin = new Padding(147, 1, 0, 2);
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon";
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Size = new Size(28, 28);
-            // 
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.AutoSize = true;
@@ -622,6 +565,63 @@
             staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.Text = "Random Static Frequency:";
             staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency.TextAlign = ContentAlignment.MiddleRight;
             // 
+            // staticPlacement_tabControl_tabPage_staticEntries_toolStrip
+            // 
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Dock = DockStyle.Bottom;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.GripStyle = ToolStripGripStyle.Hidden;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.ImageScalingSize = new Size(24, 24);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Items.AddRange(new ToolStripItem[] { staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics, staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics, staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics, staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon });
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Location = new Point(0, 283);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip";
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Size = new Size(315, 31);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.TabIndex = 0;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Text = "toolStrip1";
+            // 
+            // staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics
+            // 
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Image = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Image");
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.ImageTransparentColor = Color.Magenta;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Margin = new Padding(2, 1, 5, 2);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics";
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Size = new Size(28, 28);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Tag = "Add";
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Text = "Add";
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics.Click += staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics_Click;
+            // 
+            // staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics
+            // 
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Image = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Image");
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.ImageTransparentColor = Color.Magenta;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Margin = new Padding(0, 1, 5, 2);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics";
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Size = new Size(28, 28);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Tag = "delete";
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Text = "delete";
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics.Click += staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics_Click;
+            // 
+            // staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics
+            // 
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Image = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Image");
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.ImageTransparentColor = Color.Magenta;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Margin = new Padding(0, 1, 5, 2);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics";
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Size = new Size(28, 28);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Tag = "Refresh";
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Text = "Refresh";
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics.Click += staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics_Click;
+            // 
+            // staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon
+            // 
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Image = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Image");
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.ImageTransparentColor = Color.Magenta;
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Margin = new Padding(147, 1, 0, 2);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon";
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Size = new Size(28, 28);
+            // 
             // staticPlacement_tabControl_tabPage_entryCompnentList
             // 
             staticPlacement_tabControl_tabPage_entryCompnentList.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList);
@@ -706,6 +706,7 @@
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Dock = DockStyle.Bottom;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Location = new Point(0, 175);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription";
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.ReadOnly = true;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Size = new Size(307, 23);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.TabIndex = 1;
             // 
@@ -823,12 +824,12 @@
             staticPlacement_tabControl.ResumeLayout(false);
             staticPlacement_tabControl_tabPage_staticEntries.ResumeLayout(false);
             staticPlacement_tabControl_tabPage_staticEntries.PerformLayout();
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.ResumeLayout(false);
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown).EndInit();
             ((System.ComponentModel.ISupportInitialize)staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency_numUpDown).EndInit();
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.ResumeLayout(false);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.PerformLayout();
             staticPlacement_tabControl_tabPage_entryCompnentList.ResumeLayout(false);
             staticPlacement_tabControl_tabPage_entryCompnentList.PerformLayout();
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.ResumeLayout(false);
