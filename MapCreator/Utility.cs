@@ -15,7 +15,7 @@ namespace MapCreator
 
         public static T Random<T>(T min, T maxExclusive) where T : INumber<T>
         {
-            return min + Random(maxExclusive);
+            return min + Random(maxExclusive - min);
         }
 
         public static T Random<T>(T maxExclusive) where T : INumber<T>

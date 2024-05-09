@@ -29,25 +29,22 @@
         private void InitializeComponent()
         {
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateTerrainTypes));
-            userPlugins_pictureBox_topDivider = new PictureBox();
-            createTerrainTypes_mainMenu = new MenuStrip();
+            headerDivider = new PictureBox();
+            headerMenu = new MenuStrip();
             createTerrainTypes_mainMenu_button_newTerrainType = new ToolStripMenuItem();
             createTerrainTypes_mainMenu_button_loadTerrainType = new ToolStripMenuItem();
             createTerrainTypes_mainMenu_button_saveTerrainType = new ToolStripMenuItem();
             createTerrainTypes_mainMenu_button_facetBuilder = new ToolStripMenuItem();
             createTerrainTypes_mainMenu_button_communityCredits = new ToolStripMenuItem();
-            userPlugins_pictureBox_bottomDivider = new PictureBox();
-            statusStrip1 = new StatusStrip();
-            userPlugins_statusStrip_label_mapCreatorVersioning = new Label();
-            userPlugins_statusStrip_label_mapCreatorBuildDate = new Label();
-            userPlugin_createTerrainTypes = new TabControl();
-            userPlugin_createTerrainTypesTitle = new TabPage();
-            label1 = new Label();
-            pictureBox4 = new PictureBox();
-            pictureBox3 = new PictureBox();
-            pictureBox2 = new PictureBox();
-            pictureBox1 = new PictureBox();
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain = new TabPage();
+            footerDivider = new PictureBox();
+            footerStatus = new StatusStrip();
+            contentTabs = new TabControl();
+            titlePage = new TabPage();
+            titlePageCreditsText = new Label();
+            titlePageCreditsDecorBottom = new PictureBox();
+            titlePageCreditsDecorTop = new PictureBox();
+            titlePageBanner = new PictureBox();
+            terrainPage = new TabPage();
             createTerrainTypes_groupBox_terrainPreview_panel = new Panel();
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay = new FastPanel();
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker = new Panel();
@@ -89,16 +86,17 @@
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon = new ToolStripButton();
             staticPlacement_tabControl_tabPage_staticProperties = new TabPage();
             staticPlacement_tabControl_tabPage_staticProperties_propertyGrid = new PropertyGrid();
-            ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_topDivider).BeginInit();
-            createTerrainTypes_mainMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_bottomDivider).BeginInit();
-            userPlugin_createTerrainTypes.SuspendLayout();
-            userPlugin_createTerrainTypesTitle.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.SuspendLayout();
+            toolStripStatusLabel1 = new ToolStripStatusLabel();
+            ((System.ComponentModel.ISupportInitialize)headerDivider).BeginInit();
+            headerMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)footerDivider).BeginInit();
+            footerStatus.SuspendLayout();
+            contentTabs.SuspendLayout();
+            titlePage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)titlePageCreditsDecorBottom).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)titlePageCreditsDecorTop).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)titlePageBanner).BeginInit();
+            terrainPage.SuspendLayout();
             createTerrainTypes_groupBox_terrainPreview_panel.SuspendLayout();
             panel2.SuspendLayout();
             staticPlacement_tabControl.SuspendLayout();
@@ -114,219 +112,190 @@
             staticPlacement_tabControl_tabPage_staticProperties.SuspendLayout();
             SuspendLayout();
             // 
-            // userPlugins_pictureBox_topDivider
+            // headerDivider
             // 
-            userPlugins_pictureBox_topDivider.BackColor = SystemColors.ActiveCaptionText;
-            userPlugins_pictureBox_topDivider.Dock = DockStyle.Top;
-            userPlugins_pictureBox_topDivider.Image = (Image)resources.GetObject("userPlugins_pictureBox_topDivider.Image");
-            userPlugins_pictureBox_topDivider.ImeMode = ImeMode.NoControl;
-            userPlugins_pictureBox_topDivider.Location = new Point(0, 28);
-            userPlugins_pictureBox_topDivider.Name = "userPlugins_pictureBox_topDivider";
-            userPlugins_pictureBox_topDivider.Size = new Size(773, 12);
-            userPlugins_pictureBox_topDivider.SizeMode = PictureBoxSizeMode.StretchImage;
-            userPlugins_pictureBox_topDivider.TabIndex = 7;
-            userPlugins_pictureBox_topDivider.TabStop = false;
+            headerDivider.BackColor = SystemColors.ActiveCaptionText;
+            headerDivider.Dock = DockStyle.Top;
+            headerDivider.Image = (Image)resources.GetObject("headerDivider.Image");
+            headerDivider.ImeMode = ImeMode.NoControl;
+            headerDivider.Location = new Point(0, 32);
+            headerDivider.Name = "headerDivider";
+            headerDivider.Size = new Size(773, 12);
+            headerDivider.SizeMode = PictureBoxSizeMode.StretchImage;
+            headerDivider.TabIndex = 7;
+            headerDivider.TabStop = false;
             // 
-            // createTerrainTypes_mainMenu
+            // headerMenu
             // 
-            createTerrainTypes_mainMenu.ImageScalingSize = new Size(20, 20);
-            createTerrainTypes_mainMenu.Items.AddRange(new ToolStripItem[] { createTerrainTypes_mainMenu_button_newTerrainType, createTerrainTypes_mainMenu_button_loadTerrainType, createTerrainTypes_mainMenu_button_saveTerrainType, createTerrainTypes_mainMenu_button_facetBuilder, createTerrainTypes_mainMenu_button_communityCredits });
-            createTerrainTypes_mainMenu.Location = new Point(0, 0);
-            createTerrainTypes_mainMenu.Name = "createTerrainTypes_mainMenu";
-            createTerrainTypes_mainMenu.Size = new Size(773, 28);
-            createTerrainTypes_mainMenu.TabIndex = 8;
-            createTerrainTypes_mainMenu.Text = "menuStrip1";
+            headerMenu.ImageScalingSize = new Size(24, 24);
+            headerMenu.Items.AddRange(new ToolStripItem[] { createTerrainTypes_mainMenu_button_newTerrainType, createTerrainTypes_mainMenu_button_loadTerrainType, createTerrainTypes_mainMenu_button_communityCredits, createTerrainTypes_mainMenu_button_facetBuilder, createTerrainTypes_mainMenu_button_saveTerrainType });
+            headerMenu.Location = new Point(0, 0);
+            headerMenu.Name = "headerMenu";
+            headerMenu.Size = new Size(773, 32);
+            headerMenu.TabIndex = 8;
+            headerMenu.Text = "menuStrip1";
             // 
             // createTerrainTypes_mainMenu_button_newTerrainType
             // 
             createTerrainTypes_mainMenu_button_newTerrainType.Image = (Image)resources.GetObject("createTerrainTypes_mainMenu_button_newTerrainType.Image");
-            createTerrainTypes_mainMenu_button_newTerrainType.Margin = new Padding(3, 0, 5, 0);
             createTerrainTypes_mainMenu_button_newTerrainType.Name = "createTerrainTypes_mainMenu_button_newTerrainType";
-            createTerrainTypes_mainMenu_button_newTerrainType.Size = new Size(32, 24);
+            createTerrainTypes_mainMenu_button_newTerrainType.Size = new Size(36, 28);
+            createTerrainTypes_mainMenu_button_newTerrainType.ToolTipText = "New Terrain Type";
             createTerrainTypes_mainMenu_button_newTerrainType.Click += createTerrainTypes_mainMenu_button_newTerrainType_Click;
             // 
             // createTerrainTypes_mainMenu_button_loadTerrainType
             // 
             createTerrainTypes_mainMenu_button_loadTerrainType.Image = (Image)resources.GetObject("createTerrainTypes_mainMenu_button_loadTerrainType.Image");
-            createTerrainTypes_mainMenu_button_loadTerrainType.Margin = new Padding(0, 0, 5, 0);
             createTerrainTypes_mainMenu_button_loadTerrainType.Name = "createTerrainTypes_mainMenu_button_loadTerrainType";
-            createTerrainTypes_mainMenu_button_loadTerrainType.Size = new Size(32, 24);
+            createTerrainTypes_mainMenu_button_loadTerrainType.Size = new Size(36, 28);
+            createTerrainTypes_mainMenu_button_loadTerrainType.ToolTipText = "Load Terrain Type";
             createTerrainTypes_mainMenu_button_loadTerrainType.Click += createTerrainTypes_mainMenu_button_loadTerrainType_Click;
             // 
             // createTerrainTypes_mainMenu_button_saveTerrainType
             // 
             createTerrainTypes_mainMenu_button_saveTerrainType.Image = (Image)resources.GetObject("createTerrainTypes_mainMenu_button_saveTerrainType.Image");
-            createTerrainTypes_mainMenu_button_saveTerrainType.Margin = new Padding(565, 0, 5, 0);
             createTerrainTypes_mainMenu_button_saveTerrainType.Name = "createTerrainTypes_mainMenu_button_saveTerrainType";
-            createTerrainTypes_mainMenu_button_saveTerrainType.Size = new Size(32, 24);
+            createTerrainTypes_mainMenu_button_saveTerrainType.Size = new Size(36, 28);
+            createTerrainTypes_mainMenu_button_saveTerrainType.ToolTipText = "Save Terrain Type";
             createTerrainTypes_mainMenu_button_saveTerrainType.Click += createTerrainTypes_mainMenu_button_saveTerrainType_Click;
             // 
             // createTerrainTypes_mainMenu_button_facetBuilder
             // 
+            createTerrainTypes_mainMenu_button_facetBuilder.Alignment = ToolStripItemAlignment.Right;
             createTerrainTypes_mainMenu_button_facetBuilder.Image = (Image)resources.GetObject("createTerrainTypes_mainMenu_button_facetBuilder.Image");
-            createTerrainTypes_mainMenu_button_facetBuilder.Margin = new Padding(0, 0, 5, 0);
             createTerrainTypes_mainMenu_button_facetBuilder.Name = "createTerrainTypes_mainMenu_button_facetBuilder";
-            createTerrainTypes_mainMenu_button_facetBuilder.Size = new Size(32, 24);
+            createTerrainTypes_mainMenu_button_facetBuilder.Size = new Size(36, 28);
+            createTerrainTypes_mainMenu_button_facetBuilder.ToolTipText = "Facet Builder";
             createTerrainTypes_mainMenu_button_facetBuilder.Click += createTerrainTypes_mainMenu_button_facetBuilder_Click;
             // 
             // createTerrainTypes_mainMenu_button_communityCredits
             // 
+            createTerrainTypes_mainMenu_button_communityCredits.Alignment = ToolStripItemAlignment.Right;
             createTerrainTypes_mainMenu_button_communityCredits.Image = (Image)resources.GetObject("createTerrainTypes_mainMenu_button_communityCredits.Image");
-            createTerrainTypes_mainMenu_button_communityCredits.Margin = new Padding(0, 0, 5, 0);
             createTerrainTypes_mainMenu_button_communityCredits.Name = "createTerrainTypes_mainMenu_button_communityCredits";
-            createTerrainTypes_mainMenu_button_communityCredits.Size = new Size(32, 24);
+            createTerrainTypes_mainMenu_button_communityCredits.Size = new Size(36, 28);
+            createTerrainTypes_mainMenu_button_communityCredits.ToolTipText = "Community Credits";
             createTerrainTypes_mainMenu_button_communityCredits.Click += createTerrainTypes_mainMenu_button_communityCredits_Click;
             // 
-            // userPlugins_pictureBox_bottomDivider
+            // footerDivider
             // 
-            userPlugins_pictureBox_bottomDivider.BackColor = SystemColors.ActiveCaptionText;
-            userPlugins_pictureBox_bottomDivider.Dock = DockStyle.Bottom;
-            userPlugins_pictureBox_bottomDivider.Image = (Image)resources.GetObject("userPlugins_pictureBox_bottomDivider.Image");
-            userPlugins_pictureBox_bottomDivider.ImeMode = ImeMode.NoControl;
-            userPlugins_pictureBox_bottomDivider.Location = new Point(0, 410);
-            userPlugins_pictureBox_bottomDivider.Name = "userPlugins_pictureBox_bottomDivider";
-            userPlugins_pictureBox_bottomDivider.Size = new Size(773, 12);
-            userPlugins_pictureBox_bottomDivider.SizeMode = PictureBoxSizeMode.StretchImage;
-            userPlugins_pictureBox_bottomDivider.TabIndex = 9;
-            userPlugins_pictureBox_bottomDivider.TabStop = false;
+            footerDivider.BackColor = SystemColors.ActiveCaptionText;
+            footerDivider.Dock = DockStyle.Bottom;
+            footerDivider.Image = (Image)resources.GetObject("footerDivider.Image");
+            footerDivider.ImeMode = ImeMode.NoControl;
+            footerDivider.Location = new Point(0, 410);
+            footerDivider.Name = "footerDivider";
+            footerDivider.Size = new Size(773, 12);
+            footerDivider.SizeMode = PictureBoxSizeMode.StretchImage;
+            footerDivider.TabIndex = 9;
+            footerDivider.TabStop = false;
             // 
-            // statusStrip1
+            // footerStatus
             // 
-            statusStrip1.Location = new Point(0, 422);
-            statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(773, 22);
-            statusStrip1.SizingGrip = false;
-            statusStrip1.TabIndex = 10;
-            statusStrip1.Text = "statusStrip1";
+            footerStatus.AllowMerge = false;
+            footerStatus.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1 });
+            footerStatus.Location = new Point(0, 422);
+            footerStatus.Name = "footerStatus";
+            footerStatus.Size = new Size(773, 22);
+            footerStatus.SizingGrip = false;
+            footerStatus.TabIndex = 10;
+            footerStatus.Text = "Map Creator";
             // 
-            // userPlugins_statusStrip_label_mapCreatorVersioning
+            // contentTabs
             // 
-            userPlugins_statusStrip_label_mapCreatorVersioning.AutoSize = true;
-            userPlugins_statusStrip_label_mapCreatorVersioning.BackColor = SystemColors.Control;
-            userPlugins_statusStrip_label_mapCreatorVersioning.Font = new Font("Segoe UI", 10F);
-            userPlugins_statusStrip_label_mapCreatorVersioning.ForeColor = Color.SlateGray;
-            userPlugins_statusStrip_label_mapCreatorVersioning.ImeMode = ImeMode.NoControl;
-            userPlugins_statusStrip_label_mapCreatorVersioning.Location = new Point(12, 424);
-            userPlugins_statusStrip_label_mapCreatorVersioning.Name = "userPlugins_statusStrip_label_mapCreatorVersioning";
-            userPlugins_statusStrip_label_mapCreatorVersioning.Size = new Size(158, 19);
-            userPlugins_statusStrip_label_mapCreatorVersioning.TabIndex = 14;
-            userPlugins_statusStrip_label_mapCreatorVersioning.Text = "MapCreator: Version 3.5";
+            contentTabs.Controls.Add(titlePage);
+            contentTabs.Controls.Add(terrainPage);
+            contentTabs.Dock = DockStyle.Fill;
+            contentTabs.Location = new Point(0, 44);
+            contentTabs.Name = "contentTabs";
+            contentTabs.SelectedIndex = 0;
+            contentTabs.Size = new Size(773, 366);
+            contentTabs.TabIndex = 16;
             // 
-            // userPlugins_statusStrip_label_mapCreatorBuildDate
+            // titlePage
             // 
-            userPlugins_statusStrip_label_mapCreatorBuildDate.AutoSize = true;
-            userPlugins_statusStrip_label_mapCreatorBuildDate.BackColor = SystemColors.Control;
-            userPlugins_statusStrip_label_mapCreatorBuildDate.Font = new Font("Segoe UI", 10F);
-            userPlugins_statusStrip_label_mapCreatorBuildDate.ForeColor = Color.SlateGray;
-            userPlugins_statusStrip_label_mapCreatorBuildDate.ImeMode = ImeMode.NoControl;
-            userPlugins_statusStrip_label_mapCreatorBuildDate.Location = new Point(640, 424);
-            userPlugins_statusStrip_label_mapCreatorBuildDate.Name = "userPlugins_statusStrip_label_mapCreatorBuildDate";
-            userPlugins_statusStrip_label_mapCreatorBuildDate.Size = new Size(117, 19);
-            userPlugins_statusStrip_label_mapCreatorBuildDate.TabIndex = 15;
-            userPlugins_statusStrip_label_mapCreatorBuildDate.Text = "Build: 08132023a";
+            titlePage.BackgroundImage = (Image)resources.GetObject("titlePage.BackgroundImage");
+            titlePage.BackgroundImageLayout = ImageLayout.Stretch;
+            titlePage.Controls.Add(titlePageCreditsText);
+            titlePage.Controls.Add(titlePageCreditsDecorBottom);
+            titlePage.Controls.Add(titlePageCreditsDecorTop);
+            titlePage.Controls.Add(titlePageBanner);
+            titlePage.Location = new Point(4, 24);
+            titlePage.Name = "titlePage";
+            titlePage.Size = new Size(765, 342);
+            titlePage.TabIndex = 0;
+            titlePage.UseVisualStyleBackColor = true;
             // 
-            // userPlugin_createTerrainTypes
+            // titlePageCreditsText
             // 
-            userPlugin_createTerrainTypes.Controls.Add(userPlugin_createTerrainTypesTitle);
-            userPlugin_createTerrainTypes.Controls.Add(createTerrainTypes_tabControl_tabPage_ConfigureTerrain);
-            userPlugin_createTerrainTypes.Dock = DockStyle.Fill;
-            userPlugin_createTerrainTypes.Location = new Point(0, 40);
-            userPlugin_createTerrainTypes.Name = "userPlugin_createTerrainTypes";
-            userPlugin_createTerrainTypes.SelectedIndex = 0;
-            userPlugin_createTerrainTypes.Size = new Size(773, 370);
-            userPlugin_createTerrainTypes.TabIndex = 16;
+            titlePageCreditsText.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            titlePageCreditsText.AutoSize = true;
+            titlePageCreditsText.BackColor = Color.Black;
+            titlePageCreditsText.Font = new Font("Segoe UI", 15F);
+            titlePageCreditsText.ForeColor = SystemColors.ControlDarkDark;
+            titlePageCreditsText.Location = new Point(260, 283);
+            titlePageCreditsText.Name = "titlePageCreditsText";
+            titlePageCreditsText.Size = new Size(440, 28);
+            titlePageCreditsText.TabIndex = 17;
+            titlePageCreditsText.Text = "Developer(s): DKnight (Creator of UOLandscaper)";
             // 
-            // userPlugin_createTerrainTypesTitle
+            // titlePageCreditsDecorBottom
             // 
-            userPlugin_createTerrainTypesTitle.Controls.Add(label1);
-            userPlugin_createTerrainTypesTitle.Controls.Add(pictureBox4);
-            userPlugin_createTerrainTypesTitle.Controls.Add(pictureBox3);
-            userPlugin_createTerrainTypesTitle.Controls.Add(pictureBox2);
-            userPlugin_createTerrainTypesTitle.Controls.Add(pictureBox1);
-            userPlugin_createTerrainTypesTitle.Location = new Point(4, 24);
-            userPlugin_createTerrainTypesTitle.Name = "userPlugin_createTerrainTypesTitle";
-            userPlugin_createTerrainTypesTitle.Padding = new Padding(3);
-            userPlugin_createTerrainTypesTitle.Size = new Size(765, 342);
-            userPlugin_createTerrainTypesTitle.TabIndex = 0;
-            userPlugin_createTerrainTypesTitle.UseVisualStyleBackColor = true;
+            titlePageCreditsDecorBottom.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            titlePageCreditsDecorBottom.Image = (Image)resources.GetObject("titlePageCreditsDecorBottom.Image");
+            titlePageCreditsDecorBottom.Location = new Point(218, 320);
+            titlePageCreditsDecorBottom.Name = "titlePageCreditsDecorBottom";
+            titlePageCreditsDecorBottom.Size = new Size(530, 5);
+            titlePageCreditsDecorBottom.SizeMode = PictureBoxSizeMode.StretchImage;
+            titlePageCreditsDecorBottom.TabIndex = 5;
+            titlePageCreditsDecorBottom.TabStop = false;
             // 
-            // label1
+            // titlePageCreditsDecorTop
             // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.Black;
-            label1.Font = new Font("Segoe UI", 15F);
-            label1.ForeColor = SystemColors.ControlDarkDark;
-            label1.Location = new Point(257, 280);
-            label1.Name = "label1";
-            label1.Size = new Size(440, 28);
-            label1.TabIndex = 17;
-            label1.Text = "Developer(s): DKnight (Creator of UOLandscaper)";
+            titlePageCreditsDecorTop.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            titlePageCreditsDecorTop.Image = (Image)resources.GetObject("titlePageCreditsDecorTop.Image");
+            titlePageCreditsDecorTop.Location = new Point(218, 273);
+            titlePageCreditsDecorTop.Name = "titlePageCreditsDecorTop";
+            titlePageCreditsDecorTop.Size = new Size(530, 5);
+            titlePageCreditsDecorTop.SizeMode = PictureBoxSizeMode.StretchImage;
+            titlePageCreditsDecorTop.TabIndex = 4;
+            titlePageCreditsDecorTop.TabStop = false;
             // 
-            // pictureBox4
+            // titlePageBanner
             // 
-            pictureBox4.Image = (Image)resources.GetObject("pictureBox4.Image");
-            pictureBox4.Location = new Point(215, 317);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(530, 5);
-            pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox4.TabIndex = 5;
-            pictureBox4.TabStop = false;
+            titlePageBanner.Image = (Image)resources.GetObject("titlePageBanner.Image");
+            titlePageBanner.Location = new Point(35, 59);
+            titlePageBanner.Name = "titlePageBanner";
+            titlePageBanner.Size = new Size(446, 76);
+            titlePageBanner.SizeMode = PictureBoxSizeMode.StretchImage;
+            titlePageBanner.TabIndex = 2;
+            titlePageBanner.TabStop = false;
             // 
-            // pictureBox3
+            // terrainPage
             // 
-            pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
-            pictureBox3.Location = new Point(215, 270);
-            pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(530, 5);
-            pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox3.TabIndex = 4;
-            pictureBox3.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(35, 59);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(446, 76);
-            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox2.TabIndex = 2;
-            pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Dock = DockStyle.Fill;
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(3, 3);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(759, 336);
-            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
-            // 
-            // createTerrainTypes_tabControl_tabPage_ConfigureTerrain
-            // 
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(panel2);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Controls.Add(staticPlacement_tabControl);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Location = new Point(4, 24);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Name = "createTerrainTypes_tabControl_tabPage_ConfigureTerrain";
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Size = new Size(765, 342);
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.TabIndex = 1;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Text = "Configure Terrain";
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.UseVisualStyleBackColor = true;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Enter += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_Enter;
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.Leave += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_Leave;
+            terrainPage.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel);
+            terrainPage.Controls.Add(panel2);
+            terrainPage.Controls.Add(staticPlacement_tabControl);
+            terrainPage.Location = new Point(4, 24);
+            terrainPage.Name = "terrainPage";
+            terrainPage.Size = new Size(765, 338);
+            terrainPage.TabIndex = 1;
+            terrainPage.Text = "Configure Terrain";
+            terrainPage.UseVisualStyleBackColor = true;
+            terrainPage.Enter += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_Enter;
+            terrainPage.Leave += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_Leave;
             // 
             // createTerrainTypes_groupBox_terrainPreview_panel
             // 
             createTerrainTypes_groupBox_terrainPreview_panel.AutoScroll = true;
+            createTerrainTypes_groupBox_terrainPreview_panel.AutoScrollMargin = new Size(44, 44);
             createTerrainTypes_groupBox_terrainPreview_panel.BackColor = Color.Black;
             createTerrainTypes_groupBox_terrainPreview_panel.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay);
             createTerrainTypes_groupBox_terrainPreview_panel.Controls.Add(createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker);
             createTerrainTypes_groupBox_terrainPreview_panel.Dock = DockStyle.Fill;
             createTerrainTypes_groupBox_terrainPreview_panel.Location = new Point(0, 58);
             createTerrainTypes_groupBox_terrainPreview_panel.Name = "createTerrainTypes_groupBox_terrainPreview_panel";
-            createTerrainTypes_groupBox_terrainPreview_panel.Size = new Size(442, 284);
+            createTerrainTypes_groupBox_terrainPreview_panel.Size = new Size(442, 280);
             createTerrainTypes_groupBox_terrainPreview_panel.TabIndex = 0;
             // 
             // createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay
@@ -449,7 +418,7 @@
             staticPlacement_tabControl.Multiline = true;
             staticPlacement_tabControl.Name = "staticPlacement_tabControl";
             staticPlacement_tabControl.SelectedIndex = 0;
-            staticPlacement_tabControl.Size = new Size(323, 342);
+            staticPlacement_tabControl.Size = new Size(323, 338);
             staticPlacement_tabControl.TabIndex = 8;
             // 
             // staticPlacement_tabControl_tabPage_staticEntries
@@ -459,7 +428,7 @@
             staticPlacement_tabControl_tabPage_staticEntries.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_toolStrip);
             staticPlacement_tabControl_tabPage_staticEntries.Location = new Point(4, 24);
             staticPlacement_tabControl_tabPage_staticEntries.Name = "staticPlacement_tabControl_tabPage_staticEntries";
-            staticPlacement_tabControl_tabPage_staticEntries.Size = new Size(315, 314);
+            staticPlacement_tabControl_tabPage_staticEntries.Size = new Size(315, 310);
             staticPlacement_tabControl_tabPage_staticEntries.TabIndex = 0;
             staticPlacement_tabControl_tabPage_staticEntries.Text = "Static Entries";
             staticPlacement_tabControl_tabPage_staticEntries.UseVisualStyleBackColor = true;
@@ -471,7 +440,7 @@
             staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Location = new Point(0, 0);
             staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Name = "staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList";
             staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.ScrollAlwaysVisible = true;
-            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Size = new Size(315, 181);
+            staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Size = new Size(315, 177);
             staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.TabIndex = 6;
             staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.SelectedIndexChanged += staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList_SelectedIndexChanged;
             // 
@@ -490,7 +459,7 @@
             tableLayoutPanel1.Controls.Add(staticPlacement_tabControl_tabPage_staticEntries_label_randomStaticFrequency, 0, 2);
             tableLayoutPanel1.Dock = DockStyle.Bottom;
             tableLayoutPanel1.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanel1.Location = new Point(0, 181);
+            tableLayoutPanel1.Location = new Point(0, 177);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 4;
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
@@ -567,15 +536,17 @@
             // 
             // staticPlacement_tabControl_tabPage_staticEntries_toolStrip
             // 
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.AutoSize = false;
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Dock = DockStyle.Bottom;
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.GripStyle = ToolStripGripStyle.Hidden;
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.ImageScalingSize = new Size(24, 24);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Items.AddRange(new ToolStripItem[] { staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics, staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_deleteStatics, staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_refreshStatics, staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon });
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Location = new Point(0, 283);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Location = new Point(0, 279);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip";
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Size = new Size(315, 31);
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Stretch = true;
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip.TabIndex = 0;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Text = "toolStrip1";
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip.Text = "Static Entries";
             // 
             // staticPlacement_tabControl_tabPage_staticEntries_toolStrip_button_addStatics
             // 
@@ -615,10 +586,10 @@
             // 
             // staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon
             // 
+            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Alignment = ToolStripItemAlignment.Right;
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.DisplayStyle = ToolStripItemDisplayStyle.Image;
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Image = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Image");
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.ImageTransparentColor = Color.Magenta;
-            staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Margin = new Padding(147, 1, 0, 2);
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Name = "staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon";
             staticPlacement_tabControl_tabPage_staticEntries_toolStrip_treeIcon.Size = new Size(28, 28);
             // 
@@ -629,7 +600,6 @@
             staticPlacement_tabControl_tabPage_entryCompnentList.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip);
             staticPlacement_tabControl_tabPage_entryCompnentList.Location = new Point(4, 24);
             staticPlacement_tabControl_tabPage_entryCompnentList.Name = "staticPlacement_tabControl_tabPage_entryCompnentList";
-            staticPlacement_tabControl_tabPage_entryCompnentList.Padding = new Padding(3);
             staticPlacement_tabControl_tabPage_entryCompnentList.Size = new Size(315, 314);
             staticPlacement_tabControl_tabPage_entryCompnentList.TabIndex = 1;
             staticPlacement_tabControl_tabPage_entryCompnentList.Text = "Entry Component List";
@@ -639,10 +609,10 @@
             // 
             staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Dock = DockStyle.Fill;
             staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.ItemHeight = 15;
-            staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Location = new Point(3, 3);
+            staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Location = new Point(0, 0);
             staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList";
             staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.ScrollAlwaysVisible = true;
-            staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Size = new Size(309, 77);
+            staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Size = new Size(315, 83);
             staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.TabIndex = 0;
             staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedIndexChanged += staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList_SelectedIndexChanged;
             // 
@@ -654,9 +624,9 @@
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_panel_staticPictureBox);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.Controls.Add(staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.Dock = DockStyle.Bottom;
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Location = new Point(3, 80);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Location = new Point(0, 83);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel";
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Size = new Size(309, 200);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel.Size = new Size(315, 200);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel.TabIndex = 1;
             // 
             // staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector
@@ -667,7 +637,7 @@
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Font = new Font("Segoe UI", 11F);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.ForeColor = Color.SlateGray;
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Image = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Image");
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Location = new Point(169, 0);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Location = new Point(175, 0);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector";
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.Size = new Size(138, 175);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_button_staticSelector.TabIndex = 2;
@@ -707,7 +677,7 @@
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Location = new Point(0, 175);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription";
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.ReadOnly = true;
-            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Size = new Size(307, 23);
+            staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.Size = new Size(313, 23);
             staticPlacement_tabControl_tabPage_entryCompnentList_panel_textBox_staticDescription.TabIndex = 1;
             // 
             // staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip
@@ -716,9 +686,9 @@
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.GripStyle = ToolStripGripStyle.Hidden;
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.ImageScalingSize = new Size(24, 24);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Items.AddRange(new ToolStripItem[] { staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_addStatics, staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_deleteStatics, staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_button_refreshStatics, staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon });
-            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Location = new Point(3, 280);
+            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Location = new Point(0, 283);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip";
-            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Size = new Size(309, 31);
+            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Size = new Size(315, 31);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.TabIndex = 2;
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip.Text = "Static Selector";
             // 
@@ -760,10 +730,10 @@
             // 
             // staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon
             // 
+            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.Alignment = ToolStripItemAlignment.Right;
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.DisplayStyle = ToolStripItemDisplayStyle.Image;
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.Image = (Image)resources.GetObject("staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.Image");
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.ImageTransparentColor = Color.Magenta;
-            staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.Margin = new Padding(147, 1, 0, 2);
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.Name = "staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon";
             staticPlacement_tabControl_tabPage_entryCompnentList_toolStrip_treeIcon.Size = new Size(28, 28);
             // 
@@ -772,7 +742,6 @@
             staticPlacement_tabControl_tabPage_staticProperties.Controls.Add(staticPlacement_tabControl_tabPage_staticProperties_propertyGrid);
             staticPlacement_tabControl_tabPage_staticProperties.Location = new Point(4, 24);
             staticPlacement_tabControl_tabPage_staticProperties.Name = "staticPlacement_tabControl_tabPage_staticProperties";
-            staticPlacement_tabControl_tabPage_staticProperties.Padding = new Padding(3);
             staticPlacement_tabControl_tabPage_staticProperties.Size = new Size(315, 314);
             staticPlacement_tabControl_tabPage_staticProperties.TabIndex = 2;
             staticPlacement_tabControl_tabPage_staticProperties.Text = "Static Properties";
@@ -782,42 +751,48 @@
             // 
             staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.Dock = DockStyle.Fill;
             staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.HelpVisible = false;
-            staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.Location = new Point(3, 3);
+            staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.Location = new Point(0, 0);
             staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.Name = "staticPlacement_tabControl_tabPage_staticProperties_propertyGrid";
-            staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.Size = new Size(309, 308);
+            staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.Size = new Size(315, 314);
             staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.TabIndex = 0;
             staticPlacement_tabControl_tabPage_staticProperties_propertyGrid.ToolbarVisible = false;
+            // 
+            // toolStripStatusLabel1
+            // 
+            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            toolStripStatusLabel1.Size = new Size(97, 17);
+            toolStripStatusLabel1.Text = "Map Creator v3.5";
             // 
             // CreateTerrainTypes
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(773, 444);
-            Controls.Add(userPlugin_createTerrainTypes);
-            Controls.Add(userPlugins_statusStrip_label_mapCreatorBuildDate);
-            Controls.Add(userPlugins_statusStrip_label_mapCreatorVersioning);
-            Controls.Add(userPlugins_pictureBox_bottomDivider);
-            Controls.Add(userPlugins_pictureBox_topDivider);
-            Controls.Add(createTerrainTypes_mainMenu);
-            Controls.Add(statusStrip1);
+            Controls.Add(contentTabs);
+            Controls.Add(footerDivider);
+            Controls.Add(headerDivider);
+            Controls.Add(headerMenu);
+            Controls.Add(footerStatus);
             DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MainMenuStrip = createTerrainTypes_mainMenu;
+            MainMenuStrip = headerMenu;
             Name = "CreateTerrainTypes";
+            SizeGripStyle = SizeGripStyle.Show;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Terrain Types";
-            ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_topDivider).EndInit();
-            createTerrainTypes_mainMenu.ResumeLayout(false);
-            createTerrainTypes_mainMenu.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)userPlugins_pictureBox_bottomDivider).EndInit();
-            userPlugin_createTerrainTypes.ResumeLayout(false);
-            userPlugin_createTerrainTypesTitle.ResumeLayout(false);
-            userPlugin_createTerrainTypesTitle.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            createTerrainTypes_tabControl_tabPage_ConfigureTerrain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)headerDivider).EndInit();
+            headerMenu.ResumeLayout(false);
+            headerMenu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)footerDivider).EndInit();
+            footerStatus.ResumeLayout(false);
+            footerStatus.PerformLayout();
+            contentTabs.ResumeLayout(false);
+            titlePage.ResumeLayout(false);
+            titlePage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)titlePageCreditsDecorBottom).EndInit();
+            ((System.ComponentModel.ISupportInitialize)titlePageCreditsDecorTop).EndInit();
+            ((System.ComponentModel.ISupportInitialize)titlePageBanner).EndInit();
+            terrainPage.ResumeLayout(false);
             createTerrainTypes_groupBox_terrainPreview_panel.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
@@ -844,20 +819,18 @@
 
         #endregion
 
-        private PictureBox userPlugins_pictureBox_topDivider;
-        private MenuStrip createTerrainTypes_mainMenu;
-        private PictureBox userPlugins_pictureBox_bottomDivider;
-        private StatusStrip statusStrip1;
-        private Label userPlugins_statusStrip_label_mapCreatorVersioning;
-        private Label userPlugins_statusStrip_label_mapCreatorBuildDate;
-        private TabControl userPlugin_createTerrainTypes;
-        private TabPage userPlugin_createTerrainTypesTitle;
-        private TabPage createTerrainTypes_tabControl_tabPage_ConfigureTerrain;
-        private PictureBox pictureBox1;
-        private PictureBox pictureBox2;
-        private PictureBox pictureBox3;
-        private PictureBox pictureBox4;
-        private Label label1;
+        private PictureBox headerDivider;
+        private MenuStrip headerMenu;
+        private PictureBox footerDivider;
+        private StatusStrip footerStatus;
+        private TabControl contentTabs;
+        private TabPage titlePage;
+        private TabPage terrainPage;
+        private PictureBox tab1B;
+        private PictureBox titlePageBanner;
+        private PictureBox titlePageCreditsDecorTop;
+        private PictureBox titlePageCreditsDecorBottom;
+        private Label titlePageCreditsText;
         private Label createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_hueID;
         private Label createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_tileID;
         private Label createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain;
@@ -905,5 +878,6 @@
         private FastPanel createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay;
         private Panel panel2;
         private TableLayoutPanel tableLayoutPanel1;
+        private ToolStripStatusLabel toolStripStatusLabel1;
     }
 }

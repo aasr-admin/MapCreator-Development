@@ -8,11 +8,67 @@ namespace MapCreator
 {
     public partial class CreateTerrainTypes : Form
     {
-        public const byte GRID_SIZE = 19;
-        public const sbyte GRID_CENTER = (GRID_SIZE - 1) / 2;
-
         public const byte LAND_SIZE = 44;
         public const sbyte LAND_OFFSET = LAND_SIZE / 2;
+
+        public const byte GRID_MIN_SIZE = 13;
+        public const byte GRID_MAX_SIZE = 255;
+
+        private byte _gridSize = GRID_MIN_SIZE;
+        private sbyte _gridCenter = (GRID_MIN_SIZE - 1) / 2;
+
+        public byte GridSize
+        {
+            get => _gridSize;
+            set
+            {
+                value = Math.Clamp(value, GRID_MIN_SIZE, GRID_MAX_SIZE);
+
+                if ((value - 1) % 2 != 0)
+                {
+                    ++value;
+                }
+
+                int size = value;
+
+                foreach (RandomStatic tile in staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Items)
+                {
+                    var tx = ((size - 1) / 2) + tile.X;
+
+                    if (tx < 0)
+                    {
+                        size += Math.Abs(tx);
+                    }
+                    else if (tx >= size)
+                    {
+                        size = tx + 1;
+                    }
+
+                    var ty = ((size - 1) / 2) + tile.Y;
+
+                    if (ty < 0)
+                    {
+                        size += Math.Abs(ty);
+                    }
+                    else if (ty >= size)
+                    {
+                        size = ty + 1;
+                    }
+                }
+
+                value = (byte)size;
+
+                if ((value - 1) % 2 != 0)
+                {
+                    ++value;
+                }
+
+                _gridSize = value;
+                _gridCenter = (sbyte)((value - 1) / 2);
+            }
+        }
+
+        public sbyte GridCenter => _gridCenter;
 
         private record class GridEntry : IDisposable
         {
@@ -48,10 +104,10 @@ namespace MapCreator
             public int ClientLocationX => _clientLocation.X;
             public int ClientLocationY => _clientLocation.Y;
 
-            public GridEntry(byte gridX, byte gridY, int centerX, int centerY)
+            public GridEntry(sbyte gridCenter, byte gridX, byte gridY, int centerX, int centerY)
             {
                 _gridCell.Offset(gridX, gridY);
-                _gridOffset.Offset(gridX - GRID_CENTER, gridY - GRID_CENTER);
+                _gridOffset.Offset(gridX - gridCenter, gridY - gridCenter);
 
                 _clientCenter.Offset(centerX, centerY);
                 _clientLocation.Offset(centerX - LAND_OFFSET, centerY - LAND_OFFSET);
@@ -91,7 +147,7 @@ namespace MapCreator
             }
         }
 
-        private readonly GridEntry[,] _staticGrid = new GridEntry[GRID_SIZE, GRID_SIZE];
+        private GridEntry[,] _staticGrid;
 
         private readonly ClsTerrainTable _terrainTable = new();
 
@@ -99,9 +155,6 @@ namespace MapCreator
 
         private readonly Pen _basePen = new(Color.FromArgb(96, Color.Gray));
         private readonly SolidBrush _baseBrush = new(Color.FromArgb(96, Color.LightGray));
-
-        private readonly Pen _centerPen = new(Color.FromArgb(96, Color.Goldenrod));
-        private readonly SolidBrush _centerBrush = new(Color.FromArgb(96, Color.PaleGoldenrod));
 
         private readonly Pen _highlightPen = new(Color.FromArgb(96, Color.SkyBlue));
         private readonly SolidBrush _highlightBrush = new(Color.FromArgb(96, Color.LightSkyBlue));
@@ -114,7 +167,16 @@ namespace MapCreator
 
         public CreateTerrainTypes()
         {
-            int px = GRID_SIZE * LAND_OFFSET;
+            PopulateGrid();
+
+            InitializeComponent();
+        }
+
+        private void PopulateGrid()
+        {
+            _staticGrid = new GridEntry[GridSize, GridSize];
+
+            int px = GridSize * LAND_OFFSET;
             int py = LAND_OFFSET;
 
             byte gx = 0;
@@ -124,18 +186,16 @@ namespace MapCreator
             {
                 do
                 {
-                    _staticGrid[gy, gx] = new GridEntry(gx, gy, px - (gy * LAND_OFFSET), py + (gy * LAND_OFFSET));
+                    _staticGrid[gy, gx] = new GridEntry(GridCenter, gx, gy, px - (gy * LAND_OFFSET), py + (gy * LAND_OFFSET));
                 }
-                while (++gy < GRID_SIZE);
+                while (++gy < GridSize);
 
                 gy = 0;
 
                 px += LAND_OFFSET;
                 py += LAND_OFFSET;
             }
-            while (++gx < GRID_SIZE);
-
-            InitializeComponent();
+            while (++gx < GridSize);
         }
 
         /// Form Load Operations
@@ -171,14 +231,6 @@ namespace MapCreator
             staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.EndUpdate();
             staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.Invalidate();
 
-            var gridSize = new Size(LAND_SIZE * GRID_SIZE, LAND_SIZE * GRID_SIZE);
-
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.SuspendLayout();
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.MaximumSize = gridSize;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.MinimumSize = gridSize;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Size = gridSize;
-            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.ResumeLayout(true);
-
             var landSize = new Size(LAND_SIZE, LAND_SIZE);
 
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.SuspendLayout();
@@ -187,10 +239,18 @@ namespace MapCreator
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Size = landSize;
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.ResumeLayout(true);
 
+            var gridSize = new Size(LAND_SIZE * GridSize, LAND_SIZE * GridSize);
+
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.SuspendLayout();
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.MaximumSize = gridSize;
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.MinimumSize = gridSize;
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.Size = gridSize;
+            createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay.ResumeLayout(true);
+
             if (_canvasControls?.IsDisposed == false)
             {
-                _canvasControls.XAxisMinimum = _canvasControls.YAxisMinimum = -GRID_CENTER;
-                _canvasControls.XAxisMaximum = _canvasControls.YAxisMaximum = GRID_CENTER;
+                _canvasControls.XAxisMinimum = _canvasControls.YAxisMinimum = (sbyte)-GridCenter;
+                _canvasControls.XAxisMaximum = _canvasControls.YAxisMaximum = GridCenter;
 
                 _canvasControls.UpdateAxis(0, 0, 0);
             }
@@ -236,8 +296,8 @@ namespace MapCreator
             {
                 _canvasControls = new CanvasControlBox();
 
-                _canvasControls.XAxisMinimum = _canvasControls.YAxisMinimum = -GRID_CENTER;
-                _canvasControls.XAxisMaximum = _canvasControls.YAxisMaximum = GRID_CENTER;
+                _canvasControls.XAxisMinimum = _canvasControls.YAxisMinimum = (sbyte)-GridCenter;
+                _canvasControls.XAxisMaximum = _canvasControls.YAxisMaximum = GridCenter;
 
                 _canvasControls.AxisValueChanged += createTerrainTypes_tabControl_tabPage_ConfigureTerrain_AxisValueChanged;
             }
@@ -288,11 +348,11 @@ namespace MapCreator
 
             if (_canvasControls?.IsDisposed == false)
             {
-                loc.Offset(_staticGrid[GRID_CENTER + _canvasControls.YAxisValue, GRID_CENTER + _canvasControls.XAxisValue].ClientLocation);
+                loc.Offset(_staticGrid[GridCenter + _canvasControls.YAxisValue, GridCenter + _canvasControls.XAxisValue].ClientLocation);
             }
             else
             {
-                loc.Offset(_staticGrid[GRID_CENTER, GRID_CENTER].ClientLocation);
+                loc.Offset(_staticGrid[GridCenter, GridCenter].ClientLocation);
             }
 
             createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_scrollMarker.Location = loc;
@@ -353,6 +413,35 @@ namespace MapCreator
         private void createTerrainTypes_mainMenu_button_communityCredits_Click(object sender, EventArgs e)
         {
             StaticForm<communityCredits>.Open();
+        }
+
+        private readonly record struct TileInfo(object Source, byte GridX, byte GridY, sbyte GridZ, byte GridH, TileFlag Flags);
+
+        private IEnumerable<TileInfo> EnumerateTiles(bool terrain, bool statics)
+        {
+            var terrainFlags = TileFlag.None;
+
+            if (createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.SelectedItem is ClsTerrain t)
+            {
+                terrainFlags = TileData.LandTable[t.TileID].Flags;
+            }
+
+            var gTiles = terrain ? _staticGrid.Cast<GridEntry>().Select(o => new TileInfo(o, o.GridX, o.GridY, 0, 0, terrainFlags)) : [];
+
+            var list = staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Items;
+
+            var sTiles = statics ? list.Cast<RandomStatic>().Select(o => new TileInfo(o, (byte)(GridCenter + o.X), (byte)(GridCenter + o.Y), o.Z, o.Data.Height, o.Data.Flags)) : [];
+
+            var union = Enumerable.Union(gTiles, sTiles);
+
+            var sorted = union.OrderBy(o => ((o.GridX * GridSize) + o.GridY) * 2);
+
+            sorted = sorted.ThenBy(o => o.GridZ);
+            sorted = sorted.ThenByDescending(o => o.Flags.HasFlag(TileFlag.Background) || o.Flags.HasFlag(TileFlag.Surface) || o.Flags.HasFlag(TileFlag.Wall));
+            sorted = sorted.ThenBy(o => o.Flags.HasFlag(TileFlag.Roof) || o.Flags.HasFlag(TileFlag.Foliage));
+            sorted = sorted.ThenBy(o => o.GridH);
+
+            return sorted;
         }
 
         private void CreateTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_MouseClick(object sender, MouseEventArgs e)
@@ -429,36 +518,6 @@ namespace MapCreator
             }
         }
 
-        private readonly record struct TileInfo(object Source, byte GridX, byte GridY, sbyte GridZ, byte GridH, TileFlag Flags);
-
-        private OrderedParallelQuery<TileInfo> EnumerateTiles(bool terrain, bool statics)
-        {
-            var terrainFlags = TileFlag.None;
-
-            if (createTerrainTypes_tabControl_tabPage_ConfigureTerrain_label_baseTerrain_comboBox.SelectedItem is ClsTerrain t)
-            {
-                terrainFlags = TileData.LandTable[t.TileID].Flags;
-            }
-
-            var gTiles = terrain ? _staticGrid.Cast<GridEntry>().Select(o => new TileInfo(o, o.GridX, o.GridY, 0, 0, terrainFlags)) : Enumerable.Empty<TileInfo>();
-
-            var list = staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.Items;
-
-            var sTiles = statics ? list.Cast<RandomStatic>().Select(o => new TileInfo(o, (byte)(GRID_CENTER + o.X), (byte)(GRID_CENTER + o.Y), o.Z, o.Data.Height, o.Data.Flags)) : Enumerable.Empty<TileInfo>();
-
-            var union = Enumerable.Union(gTiles, sTiles).AsParallel();
-
-            var sorted = union.OrderBy(o => ((o.GridX * GRID_SIZE) + o.GridY) * 2);
-
-            sorted = sorted.ThenBy(o => o.GridZ);
-            sorted = sorted.ThenByDescending(o => o.Flags.HasFlag(TileFlag.Surface));
-            sorted = sorted.ThenByDescending(o => o.Flags.HasFlag(TileFlag.Wall));
-            sorted = sorted.ThenBy(o => o.Flags.HasFlag(TileFlag.Roof));
-            sorted = sorted.ThenBy(o => o.GridH);
-
-            return sorted;
-        }
-
         private void createTerrainTypes_groupBox_terrainPreview_panel_terrainGridDisplay_Paint(object sender, PaintEventArgs e)
         {
             Image terrainImage = null;
@@ -501,7 +560,21 @@ namespace MapCreator
                         continue;
                     }
 
-                    if (staticTile.Hue > 0)
+                    if (staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem == staticTile)
+                    {
+                        var hue = Hues.GetHue(0x33);
+
+                        if (hue != null)
+                        {
+                            image = new Bitmap(image)
+                            {
+                                Tag = hue
+                            };
+
+                            hue.ApplyTo(image, false);
+                        }
+                    }
+                    else if (staticTile.Hue > 0)
                     {
                         var hue = Hues.GetHue(staticTile.Hue & 0x3FFF);
 
@@ -523,18 +596,18 @@ namespace MapCreator
                     var sp = _staticGrid[tile.GridY, tile.GridX].ClientCenter;
 
                     sp.Offset(image.Width / -2, -(image.Height + (tile.GridZ * 2)) + LAND_OFFSET);
-
+                    /*
                     if (staticPlacement_tabControl_tabPage_entryCompnentList_listBox_individualStaticList.SelectedItem == staticTile)
                     {
-                        using var highlightImage = new Bitmap(image);
+                        using var highlightImage = new Bitmap(image, image.Width + 4, image.Height + 4);
 
                         var hue = Hues.GetHue(0x33);
 
                         hue.ApplyTo(highlightImage, false);
 
-                        e.Graphics.DrawImage(highlightImage, sp.X - 3, sp.Y - 3, image.Width + 6, image.Height + 6);
+                        e.Graphics.DrawImage(highlightImage, sp.X - 4, sp.Y - 4);
                     }
-
+                    */
                     e.Graphics.DrawImage(image, sp);
 
                     if (image.Tag is Hue)
@@ -585,8 +658,6 @@ namespace MapCreator
         {
             if (!string.IsNullOrWhiteSpace(staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox.Text))
             {
-                staticPlacement_tabControl_tabPage_staticEntries_listBox_staticGroupEntryList.BeginUpdate();
-
                 var freq = (int)staticPlacement_tabControl_tabPage_staticEntries_label_selectedEntryFrequency_numUpDown.Value;
 
                 var col = new RandomStaticCollection(staticPlacement_tabControl_tabPage_staticEntries_label_staticEntryDescription_textBox.Text, freq);
