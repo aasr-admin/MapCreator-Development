@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace System.Windows.Forms
 {
-    public class FastPanel : Panel
+    public class ResponsivePanel : Panel
     {
-        public FastPanel()
+        public ResponsivePanel()
         {
             DoubleBuffered = true;
 
@@ -14,7 +14,7 @@ namespace System.Windows.Forms
         }
     }
 
-    public class FastProgressBar : Panel
+    public class ResponsiveProgressBar : Panel
     {
         protected override Size DefaultSize { get; } = new Size(100, 30);
 
@@ -122,7 +122,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public FastProgressBar()
+        public ResponsiveProgressBar()
         {
             DoubleBuffered = true;
 
@@ -142,7 +142,7 @@ namespace System.Windows.Forms
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            
+
             var clip = new RectangleF(e.ClipRectangle.X, e.ClipRectangle.Y, e.ClipRectangle.Width, e.ClipRectangle.Height);
 
             e.Graphics.FillRectangle(SystemBrushes.Highlight, clip.X, clip.Y, clip.Width * _percentage, clip.Height);
@@ -176,9 +176,9 @@ namespace System.Windows.Forms
         }
     }
 
-    public class FastTileView : ListView
+    public class ResponsiveTileView : ListView
     {
-        private readonly SolidBrush _transparentBackground = new SolidBrush(Color.FromArgb(0x50, Color.Black));
+        private readonly SolidBrush _transparentBackground = new(Color.FromArgb(0x50, Color.Black));
 
         private bool _scrolling;
 
@@ -191,7 +191,7 @@ namespace System.Windows.Forms
         public ListViewGroup DefaultGroup { get; }
         public ListViewGroup InvalidGroup { get; }
 
-        public FastTileView()
+        public ResponsiveTileView()
         {
             Alignment = ListViewAlignment.SnapToGrid;
             DoubleBuffered = true;
@@ -226,13 +226,13 @@ namespace System.Windows.Forms
             {
                 return;
             }
-            
+
             var bounds = new RectangleF(e.Bounds.Location, e.Bounds.Size);
-            
+
             using var back = new SolidBrush(e.Item.BackColor);
 
             e.Graphics.FillRectangle(back, bounds);
-            
+
             if (e.Item.Selected)
             {
                 e.Graphics.FillRectangle(Brushes.LightSkyBlue, bounds);
@@ -328,6 +328,265 @@ namespace System.Windows.Forms
             //EndUpdate();
 
             ScrollEnd?.Invoke(this, e);
+        }
+    }
+
+    public class ResponsiveGridView : DataGridView
+    {
+        private readonly DataGridViewButtonColumn _ActionColumn;
+
+        public object SelectedItem
+        {
+            get
+            {
+                foreach (DataGridViewRow row in SelectedRows)
+                {
+                    if (!row.IsNewRow && row.DataBoundItem != null)
+                    {
+                        return row.DataBoundItem;
+                    }
+                }
+
+                return null;
+            }
+            set
+            {
+                ClearSelection();
+
+                if (value == null)
+                {
+                    return;
+                }
+
+                foreach (DataGridViewRow row in Rows)
+                {
+                    if (!row.IsNewRow && row.DataBoundItem == value)
+                    {
+                        row.Selected = true;
+
+                        return;
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<object> SelectedItems
+        {
+            get
+            {
+                foreach (DataGridViewRow row in SelectedRows)
+                {
+                    if (!row.IsNewRow && row.DataBoundItem != null)
+                    {
+                        yield return row.DataBoundItem;
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<object> Items
+        {
+            get
+            {
+                foreach (DataGridViewRow row in Rows)
+                {
+                    if (!row.IsNewRow && row.DataBoundItem != null)
+                    {
+                        yield return row.DataBoundItem;
+                    }
+                }
+            }
+        }
+
+        public ResponsiveGridView()
+        {
+            _ActionColumn = new DataGridViewButtonColumn
+            {
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader,
+                DefaultCellStyle =
+                {
+                    Alignment = DataGridViewContentAlignment.MiddleCenter,
+                    BackColor = SystemColors.Control,
+                    ForeColor = Color.Red,
+                    SelectionBackColor = SystemColors.Control,
+                    SelectionForeColor = Color.Red,
+                    NullValue = "[+]",
+                },
+                FlatStyle = FlatStyle.Popup,
+                ReadOnly = true,
+                Resizable = DataGridViewTriState.False,
+                SortMode = DataGridViewColumnSortMode.NotSortable,
+                Text = "[x]",
+                UseColumnTextForButtonValue = true,
+            };
+
+            AllowUserToResizeColumns = false;
+            AllowUserToResizeRows = false;
+            AutoGenerateColumns = false;
+            AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            BorderStyle = BorderStyle.None;
+            ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            DoubleBuffered = true;
+            MultiSelect = false;
+            RowHeadersVisible = false;
+            RowHeadersWidth = 20;
+            RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            ShowCellToolTips = false;
+                        
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+        }
+
+        protected override void SetSelectedRowCore(int rowIndex, bool selected)
+        {
+            base.SetSelectedRowCore(rowIndex, selected);
+
+            if (!MultiSelect)
+            {
+                OnSelectionChanged(EventArgs.Empty);
+            }
+        }
+
+        protected override void InitLayout()
+        {
+            base.InitLayout();
+
+            if (_ActionColumn.DataGridView != this && !DesignMode)
+            {
+                Columns.Add(_ActionColumn);
+            }
+        }
+
+        protected void ArrangeColumns()
+        {
+            if (DesignMode)
+            {
+                return;
+            }
+
+            SuspendLayout();
+
+            _ActionColumn.DisplayIndex = ColumnCount - 1;
+
+            var index = -1;
+
+            foreach (DataGridViewColumn col in Columns)
+            {
+                if (col != _ActionColumn)
+                {
+                    col.DisplayIndex = ++index;
+                }
+            }
+
+            ResumeLayout(false);
+        }
+
+        protected override void OnColumnAdded(DataGridViewColumnEventArgs e)
+        {
+            base.OnColumnAdded(e);
+
+            ArrangeColumns();
+        }
+
+        protected override void OnColumnRemoved(DataGridViewColumnEventArgs e)
+        {
+            base.OnColumnRemoved(e);
+
+            ArrangeColumns();
+        }
+
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
+            var hit = HitTest(e.X, e.Y);
+
+            if (hit.Type == DataGridViewHitTestType.None)
+            {
+                var cell = CurrentCell;
+
+                if (cell?.IsInEditMode == true && !cell.ReadOnly)
+                {
+                    NotifyCurrentCellDirty(true);
+                    EndEdit();
+                    NotifyCurrentCellDirty(false);
+                }
+            }
+
+            base.OnMouseClick(e);
+        }
+
+        protected override void OnCellEnter(DataGridViewCellEventArgs e)
+        {
+            base.OnCellEnter(e);
+
+            if (e.RowIndex >= 0 && !MultiSelect)
+            {
+                Rows[e.RowIndex].Selected = true;
+            }
+        }
+
+        protected override void OnCellClick(DataGridViewCellEventArgs e)
+        {
+            base.OnCellClick(e);
+
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                var row = Rows[e.RowIndex];
+
+                if (row.IsNewRow)
+                {
+                    var cell = row.Cells[e.ColumnIndex];
+
+                    if (cell.ReadOnly)
+                    {
+                        cell = CurrentRow.Cells.Cast<DataGridViewCell>().FirstOrDefault(o => !o.ReadOnly);
+
+                        if (cell != null)
+                        {
+                            CurrentCell = cell;
+                        }
+                    }
+
+                    NotifyCurrentCellDirty(true);
+                    EndEdit();
+                    NotifyCurrentCellDirty(false);
+
+                    if (!cell.IsInEditMode)
+                    {
+                        BeginEdit(true);
+                    }
+                }
+            }
+        }
+
+        protected override void OnCellContentClick(DataGridViewCellEventArgs e)
+        {
+            base.OnCellContentClick(e);
+
+            if (e.RowIndex >= 0 && e.ColumnIndex == _ActionColumn.Index)
+            {
+                var row = Rows[e.RowIndex];
+
+                if (!row.IsNewRow)
+                {
+                    Rows.Remove(row);
+                }
+            }
+        }
+
+        protected override void OnCellLeave(DataGridViewCellEventArgs e)
+        {
+            var cell = CurrentCell;
+
+            if (cell?.IsInEditMode == true && !cell.ReadOnly && cell.ColumnIndex == e.ColumnIndex && cell.RowIndex == e.RowIndex)
+            {
+                NotifyCurrentCellDirty(true);
+                EndEdit();
+                NotifyCurrentCellDirty(false);
+            }
+            
+            base.OnCellLeave(e);
         }
     }
 }

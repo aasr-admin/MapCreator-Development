@@ -1,5 +1,8 @@
 ﻿using System.Collections;
+using System.ComponentModel;
 using System.Drawing.Imaging;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
@@ -987,23 +990,76 @@ namespace MapCreator
     }
 
     /// RandomStatic
-	public class RandomStatic
+	public class RandomStatic : INotifyPropertyChanged
     {
-        #region Getters And Setters
+        private ushort _TileID;
 
-        public ushort TileID { get; set; }
+        public ushort TileID
+        {
+            get => _TileID;
+            set
+            {
+                _TileID = value;
 
-        public sbyte X { get; set; }
+                OnPropertyChanged();
+            }
+        }
 
-        public sbyte Y { get; set; }
+        private sbyte _X;
 
-        public sbyte Z { get; set; }
+        public sbyte X
+        {
+            get => _X;
+            set
+            {
+                _X = value;
 
-        public ushort Hue { get; set; }
+                OnPropertyChanged();
+            }
+        }
+
+        private sbyte _Y;
+
+        public sbyte Y
+        {
+            get => _Y;
+            set
+            {
+                _Y = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        private sbyte _Z;
+
+        public sbyte Z
+        {
+            get => _Z;
+            set
+            {
+                _Z = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        private ushort _Hue;
+
+        public ushort Hue
+        {
+            get => _Hue;
+            set
+            {
+                _Hue = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         public ref ItemData Data => ref TileData.ItemTable[TileID];
 
-        #endregion
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public RandomStatic()
         {
@@ -1011,34 +1067,30 @@ namespace MapCreator
 
         public RandomStatic(ushort iTileID, sbyte iXMod, sbyte iYMod, sbyte iZMod, ushort iHueMod)
         {
-            TileID = iTileID;
-            X = iXMod;
-            Y = iYMod;
-            Z = iZMod;
-            Hue = iHueMod;
+            _TileID = iTileID;
+            _X = iXMod;
+            _Y = iYMod;
+            _Z = iZMod;
+            _Hue = iHueMod;
         }
 
         public RandomStatic(XmlElement xmlInfo)
         {
-            try
-            {
-                TileID = Utility.Parse<ushort>(xmlInfo.GetAttribute("TileID"));
-                X = Utility.Parse<sbyte>(xmlInfo.GetAttribute("X"));
-                Y = Utility.Parse<sbyte>(xmlInfo.GetAttribute("Y"));
-                Z = Utility.Parse<sbyte>(xmlInfo.GetAttribute("Z"));
-                Hue = Utility.Parse<ushort>(xmlInfo.GetAttribute("Hue"));
-            }
-            catch (Exception expr_AC)
-            {
-                ProjectData.SetProjectError(expr_AC);
-                _ = Interaction.MsgBox(string.Format("Error\r\n{0}", xmlInfo.OuterXml), MsgBoxStyle.OkOnly, null);
-                ProjectData.ClearProjectError();
-            }
+            Load(xmlInfo);
         }
 
-        public override string ToString()
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            return string.Format("Tile:{0:X4} X:{1} Y:{2} Z:{3} Hue:{4}", TileID, X, Y, Z, Hue);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void Load(XmlElement xmlInfo)
+        {
+            TileID = Utility.Parse<ushort>(xmlInfo.GetAttribute("TileID"));
+            X = Utility.Parse<sbyte>(xmlInfo.GetAttribute("X"));
+            Y = Utility.Parse<sbyte>(xmlInfo.GetAttribute("Y"));
+            Z = Utility.Parse<sbyte>(xmlInfo.GetAttribute("Z"));
+            Hue = Utility.Parse<ushort>(xmlInfo.GetAttribute("Hue"));
         }
 
         public void Save(XmlTextWriter xmlInfo)
@@ -1051,75 +1103,55 @@ namespace MapCreator
             xmlInfo.WriteAttributeString("Hue", Convert.ToString(Hue));
             xmlInfo.WriteEndElement();
         }
-    }
-
-    /// RandomStaticCollection
-	public class RandomStaticCollection : List<RandomStatic>
-    {
-        #region Getters And Setters
-
-        public string Description { get; set; }
-
-        public int Freq { get; set; }
-
-        #endregion
-
-        public void Save(XmlTextWriter xmlInfo)
-        {
-            xmlInfo.WriteStartElement("Statics");
-            xmlInfo.WriteAttributeString("Description", Description);
-            xmlInfo.WriteAttributeString("Freq", Convert.ToString(Freq));
-
-            foreach (var o in CollectionsMarshal.AsSpan(this))
-            {
-                o.Save(xmlInfo);
-            }
-
-            xmlInfo.WriteEndElement();
-        }
-
-        public void Display(ListBox iList)
-        {
-            iList.BeginUpdate();
-
-            iList.Items.Clear();
-
-            foreach (var o in this)
-            {
-                iList.Items.Add(o);
-            }
-
-            iList.EndUpdate();
-            iList.Invalidate();
-        }
-
-        public void RandomStatic(byte X, byte Y, sbyte Z, Collection[,] StaticMap)
-        {
-            foreach (var o in CollectionsMarshal.AsSpan(this))
-            {
-                var x = (X + o.X) >> 3;
-                var y = (Y + o.Y) >> 3;
-
-                if (x >= StaticMap.GetLength(0))
-                {
-                    continue;
-                }
-
-                if (y >= StaticMap.GetLength(1))
-                {
-                    continue;
-                }
-
-                var item = new StaticCell(o.TileID, (byte)((X + o.X) % 8), (byte)((Y + o.Y) % 8), (sbyte)(Z + o.Z));
-
-                StaticMap[x, y].Add(item, null, null, null);
-            }
-        }
 
         public override string ToString()
         {
-            return $"{Description} Freq:{Freq}";
+            var name = Data.Name;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                name = "Static";
+            }
+
+            return $"{name} [0x{TileID:X4} | {TileID:D5}] ({X}, {Y}, {Z})";
         }
+    }
+
+    /// RandomStaticCollection
+	public class RandomStaticCollection : BindingList<RandomStatic>, INotifyPropertyChanged
+    {
+        private string _Description = "Statics Group";
+
+        public string Description
+        {
+            get => _Description;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    value = "Statics Group";
+                }
+
+                _Description = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        private int _Frequency = 100;
+
+        public int Frequency
+        {
+            get => _Frequency;
+            set
+            {
+                _Frequency = Math.Clamp(value, 0, 100);
+
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public RandomStaticCollection()
         {
@@ -1128,62 +1160,97 @@ namespace MapCreator
         public RandomStaticCollection(string iDescription, int iFreq)
         {
             Description = iDescription;
-            Freq = iFreq;
+            Frequency = iFreq;
         }
 
         public RandomStaticCollection(XmlElement xmlInfo)
         {
+            Load(xmlInfo);
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void Load(XmlElement xmlInfo)
+        {
             Description = xmlInfo.GetAttribute("Description");
-            Freq = Utility.Parse<ushort>(xmlInfo.GetAttribute("Freq"));
+            Frequency = Utility.Parse<ushort>(xmlInfo.GetAttribute("Freq"));
 
             foreach (XmlElement node in xmlInfo.SelectNodes("Static"))
             {
                 Add(new RandomStatic(node));
             }
         }
-    }
 
-    /// RandomStatics
-    public class RandomStatics : CollectionBase
-    {
-        private readonly Collection m_Random = new();
-
-        #region Getters And Setters
-
-        public int Freq { get; set; }
-
-        public RandomStaticCollection this[int index]
+        public void Save(XmlTextWriter xmlInfo)
         {
-            get => (RandomStaticCollection)List[index];
-            set => List[index] = value;
+            xmlInfo.WriteStartElement("Statics");
+            xmlInfo.WriteAttributeString("Description", _Description);
+            xmlInfo.WriteAttributeString("Freq", Convert.ToString(_Frequency));
+
+            foreach (var o in this)
+            {
+                o.Save(xmlInfo);
+            }
+
+            xmlInfo.WriteEndElement();
         }
 
-        #endregion
-
-        public void Add(RandomStaticCollection Value)
+        public void RandomStatic(byte X, byte Y, sbyte Z, Collection[,] staticMap)
         {
-            _ = InnerList.Add(Value);
-            var arg_17_0 = 0;
-            var b = Value.Count;
-            for (var b2 = arg_17_0; b2 <= b; b2++)
+            foreach (var o in this)
             {
-                m_Random.Add(Value, null, null, null);
+                var x = (X + o.X) >> 3;
+                var y = (Y + o.Y) >> 3;
+
+                if (x >= staticMap.GetLength(0))
+                {
+                    continue;
+                }
+
+                if (y >= staticMap.GetLength(1))
+                {
+                    continue;
+                }
+
+                var item = new StaticCell(o.TileID, (byte)((X + o.X) % 8), (byte)((Y + o.Y) % 8), (sbyte)(Z + o.Z));
+
+                staticMap[x, y].Add(item, null, null, null);
             }
         }
 
-        public void Remove(RandomStaticCollection Value)
+        public override string ToString()
         {
-            InnerList.Remove(Value);
+            var desc = Description;
+
+            if (string.IsNullOrWhiteSpace(desc))
+            {
+                desc = GetType().Name;
+            }
+
+            return $"{desc} [{Frequency:P}] ({Count:N})";
+        }
+    }
+
+    /// RandomStatics
+    public class RandomStatics : BindingList<RandomStaticCollection>, INotifyPropertyChanged
+    {
+        private int _Chance;
+
+        public int Chance
+        {
+            get => _Chance;
+            set
+            {
+                _Chance = Math.Clamp(value, 0, 100);
+
+                OnPropertyChanged();
+            }
         }
 
-        protected override void OnClear()
-        {
-            base.OnClear();
-
-            m_Random.Clear();
-
-            Freq = 0;
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public RandomStatics()
         {
@@ -1194,60 +1261,30 @@ namespace MapCreator
             Load(iFileName);
         }
 
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public void Load(string iFileName)
         {
-            m_Random.Clear();
+            Chance = 0;
 
-            InnerList.Clear();
-
-            Freq = 0;
+            Clear();
 
             var xmlDocument = new XmlDocument();
-            try
+
+            var filename = Path.Combine(Environment.CurrentDirectory, "MapCompiler", "Engine", "TerrainTypes", iFileName);
+
+            xmlDocument.Load(filename);
+
+            var xmlElement = (XmlElement)xmlDocument.SelectSingleNode("//RandomStatics");
+
+            Chance = Utility.Parse<int>(xmlElement.GetAttribute("Chance"));
+
+            foreach (XmlElement xmlInfo in xmlElement.SelectNodes("Statics"))
             {
-                #region Data Directory Modification
-
-                var filename = string.Format("{0}MapCompiler\\Engine\\TerrainTypes\\{1}", AppDomain.CurrentDomain.BaseDirectory, iFileName);
-
-                #endregion
-
-                xmlDocument.Load(filename);
-                var xmlElement = (XmlElement)xmlDocument.SelectSingleNode("//RandomStatics");
-                Freq = Utility.Parse<int>(xmlElement.GetAttribute("Chance"));
-
-                var enumerator = xmlElement.SelectNodes("Statics").GetEnumerator();
-
-                try
-                {
-                    while (enumerator.MoveNext())
-                    {
-                        var xmlInfo = (XmlElement)enumerator.Current;
-                        var randomStaticCollection = new RandomStaticCollection(xmlInfo);
-                        _ = InnerList.Add(randomStaticCollection);
-                        if (randomStaticCollection.Freq > 0)
-                        {
-                            var arg_AC_0 = 1;
-                            var b = randomStaticCollection.Freq;
-                            for (var b2 = arg_AC_0; b2 <= b; b2++)
-                            {
-                                m_Random.Add(randomStaticCollection, null, null, null);
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    if (enumerator is IDisposable)
-                    {
-                        ((IDisposable)enumerator).Dispose();
-                    }
-                }
-            }
-            catch (Exception expr_F8)
-            {
-                ProjectData.SetProjectError(expr_F8);
-                _ = Interaction.MsgBox("Can not find:" + iFileName, MsgBoxStyle.OkOnly, null);
-                ProjectData.ClearProjectError();
+                Add(new RandomStaticCollection(xmlInfo));
             }
         }
 
@@ -1258,25 +1295,14 @@ namespace MapCreator
                 Indentation = 2,
                 Formatting = Formatting.Indented
             };
+
             xmlTextWriter.WriteStartDocument();
             xmlTextWriter.WriteStartElement("RandomStatics");
-            xmlTextWriter.WriteAttributeString("Chance", Convert.ToString(Freq));
+            xmlTextWriter.WriteAttributeString("Chance", Convert.ToString(Chance));
 
-            var enumerator = InnerList.GetEnumerator();
-            try
+            foreach (var scol in this)
             {
-                while (enumerator.MoveNext())
-                {
-                    var randomStaticCollection = (RandomStaticCollection)enumerator.Current;
-                    randomStaticCollection.Save(xmlTextWriter);
-                }
-            }
-            finally
-            {
-                if (enumerator is IDisposable)
-                {
-                    ((IDisposable)enumerator).Dispose();
-                }
+                scol.Save(xmlTextWriter);
             }
 
             xmlTextWriter.WriteEndElement();
@@ -1284,41 +1310,24 @@ namespace MapCreator
             xmlTextWriter.Close();
         }
 
-        public void Display(ListBox iList)
-        {
-            iList.BeginUpdate();
-
-            iList.Items.Clear();
-
-            foreach (RandomStaticCollection col in InnerList)
-            {
-                _ = iList.Items.Add(col);
-            }
-
-            iList.EndUpdate();
-            iList.Invalidate();
-        }
-
         public void GetRandomStatic(byte X, byte Y, sbyte Z, Collection[,] StaticMap)
         {
-            if (m_Random.Count != 0)
+            if (Count > 0 && Utility.Random(0, 100) <= Chance)
             {
-                VBMath.Randomize();
-                if ((int)Math.Round(100f * VBMath.Rnd()) <= Freq)
-                {
-                    var index = (int)Math.Round((m_Random.Count - 1) * VBMath.Rnd()) + 1;
-
-                    if (m_Random[index] is RandomStaticCollection coll)
-                    {
-                        coll.RandomStatic(X, Y, Z, StaticMap);
-                    }
-                }
+                this[Utility.Random(Count)].RandomStatic(X, Y, Z, StaticMap);
             }
+        }
+
+        public override string ToString()
+        {
+            var name = GetType().Name;
+
+            return $"{name} [{Chance:P}] ({Count:N})";
         }
     }
 
     /// StaticCell
-	public class StaticCell
+	public readonly struct StaticCell
     {
         private readonly ushort m_TileID;
         private readonly byte m_X;

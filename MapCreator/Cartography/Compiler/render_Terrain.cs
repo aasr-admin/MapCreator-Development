@@ -7,6 +7,8 @@ using System.Xml;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
+using UltimaSDK;
+
 namespace MapCreator
 {
     public class ClsTerrain
@@ -31,6 +33,8 @@ namespace MapCreator
 
         [Category("Tile ID")]
         public ushort TileID { get; set; }
+
+        public ref LandData Data => ref TileData.LandTable[TileID];
 
         public ClsTerrain(string iName, byte iGroupID, ushort iTileID, Color iColor, byte iBase, bool iRandAlt)
         {

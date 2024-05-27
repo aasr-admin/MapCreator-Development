@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(StaticSelector));
-            tileView = new FastTileView();
+            tileView = new ResponsiveTileView();
             contentTable = new TableLayoutPanel();
             previewImage = new PictureBox();
             controlsPanel = new FlowLayoutPanel();
@@ -38,7 +38,7 @@
             searchButton = new Button();
             valueSelector = new NumericUpDown();
             closeButton = new Button();
-            progressBar = new FastProgressBar();
+            progressBar = new ResponsiveProgressBar();
             contentTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)previewImage).BeginInit();
             controlsPanel.SuspendLayout();
@@ -197,7 +197,7 @@
         }
 
         #endregion
-        private FastTileView tileView;
+        private ResponsiveTileView tileView;
         private TableLayoutPanel contentTable;
         private PictureBox previewImage;
         private FlowLayoutPanel controlsPanel;
@@ -206,6 +206,6 @@
         private Button searchButton;
         private Button closeButton;
         private Button clearButton;
-        private FastProgressBar progressBar;
+        private ResponsiveProgressBar progressBar;
     }
 }
