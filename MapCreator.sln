@@ -5,6 +5,17 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapCreator", "App\MapCreator.csproj", "{C8FAF3AA-9E61-4C5F-8FD6-119A2B1EEE56}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{B41A6690-D6D9-4DF9-B5D1-C2A931DC192E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+		_gitupdate.bat = _gitupdate.bat
+		_windebug.bat = _windebug.bat
+		_winrelease.bat = _winrelease.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
