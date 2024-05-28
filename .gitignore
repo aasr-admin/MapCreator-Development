@@ -1,9 +1,8 @@
 
-/Cartography/bin
-/Cartography/obj
+/App/bin
+/App/obj
 
-/MapCreator/bin
-/MapCreator/obj
+/Build/ClientPath.cfg
 
 /.vs
 
@@ -13,13 +12,15 @@
 *.exe
 *.exe.config
 *.exe.mdb
+*.dll
 *.dll.config
+*.dll.mdb
 *.idea
 *.ini
 *.log
 *.pdb
 *.sh
 *.suo
+*.deps.json
+*.runtimeconfig.json
 
-*/Microsoft.*.dll
-*/System.*.dll
