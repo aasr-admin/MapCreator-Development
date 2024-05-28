@@ -1,21 +1,18 @@
 #region References
-using System;
 using System.Collections;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 #endregion
 
 namespace UltimaSDK
 {
 	public sealed class Gumps
 	{
-		private static FileIndex m_FileIndex = new FileIndex(
+		private static FileIndex m_FileIndex = new(
 			"Gumpidx.mul", "Gumpart.mul", "gumpartLegacyMUL.uop", 0xFFFF, 12, ".tga", -1, true);
 
 		private static Bitmap[] m_Cache;
 		private static bool[] m_Removed;
-		private static readonly Hashtable m_patched = new Hashtable();
+		private static readonly Hashtable m_patched = [];
 
 		private static byte[] m_PixelBuffer;
 		private static byte[] m_StreamBuffer;
@@ -99,31 +96,35 @@ namespace UltimaSDK
 			{
 				return false;
 			}
+
 			if (index > m_Cache.Length - 1)
 			{
 				return false;
 			}
+
 			if (m_Removed[index])
 			{
 				return false;
 			}
+
 			if (m_Cache[index] != null)
 			{
 				return true;
 			}
-			int length, extra;
-			bool patched;
 
-			if (!m_FileIndex.Valid(index, out length, out extra, out patched))
+			int extra;
+			if (!m_FileIndex.Valid(index, out _, out extra, out _))
 			{
 				return false;
 			}
+
 			if (extra == -1)
 			{
 				return false;
 			}
-			int width = (extra >> 16) & 0xFFFF;
-			int height = extra & 0xFFFF;
+
+			var width = (extra >> 16) & 0xFFFF;
+			var height = extra & 0xFFFF;
 
 			if (width <= 0 || height <= 0)
 			{
@@ -138,24 +139,26 @@ namespace UltimaSDK
 			width = -1;
 			height = -1;
 			int length, extra;
-			bool patched;
-			Stream stream = m_FileIndex.Seek(index, out length, out extra, out patched);
+			Stream stream = m_FileIndex.Seek(index, out length, out extra, out _);
 			if (stream == null)
 			{
 				return null;
 			}
+
 			if (extra == -1)
 			{
 				return null;
 			}
+
 			width = (extra >> 16) & 0xFFFF;
 			height = extra & 0xFFFF;
 			if (width <= 0 || height <= 0)
 			{
 				return null;
 			}
+
 			var buffer = new byte[length];
-			stream.Read(buffer, 0, length);
+			_ = stream.Read(buffer, 0, length);
 			stream.Close();
 			return buffer;
 		}
@@ -176,14 +179,15 @@ namespace UltimaSDK
 			{
 				return null;
 			}
+
 			if (extra == -1)
 			{
 				stream.Close();
 				return null;
 			}
 
-			int width = (extra >> 16) & 0xFFFF;
-			int height = extra & 0xFFFF;
+			var width = (extra >> 16) & 0xFFFF;
+			var height = extra & 0xFFFF;
 
 			if (width <= 0 || height <= 0)
 			{
@@ -191,35 +195,35 @@ namespace UltimaSDK
 				return null;
 			}
 
-			int bytesPerLine = width << 1;
-			int bytesPerStride = (bytesPerLine + 3) & ~3;
-			int bytesForImage = height * bytesPerStride;
+			var bytesPerLine = width << 1;
+			var bytesPerStride = (bytesPerLine + 3) & ~3;
+			var bytesForImage = height * bytesPerStride;
 
-			int pixelsPerStride = (width + 1) & ~1;
-			int pixelsPerStrideDelta = pixelsPerStride - width;
+			var pixelsPerStride = (width + 1) & ~1;
+			var pixelsPerStrideDelta = pixelsPerStride - width;
 
-			byte[] pixelBuffer = m_PixelBuffer;
+			var pixelBuffer = m_PixelBuffer;
 
 			if (pixelBuffer == null || pixelBuffer.Length < bytesForImage)
 			{
 				m_PixelBuffer = pixelBuffer = new byte[(bytesForImage + 2047) & ~2047];
 			}
 
-			byte[] streamBuffer = m_StreamBuffer;
+			var streamBuffer = m_StreamBuffer;
 
 			if (streamBuffer == null || streamBuffer.Length < length)
 			{
 				m_StreamBuffer = streamBuffer = new byte[(length + 2047) & ~2047];
 			}
 
-			byte[] colorTable = m_ColorTable;
+			var colorTable = m_ColorTable;
 
 			if (colorTable == null)
 			{
 				m_ColorTable = colorTable = new byte[128];
 			}
 
-			stream.Read(streamBuffer, 0, length);
+			_ = stream.Read(streamBuffer, 0, length);
 
 			fixed (short* psHueColors = hue.Colors)
 			{
@@ -230,11 +234,11 @@ namespace UltimaSDK
 						fixed (byte* pbColorTable = colorTable)
 						{
 							var pHueColors = (ushort*)psHueColors;
-							ushort* pHueColorsEnd = pHueColors + 32;
+							var pHueColorsEnd = pHueColors + 32;
 
 							var pColorTable = (ushort*)pbColorTable;
 
-							ushort* pColorTableOpaque = pColorTable;
+							var pColorTableOpaque = pColorTable;
 
 							while (pHueColors < pHueColorsEnd)
 							{
@@ -244,13 +248,13 @@ namespace UltimaSDK
 							var pPixelDataStart = (ushort*)pbPixels;
 
 							var pLookup = (int*)pbStream;
-							int* pLookupEnd = pLookup + height;
-							int* pPixelRleStart = pLookup;
+							var pLookupEnd = pLookup + height;
+							var pPixelRleStart = pLookup;
 							int* pPixelRle;
 
-							ushort* pPixel = pPixelDataStart;
-							ushort* pRleEnd = pPixel;
-							ushort* pPixelEnd = pPixel + width;
+							var pPixel = pPixelDataStart;
+							var pRleEnd = pPixel;
+							var pPixelEnd = pPixel + width;
 
 							ushort color, count;
 
@@ -318,8 +322,9 @@ namespace UltimaSDK
 									pPixelEnd += pixelsPerStride;
 								}
 							}
+
 							stream.Close();
-							return new Bitmap(width, height, bytesPerStride, Settings.PixelFormat, (IntPtr)pPixelDataStart);
+							return new Bitmap(width, height, bytesPerStride, Config.PIXEL_FORMAT, (IntPtr)pPixelDataStart);
 						}
 					}
 				}
@@ -333,8 +338,7 @@ namespace UltimaSDK
 		/// <returns></returns>
 		public static Bitmap GetGump(int index)
 		{
-			bool patched;
-			return GetGump(index, out patched);
+			return GetGump(index, out _);
 		}
 
 		/// <summary>
@@ -353,50 +357,57 @@ namespace UltimaSDK
 			{
 				patched = false;
 			}
+
 			if (index > m_Cache.Length - 1)
 			{
 				return null;
 			}
+
 			if (m_Removed[index])
 			{
 				return null;
 			}
+
 			if (m_Cache[index] != null)
 			{
 				return m_Cache[index];
 			}
+
 			int length, extra;
 			Stream stream = m_FileIndex.Seek(index, out length, out extra, out patched);
 			if (stream == null)
 			{
 				return null;
 			}
+
 			if (extra == -1)
 			{
 				stream.Close();
 				return null;
 			}
+
 			if (patched)
 			{
 				m_patched[index] = true;
 			}
 
-			int width = (extra >> 16) & 0xFFFF;
-			int height = extra & 0xFFFF;
+			var width = (extra >> 16) & 0xFFFF;
+			var height = extra & 0xFFFF;
 
 			if (width <= 0 || height <= 0)
 			{
 				return null;
 			}
-			var bmp = new Bitmap(width, height, Settings.PixelFormat);
-			BitmapData bd = bmp.LockBits(
-				new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, Settings.PixelFormat);
+
+			var bmp = new Bitmap(width, height, Config.PIXEL_FORMAT);
+			var bd = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, Config.PIXEL_FORMAT);
 
 			if (m_StreamBuffer == null || m_StreamBuffer.Length < length)
 			{
 				m_StreamBuffer = new byte[length];
 			}
-			stream.Read(m_StreamBuffer, 0, length);
+
+			_ = stream.Read(m_StreamBuffer, 0, length);
 
 			fixed (byte* data = m_StreamBuffer)
 			{
@@ -404,19 +415,19 @@ namespace UltimaSDK
 				var dat = (ushort*)data;
 
 				var line = (ushort*)bd.Scan0;
-				int delta = bd.Stride >> 1;
-				int count = 0;
-				for (int y = 0; y < height; ++y, line += delta)
+				var delta = bd.Stride >> 1;
+				var count = 0;
+				for (var y = 0; y < height; ++y, line += delta)
 				{
-					count = (*lookup++ * 2);
+					count = *lookup++ * 2;
 
-					ushort* cur = line;
-					ushort* end = line + bd.Width;
+					var cur = line;
+					var end = line + bd.Width;
 
 					while (cur < end)
 					{
-						ushort color = dat[count++];
-						ushort* next = cur + dat[count++];
+						var color = dat[count++];
+						var next = cur + dat[count++];
 
 						if (color == 0)
 						{
@@ -447,83 +458,82 @@ namespace UltimaSDK
 
 		public static unsafe void Save(string path)
 		{
-			string idx = Path.Combine(path, "Gumpidx.mul");
-			string mul = Path.Combine(path, "Gumpart.mul");
-			using (
-				FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
-						   fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+			var idx = Path.Combine(path, "Gumpidx.mul");
+			var mul = Path.Combine(path, "Gumpart.mul");
+			using FileStream fsidx = new(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
+						   fsmul = new(mul, FileMode.Create, FileAccess.Write, FileShare.Write);
+			using BinaryWriter binidx = new(fsidx), binmul = new(fsmul);
+			for (var index = 0; index < m_Cache.Length; index++)
 			{
-				using (BinaryWriter binidx = new BinaryWriter(fsidx), binmul = new BinaryWriter(fsmul))
+				if (m_Cache[index] == null)
 				{
-					for (int index = 0; index < m_Cache.Length; index++)
+					m_Cache[index] = GetGump(index);
+				}
+
+				var bmp = m_Cache[index];
+				if ((bmp == null) || m_Removed[index])
+				{
+					binidx.Write(-1); // lookup
+					binidx.Write(-1); // length
+					binidx.Write(-1); // extra
+				}
+				else
+				{
+					var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Config.PIXEL_FORMAT);
+					var line = (ushort*)bd.Scan0;
+					var delta = bd.Stride >> 1;
+
+					binidx.Write((int)fsmul.Position); //lookup
+					var length = (int)fsmul.Position;
+					var fill = 0;
+					for (var i = 0; i < bmp.Height; ++i)
 					{
-						if (m_Cache[index] == null)
-						{
-							m_Cache[index] = GetGump(index);
-						}
+						binmul.Write(fill);
+					}
 
-						Bitmap bmp = m_Cache[index];
-						if ((bmp == null) || (m_Removed[index]))
-						{
-							binidx.Write(-1); // lookup
-							binidx.Write(-1); // length
-							binidx.Write(-1); // extra
-						}
-						else
-						{
-							BitmapData bd = bmp.LockBits(
-								new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
-							var line = (ushort*)bd.Scan0;
-							int delta = bd.Stride >> 1;
+					for (var Y = 0; Y < bmp.Height; ++Y, line += delta)
+					{
+						var cur = line;
 
-							binidx.Write((int)fsmul.Position); //lookup
-							var length = (int)fsmul.Position;
-							int fill = 0;
-							for (int i = 0; i < bmp.Height; ++i)
+						var X = 0;
+						var current = (int)fsmul.Position;
+						_ = fsmul.Seek(length + (Y * 4), SeekOrigin.Begin);
+						var offset = (current - length) / 4;
+						binmul.Write(offset);
+						_ = fsmul.Seek(length + (offset * 4), SeekOrigin.Begin);
+
+						while (X < bd.Width)
+						{
+							var Run = 1;
+							var c = cur[X];
+							while ((X + Run) < bd.Width)
 							{
-								binmul.Write(fill);
-							}
-							for (int Y = 0; Y < bmp.Height; ++Y, line += delta)
-							{
-								ushort* cur = line;
-
-								int X = 0;
-								var current = (int)fsmul.Position;
-								fsmul.Seek(length + Y * 4, SeekOrigin.Begin);
-								int offset = (current - length) / 4;
-								binmul.Write(offset);
-								fsmul.Seek(length + offset * 4, SeekOrigin.Begin);
-
-								while (X < bd.Width)
+								if (c != cur[X + Run])
 								{
-									int Run = 1;
-									ushort c = cur[X];
-									while ((X + Run) < bd.Width)
-									{
-										if (c != cur[X + Run])
-										{
-											break;
-										}
-										++Run;
-									}
-									if (c == 0)
-									{
-										binmul.Write(c);
-									}
-									else
-									{
-										binmul.Write((ushort)(c ^ 0x8000));
-									}
-									binmul.Write((short)Run);
-									X += Run;
+									break;
 								}
+
+								++Run;
 							}
-							length = (int)fsmul.Position - length;
-							binidx.Write(length);
-							binidx.Write((bmp.Width << 16) + bmp.Height);
-							bmp.UnlockBits(bd);
+
+							if (c == 0)
+							{
+								binmul.Write(c);
+							}
+							else
+							{
+								binmul.Write((ushort)(c ^ 0x8000));
+							}
+
+							binmul.Write((short)Run);
+							X += Run;
 						}
 					}
+
+					length = (int)fsmul.Position - length;
+					binidx.Write(length);
+					binidx.Write((bmp.Width << 16) + bmp.Height);
+					bmp.UnlockBits(bd);
 				}
 			}
 		}

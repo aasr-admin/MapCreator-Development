@@ -1,5 +1,4 @@
 #region References
-using System.IO;
 #endregion
 
 // FileIDs
@@ -50,35 +49,34 @@ namespace UltimaSDK
 			{
 				using (Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					using (var bin = new BinaryReader(Stream))
-					{
-						Patches = new Entry5D[bin.ReadInt32()];
+					using var bin = new BinaryReader(Stream);
+					Patches = new Entry5D[bin.ReadInt32()];
 
-						for (int i = 0; i < Patches.Length; ++i)
-						{
-							Patches[i].file = bin.ReadInt32();
-							Patches[i].index = bin.ReadInt32();
-							Patches[i].lookup = bin.ReadInt32();
-							Patches[i].length = bin.ReadInt32();
-							Patches[i].extra = bin.ReadInt32();
-						}
+					for (var i = 0; i < Patches.Length; ++i)
+					{
+						Patches[i].file = bin.ReadInt32();
+						Patches[i].index = bin.ReadInt32();
+						Patches[i].lookup = bin.ReadInt32();
+						Patches[i].length = bin.ReadInt32();
+						Patches[i].extra = bin.ReadInt32();
 					}
 				}
+
 				Stream.Close();
 			}
 		}
 
 		public static void Seek(int lookup)
 		{
-            if (Stream == null || !Stream.CanRead || !Stream.CanSeek)
-            {
-                if (path != null)
-                {
-                    Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-                }
-            }
+			if (Stream == null || !Stream.CanRead || !Stream.CanSeek)
+			{
+				if (path != null)
+				{
+					Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+				}
+			}
 
-			Stream.Seek(lookup, SeekOrigin.Begin);
+			_ = Stream.Seek(lookup, SeekOrigin.Begin);
 		}
 	}
 

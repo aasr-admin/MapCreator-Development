@@ -2,31 +2,31 @@
 
 namespace MapCreator
 {
-    public class MapInfo
-    {
-        #region Getters And Setters
+	public class MapInfo
+	{
+		#region Getters And Setters
 
-        public string MapName { get; }
+		public string MapName { get; }
 
-        public byte MapNumber { get; }
+		public byte MapNumber { get; }
 
-        public int XSize { get; }
+		public int XSize { get; }
 
-        public int YSize { get; }
+		public int YSize { get; }
 
-        #endregion
+		#endregion
 
-        public MapInfo(XmlElement iXml)
-        {
-            MapName = iXml.GetAttribute("Name");
-            MapNumber = Utility.Parse<byte>(iXml.GetAttribute("Num"));
-            XSize = Utility.Parse<int>(iXml.GetAttribute("XSize"));
-            YSize = Utility.Parse<int>(iXml.GetAttribute("YSize"));
-        }
+		public MapInfo(XmlElement iXml)
+		{
+			MapName = iXml.GetAttribute("Name");
+			MapNumber = Utility.Parse<byte>(iXml.GetAttribute("Num"));
+			XSize = Utility.Parse<int>(iXml.GetAttribute("XSize"));
+			YSize = Utility.Parse<int>(iXml.GetAttribute("YSize"));
+		}
 
-        public override string ToString()
-        {
-            return string.Format("{0}", MapName);
-        }
-    }
+		public override string ToString()
+		{
+			return String.Format("{0}", MapName);
+		}
+	}
 }

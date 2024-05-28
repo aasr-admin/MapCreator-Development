@@ -1,5 +1,4 @@
 #region References
-using System;
 using System.Text.RegularExpressions;
 #endregion
 
@@ -21,7 +20,7 @@ namespace UltimaSDK
 
 		public string Text
 		{
-			get { return m_Text; }
+			get => m_Text;
 			set
 			{
 				if (value == null)
@@ -52,37 +51,33 @@ namespace UltimaSDK
 		}
 
 		// Razor
-		private static readonly Regex m_RegEx = new Regex(
+		private static readonly Regex m_RegEx = new(
 			@"~(\d+)[_\w]+~",
 			RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.CultureInvariant);
 
 		private string m_FmtTxt;
-		private static readonly object[] m_Args = new object[] {"", "", "", "", "", "", "", "", "", "", ""};
+		private static readonly object[] m_Args = new object[] { "", "", "", "", "", "", "", "", "", "", "" };
 
 		public string Format(params object[] args)
 		{
-			if (m_FmtTxt == null)
-			{
-				m_FmtTxt = m_RegEx.Replace(m_Text, @"{$1}");
-			}
-			for (int i = 0; i < args.Length && i < 10; i++)
+			m_FmtTxt ??= m_RegEx.Replace(m_Text, @"{$1}");
+			for (var i = 0; i < args.Length && i < 10; i++)
 			{
 				m_Args[i + 1] = args[i];
 			}
+
 			return String.Format(m_FmtTxt, m_Args);
 		}
 
 		public string SplitFormat(string argstr)
 		{
-			if (m_FmtTxt == null)
-			{
-				m_FmtTxt = m_RegEx.Replace(m_Text, @"{$1}");
-			}
-			string[] args = argstr.Split('\t'); // adds an extra on to the args array
-			for (int i = 0; i < args.Length && i < 10; i++)
+			m_FmtTxt ??= m_RegEx.Replace(m_Text, @"{$1}");
+			var args = argstr.Split('\t'); // adds an extra on to the args array
+			for (var i = 0; i < args.Length && i < 10; i++)
 			{
 				m_Args[i + 1] = args[i];
 			}
+
 			return String.Format(m_FmtTxt, m_Args);
 			/*
 			{

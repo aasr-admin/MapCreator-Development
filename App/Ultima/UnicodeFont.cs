@@ -1,8 +1,5 @@
 #region References
-using System;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 #endregion
 
 namespace UltimaSDK
@@ -27,13 +24,15 @@ namespace UltimaSDK
 			{
 				return 0;
 			}
-			int width = 0;
-			for (int i = 0; i < text.Length; ++i)
+
+			var width = 0;
+			for (var i = 0; i < text.Length; ++i)
 			{
-				int c = text[i] % 0x10000;
+				var c = text[i] % 0x10000;
 				width += Chars[c].Width;
 				width += Chars[c].XOffset;
 			}
+
 			return width;
 		}
 
@@ -48,12 +47,14 @@ namespace UltimaSDK
 			{
 				return 0;
 			}
-			int height = 0;
-			for (int i = 0; i < text.Length; ++i)
+
+			var height = 0;
+			for (var i = 0; i < text.Length; ++i)
 			{
-				int c = text[i] % 0x10000;
+				var c = text[i] % 0x10000;
 				height = Math.Max(height, Chars[c].Height + Chars[c].YOffset);
 			}
+
 			return height;
 		}
 	}
@@ -86,15 +87,15 @@ namespace UltimaSDK
 			{
 				return null;
 			}
-			var bmp = new Bitmap(Width, Height, Settings.PixelFormat);
-			BitmapData bd = bmp.LockBits(
-				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, Settings.PixelFormat);
+
+			var bmp = new Bitmap(Width, Height, Config.PIXEL_FORMAT);
+			var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, Config.PIXEL_FORMAT);
 			var line = (ushort*)bd.Scan0;
-			int delta = bd.Stride >> 1;
-			for (int y = 0; y < Height; ++y, line += delta)
+			var delta = bd.Stride >> 1;
+			for (var y = 0; y < Height; ++y, line += delta)
 			{
-				ushort* cur = line;
-				for (int x = 0; x < Width; ++x)
+				var cur = line;
+				for (var x = 0; x < Width; ++x)
 				{
 					if (IsPixelSet(Bytes, Width, x, y))
 					{
@@ -106,17 +107,19 @@ namespace UltimaSDK
 					}
 				}
 			}
+
 			bmp.UnlockBits(bd);
 			return bmp;
 		}
 
 		private static bool IsPixelSet(byte[] data, int width, int x, int y)
 		{
-			int offset = x / 8 + y * ((width + 7) / 8);
+			var offset = (x / 8) + (y * ((width + 7) / 8));
 			if (offset > data.Length)
 			{
 				return false;
 			}
+
 			return (data[offset] & (1 << (7 - (x % 8)))) != 0;
 		}
 
@@ -127,22 +130,22 @@ namespace UltimaSDK
 		public unsafe void SetBuffer(Bitmap bmp)
 		{
 			Bytes = new byte[bmp.Height * (((bmp.Width - 1) / 8) + 1)];
-			BitmapData bd = bmp.LockBits(
-				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, Settings.PixelFormat);
+			var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, Config.PIXEL_FORMAT);
 			var line = (ushort*)bd.Scan0;
 			//int delta = bd.Stride >> 1;
-			for (int y = 0; y < bmp.Height; ++y)
+			for (var y = 0; y < bmp.Height; ++y)
 			{
-				ushort* cur = line;
-				for (int x = 0; x < bmp.Width; ++x)
+				var cur = line;
+				for (var x = 0; x < bmp.Width; ++x)
 				{
 					if (cur[x] == 0x8000)
 					{
-						int offset = x / 8 + y * ((bmp.Width + 7) / 8);
+						var offset = (x / 8) + (y * ((bmp.Width + 7) / 8));
 						Bytes[offset] |= (byte)(1 << (7 - (x % 8)));
 					}
 				}
 			}
+
 			bmp.UnlockBits(bd);
 		}
 	}
@@ -167,41 +170,39 @@ namespace UltimaSDK
 		/// </summary>
 		public static void Initialize()
 		{
-			for (int i = 0; i < m_files.Length; i++)
+			for (var i = 0; i < m_files.Length; i++)
 			{
-				string filePath = Files.GetFilePath(m_files[i]);
+				var filePath = Files.GetFilePath(m_files[i]);
 				if (filePath == null)
 				{
 					continue;
 				}
+
 				Fonts[i] = new UnicodeFont();
-				using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+				using var bin = new BinaryReader(fs);
+				for (var c = 0; c < 0x10000; ++c)
 				{
-					using (var bin = new BinaryReader(fs))
+					Fonts[i].Chars[c] = new UnicodeChar();
+					_ = fs.Seek(c * 4, SeekOrigin.Begin);
+					var num2 = bin.ReadInt32();
+					if ((num2 >= fs.Length) || (num2 <= 0))
 					{
-						for (int c = 0; c < 0x10000; ++c)
-						{
-							Fonts[i].Chars[c] = new UnicodeChar();
-							fs.Seek(((c) * 4), SeekOrigin.Begin);
-							int num2 = bin.ReadInt32();
-							if ((num2 >= fs.Length) || (num2 <= 0))
-							{
-								continue;
-							}
-							fs.Seek(num2, SeekOrigin.Begin);
-							sbyte xOffset = bin.ReadSByte();
-							sbyte yOffset = bin.ReadSByte();
-							int Width = bin.ReadByte();
-							int Height = bin.ReadByte();
-							Fonts[i].Chars[c].XOffset = xOffset;
-							Fonts[i].Chars[c].YOffset = yOffset;
-							Fonts[i].Chars[c].Width = Width;
-							Fonts[i].Chars[c].Height = Height;
-							if (!((Width == 0) || (Height == 0)))
-							{
-								Fonts[i].Chars[c].Bytes = bin.ReadBytes(Height * (((Width - 1) / 8) + 1));
-							}
-						}
+						continue;
+					}
+
+					_ = fs.Seek(num2, SeekOrigin.Begin);
+					var xOffset = bin.ReadSByte();
+					var yOffset = bin.ReadSByte();
+					int Width = bin.ReadByte();
+					int Height = bin.ReadByte();
+					Fonts[i].Chars[c].XOffset = xOffset;
+					Fonts[i].Chars[c].YOffset = yOffset;
+					Fonts[i].Chars[c].Width = Width;
+					Fonts[i].Chars[c].Height = Height;
+					if (!((Width == 0) || (Height == 0)))
+					{
+						Fonts[i].Chars[c].Bytes = bin.ReadBytes(Height * (((Width - 1) / 8) + 1));
 					}
 				}
 			}
@@ -217,19 +218,20 @@ namespace UltimaSDK
 		{
 			var result = new Bitmap(Fonts[fontId].GetWidth(text) + 2, Fonts[fontId].GetHeight(text) + 2);
 
-			int dx = 2;
-			int dy = 2;
-			using (Graphics graph = Graphics.FromImage(result))
+			var dx = 2;
+			var dy = 2;
+			using (var graph = Graphics.FromImage(result))
 			{
-				for (int i = 0; i < text.Length; ++i)
+				for (var i = 0; i < text.Length; ++i)
 				{
-					int c = text[i] % 0x10000;
-					Bitmap bmp = Fonts[fontId].Chars[c].GetImage();
+					var c = text[i] % 0x10000;
+					var bmp = Fonts[fontId].Chars[c].GetImage();
 					dx += Fonts[fontId].Chars[c].XOffset;
 					graph.DrawImage(bmp, dx, dy + Fonts[fontId].Chars[c].YOffset);
 					dx += bmp.Width;
 				}
 			}
+
 			return result;
 		}
 
@@ -241,31 +243,31 @@ namespace UltimaSDK
 		/// <returns></returns>
 		public static string Save(string path, int filetype)
 		{
-			string FileName = Path.Combine(path, m_files[filetype]);
+			var FileName = Path.Combine(path, m_files[filetype]);
 			using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
 			{
-				using (var bin = new BinaryWriter(fs))
+				using var bin = new BinaryWriter(fs);
+				_ = fs.Seek(0x10000 * 4, SeekOrigin.Begin);
+				bin.Write(0);
+				// Set first data
+				for (var c = 0; c < 0x10000; ++c)
 				{
-					fs.Seek(0x10000 * 4, SeekOrigin.Begin);
-					bin.Write(0);
-					// Set first data
-					for (int c = 0; c < 0x10000; ++c)
+					if (Fonts[filetype].Chars[c].Bytes == null)
 					{
-						if (Fonts[filetype].Chars[c].Bytes == null)
-						{
-							continue;
-						}
-						fs.Seek(((c) * 4), SeekOrigin.Begin);
-						bin.Write((int)fs.Length);
-						fs.Seek(fs.Length, SeekOrigin.Begin);
-						bin.Write(Fonts[filetype].Chars[c].XOffset);
-						bin.Write(Fonts[filetype].Chars[c].YOffset);
-						bin.Write((byte)Fonts[filetype].Chars[c].Width);
-						bin.Write((byte)Fonts[filetype].Chars[c].Height);
-						bin.Write(Fonts[filetype].Chars[c].Bytes);
+						continue;
 					}
+
+					_ = fs.Seek(c * 4, SeekOrigin.Begin);
+					bin.Write((int)fs.Length);
+					_ = fs.Seek(fs.Length, SeekOrigin.Begin);
+					bin.Write(Fonts[filetype].Chars[c].XOffset);
+					bin.Write(Fonts[filetype].Chars[c].YOffset);
+					bin.Write((byte)Fonts[filetype].Chars[c].Width);
+					bin.Write((byte)Fonts[filetype].Chars[c].Height);
+					bin.Write(Fonts[filetype].Chars[c].Bytes);
 				}
 			}
+
 			return FileName;
 		}
 	}

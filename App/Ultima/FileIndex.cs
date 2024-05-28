@@ -1,8 +1,4 @@
 #region References
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.WebSockets;
 using System.Runtime.InteropServices;
 #endregion
 
@@ -16,11 +12,11 @@ namespace UltimaSDK
 		private readonly string MulPath;
 
 		public FileStream Seek(int index, out int length, out int extra, out bool patched)
-		{ 
+		{
 			return Seek(index, false, out length, out extra, out patched);
 		}
 
-        public FileStream Seek(int index, bool newStream, out int length, out int extra, out bool patched)
+		public FileStream Seek(int index, bool newStream, out int length, out int extra, out bool patched)
 		{
 			if (index < 0 || index >= Index.Length)
 			{
@@ -29,7 +25,7 @@ namespace UltimaSDK
 				return null;
 			}
 
-			Entry3D e = Index[index];
+			var e = Index[index];
 
 			if (e.lookup < 0)
 			{
@@ -52,11 +48,11 @@ namespace UltimaSDK
 				{
 					var vp = vs.Position;
 
-                    vs = new FileStream(vs.Name, FileMode.Open, FileAccess.Read, FileShare.Read)
-                    {
-                        Position = vp
-                    };
-                }
+					vs = new FileStream(vs.Name, FileMode.Open, FileAccess.Read, FileShare.Read)
+					{
+						Position = vp
+					};
+				}
 
 				return vs;
 			}
@@ -107,12 +103,12 @@ namespace UltimaSDK
 				};
 			}
 
-            s.Seek(e.lookup, SeekOrigin.Begin);
+			_ = s.Seek(e.lookup, SeekOrigin.Begin);
 
 			return s;
 		}
 
-        public bool Valid(int index, out int length, out int extra, out bool patched)
+		public bool Valid(int index, out int length, out int extra, out bool patched)
 		{
 			if (index < 0 || index >= Index.Length)
 			{
@@ -121,7 +117,7 @@ namespace UltimaSDK
 				return false;
 			}
 
-			Entry3D e = Index[index];
+			var e = Index[index];
 
 			if (e.lookup < 0)
 			{
@@ -241,7 +237,6 @@ namespace UltimaSDK
 
 				if (String.IsNullOrEmpty(uopPath))
 				{
-					uopPath = null;
 				}
 				else
 				{
@@ -252,7 +247,6 @@ namespace UltimaSDK
 
 					if (!File.Exists(uopPath))
 					{
-						uopPath = null;
 					}
 					else
 					{
@@ -270,121 +264,115 @@ namespace UltimaSDK
 			 */
 			if (MulPath != null && MulPath.EndsWith(".uop"))
 			{
-				using (var index = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+				using var index = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+				Stream = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+
+				var fi = new FileInfo(MulPath);
+				var uopPattern = fi.Name.Replace(fi.Extension, "").ToLowerInvariant();
+
+				using var br = new BinaryReader(Stream);
+				_ = br.BaseStream.Seek(0, SeekOrigin.Begin);
+
+				if (br.ReadInt32() != 0x50594D)
 				{
-					Stream = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+					throw new ArgumentException("Bad UOP file.");
+				}
 
-					var fi = new FileInfo(MulPath);
-					string uopPattern = fi.Name.Replace(fi.Extension, "").ToLowerInvariant();
+				_ = br.ReadInt64(); // version + signature
+				var nextBlock = br.ReadInt64();
+				_ = br.ReadInt32(); // block capacity
+				var count = br.ReadInt32();
 
-					using (var br = new BinaryReader(Stream))
+				if (idxLength > 0)
+				{
+					IdxLength = idxLength * 12;
+				}
+
+				var hashes = new Dictionary<ulong, int>();
+
+				for (var i = 0; i < length; i++)
+				{
+					var entryName = String.Format("build/{0}/{1:D8}{2}", uopPattern, i, uopEntryExtension);
+					var hash = HashFileName(entryName);
+
+					if (!hashes.ContainsKey(hash))
 					{
-						br.BaseStream.Seek(0, SeekOrigin.Begin);
-
-						if (br.ReadInt32() != 0x50594D)
-						{
-							throw new ArgumentException("Bad UOP file.");
-						}
-
-						br.ReadInt64(); // version + signature
-						long nextBlock = br.ReadInt64();
-						br.ReadInt32(); // block capacity
-						int count = br.ReadInt32();
-
-						if (idxLength > 0)
-						{
-							IdxLength = idxLength * 12;
-						}
-
-						var hashes = new Dictionary<ulong, int>();
-
-						for (int i = 0; i < length; i++)
-						{
-							string entryName = string.Format("build/{0}/{1:D8}{2}", uopPattern, i, uopEntryExtension);
-							ulong hash = HashFileName(entryName);
-
-							if (!hashes.ContainsKey(hash))
-							{
-								hashes.Add(hash, i);
-							}
-						}
-
-						br.BaseStream.Seek(nextBlock, SeekOrigin.Begin);
-
-						do
-						{
-							int filesCount = br.ReadInt32();
-							nextBlock = br.ReadInt64();
-
-							for (int i = 0; i < filesCount; i++)
-							{
-								long offset = br.ReadInt64();
-								int headerLength = br.ReadInt32();
-								int compressedLength = br.ReadInt32();
-								int decompressedLength = br.ReadInt32();
-								ulong hash = br.ReadUInt64();
-								br.ReadUInt32(); // Adler32
-								short flag = br.ReadInt16();
-
-								int entryLength = flag == 1 ? compressedLength : decompressedLength;
-
-								if (offset == 0)
-								{
-									continue;
-								}
-
-								int idx;
-								if (hashes.TryGetValue(hash, out idx))
-								{
-									if (idx < 0 || idx > Index.Length)
-									{
-										throw new IndexOutOfRangeException("hashes dictionary and files collection have different count of entries!");
-									}
-
-									Index[idx].lookup = (int)(offset + headerLength);
-									Index[idx].length = entryLength;
-
-									if (hasExtra)
-									{
-										long curPos = br.BaseStream.Position;
-
-										br.BaseStream.Seek(offset + headerLength, SeekOrigin.Begin);
-
-										byte[] extra = br.ReadBytes(8);
-
-										var extra1 = (ushort)((extra[3] << 24) | (extra[2] << 16) | (extra[1] << 8) | extra[0]);
-										var extra2 = (ushort)((extra[7] << 24) | (extra[6] << 16) | (extra[5] << 8) | extra[4]);
-
-										Index[idx].lookup += 8;
-										Index[idx].extra = extra1 << 16 | extra2;
-
-										br.BaseStream.Seek(curPos, SeekOrigin.Begin);
-									}
-								}
-							}
-						}
-						while (br.BaseStream.Seek(nextBlock, SeekOrigin.Begin) != 0);
+						hashes.Add(hash, i);
 					}
 				}
+
+				_ = br.BaseStream.Seek(nextBlock, SeekOrigin.Begin);
+
+				do
+				{
+					var filesCount = br.ReadInt32();
+					nextBlock = br.ReadInt64();
+
+					for (var i = 0; i < filesCount; i++)
+					{
+						var offset = br.ReadInt64();
+						var headerLength = br.ReadInt32();
+						var compressedLength = br.ReadInt32();
+						var decompressedLength = br.ReadInt32();
+						var hash = br.ReadUInt64();
+						_ = br.ReadUInt32(); // Adler32
+						var flag = br.ReadInt16();
+
+						var entryLength = flag == 1 ? compressedLength : decompressedLength;
+
+						if (offset == 0)
+						{
+							continue;
+						}
+
+						int idx;
+						if (hashes.TryGetValue(hash, out idx))
+						{
+							if (idx < 0 || idx > Index.Length)
+							{
+								throw new IndexOutOfRangeException("hashes dictionary and files collection have different count of entries!");
+							}
+
+							Index[idx].lookup = (int)(offset + headerLength);
+							Index[idx].length = entryLength;
+
+							if (hasExtra)
+							{
+								var curPos = br.BaseStream.Position;
+
+								_ = br.BaseStream.Seek(offset + headerLength, SeekOrigin.Begin);
+
+								var extra = br.ReadBytes(8);
+
+								var extra1 = (ushort)((extra[3] << 24) | (extra[2] << 16) | (extra[1] << 8) | extra[0]);
+								var extra2 = (ushort)((extra[7] << 24) | (extra[6] << 16) | (extra[5] << 8) | extra[4]);
+
+								Index[idx].lookup += 8;
+								Index[idx].extra = (extra1 << 16) | extra2;
+
+								_ = br.BaseStream.Seek(curPos, SeekOrigin.Begin);
+							}
+						}
+					}
+				}
+				while (br.BaseStream.Seek(nextBlock, SeekOrigin.Begin) != 0);
 			}
 			else if ((idxPath != null) && (MulPath != null))
 			{
-				using (var index = new FileStream(idxPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+				using var index = new FileStream(idxPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+				Stream = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+				var count = (int)(index.Length / 12);
+				IdxLength = index.Length;
+				var gc = GCHandle.Alloc(Index, GCHandleType.Pinned);
+				var buffer = new byte[index.Length];
+				_ = index.Read(buffer, 0, (int)index.Length);
+				Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)Math.Min(IdxLength, length * 12));
+				gc.Free();
+				for (var i = count; i < length; ++i)
 				{
-					Stream = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-					var count = (int)(index.Length / 12);
-					IdxLength = index.Length;
-					GCHandle gc = GCHandle.Alloc(Index, GCHandleType.Pinned);
-					var buffer = new byte[index.Length];
-					index.Read(buffer, 0, (int)index.Length);
-					Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)Math.Min(IdxLength, length * 12));
-					gc.Free();
-					for (int i = count; i < length; ++i)
-					{
-						Index[i].lookup = -1;
-						Index[i].length = -1;
-						Index[i].extra = -1;
-					}
+					Index[i].lookup = -1;
+					Index[i].length = -1;
+					Index[i].extra = -1;
 				}
 			}
 			else
@@ -393,13 +381,13 @@ namespace UltimaSDK
 				return;
 			}
 
-			Entry5D[] patches = Verdata.Patches;
+			var patches = Verdata.Patches;
 
 			if (file > -1)
 			{
-				for (int i = 0; i < patches.Length; ++i)
+				for (var i = 0; i < patches.Length; ++i)
 				{
-					Entry5D patch = patches[i];
+					var patch = patches[i];
 
 					if (patch.file == file && patch.index >= 0 && patch.index < length)
 					{
@@ -419,6 +407,7 @@ namespace UltimaSDK
 			{
 				Files.LoadMulPath();
 			}
+
 			if (Files.MulPath.Count > 0)
 			{
 				idxPath = Files.MulPath[idxFile.ToLower()];
@@ -433,11 +422,13 @@ namespace UltimaSDK
 					{
 						idxPath = Path.Combine(Files.RootDir, idxPath);
 					}
+
 					if (!File.Exists(idxPath))
 					{
 						idxPath = null;
 					}
 				}
+
 				if (String.IsNullOrEmpty(MulPath))
 				{
 					MulPath = null;
@@ -448,6 +439,7 @@ namespace UltimaSDK
 					{
 						MulPath = Path.Combine(Files.RootDir, MulPath);
 					}
+
 					if (!File.Exists(MulPath))
 					{
 						MulPath = null;
@@ -457,18 +449,16 @@ namespace UltimaSDK
 
 			if ((idxPath != null) && (MulPath != null))
 			{
-				using (var index = new FileStream(idxPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
-				{
-					Stream = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-					var count = (int)(index.Length / 12);
-					IdxLength = index.Length;
-					Index = new Entry3D[count];
-					GCHandle gc = GCHandle.Alloc(Index, GCHandleType.Pinned);
-					var buffer = new byte[index.Length];
-					index.Read(buffer, 0, (int)index.Length);
-					Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)index.Length);
-					gc.Free();
-				}
+				using var index = new FileStream(idxPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+				Stream = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+				var count = (int)(index.Length / 12);
+				IdxLength = index.Length;
+				Index = new Entry3D[count];
+				var gc = GCHandle.Alloc(Index, GCHandleType.Pinned);
+				var buffer = new byte[index.Length];
+				_ = index.Read(buffer, 0, (int)index.Length);
+				Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)index.Length);
+				gc.Free();
 			}
 			else
 			{
@@ -476,13 +466,14 @@ namespace UltimaSDK
 				Index = new Entry3D[1];
 				return;
 			}
-			Entry5D[] patches = Verdata.Patches;
+
+			var patches = Verdata.Patches;
 
 			if (file > -1)
 			{
-				for (int i = 0; i < patches.Length; ++i)
+				for (var i = 0; i < patches.Length; ++i)
 				{
-					Entry5D patch = patches[i];
+					var patch = patches[i];
 
 					if (patch.file == file && patch.index >= 0 && patch.index < Index.Length)
 					{
@@ -504,11 +495,10 @@ namespace UltimaSDK
 		{
 			uint eax, ecx, edx, ebx, esi, edi;
 
-			eax = ecx = edx = ebx = esi = edi = 0;
+			eax = ecx = 0;
 			ebx = edi = esi = (uint)s.Length + 0xDEADBEEF;
 
-			int i = 0;
-
+			int i;
 			for (i = 0; i + 12 < s.Length; i += 12)
 			{
 				edi = (uint)((s[i + 7] << 24) | (s[i + 6] << 16) | (s[i + 5] << 8) | s[i + 4]) + edi;

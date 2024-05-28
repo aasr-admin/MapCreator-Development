@@ -1,8 +1,8 @@
 #region References
+using Microsoft.Win32.SafeHandles;
+
 using System.Runtime.InteropServices;
 using System.Text;
-
-using Microsoft.Win32.SafeHandles;
 #endregion
 
 namespace UltimaSDK
@@ -67,6 +67,7 @@ namespace UltimaSDK
 			{
 				m_StringBuffer = new byte[20];
 			}
+
 			int count;
 			for (count = 0; count < len && *buffer != 0; ++count)
 			{
@@ -83,6 +84,7 @@ namespace UltimaSDK
 			{
 				;
 			}
+
 			return Encoding.Default.GetString(buffer, 0, count);
 		}
 	}

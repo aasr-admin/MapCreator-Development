@@ -1,9 +1,6 @@
 #region References
 using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Security.Cryptography;
 #endregion
 
@@ -11,10 +8,10 @@ namespace UltimaSDK
 {
 	public sealed class Textures
 	{
-		private static FileIndex m_FileIndex = new FileIndex("Texidx.mul", "Texmaps.mul", 0x4000, 10);
+		private static FileIndex m_FileIndex = new("Texidx.mul", "Texmaps.mul", 0x4000, 10);
 		private static Bitmap[] m_Cache = new Bitmap[0x4000];
 		private static bool[] m_Removed = new bool[0x4000];
-		private static readonly Hashtable m_patched = new Hashtable();
+		private static readonly Hashtable m_patched = [];
 
 		private static byte[] m_StreamBuffer;
 
@@ -75,21 +72,23 @@ namespace UltimaSDK
 		/// <returns></returns>
 		public static bool TestTexture(int index)
 		{
-			int length, extra;
-			bool patched;
+			int length;
 			if (m_Removed[index])
 			{
 				return false;
 			}
+
 			if (m_Cache[index] != null)
 			{
 				return true;
 			}
-			bool valid = m_FileIndex.Valid(index, out length, out extra, out patched);
+
+			var valid = m_FileIndex.Valid(index, out length, out _, out _);
 			if ((!valid) || (length == 0))
 			{
 				return false;
 			}
+
 			return true;
 		}
 
@@ -100,8 +99,7 @@ namespace UltimaSDK
 		/// <returns></returns>
 		public static Bitmap GetTexture(int index)
 		{
-			bool patched;
-			return GetTexture(index, out patched);
+			return GetTexture(index, out _);
 		}
 
 		/// <summary>
@@ -120,10 +118,12 @@ namespace UltimaSDK
 			{
 				patched = false;
 			}
+
 			if (m_Removed[index])
 			{
 				return null;
 			}
+
 			if (m_Cache[index] != null)
 			{
 				return m_Cache[index];
@@ -135,39 +135,41 @@ namespace UltimaSDK
 			{
 				return null;
 			}
+
 			if (length == 0)
 			{
 				return null;
 			}
+
 			if (patched)
 			{
 				m_patched[index] = true;
 			}
 
-			int size = extra == 0 ? 64 : 128;
+			var size = extra == 0 ? 64 : 128;
 
-			var bmp = new Bitmap(size, size, Settings.PixelFormat);
-			BitmapData bd = bmp.LockBits(
-				new Rectangle(0, 0, size, size), ImageLockMode.WriteOnly, Settings.PixelFormat);
+			var bmp = new Bitmap(size, size, Config.PIXEL_FORMAT);
+			var bd = bmp.LockBits(new Rectangle(0, 0, size, size), ImageLockMode.WriteOnly, Config.PIXEL_FORMAT);
 
 			var line = (ushort*)bd.Scan0;
-			int delta = bd.Stride >> 1;
+			var delta = bd.Stride >> 1;
 
-			int max = size * size * 2;
+			var max = size * size * 2;
 
 			if (m_StreamBuffer == null || m_StreamBuffer.Length < max)
 			{
 				m_StreamBuffer = new byte[max];
 			}
-			stream.Read(m_StreamBuffer, 0, max);
+
+			_ = stream.Read(m_StreamBuffer, 0, max);
 
 			fixed (byte* data = m_StreamBuffer)
 			{
 				var bindat = (ushort*)data;
-				for (int y = 0; y < size; ++y, line += delta)
+				for (var y = 0; y < size; ++y, line += delta)
 				{
-					ushort* cur = line;
-					ushort* end = cur + size;
+					var cur = line;
+					var end = cur + size;
 
 					while (cur < end)
 					{
@@ -191,98 +193,96 @@ namespace UltimaSDK
 
 		public static unsafe void Save(string path)
 		{
-			string idx = Path.Combine(path, "texidx.mul");
-			string mul = Path.Combine(path, "texmaps.mul");
-			checksums = new List<CheckSums>();
-			using (
-				FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
-						   fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+			var idx = Path.Combine(path, "texidx.mul");
+			var mul = Path.Combine(path, "texmaps.mul");
+			checksums = [];
+			using FileStream fsidx = new(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
+						   fsmul = new(mul, FileMode.Create, FileAccess.Write, FileShare.Write);
+			var memidx = new MemoryStream();
+			var memmul = new MemoryStream();
+			using BinaryWriter binidx = new(memidx), binmul = new(memmul);
+			var sha = SHA256.Create();
+			//StreamWriter Tex = new StreamWriter(new FileStream("d:/texlog.txt", FileMode.Create, FileAccess.ReadWrite));
+			for (var index = 0; index < GetIdxLength(); ++index)
 			{
-				var memidx = new MemoryStream();
-				var memmul = new MemoryStream();
-				using (BinaryWriter binidx = new BinaryWriter(memidx), binmul = new BinaryWriter(memmul))
+				if (m_Cache[index] == null)
 				{
-					var sha = SHA256.Create();
-					//StreamWriter Tex = new StreamWriter(new FileStream("d:/texlog.txt", FileMode.Create, FileAccess.ReadWrite));
-					for (int index = 0; index < GetIdxLength(); ++index)
+					m_Cache[index] = GetTexture(index);
+				}
+
+				var bmp = m_Cache[index];
+				if ((bmp == null) || m_Removed[index])
+				{
+					binidx.Write(-1); // lookup
+					binidx.Write(0); // length
+					binidx.Write(-1); // extra
+				}
+				else
+				{
+					var ms = new MemoryStream();
+					bmp.Save(ms, ImageFormat.Bmp);
+					var checksum = sha.ComputeHash(ms.ToArray());
+					CheckSums sum;
+					if (compareSaveImages(checksum, out sum))
 					{
-						if (m_Cache[index] == null)
-						{
-							m_Cache[index] = GetTexture(index);
-						}
+						binidx.Write(sum.pos); //lookup
+						binidx.Write(sum.length);
+						binidx.Write(0);
+						//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, (int)sum.pos, (int)sum.length));
+						//Tex.WriteLine(System.String.Format("0x{0:X4} -> 0x{1:X4}", sum.index, index));
+						continue;
+					}
 
-						Bitmap bmp = m_Cache[index];
-						if ((bmp == null) || (m_Removed[index]))
-						{
-							binidx.Write(-1); // lookup
-							binidx.Write(0); // length
-							binidx.Write(-1); // extra
-						}
-						else
-						{
-							var ms = new MemoryStream();
-							bmp.Save(ms, ImageFormat.Bmp);
-							byte[] checksum = sha.ComputeHash(ms.ToArray());
-							CheckSums sum;
-							if (compareSaveImages(checksum, out sum))
-							{
-								binidx.Write(sum.pos); //lookup
-								binidx.Write(sum.length);
-								binidx.Write(0);
-								//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, (int)sum.pos, (int)sum.length));
-								//Tex.WriteLine(System.String.Format("0x{0:X4} -> 0x{1:X4}", sum.index, index));
-								continue;
-							}
-							BitmapData bd = bmp.LockBits(
-								new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
-							var line = (ushort*)bd.Scan0;
-							int delta = bd.Stride >> 1;
+					var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Config.PIXEL_FORMAT);
+					var line = (ushort*)bd.Scan0;
+					var delta = bd.Stride >> 1;
 
-							binidx.Write((int)binmul.BaseStream.Position); //lookup
-							var length = (int)binmul.BaseStream.Position;
+					binidx.Write((int)binmul.BaseStream.Position); //lookup
+					var length = (int)binmul.BaseStream.Position;
 
-							for (int Y = 0; Y < bmp.Height; ++Y, line += delta)
-							{
-								ushort* cur = line;
-								for (int X = 0; X < bmp.Width; ++X)
-								{
-									binmul.Write((ushort)(cur[X] ^ 0x8000));
-								}
-							}
-							int start = length;
-							length = (int)binmul.BaseStream.Position - length;
-							binidx.Write(length);
-							binidx.Write((bmp.Width == 64 ? 0 : 1));
-							bmp.UnlockBits(bd);
-							var s = new CheckSums
-							{
-								pos = start,
-								length = length,
-								checksum = checksum,
-								index = index
-							};
-							//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, start, length));
-							checksums.Add(s);
+					for (var Y = 0; Y < bmp.Height; ++Y, line += delta)
+					{
+						var cur = line;
+						for (var X = 0; X < bmp.Width; ++X)
+						{
+							binmul.Write((ushort)(cur[X] ^ 0x8000));
 						}
 					}
-					memidx.WriteTo(fsidx);
-					memmul.WriteTo(fsmul);
+
+					var start = length;
+					length = (int)binmul.BaseStream.Position - length;
+					binidx.Write(length);
+					binidx.Write(bmp.Width == 64 ? 0 : 1);
+					bmp.UnlockBits(bd);
+					var s = new CheckSums
+					{
+						pos = start,
+						length = length,
+						checksum = checksum,
+						index = index
+					};
+					//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, start, length));
+					checksums.Add(s);
 				}
 			}
+
+			memidx.WriteTo(fsidx);
+			memmul.WriteTo(fsmul);
 		}
 
 		private static bool compareSaveImages(byte[] newchecksum, out CheckSums sum)
 		{
 			sum = new CheckSums();
-			for (int i = 0; i < checksums.Count; ++i)
+			for (var i = 0; i < checksums.Count; ++i)
 			{
-				byte[] cmp = checksums[i].checksum;
-				if (((cmp == null) || (newchecksum == null)) || (cmp.Length != newchecksum.Length))
+				var cmp = checksums[i].checksum;
+				if ((cmp == null) || (newchecksum == null) || (cmp.Length != newchecksum.Length))
 				{
 					return false;
 				}
-				bool valid = true;
-				for (int j = 0; j < cmp.Length; ++j)
+
+				var valid = true;
+				for (var j = 0; j < cmp.Length; ++j)
 				{
 					if (cmp[j] != newchecksum[j])
 					{
@@ -290,12 +290,14 @@ namespace UltimaSDK
 						break;
 					}
 				}
+
 				if (valid)
 				{
 					sum = checksums[i];
 					return true;
 				}
 			}
+
 			return false;
 		}
 	}

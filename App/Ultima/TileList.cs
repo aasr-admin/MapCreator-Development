@@ -1,5 +1,4 @@
 #region References
-using System.Collections.Generic;
 #endregion
 
 namespace UltimaSDK
@@ -10,10 +9,10 @@ namespace UltimaSDK
 
 		public HuedTileList()
 		{
-			m_Tiles = new List<HuedTile>();
+			m_Tiles = [];
 		}
 
-		public int Count { get { return m_Tiles.Count; } }
+		public int Count => m_Tiles.Count;
 
 		public void Add(ushort id, short hue, sbyte z)
 		{
@@ -28,6 +27,7 @@ namespace UltimaSDK
 			{
 				m_Tiles.CopyTo(tiles);
 			}
+
 			m_Tiles.Clear();
 
 			return tiles;
@@ -40,10 +40,10 @@ namespace UltimaSDK
 
 		public TileList()
 		{
-			m_Tiles = new List<Tile>();
+			m_Tiles = [];
 		}
 
-		public int Count { get { return m_Tiles.Count; } }
+		public int Count => m_Tiles.Count;
 
 		public void Add(ushort id, sbyte z)
 		{
@@ -62,6 +62,7 @@ namespace UltimaSDK
 			{
 				m_Tiles.CopyTo(tiles);
 			}
+
 			m_Tiles.Clear();
 
 			return tiles;
@@ -79,17 +80,17 @@ namespace UltimaSDK
 
 		public MTileList()
 		{
-			m_Tiles = new List<MTile>();
+			m_Tiles = [];
 		}
 
-		public int Count { get { return m_Tiles.Count; } }
+		public int Count => m_Tiles.Count;
 
 		public void Add(ushort id, sbyte z)
 		{
 			m_Tiles.Add(new MTile(id, z));
 		}
 
-        public void Add(ushort id, sbyte z, TileFlag flag)
+		public void Add(ushort id, sbyte z, TileFlag flag)
 		{
 			m_Tiles.Add(new MTile(id, z, flag));
 		}
@@ -102,6 +103,7 @@ namespace UltimaSDK
 			{
 				m_Tiles.CopyTo(tiles);
 			}
+
 			m_Tiles.Clear();
 
 			return tiles;
@@ -120,7 +122,7 @@ namespace UltimaSDK
 			}
 		}
 
-        public void Set(int i, ushort id, sbyte z, TileFlag flag)
+		public void Set(int i, ushort id, sbyte z, TileFlag flag)
 		{
 			if (i < Count)
 			{

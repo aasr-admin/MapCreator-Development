@@ -1,7 +1,4 @@
 #region References
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 #endregion
 
@@ -45,39 +42,37 @@ namespace UltimaSDK
 		{
 			if (path == null)
 			{
-				Entries = new List<StringEntry>(0);
+				Entries = [];
 				return;
 			}
 
-			Entries = new List<StringEntry>();
-			m_StringTable = new Dictionary<int, string>();
-			m_EntryTable = new Dictionary<int, StringEntry>();
+			Entries = [];
+			m_StringTable = [];
+			m_EntryTable = [];
 
-			using (var bin = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)))
+			using var bin = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read));
+			m_Header1 = bin.ReadInt32();
+			m_Header2 = bin.ReadInt16();
+
+			while (bin.BaseStream.Length != bin.BaseStream.Position)
 			{
-				m_Header1 = bin.ReadInt32();
-				m_Header2 = bin.ReadInt16();
+				var number = bin.ReadInt32();
+				var flag = bin.ReadByte();
+				int length = bin.ReadInt16();
 
-				while (bin.BaseStream.Length != bin.BaseStream.Position)
+				if (length > m_Buffer.Length)
 				{
-					int number = bin.ReadInt32();
-					byte flag = bin.ReadByte();
-					int length = bin.ReadInt16();
-
-					if (length > m_Buffer.Length)
-					{
-						m_Buffer = new byte[(length + 1023) & ~1023];
-					}
-
-					bin.Read(m_Buffer, 0, length);
-					string text = Encoding.UTF8.GetString(m_Buffer, 0, length);
-
-					var se = new StringEntry(number, text, flag);
-					Entries.Add(se);
-
-					m_StringTable[number] = text;
-					m_EntryTable[number] = se;
+					m_Buffer = new byte[(length + 1023) & ~1023];
 				}
+
+				_ = bin.Read(m_Buffer, 0, length);
+				var text = Encoding.UTF8.GetString(m_Buffer, 0, length);
+
+				var se = new StringEntry(number, text, flag);
+				Entries.Add(se);
+
+				m_StringTable[number] = text;
+				m_EntryTable[number] = se;
 			}
 		}
 
@@ -87,23 +82,19 @@ namespace UltimaSDK
 		/// <param name="FileName"></param>
 		public void SaveStringList(string FileName)
 		{
-			using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
+			using var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write);
+			using var bin = new BinaryWriter(fs);
+			bin.Write(m_Header1);
+			bin.Write(m_Header2);
+			Entries.Sort(new NumberComparer(false));
+			foreach (var entry in Entries)
 			{
-				using (var bin = new BinaryWriter(fs))
-				{
-					bin.Write(m_Header1);
-					bin.Write(m_Header2);
-					Entries.Sort(new NumberComparer(false));
-					foreach (StringEntry entry in Entries)
-					{
-						bin.Write(entry.Number);
-						bin.Write((byte)entry.Flag);
-						byte[] utf8String = Encoding.UTF8.GetBytes(entry.Text);
-						var length = (ushort)utf8String.Length;
-						bin.Write(length);
-						bin.Write(utf8String);
-					}
-				}
+				bin.Write(entry.Number);
+				bin.Write((byte)entry.Flag);
+				var utf8String = Encoding.UTF8.GetBytes(entry.Text);
+				var length = (ushort)utf8String.Length;
+				bin.Write(length);
+				bin.Write(utf8String);
 			}
 		}
 

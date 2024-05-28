@@ -4,252 +4,252 @@ using UltimaSDK;
 
 namespace MapCreator
 {
-    public partial class StaticSelector : Form
-    {
-        private Action _loadedCallback;
+	public partial class StaticSelector : Form
+	{
+		private Action _loadedCallback;
 
-        private bool loading = true;
+		private bool loading = true;
 
-        private string searchText;
-        private int searchIndex = -1;
+		private string searchText;
+		private int searchIndex = -1;
 
-        public int Value
-        {
-            get => (int)valueSelector.Value;
-            set
-            {
-                if (loading)
-                {
-                    _loadedCallback += () => valueSelector.Value = value;
-                }
-                else
-                {
-                    valueSelector.Value = value;
-                }
-            }
-        }
+		public int Value
+		{
+			get => (int)valueSelector.Value;
+			set
+			{
+				if (loading)
+				{
+					_loadedCallback += () => valueSelector.Value = value;
+				}
+				else
+				{
+					valueSelector.Value = value;
+				}
+			}
+		}
 
-        public int Minimum => (int)valueSelector.Minimum;
-        public int Maximum => (int)valueSelector.Maximum;
+		public int Minimum => (int)valueSelector.Minimum;
+		public int Maximum => (int)valueSelector.Maximum;
 
-        public int Capacity => Maximum + 1;
+		public int Capacity => Maximum + 1;
 
-        public event EventHandler ValueChanged
-        {
-            add => valueSelector.ValueChanged += value;
-            remove => valueSelector.ValueChanged -= value;
-        }
+		public event EventHandler ValueChanged
+		{
+			add => valueSelector.ValueChanged += value;
+			remove => valueSelector.ValueChanged -= value;
+		}
 
-        public StaticSelector()
-        {
-            InitializeComponent();
+		public StaticSelector()
+		{
+			InitializeComponent();
 
-            progressBar.Limit = Capacity;
-        }
+			progressBar.Limit = Capacity;
+		}
 
-        protected override async void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
+		protected override async void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
 
-            closeButton.Select();
+			closeButton.Select();
 
-            UseWaitCursor = true;
+			UseWaitCursor = true;
 
-            valueSelector.Enabled = false;
-            searchBox.Enabled = false;
-            searchButton.Enabled = false;
+			valueSelector.Enabled = false;
+			searchBox.Enabled = false;
+			searchButton.Enabled = false;
 
-            tileView.Enabled = false;
+			tileView.Enabled = false;
 
-            var staticGroup = tileView.DefaultGroup;
+			var staticGroup = tileView.DefaultGroup;
 
-            staticGroup.Header = "Statics";
+			staticGroup.Header = "Statics";
 
-            var emptyGroup = tileView.InvalidGroup;
+			var emptyGroup = tileView.InvalidGroup;
 
-            emptyGroup.Name = "Empty";
+			emptyGroup.Name = "Empty";
 
-            var items = new ListViewItem[Capacity];
+			var items = new ListViewItem[Capacity];
 
-            var complete = new ConcurrentBag<string>();
+			var complete = new ConcurrentBag<string>();
 
-            var tasks = new Task[32];
+			var tasks = new Task[32];
 
-            var chunk = (int)Math.Ceiling(items.Length / (double)tasks.Length);
+			var chunk = (int)Math.Ceiling(items.Length / (double)tasks.Length);
 
-            for (var i = 0; i < tasks.Length; i++)
-            {
-                var start = i * chunk;
-                var end = Math.Min(start + chunk, items.Length);
+			for (var i = 0; i < tasks.Length; i++)
+			{
+				var start = i * chunk;
+				var end = Math.Min(start + chunk, items.Length);
 
-                tasks[i] = Task.Factory.StartNew(() =>
-                {
-                    for (var index = start; index < end; index++)
-                    {
-                        var image = Art.GetStatic(index, false);
+				tasks[i] = Task.Factory.StartNew(() =>
+				{
+					for (var index = start; index < end; index++)
+					{
+						var image = Art.GetStatic(index, false);
 
-                        image?.MakeTransparent(Color.White);
+						image?.MakeTransparent(Color.White);
 
-                        ListViewItem item;
+						ListViewItem item;
 
-                        if (image != null)
-                        {
-                            item = new ListViewItem($"{index}", staticGroup)
-                            {
-                                Tag = image
-                            };
+						if (image != null)
+						{
+							item = new ListViewItem($"{index}", staticGroup)
+							{
+								Tag = image
+							};
 
-                            ref var data = ref TileData.ItemTable[index];
+							ref var data = ref TileData.ItemTable[index];
 
-                            if (!string.IsNullOrWhiteSpace(data.Name))
-                            {
-                                item.ToolTipText = item.Name = data.Name;
+							if (!String.IsNullOrWhiteSpace(data.Name))
+							{
+								item.ToolTipText = item.Name = data.Name;
 
-                                complete.Add(data.Name.Trim().ToLowerInvariant());
-                            }
-                        }
-                        else
-                        {
-                            item = new ListViewItem($"{index}", emptyGroup);
-                        }
+								complete.Add(data.Name.Trim().ToLowerInvariant());
+							}
+						}
+						else
+						{
+							item = new ListViewItem($"{index}", emptyGroup);
+						}
 
-                        items[index] = item;
+						items[index] = item;
 
-                        BeginInvoke(progressBar.Step);
-                    }
-                }, TaskCreationOptions.LongRunning);
-            }
+						_ = BeginInvoke(progressBar.Step);
+					}
+				}, TaskCreationOptions.LongRunning);
+			}
 
-            await Task.WhenAll(tasks);
-            
-            await Task.Run(() =>
-            {
-                while (progressBar.Value < progressBar.Limit)
-                {
-                    Thread.Yield();
-                }
-            });
+			await Task.WhenAll(tasks);
 
-            BeginInvoke(() =>
-            {
-                tileView.Groups.Add(staticGroup);
-                tileView.Groups.Add(emptyGroup);
+			await Task.Run(() =>
+			{
+				while (progressBar.Value < progressBar.Limit)
+				{
+					_ = Thread.Yield();
+				}
+			});
 
-                if (!complete.IsEmpty)
-                {
-                    var pruned = new HashSet<string>(complete.Count);
+			_ = BeginInvoke(() =>
+			{
+				_ = tileView.Groups.Add(staticGroup);
+				_ = tileView.Groups.Add(emptyGroup);
 
-                    pruned.UnionWith(complete);
+				if (!complete.IsEmpty)
+				{
+					var pruned = new HashSet<string>(complete.Count);
 
-                    complete.Clear();
+					pruned.UnionWith(complete);
 
-                    var auto = new AutoCompleteStringCollection();
+					complete.Clear();
 
-                    foreach (var match in pruned)
-                    {
-                        auto.Add(match);
-                    }
+					var auto = new AutoCompleteStringCollection();
 
-                    pruned.Clear();
-                    pruned.TrimExcess();
+					foreach (var match in pruned)
+					{
+						_ = auto.Add(match);
+					}
 
-                    searchBox.AutoCompleteCustomSource = auto;
-                    searchBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                }
+					pruned.Clear();
+					pruned.TrimExcess();
 
-                tileView.BeginUpdate();
-                tileView.Items.AddRange(items);
-                tileView.EndUpdate();
+					searchBox.AutoCompleteCustomSource = auto;
+					searchBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
+				}
 
-                progressBar.Visible = false;
+				tileView.BeginUpdate();
+				tileView.Items.AddRange(items);
+				tileView.EndUpdate();
 
-                tileView.Enabled = true;
+				progressBar.Visible = false;
 
-                valueSelector.Enabled = true;
-                searchBox.Enabled = true;
-                searchButton.Enabled = true;
+				tileView.Enabled = true;
 
-                UseWaitCursor = false;
+				valueSelector.Enabled = true;
+				searchBox.Enabled = true;
+				searchButton.Enabled = true;
 
-                loading = false;
+				UseWaitCursor = false;
 
-                _loadedCallback?.Invoke();
-                _loadedCallback = null;
-            });
-        }
+				loading = false;
 
-        private void OnValueSelectionChanged(object sender, EventArgs e)
-        {
-            if (searchIndex != Value)
-            {
-                searchIndex = -1;
-            }
+				_loadedCallback?.Invoke();
+				_loadedCallback = null;
+			});
+		}
 
-            tileView.SelectedIndices.Clear();
+		private void OnValueSelectionChanged(object sender, EventArgs e)
+		{
+			if (searchIndex != Value)
+			{
+				searchIndex = -1;
+			}
 
-            if (Value >= 0 && Value < tileView.Items.Count)
-            {
-                tileView.SelectedIndices.Add(Value);
+			tileView.SelectedIndices.Clear();
 
-                tileView.EnsureVisible(Value);
+			if (Value >= 0 && Value < tileView.Items.Count)
+			{
+				_ = tileView.SelectedIndices.Add(Value);
 
-                previewImage.Image = tileView.Items[Value].Tag as Image;
-            }
-        }
+				tileView.EnsureVisible(Value);
 
-        private void OnItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
-        {
-            if (e.IsSelected)
-            {
-                Value = (int)Math.Clamp(e.ItemIndex, valueSelector.Minimum, valueSelector.Maximum);
-            }
-        }
+				previewImage.Image = tileView.Items[Value].Tag as Image;
+			}
+		}
 
-        private void OnClearClick(object sender, EventArgs e)
-        {
-            searchIndex = -1;
-            searchText = searchBox.Text = null;
-        }
+		private void OnItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+		{
+			if (e.IsSelected)
+			{
+				Value = (int)Math.Clamp(e.ItemIndex, valueSelector.Minimum, valueSelector.Maximum);
+			}
+		}
 
-        private void OnSearchClick(object sender, EventArgs e)
-        {
-            if (searchText != searchBox.Text)
-            {
-                searchIndex = -1;
-                searchText = searchBox.Text;
-            }
+		private void OnClearClick(object sender, EventArgs e)
+		{
+			searchIndex = -1;
+			searchText = searchBox.Text = null;
+		}
 
-            if (string.IsNullOrWhiteSpace(searchText))
-            {
-                return;
-            }
+		private void OnSearchClick(object sender, EventArgs e)
+		{
+			if (searchText != searchBox.Text)
+			{
+				searchIndex = -1;
+				searchText = searchBox.Text;
+			}
 
-            var count = tileView.Items.Count;
+			if (String.IsNullOrWhiteSpace(searchText))
+			{
+				return;
+			}
 
-            while (--count >= 0)
-            {
-                searchIndex = ++searchIndex % tileView.Items.Count;
+			var count = tileView.Items.Count;
 
-                var item = tileView.Items[searchIndex];
+			while (--count >= 0)
+			{
+				searchIndex = ++searchIndex % tileView.Items.Count;
 
-                if (string.IsNullOrWhiteSpace(item.ToolTipText))
-                {
-                    continue;
-                }
+				var item = tileView.Items[searchIndex];
 
-                if (item.ToolTipText.Contains(searchText, StringComparison.OrdinalIgnoreCase))
-                {
-                    Value = searchIndex;
-                    return;
-                }
-            }
+				if (String.IsNullOrWhiteSpace(item.ToolTipText))
+				{
+					continue;
+				}
 
-            searchIndex = -1;
-        }
+				if (item.ToolTipText.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+				{
+					Value = searchIndex;
+					return;
+				}
+			}
 
-        private void OnCloseClick(object sender, EventArgs e)
-        {
-            Hide();
-        }
-    }
+			searchIndex = -1;
+		}
+
+		private void OnCloseClick(object sender, EventArgs e)
+		{
+			Hide();
+		}
+	}
 }
