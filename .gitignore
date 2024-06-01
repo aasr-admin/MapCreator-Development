@@ -4,7 +4,9 @@
 /Utilities/bin
 /Utilities/obj
 
-/Build/ClientPath.cfg
+/Build/*
+!/Build/Development/*
+!/Build/MapCompiler/*
 
 /.vs
 

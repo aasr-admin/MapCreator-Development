@@ -29,7 +29,7 @@ namespace Photoshop
 			}
 			else
 			{
-				_Entries = Array.Empty<T>();
+				_Entries = [];
 			}
 		}
 
@@ -43,9 +43,14 @@ namespace Photoshop
 			return _Entries.AsEnumerable().GetEnumerator();
 		}
 
-		public void Reset()
+		public void Clear()
 		{
 			Array.Clear(_Entries);
+		}
+
+		public void Reset()
+		{
+			Clear();
 
 			if (_BaseType.IsClass)
 			{
@@ -108,13 +113,26 @@ namespace Photoshop
 			return IndexOf(color) >= 0;
 		}
 
+		public ColorPalette CreatePallette()
+		{
+			using var temp = new Bitmap(2, 2, PixelFormat.Format8bppIndexed);
+
+			var pallette = temp.Palette;
+
+			FillPallette(pallette);
+
+			return pallette;
+		}
+
 		public virtual void FillPallette(ColorPalette palette)
 		{
 			for (var i = 0; i < palette.Entries.Length; i++)
 			{
 				if (i < _Entries.Length)
 				{
-					palette.Entries[i] = _Entries[i].Color;
+					ref var entry = ref this[i];
+
+					palette.Entries[i] = entry.Color;
 				}
 				else
 				{

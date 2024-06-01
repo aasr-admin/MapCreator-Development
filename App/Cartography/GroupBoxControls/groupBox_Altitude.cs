@@ -1,78 +1,99 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
-
-using System.Drawing.Imaging;
+﻿using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
 namespace MapCreator
 {
 	public static class EncodeAltitudeBitmapHelper
 	{
-		public static void MakeAltitudeImage(string projectPath, string terrainFile, string altitudeFile, ClsAltitudeTable iAltitude, ClsTerrainTable iTerrain, IProgress<int> Progress, IProgress<string> Logger)
+		public static void MakeAltitudeImage(string projectPath, string terrainFile, string altitudeFile, ClsAltitudeTable altitude, ClsTerrainTable terrain, IProgress<int> progress, IProgress<string> logger)
 		{
-			Bitmap bitmap = null;
-			Bitmap bitmap1 = null;
+			Bitmap loadedImage = null;
+			Bitmap memoryImage = null;
+
+			var terrainPath = Utility.FindDataFile(projectPath, terrainFile);
+
 			try
 			{
-				Logger.Report("Load Terrain Image Map.");
-				bitmap1 = new Bitmap(String.Format("{0}\\{1}", projectPath, terrainFile));
-				bitmap = new Bitmap(bitmap1.Width, bitmap1.Height, PixelFormat.Format8bppIndexed);
-			}
-			catch (Exception exception1)
-			{
-				ProjectData.SetProjectError(exception1);
-				var exception = exception1;
-				Logger.Report("Error in loading image maps.\r\n");
-				Logger.Report(exception.Message);
-				ProjectData.ClearProjectError();
-			}
-
-			bitmap.Palette = iAltitude.GetAltPalette();
-			var width = bitmap1.Width;
-			var rectangle = new Rectangle(0, 0, width, bitmap1.Height);
-			var bitmapDatum = bitmap1.LockBits(rectangle, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
-			var scan0 = bitmapDatum.Scan0;
-			var num = checked(bitmapDatum.Width * bitmapDatum.Height);
-			var numArray = new byte[checked(checked(num - 1) + 1)];
-			Marshal.Copy(scan0, numArray, 0, num);
-			var bitmapDatum1 = bitmap.LockBits(rectangle, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
-			var intPtr = bitmapDatum1.Scan0;
-			var width1 = checked(bitmapDatum1.Width * bitmapDatum1.Height);
-			var numArray1 = new byte[checked(checked(width1 - 1) + 1)];
-			Marshal.Copy(intPtr, numArray1, 0, width1);
-			Logger.Report("Creating Altitude Image Map.");
-			var num1 = checked(num - 1);
-			for (var i = 0; i <= num1; i++)
-			{
-				if (i % 1000 == 0)
+				try
 				{
-					Progress.Report(i * 100 / width1);
+					logger.Report("Load Terrain Image Map.\r\n");
+					logger.Report(terrainPath);
+
+					loadedImage = new Bitmap(terrainPath);
+					memoryImage = new Bitmap(loadedImage.Width, loadedImage.Height, PixelFormat.Format8bppIndexed);
+				}
+				catch (Exception exception)
+				{
+					logger.Report("Error in loading image maps.\r\n");
+					logger.Report(exception.Message);
+
+					return;
 				}
 
-				var altID = iTerrain.TerrianGroup(numArray[i]).AltID;
-				numArray1[i] = altID;
-			}
+				memoryImage.Palette = altitude.GetAltPalette();
 
-			Marshal.Copy(numArray1, 0, intPtr, width1);
-			bitmap.UnlockBits(bitmapDatum1);
-			try
-			{
-				var str = String.Format("{0}\\{1}", projectPath, altitudeFile);
-				Logger.Report("Saving Altitude Image Map.\r\n");
-				Logger.Report(str);
-				bitmap.Save(str, ImageFormat.Bmp);
-			}
-			catch (Exception exception3)
-			{
-				ProjectData.SetProjectError(exception3);
-				var exception2 = exception3;
-				Logger.Report("Error in saving image.\r\n");
-				Logger.Report(exception2.Message);
-				ProjectData.ClearProjectError();
-			}
+				var loadedBound = new Rectangle(0, 0, loadedImage.Width, loadedImage.Height);
 
-			bitmap.Dispose();
-			bitmap1.Dispose();
-			Logger.Report("Done.");
+				var loadedBD = loadedImage.LockBits(loadedBound, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
+
+				var loadedScan0 = loadedBD.Scan0;
+				var loadedArea = loadedBD.Width * loadedBD.Height;
+
+				var loadedData = new byte[loadedArea];
+
+				Marshal.Copy(loadedScan0, loadedData, 0, loadedArea);
+
+				var memoryBound = new Rectangle(0, 0, memoryImage.Width, memoryImage.Height);
+
+				var memoryBD = memoryImage.LockBits(memoryBound, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
+
+				var memoryScan0 = memoryBD.Scan0;
+				var memoryArea = memoryBD.Width * memoryBD.Height;
+
+				var memoryData = new byte[memoryArea];
+
+				Marshal.Copy(memoryScan0, memoryData, 0, memoryArea);
+
+				logger.Report("Creating Altitude Image Map.");
+
+				for (var i = 0; i < loadedArea; i++)
+				{
+					if (i % 1000 == 0)
+					{
+						progress.Report(i * 100 / memoryArea);
+					}
+
+					memoryData[i] = terrain[loadedData[i]].AltID;
+				}
+
+				Marshal.Copy(memoryData, 0, memoryScan0, memoryArea);
+
+				memoryImage.UnlockBits(memoryBD);
+
+				var altitudePath = Path.Combine(Path.GetDirectoryName(terrainPath), altitudeFile);
+
+				try
+				{
+					logger.Report("Saving Altitude Image Map.\r\n");
+					logger.Report(altitudePath);
+
+					memoryImage.Save(altitudePath, ImageFormat.Bmp);
+				}
+				catch (Exception exception)
+				{
+					logger.Report("Error in saving image.\r\n");
+					logger.Report(exception.Message);
+
+					return;
+				}
+			}
+			finally
+			{
+				memoryImage?.Dispose();
+				loadedImage?.Dispose();
+
+				logger.Report("Done.");
+			}
 		}
 	}
 }

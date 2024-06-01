@@ -100,16 +100,20 @@ namespace MapCreator
 				ProjectData.ClearProjectError();
 			}
 
+			var outputPath = Path.Combine(Environment.CurrentDirectory, "Projects");
+
+			Directory.CreateDirectory(outputPath);
+
 			/// GroupBox: Sync Your Altitude Bitmap
 
-			facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text = Directory.GetCurrentDirectory();
-
-			iTerrain.Load();
-			iAltitude.Load();
+			facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text = outputPath;
 
 			/// GroupBox: Compile Your New Facet
 
-			facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text = AppDomain.CurrentDomain.BaseDirectory;
+			facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text = outputPath;
+
+			iTerrain.Load();
+			iAltitude.Load();
 
 			#endregion
 		}
@@ -255,7 +259,7 @@ namespace MapCreator
 				{
 					var str1 = String.Format("{0}/{1}", str, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_terrainBitmap_textBox.Text);
 					var palette = MakeTerrainBitmapFile(selectedItem.XSize, selectedItem.YSize, groupID, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.Checked);
-					palette.Palette = iTerrain.GetPalette();
+					palette.Palette = iTerrain.CreatePallette();
 					palette.Save(str1, ImageFormat.Bmp);
 					palette.Dispose();
 				}
@@ -302,7 +306,7 @@ namespace MapCreator
 		{
 			var bitmap = new Bitmap(xSize, ySize, PixelFormat.Format8bppIndexed)
 			{
-				Palette = iTerrain.GetPalette()
+				Palette = iTerrain.CreatePallette()
 			};
 
 			var rectangle = new Rectangle(0, 0, xSize, ySize);
@@ -669,10 +673,9 @@ namespace MapCreator
 
 							if (transition == null)
 							{
-								var terrianGroup = clsTerrainTable.TerrianGroup(mapCell[x, y].GroupID);
+								var terrianGroup = clsTerrainTable[mapCell[x, y].GroupID];
 								mapCell[x, y].TileID = terrianGroup.TileID;
 								mapCell[x, y].AltID = altID;
-								terrianGroup = null;
 							}
 							else
 							{
@@ -680,10 +683,9 @@ namespace MapCreator
 								mapTile = transition.GetRandomMapTile();
 								if (mapTile == null)
 								{
-									var clsTerrain = clsTerrainTable.TerrianGroup(mapCell[x, y].GroupID);
+									var clsTerrain = clsTerrainTable[mapCell[x, y].GroupID];
 									mapCell[x, y].TileID = clsTerrain.TileID;
 									mapCell[x, y].ChangeAltID(clsTerrain.AltID);
-									clsTerrain = null;
 								}
 								else
 								{
@@ -776,7 +778,7 @@ namespace MapCreator
 							}
 						}
 
-						if (clsTerrainTable.TerrianGroup(mapCell[o, p].GroupID).RandAlt)
+						if (clsTerrainTable[mapCell[o, p].GroupID].RandAlt)
 						{
 							var single1 = 10f * VBMath.Rnd();
 							if (single1 == 0f)

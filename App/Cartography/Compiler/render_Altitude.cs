@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
-using System;
-using System.Collections;
+using Photoshop;
+
 using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Text;
@@ -10,23 +10,23 @@ using System.Xml;
 
 namespace MapCreator
 {
-	public class ClsAltitude
+	public struct ClsAltitude : IColorEntry
 	{
-		[Category("ID")]
-		public Color AltitudeColor { get; set; }
+		Color IColorEntry.Color { readonly get => AltitudeColor; set => AltitudeColor = value; }
+		string IColorEntry.Name { readonly get => Type; set => Type = value; }
 
-		[Category("Method")]
 		public sbyte GetAltitude { get; set; }
 
-		[Category("Key")]
-		public int Key { get; set; }
+		public Color AltitudeColor { get; set; }
 
-		[Category("ID")]
 		public string Type { get; set; }
 
-		public ClsAltitude(int iKey, string iType, sbyte iAlt, Color iAltColor)
+		public ClsAltitude()
 		{
-			Key = iKey;
+		}
+
+		public ClsAltitude(string iType, sbyte iAlt, Color iAltColor)
+		{
 			Type = iType;
 			GetAltitude = iAlt;
 			AltitudeColor = iAltColor;
@@ -34,321 +34,167 @@ namespace MapCreator
 
 		public ClsAltitude(XmlElement xmlInfo)
 		{
-			Key = Utility.Parse<int>(xmlInfo.GetAttribute("Key"));
-			Type = xmlInfo.GetAttribute("Type");
-			GetAltitude = unchecked((sbyte)Utility.Parse<int>(xmlInfo.GetAttribute("Altitude")));
-			AltitudeColor = Color.FromArgb(Utility.Parse<byte>(xmlInfo.GetAttribute("R")), Utility.Parse<byte>(xmlInfo.GetAttribute("G")), Utility.Parse<byte>(xmlInfo.GetAttribute("B")));
+			Load(xmlInfo);
 		}
 
-		public override string ToString()
+		public override readonly string ToString()
 		{
-			var str = String.Format("[{0:X3}] {1} {2}", Key, Type, GetAltitude);
-			return str;
+			return $"{Type} [{GetAltitude}]";
 		}
 
-		#region Altitude Swatch And Color Table
-
-		public void Save(XmlTextWriter xmlInfo)
+		public readonly void Save(XmlTextWriter xmlInfo)
 		{
 			xmlInfo.WriteStartElement("Altitude");
-			xmlInfo.WriteAttributeString("Key", Convert.ToString(Key));
+
 			xmlInfo.WriteAttributeString("Type", Type);
+
 			xmlInfo.WriteAttributeString("Altitude", Convert.ToString(GetAltitude));
+
 			xmlInfo.WriteAttributeString("R", Convert.ToString(AltitudeColor.R));
 			xmlInfo.WriteAttributeString("G", Convert.ToString(AltitudeColor.G));
 			xmlInfo.WriteAttributeString("B", Convert.ToString(AltitudeColor.B));
+
 			xmlInfo.WriteEndElement();
 		}
 
-		public void SaveACO(BinaryWriter iACTFile)
+		public void Load(XmlElement xmlInfo)
 		{
-			byte num = 0;
-			iACTFile.Write(AltitudeColor.R);
-			iACTFile.Write(AltitudeColor.R);
-			iACTFile.Write(AltitudeColor.G);
-			iACTFile.Write(AltitudeColor.G);
-			iACTFile.Write(AltitudeColor.B);
-			iACTFile.Write(AltitudeColor.B);
-			iACTFile.Write(num);
-			iACTFile.Write(num);
+			Type = xmlInfo.GetAttribute("Type");
+
+			var alt = Utility.Parse<int>(xmlInfo.GetAttribute("Altitude"));
+
+			GetAltitude = (sbyte)Math.Clamp(alt, SByte.MinValue, SByte.MaxValue);
+
+			var r = Utility.Parse<byte>(xmlInfo.GetAttribute("R"));
+			var g = Utility.Parse<byte>(xmlInfo.GetAttribute("G"));
+			var b = Utility.Parse<byte>(xmlInfo.GetAttribute("B"));
+
+			AltitudeColor = Color.FromArgb(r, g, b);
 		}
-
-		public void SaveACOText(BinaryWriter iACTFile)
-		{
-			byte num = 0;
-			iACTFile.Write(AltitudeColor.R);
-			iACTFile.Write(AltitudeColor.R);
-			iACTFile.Write(AltitudeColor.G);
-			iACTFile.Write(AltitudeColor.G);
-			iACTFile.Write(AltitudeColor.B);
-			iACTFile.Write(AltitudeColor.B);
-			iACTFile.Write(num);
-			iACTFile.Write(num);
-			iACTFile.Write(num);
-			iACTFile.Write(num);
-			var unicodeEncoding = new UnicodeEncoding(true, true);
-			var str = String.Format("{0} {1}", Type, GetAltitude);
-			var bytes = unicodeEncoding.GetBytes(str);
-			var num1 = Convert.ToByte(bytes.Length);
-			var num2 = checked((byte)Math.Round(((double)num1 / 2) + 1));
-			iACTFile.Write(num);
-			iACTFile.Write(num2);
-			var numArray = bytes;
-			for (var i = 0; i < numArray.Length; i++)
-			{
-				iACTFile.Write(numArray[i]);
-			}
-
-			iACTFile.Write(num);
-			iACTFile.Write(num);
-		}
-
-		public void SaveACT(BinaryWriter iACTFile)
-		{
-			iACTFile.Write(AltitudeColor.R);
-			iACTFile.Write(AltitudeColor.G);
-			iACTFile.Write(AltitudeColor.B);
-		}
-
-		#endregion
 	}
 
-	public class ClsAltitudeTable
+	public class ClsAltitudeTable : ColorCollection<ClsAltitude>
 	{
-		public Hashtable AltitudeHash { get; }
-
-		public void SetAltitude(int Index, ClsAltitude Value)
+		public void SetAltitude(int index, ClsAltitude Value)
 		{
-			AltitudeHash[Index] = Value;
+			this[index] = Value;
 		}
 
-		public ClsAltitude GetAltitude(int Index)
+		public ClsAltitude GetAltitude(int index)
 		{
-			return (ClsAltitude)AltitudeHash[Index];
+			return this[index];
 		}
 
 		public ClsAltitudeTable()
+			: base(256)
 		{
-			AltitudeHash = [];
 		}
 
 		public void Display(ListBox iList)
 		{
-			IEnumerator enumerator = null;
+			iList.BeginUpdate();
+
 			iList.Items.Clear();
-			try
+
+			for (var i = 0; i < Length; i++)
 			{
-				enumerator = AltitudeHash.Values.GetEnumerator();
-				while (enumerator.MoveNext())
-				{
-					var current = (ClsAltitude)enumerator.Current;
-					_ = iList.Items.Add(current);
-				}
+				ref var entry = ref this[i];
+
+				iList.Items.Add(entry);
 			}
-			finally
-			{
-				if (enumerator is IDisposable)
-				{
-					((IDisposable)enumerator).Dispose();
-				}
-			}
+
+			iList.EndUpdate();
+			iList.Invalidate();
 		}
 
 		public ColorPalette GetAltPalette()
 		{
-			IEnumerator enumerator = null;
-			var palette = new Bitmap(2, 2, PixelFormat.Format8bppIndexed).Palette;
-			try
-			{
-				enumerator = AltitudeHash.Values.GetEnumerator();
-				while (enumerator.MoveNext())
-				{
-					var current = (ClsAltitude)enumerator.Current;
-					palette.Entries[current.Key] = current.AltitudeColor;
-				}
-			}
-			finally
-			{
-				if (enumerator is IDisposable)
-				{
-					((IDisposable)enumerator).Dispose();
-				}
-			}
-
-			return palette;
+			return CreatePallette();
 		}
 
 		#region Altitude Swatch And Color Table
 
 		public void Load()
 		{
-			IEnumerator enumerator = null;
-			IEnumerator enumerator1 = null;
+			var xmlPath = Utility.FindDataFile("MapCompiler/Engine", "Altitude.xml");
 
-			#region Data Directory Modification
-
-			var str = String.Format("{0}MapCompiler/Engine/Altitude.xml", AppDomain.CurrentDomain.BaseDirectory);
-
-			#endregion
-
-			var xmlDocument = new XmlDocument();
 			try
 			{
-				xmlDocument.Load(str);
-				AltitudeHash.Clear();
-				try
+				var xmlDocument = new XmlDocument();
+
+				xmlDocument.Load(xmlPath);
+
+				Clear();
+
+				var index = -1;
+
+				foreach (XmlElement node in xmlDocument.SelectNodes("Altitudes/Altitude"))
 				{
-					enumerator1 = xmlDocument.SelectNodes("Altitudes").GetEnumerator();
-					while (enumerator1.MoveNext())
+					var entry = new ClsAltitude(node);
+
+					var keyAttr = node.GetAttribute("Key");
+
+					if (keyAttr != null) // old format
 					{
-						var current = (XmlElement)enumerator1.Current;
-						try
-						{
-							enumerator = current.SelectNodes("Altitude").GetEnumerator();
-							while (enumerator.MoveNext())
-							{
-								var clsAltitude = new ClsAltitude((XmlElement)enumerator.Current);
-								AltitudeHash.Add(clsAltitude.Key, clsAltitude);
-							}
-						}
-						finally
-						{
-							if (enumerator is IDisposable)
-							{
-								((IDisposable)enumerator).Dispose();
-							}
-						}
+						var key = Utility.Parse<int>(keyAttr);
+
+						this[key] = entry;
 					}
-				}
-				finally
-				{
-					if (enumerator1 is IDisposable)
+					else
 					{
-						((IDisposable)enumerator1).Dispose();
+						this[++index % Length] = entry;
 					}
 				}
 			}
 			catch (Exception exception)
 			{
 				ProjectData.SetProjectError(exception);
-				_ = Interaction.MsgBox(String.Format("XMLFile:{0}", str), MsgBoxStyle.OkOnly, null);
+				_ = Interaction.MsgBox(String.Format("XMLFile:{0}", xmlPath), MsgBoxStyle.OkOnly, null);
 				ProjectData.ClearProjectError();
 			}
 		}
 
 		public void Save()
 		{
-			IEnumerator enumerator = null;
+			var xmlPath = Utility.FindDataFile("MapCompiler/Engine", "Altitude.xml");
 
-			#region Data Directory Modification
-
-			var str = String.Format("{0}MapCompiler\\Engine\\Altitude.xml", AppDomain.CurrentDomain.BaseDirectory);
-
-			#endregion
-
-			var xmlTextWriter = new XmlTextWriter(str, Encoding.UTF8)
+			var xmlTextWriter = new XmlTextWriter(xmlPath, Encoding.UTF8)
 			{
 				Indentation = 2,
 				Formatting = Formatting.Indented
 			};
+
 			xmlTextWriter.WriteStartDocument();
 			xmlTextWriter.WriteStartElement("Altitudes");
-			try
+
+			for (var i = 0; i < Length; i++)
 			{
-				enumerator = AltitudeHash.Values.GetEnumerator();
-				while (enumerator.MoveNext())
-				{
-					((ClsAltitude)enumerator.Current).Save(xmlTextWriter);
-				}
-			}
-			finally
-			{
-				if (enumerator is IDisposable)
-				{
-					((IDisposable)enumerator).Dispose();
-				}
+				ref var entry = ref this[i];
+
+				entry.Save(xmlTextWriter);
 			}
 
 			xmlTextWriter.WriteEndElement();
 			xmlTextWriter.WriteEndDocument();
+
 			xmlTextWriter.Close();
 		}
 
 		public void SaveACO()
 		{
-			var num = AltitudeHash.Count;
+			var acoPath = Path.Combine("Development", "DrawingTools", "AdobePhotoshop", "ColorSwatches", "Altitude.aco");
 
-			#region Data Directory Modification
+			SaveSwatch(acoPath, ColorFormat.RGB);
 
-			var str = String.Format("{0}/Development/DrawingTools/AdobePhotoshop/ColorSwatches/Altitude.aco", Directory.GetCurrentDirectory());
-
-			#endregion
-
-			var fileStream = new FileStream(str, FileMode.Create);
-			var binaryWriter = new BinaryWriter(fileStream);
-			binaryWriter.Write((byte)0);
-			binaryWriter.Write((byte)1);
-			binaryWriter.Write((byte)0);
-			binaryWriter.Write((byte)num);
-			var num1 = 0;
-			do
-			{
-				if (AltitudeHash[num1] != null)
-				{
-					binaryWriter.Write((byte)0);
-					binaryWriter.Write((byte)0);
-					((ClsAltitude)AltitudeHash[num1]).SaveACO(binaryWriter);
-				}
-			}
-			while (++num1 <= 255);
-			binaryWriter.Write((byte)0);
-			binaryWriter.Write((byte)2);
-			binaryWriter.Write((byte)0);
-			binaryWriter.Write((byte)num);
-			var num2 = 0;
-			do
-			{
-				if (AltitudeHash[num2] != null)
-				{
-					binaryWriter.Write((byte)0);
-					binaryWriter.Write((byte)0);
-					((ClsAltitude)AltitudeHash[num2]).SaveACOText(binaryWriter);
-				}
-			}
-			while (++num2 <= 255);
-			binaryWriter.Close();
-			fileStream.Close();
 			_ = Interaction.MsgBox("Altitude.aco Saved", MsgBoxStyle.OkOnly, null);
 		}
 
 		public void SaveACT()
 		{
-			#region Data Directory Modification
+			var actPath = Path.Combine("Development", "DrawingTools", "AdobePhotoshop", "OptimizedColors", "Altitude.act");
 
-			var str = String.Format("{0}/Development/DrawingTools/AdobePhotoshop/OptimizedColors/Altitude.act", Directory.GetCurrentDirectory());
+			SaveTable(actPath);
 
-			#endregion
-
-			var fileStream = new FileStream(str, FileMode.Create);
-			var binaryWriter = new BinaryWriter(fileStream);
-			var num = 0;
-			var num1 = 0;
-			do
-			{
-				if (AltitudeHash[num1] != null)
-				{
-					((ClsAltitude)AltitudeHash[num1]).SaveACT(binaryWriter);
-				}
-				else
-				{
-					binaryWriter.Write((byte)num);
-					binaryWriter.Write((byte)num);
-					binaryWriter.Write((byte)num);
-				}
-			}
-			while (++num1 <= 255);
-			binaryWriter.Close();
-			fileStream.Close();
 			_ = Interaction.MsgBox("Altitude.act Saved", MsgBoxStyle.OkOnly, null);
 		}
 
