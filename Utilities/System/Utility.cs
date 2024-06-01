@@ -246,17 +246,17 @@ namespace System
 			return false;
 		}
 
-		public static T? Parse<T>(string input) where T : INumber<T>
+		public static T? ParseNumber<T>(string input) where T : INumber<T>
 		{
 			if (String.IsNullOrWhiteSpace(input))
 			{
 				return default;
 			}
 
-			return Parse<T>(input.AsSpan());
+			return ParseNumber<T>(input.AsSpan());
 		}
 
-		public static T? Parse<T>(ReadOnlySpan<char> input) where T : INumber<T>
+		public static T? ParseNumber<T>(ReadOnlySpan<char> input) where T : INumber<T>
 		{
 			if (input.IsEmpty || input.IsWhiteSpace())
 			{

@@ -739,11 +739,11 @@ namespace MapCreator
 					while (enumerator.MoveNext())
 					{
 						var xmlElement2 = (XmlElement)enumerator.Current;
-						var iTileID = Utility.Parse<ushort>(xmlElement2.GetAttribute("TileID"));
-						var iX = Utility.Parse<byte>(xmlElement2.GetAttribute("X"));
-						var iY = Utility.Parse<byte>(xmlElement2.GetAttribute("Y"));
-						var iZ = Utility.Parse<sbyte>(xmlElement2.GetAttribute("Z"));
-						var iHue = Utility.Parse<ushort>(xmlElement2.GetAttribute("Hue"));
+						var iTileID = Utility.ParseNumber<ushort>(xmlElement2.GetAttribute("TileID"));
+						var iX = Utility.ParseNumber<byte>(xmlElement2.GetAttribute("X"));
+						var iY = Utility.ParseNumber<byte>(xmlElement2.GetAttribute("Y"));
+						var iZ = Utility.ParseNumber<sbyte>(xmlElement2.GetAttribute("Z"));
+						var iHue = Utility.ParseNumber<ushort>(xmlElement2.GetAttribute("Hue"));
 						var item = checked(new StaticCell(iTileID, (byte)(iX % 8), (byte)(iY % 8), iZ, iHue));
 						StaticMap[iX >> 3, iY >> 3].Add(item, null, null, null);
 					}
@@ -854,8 +854,8 @@ namespace MapCreator
 
 		public MapTile(XmlElement xmlInfo)
 		{
-			TileID = Utility.Parse<ushort>(xmlInfo.GetAttribute("TileID"));
-			AltIDMod = unchecked((sbyte)Utility.Parse<int>(xmlInfo.GetAttribute("AltIDMod")));
+			TileID = Utility.ParseNumber<ushort>(xmlInfo.GetAttribute("TileID"));
+			AltIDMod = unchecked((sbyte)Utility.ParseNumber<int>(xmlInfo.GetAttribute("AltIDMod")));
 		}
 
 		public void Save(XmlTextWriter xmlInfo)
@@ -1084,11 +1084,11 @@ namespace MapCreator
 
 		public void Load(XmlElement xmlInfo)
 		{
-			TileID = Utility.Parse<ushort>(xmlInfo.GetAttribute("TileID"));
-			X = Utility.Parse<sbyte>(xmlInfo.GetAttribute("X"));
-			Y = Utility.Parse<sbyte>(xmlInfo.GetAttribute("Y"));
-			Z = Utility.Parse<sbyte>(xmlInfo.GetAttribute("Z"));
-			Hue = Utility.Parse<ushort>(xmlInfo.GetAttribute("Hue"));
+			TileID = Utility.ParseNumber<ushort>(xmlInfo.GetAttribute("TileID"));
+			X = Utility.ParseNumber<sbyte>(xmlInfo.GetAttribute("X"));
+			Y = Utility.ParseNumber<sbyte>(xmlInfo.GetAttribute("Y"));
+			Z = Utility.ParseNumber<sbyte>(xmlInfo.GetAttribute("Z"));
+			Hue = Utility.ParseNumber<ushort>(xmlInfo.GetAttribute("Hue"));
 		}
 
 		public void Save(XmlTextWriter xmlInfo)
@@ -1174,7 +1174,7 @@ namespace MapCreator
 		public void Load(XmlElement xmlInfo)
 		{
 			Description = xmlInfo.GetAttribute("Description");
-			Frequency = Utility.Parse<ushort>(xmlInfo.GetAttribute("Freq"));
+			Frequency = Utility.ParseNumber<ushort>(xmlInfo.GetAttribute("Freq"));
 
 			foreach (XmlElement node in xmlInfo.SelectNodes("Static"))
 			{
@@ -1278,7 +1278,7 @@ namespace MapCreator
 
 			var xmlElement = (XmlElement)xmlDocument.SelectSingleNode("//RandomStatics");
 
-			Chance = Utility.Parse<int>(xmlElement.GetAttribute("Chance"));
+			Chance = Utility.ParseNumber<int>(xmlElement.GetAttribute("Chance"));
 
 			foreach (XmlElement xmlInfo in xmlElement.SelectNodes("Statics"))
 			{
@@ -1399,8 +1399,8 @@ namespace MapCreator
 
 		public StaticTile(XmlElement xmlInfo)
 		{
-			TileID = Utility.Parse<ushort>(xmlInfo.GetAttribute("TileID"));
-			AltIDMod = unchecked((sbyte)Utility.Parse<int>(xmlInfo.GetAttribute("AltIDMod")));
+			TileID = Utility.ParseNumber<ushort>(xmlInfo.GetAttribute("TileID"));
+			AltIDMod = unchecked((sbyte)Utility.ParseNumber<int>(xmlInfo.GetAttribute("AltIDMod")));
 		}
 
 		public void Save(XmlTextWriter xmlInfo)

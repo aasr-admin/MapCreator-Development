@@ -38,7 +38,7 @@ namespace MapCreator
 					while (enumerator2.MoveNext())
 					{
 						var current = (XmlElement)enumerator2.Current;
-						num = Utility.Parse<ushort>(current.GetAttribute("TileID"));
+						num = Utility.ParseNumber<ushort>(current.GetAttribute("TileID"));
 						m_CornerEdge.Add(num, num);
 					}
 				}
@@ -72,7 +72,7 @@ namespace MapCreator
 					while (enumerator1.MoveNext())
 					{
 						var xmlElement = (XmlElement)enumerator1.Current;
-						num = Utility.Parse<ushort>(xmlElement.GetAttribute("TileID"));
+						num = Utility.ParseNumber<ushort>(xmlElement.GetAttribute("TileID"));
 						m_LeftEdge.Add(num, num);
 					}
 				}
@@ -106,7 +106,7 @@ namespace MapCreator
 					while (enumerator.MoveNext())
 					{
 						var current1 = (XmlElement)enumerator.Current;
-						num = Utility.Parse<ushort>(current1.GetAttribute("TileID"));
+						num = Utility.ParseNumber<ushort>(current1.GetAttribute("TileID"));
 						m_TopEdge.Add(num, num);
 					}
 				}

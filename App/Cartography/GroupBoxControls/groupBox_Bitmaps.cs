@@ -19,9 +19,9 @@ namespace MapCreator
 		public MapInfo(XmlElement iXml)
 		{
 			MapName = iXml.GetAttribute("Name");
-			MapNumber = Utility.Parse<byte>(iXml.GetAttribute("Num"));
-			XSize = Utility.Parse<int>(iXml.GetAttribute("XSize"));
-			YSize = Utility.Parse<int>(iXml.GetAttribute("YSize"));
+			MapNumber = Utility.ParseNumber<byte>(iXml.GetAttribute("Num"));
+			XSize = Utility.ParseNumber<int>(iXml.GetAttribute("XSize"));
+			YSize = Utility.ParseNumber<int>(iXml.GetAttribute("YSize"));
 		}
 
 		public override string ToString()

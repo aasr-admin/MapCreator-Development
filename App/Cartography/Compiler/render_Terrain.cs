@@ -1,13 +1,8 @@
 ﻿using Assets;
 
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
-
 using Photoshop;
 
-using System.Collections;
 using System.ComponentModel;
-using System.Drawing.Imaging;
 using System.Text;
 using System.Xml;
 
@@ -81,20 +76,14 @@ namespace MapCreator
 		public void Load(XmlElement xmlInfo)
 		{
 			Name = xmlInfo.GetAttribute("Name");
-			GroupID = Utility.Parse<byte>(xmlInfo.GetAttribute("ID"));
-			TileID = Utility.Parse<ushort>(xmlInfo.GetAttribute("TileID"));
-			Color = Color.FromArgb(Utility.Parse<byte>(xmlInfo.GetAttribute("R")), Utility.Parse<byte>(xmlInfo.GetAttribute("G")), Utility.Parse<byte>(xmlInfo.GetAttribute("B")));
-			AltID = Utility.Parse<byte>(xmlInfo.GetAttribute("Base"));
+			GroupID = Utility.ParseNumber<byte>(xmlInfo.GetAttribute("ID"));
+			TileID = Utility.ParseNumber<ushort>(xmlInfo.GetAttribute("TileID"));
+			Color = Color.FromArgb(Utility.ParseNumber<byte>(xmlInfo.GetAttribute("R")), Utility.ParseNumber<byte>(xmlInfo.GetAttribute("G")), Utility.ParseNumber<byte>(xmlInfo.GetAttribute("B")));
+			AltID = Utility.ParseNumber<byte>(xmlInfo.GetAttribute("Base"));
 
-			var attribute = xmlInfo.GetAttribute("Random");
-
-			if (StringType.StrCmp(attribute, "False", false) == 0)
+			if (Boolean.TryParse(xmlInfo.GetAttribute("Random"), out var rand))
 			{
-				RandAlt = false;
-			}
-			else if (StringType.StrCmp(attribute, "True", false) == 0)
-			{
-				RandAlt = true;
+				RandAlt = rand;
 			}
 		}
 	}
@@ -146,27 +135,17 @@ namespace MapCreator
 		{
 			var xmlPath = Utility.FindDataFile("MapCompiler/Engine", "Terrain.xml");
 
-			try
+			var xmlDocument = new XmlDocument();
+
+			xmlDocument.Load(xmlPath);
+
+			Clear();
+
+			foreach (XmlElement node in xmlDocument.SelectNodes("Terrains/Terrain"))
 			{
-				var xmlDocument = new XmlDocument();
+				var entry = new ClsTerrain(node);
 
-				xmlDocument.Load(xmlPath);
-
-				Clear();
-
-				foreach (XmlElement node in xmlDocument.SelectNodes("Terrains/Terrain"))
-				{
-					var entry = new ClsTerrain(node);
-
-					this[entry.GroupID] = entry;
-				}
-			}
-			catch (Exception exception)
-			{
-				ProjectData.SetProjectError(exception);
-				_ = Interaction.MsgBox(exception.Message, MsgBoxStyle.OkOnly, null);
-				_ = Interaction.MsgBox(String.Format("XMLFile:{0}", xmlPath), MsgBoxStyle.OkOnly, null);
-				ProjectData.ClearProjectError();
+				this[entry.GroupID] = entry;
 			}
 		}
 
@@ -196,22 +175,36 @@ namespace MapCreator
 			xmlTextWriter.Close();
 		}
 
-		public void SaveACO()
+		public bool SaveACO(out string path)
 		{
-			var acoPath = Path.Combine("Development", "DrawingTools", "AdobePhotoshop", "ColorSwatches", "Terrain.aco");
+			path = Path.Combine("Development", "DrawingTools", "AdobePhotoshop", "ColorSwatches", "Terrain.aco");
 
-			SaveSwatch(acoPath, ColorFormat.RGB);
+			try
+			{
+				SaveSwatch(path, ColorFormat.RGB);
 
-			_ = Interaction.MsgBox("Terrain.aco Saved", MsgBoxStyle.OkOnly, null);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
-		public void SaveACT()
+		public bool SaveACT(out string path)
 		{
-			var actPath = Path.Combine("Development", "DrawingTools", "AdobePhotoshop", "OptimizedColors", "Terrain.act");
+			path = Path.Combine("Development", "DrawingTools", "AdobePhotoshop", "OptimizedColors", "Terrain.act");
 
-			SaveTable(actPath);
+			try
+			{
+				SaveTable(path);
 
-			_ = Interaction.MsgBox("Terrain.act Saved", MsgBoxStyle.OkOnly, null);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		#endregion

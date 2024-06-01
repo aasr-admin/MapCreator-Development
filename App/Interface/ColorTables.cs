@@ -71,22 +71,58 @@ namespace MapCreator
 
 		private void colorTables_menuStrip_button_export_terrain_adobeColorTableACT_Click(object sender, EventArgs e)
 		{
-			i_Terrain.SaveACT();
+			var success = i_Terrain.SaveACT(out var path);
+
+			if (success)
+			{
+				_ = MessageBox.Show(this, $"SAVED:\r\n{path}", "Terrain Color Table", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			else
+			{
+				_ = MessageBox.Show(this, $"UNSAVED:\r\n{path}", "Terrain Color Table", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 
 		private void colorTables_menuStrip_button_export_terrain_adobeSwatchFileACO_Click(object sender, EventArgs e)
 		{
-			i_Terrain.SaveACO();
+			var success = i_Terrain.SaveACO(out var path);
+
+			if (success)
+			{
+				_ = MessageBox.Show(this, $"SAVED:\r\n{path}", "Terrain Color Swatch", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			else
+			{
+				_ = MessageBox.Show(this, $"UNSAVED:\r\n{path}", "Terrain Color Swatch", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 
 		private void colorTables_menuStrip_button_export_altitude_adobeColorTableACT_Click(object sender, EventArgs e)
 		{
-			i_Altitude.SaveACT();
+			var success = i_Altitude.SaveACT(out var path);
+
+			if (success)
+			{
+				_ = MessageBox.Show(this, $"SAVED:\r\n{path}", "Altitude Color Table", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			else
+			{
+				_ = MessageBox.Show(this, $"UNSAVED:\r\n{path}", "Altitude Color Table", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 
 		private void colorTables_menuStrip_button_export_altitude_adobeSwatchFileACO_Click(object sender, EventArgs e)
 		{
-			i_Altitude.SaveACO();
+			var success = i_Altitude.SaveACO(out var path);
+
+			if (success)
+			{
+				_ = MessageBox.Show(this, $"SAVED:\r\n{path}", "Altitude Color Swatch", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			else
+			{
+				_ = MessageBox.Show(this, $"UNSAVED:\r\n{path}", "Altitude Color Swatch", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 
 		#endregion

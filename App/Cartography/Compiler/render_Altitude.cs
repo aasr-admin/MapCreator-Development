@@ -1,9 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+﻿using Photoshop;
 
-using Photoshop;
-
-using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Text;
 using System.Xml;
@@ -61,13 +57,13 @@ namespace MapCreator
 		{
 			Type = xmlInfo.GetAttribute("Type");
 
-			var alt = Utility.Parse<int>(xmlInfo.GetAttribute("Altitude"));
+			var alt = Utility.ParseNumber<int>(xmlInfo.GetAttribute("Altitude"));
 
 			GetAltitude = (sbyte)Math.Clamp(alt, SByte.MinValue, SByte.MaxValue);
 
-			var r = Utility.Parse<byte>(xmlInfo.GetAttribute("R"));
-			var g = Utility.Parse<byte>(xmlInfo.GetAttribute("G"));
-			var b = Utility.Parse<byte>(xmlInfo.GetAttribute("B"));
+			var r = Utility.ParseNumber<byte>(xmlInfo.GetAttribute("R"));
+			var g = Utility.ParseNumber<byte>(xmlInfo.GetAttribute("G"));
+			var b = Utility.ParseNumber<byte>(xmlInfo.GetAttribute("B"));
 
 			AltitudeColor = Color.FromArgb(r, g, b);
 		}
@@ -118,39 +114,30 @@ namespace MapCreator
 		{
 			var xmlPath = Utility.FindDataFile("MapCompiler/Engine", "Altitude.xml");
 
-			try
+			var xmlDocument = new XmlDocument();
+
+			xmlDocument.Load(xmlPath);
+
+			Clear();
+
+			var index = -1;
+
+			foreach (XmlElement node in xmlDocument.SelectNodes("Altitudes/Altitude"))
 			{
-				var xmlDocument = new XmlDocument();
+				var entry = new ClsAltitude(node);
 
-				xmlDocument.Load(xmlPath);
+				var keyAttr = node.GetAttribute("Key");
 
-				Clear();
-
-				var index = -1;
-
-				foreach (XmlElement node in xmlDocument.SelectNodes("Altitudes/Altitude"))
+				if (keyAttr != null)
 				{
-					var entry = new ClsAltitude(node);
+					var key = Utility.ParseNumber<int>(keyAttr);
 
-					var keyAttr = node.GetAttribute("Key");
-
-					if (keyAttr != null) // old format
-					{
-						var key = Utility.Parse<int>(keyAttr);
-
-						this[key] = entry;
-					}
-					else
-					{
-						this[++index % Length] = entry;
-					}
+					this[key] = entry;
 				}
-			}
-			catch (Exception exception)
-			{
-				ProjectData.SetProjectError(exception);
-				_ = Interaction.MsgBox(String.Format("XMLFile:{0}", xmlPath), MsgBoxStyle.OkOnly, null);
-				ProjectData.ClearProjectError();
+				else
+				{
+					this[++index % Length] = entry;
+				}
 			}
 		}
 
@@ -180,22 +167,36 @@ namespace MapCreator
 			xmlTextWriter.Close();
 		}
 
-		public void SaveACO()
+		public bool SaveACO(out string path)
 		{
-			var acoPath = Path.Combine("Development", "DrawingTools", "AdobePhotoshop", "ColorSwatches", "Altitude.aco");
+			path = Path.Combine("Development", "DrawingTools", "AdobePhotoshop", "ColorSwatches", "Altitude.aco");
 
-			SaveSwatch(acoPath, ColorFormat.RGB);
+			try
+			{
+				SaveSwatch(path, ColorFormat.RGB);
 
-			_ = Interaction.MsgBox("Altitude.aco Saved", MsgBoxStyle.OkOnly, null);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
-		public void SaveACT()
+		public bool SaveACT(out string path)
 		{
-			var actPath = Path.Combine("Development", "DrawingTools", "AdobePhotoshop", "OptimizedColors", "Altitude.act");
+			path = Path.Combine("Development", "DrawingTools", "AdobePhotoshop", "OptimizedColors", "Altitude.act");
 
-			SaveTable(actPath);
+			try
+			{
+				SaveTable(path);
 
-			_ = Interaction.MsgBox("Altitude.act Saved", MsgBoxStyle.OkOnly, null);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		#endregion
