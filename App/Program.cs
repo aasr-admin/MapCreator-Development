@@ -1,4 +1,4 @@
-using UltimaSDK;
+using Assets;
 
 namespace MapCreator
 {
@@ -10,7 +10,11 @@ namespace MapCreator
 		[STAThread]
 		private static void Main()
 		{
-			var clientPath = Files.RootDir = String.Empty;
+			// To customize application configuration such as set high DPI settings or default font,
+			// see https://aka.ms/applicationconfiguration.
+			ApplicationConfiguration.Initialize();
+
+			var clientPath = String.Empty;
 
 			var cfg = Path.Combine("ClientPath.cfg");
 
@@ -55,11 +59,8 @@ namespace MapCreator
 
 			File.WriteAllText(cfg, clientPath);
 
-			Files.SetMulPath(clientPath);
+			AssetData.Load(clientPath, "enu", true);
 
-			// To customize application configuration such as set high DPI settings or default font,
-			// see https://aka.ms/applicationconfiguration.
-			ApplicationConfiguration.Initialize();
 			Application.Run(new splashScreen());
 		}
 	}

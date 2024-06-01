@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
+﻿using Assets;
+
+using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Numerics;
-
-using UltimaSDK;
 
 namespace MapCreator
 {
@@ -499,7 +499,7 @@ namespace MapCreator
 				{
 					if (tile.Source is RandomStatic staticTile)
 					{
-						var image = Art.GetStatic(staticTile.TileID);
+						var image = AssetData.Art.GetStatic(staticTile.TileID);
 
 						if (image != null)
 						{
@@ -580,7 +580,7 @@ namespace MapCreator
 
 			if (terrainBaseValue.SelectedItem is ClsTerrain terrain)
 			{
-				terrainImage = Art.GetLand(terrain.TileID);
+				terrainImage = AssetData.Art.GetLand(terrain.TileID);
 			}
 
 			var selectedStatic = staticComponentsView.SelectedItem as RandomStatic;
@@ -611,7 +611,7 @@ namespace MapCreator
 				}
 				else if (tile.Source is RandomStatic staticTile)
 				{
-					var image = Art.GetStatic(staticTile.TileID);
+					var image = AssetData.Art.GetStatic(staticTile.TileID);
 
 					if (image == null)
 					{
@@ -620,34 +620,31 @@ namespace MapCreator
 
 					if (selectedStatic == staticTile)
 					{
-						var hue = Hues.GetHue(0x33);
+						var hue = AssetData.Hues.GetHue(0x33);
 
-						if (hue != null)
+						image = new Bitmap(image)
 						{
-							image = new Bitmap(image)
-							{
-								Tag = hue
-							};
+							Tag = hue
+						};
 
-							hue.ApplyTo(image, false);
-						}
+						AssetData.Hues.ApplyTo(image, hue, false);
 					}
 					else if (staticTile.Hue > 0)
 					{
-						var hue = Hues.GetHue(staticTile.Hue & 0x3FFF);
+						var hue = AssetData.Hues.GetHue(staticTile.Hue & 0x3FFF);
 
-						if (hue != null)
+						if (hue.Index > 0)
 						{
 							image = new Bitmap(image)
 							{
 								Tag = hue
 							};
 
-							ref var data = ref TileData.ItemTable[staticTile.TileID];
+							ref var data = ref AssetData.Tiles.ItemTable[staticTile.TileID];
 
 							var partial = data.Flags.HasFlag(TileFlag.PartialHue) || (staticTile.Hue & 0x8000) != 0;
 
-							hue.ApplyTo(image, partial);
+							AssetData.Hues.ApplyTo(image, hue, partial);
 						}
 					}
 
@@ -657,7 +654,7 @@ namespace MapCreator
 
 					e.Graphics.DrawImage(image, sp);
 
-					if (image.Tag is Hue)
+					if (image.Tag is HueData.Hue)
 					{
 						image.Dispose();
 					}
@@ -776,9 +773,9 @@ namespace MapCreator
 
 			var tileID = (ushort)staticSelectorValue.Value;
 
-			var image = Art.GetStatic(tileID);
+			var image = AssetData.Art.GetStatic(tileID);
 
-			ref var data = ref TileData.ItemTable[tileID];
+			ref var data = ref AssetData.Tiles.ItemTable[tileID];
 
 			staticPropertiesView.SelectedObject = data;
 
@@ -799,9 +796,9 @@ namespace MapCreator
 
 				if (image != null && selectedStatic.Hue > 0)
 				{
-					var hue = Hues.GetHue(selectedStatic.Hue);
+					var hue = AssetData.Hues.GetHue(selectedStatic.Hue);
 
-					if (hue != null)
+					if (hue.Index > 0)
 					{
 						image = new Bitmap(image)
 						{
@@ -810,7 +807,7 @@ namespace MapCreator
 
 						var partial = data.Flags.HasFlag(TileFlag.PartialHue) || (selectedStatic.Hue & 0x8000) != 0;
 
-						hue.ApplyTo(image, partial);
+						AssetData.Hues.ApplyTo(image, hue, partial);
 					}
 				}
 			}
@@ -819,7 +816,7 @@ namespace MapCreator
 
 			staticSelectorPreview.Image = image;
 
-			if (oldImage?.Tag is Hue)
+			if (oldImage?.Tag is HueData.Hue)
 			{
 				oldImage.Dispose();
 			}

@@ -1,6 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿using Assets;
 
-using UltimaSDK;
+using System.Collections.Concurrent;
 
 namespace MapCreator
 {
@@ -86,7 +86,7 @@ namespace MapCreator
 				{
 					for (var index = start; index < end; index++)
 					{
-						var image = Art.GetStatic(index, false);
+						var image = AssetData.Art.GetStatic(index);
 
 						image?.MakeTransparent(Color.White);
 
@@ -99,7 +99,7 @@ namespace MapCreator
 								Tag = image
 							};
 
-							ref var data = ref TileData.ItemTable[index];
+							ref var data = ref AssetData.Tiles.ItemTable[index];
 
 							if (!String.IsNullOrWhiteSpace(data.Name))
 							{

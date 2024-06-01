@@ -1,6 +1,8 @@
 
 /App/bin
 /App/obj
+/Utilities/bin
+/Utilities/obj
 
 /Build/ClientPath.cfg
 

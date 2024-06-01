@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
+﻿using Assets;
 
-using UltimaSDK;
+using System.Diagnostics;
 
 namespace MapCreator
 {
@@ -146,7 +146,7 @@ namespace MapCreator
 						{
 							var selectedItem = (ClsTerrain)colorTables_listBox_colorTableList.SelectedItem;
 							colorTables_propertyGrid_colorTableProperties.SelectedObject = selectedItem;
-							colorTables_pictureBox_tileDisplay.Image = Art.GetLand(selectedItem.TileID);
+							colorTables_pictureBox_tileDisplay.Image = AssetData.Art.GetLand(selectedItem.TileID);
 							break;
 						}
 					case 1:

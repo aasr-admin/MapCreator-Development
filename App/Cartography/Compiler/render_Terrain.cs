@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualBasic;
+﻿using Assets;
+
+using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
 using System.Collections;
@@ -6,8 +8,6 @@ using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Text;
 using System.Xml;
-
-using UltimaSDK;
 
 namespace MapCreator
 {
@@ -34,7 +34,7 @@ namespace MapCreator
 		[Category("Tile ID")]
 		public ushort TileID { get; set; }
 
-		public ref LandData Data => ref TileData.LandTable[TileID];
+		public ref LandData Data => ref AssetData.Tiles.LandTable[TileID];
 
 		public ClsTerrain(string iName, byte iGroupID, ushort iTileID, Color iColor, byte iBase, bool iRandAlt)
 		{
