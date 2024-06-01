@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace System.Timers
 {
-	public class TaskTimer
+	public class TaskTimer(int delay, int interval, int repeat, Action callback)
 	{
 		private static volatile bool _Break;
 
@@ -44,7 +44,7 @@ namespace System.Timers
 
 		private readonly Stopwatch _Counter = new();
 
-		private volatile int _Drift, _Elapsed, _Count, _Delay, _Interval = -1, _Repeat = -1;
+		private volatile int _Drift, _Elapsed, _Count, _Delay = Math.Max(0, delay), _Interval = Math.Max(-1, interval), _Repeat = Math.Max(-1, repeat);
 
 		public int Elapsed => _Elapsed;
 
@@ -95,7 +95,7 @@ namespace System.Timers
 
 		public bool ReturnContextOnTick { get; set; } = true;
 
-		public Action Callback { get; set; }
+		public Action Callback { get; set; } = callback;
 
 		public bool IsRunning => Next > 0 && !_TokenSource.IsCancellationRequested;
 
@@ -106,15 +106,6 @@ namespace System.Timers
 		public TaskTimer(int delay, int interval, Action callback)
 			: this(delay, interval, -1, callback)
 		{ }
-
-		public TaskTimer(int delay, int interval, int repeat, Action callback)
-		{
-			_Delay = Math.Max(0, delay);
-			_Interval = Math.Max(-1, interval);
-			_Repeat = Math.Max(-1, repeat);
-
-			Callback = callback;
-		}
 
 		protected void Reset()
 		{
@@ -129,13 +120,13 @@ namespace System.Timers
 		{
 		}
 
-		private void Tick(Task t)
+		private void Tick()
 		{
-			if (!_Break && t.IsCompleted && IsRunning)
+			if (!_Break && IsRunning)
 			{
 				var sample = _Counter.ElapsedMilliseconds;
 
-				++_Count;
+				_ = Interlocked.Increment(ref _Count);
 
 				OnTick();
 
@@ -264,7 +255,11 @@ namespace System.Timers
 
 					var wait = (int)delay;
 
-					await Task.Delay(wait, token).ContinueWith(t => _Elapsed += wait).ContinueWith(Tick).ConfigureAwait(ReturnContextOnTick);
+					await Task.Delay(wait, token).ConfigureAwait(ReturnContextOnTick);
+					
+					_Elapsed += wait;
+
+					Tick();
 
 					var after = _Counter.ElapsedMilliseconds - sample;
 

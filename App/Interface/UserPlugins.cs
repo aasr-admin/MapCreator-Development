@@ -1,8 +1,8 @@
 ﻿namespace MapCreator
 {
-	public partial class userPlugins : Form
+	public partial class UserPlugins : Form
 	{
-		public userPlugins()
+		public UserPlugins()
 		{
 			InitializeComponent();
 
@@ -30,12 +30,12 @@
 		{
 			Hide();
 
-			_ = StaticForm<facetBuilder>.Open();
+			_ = StaticForm<FacetBuilder>.Open();
 		}
 
 		private void userPlugins_menuStrip_button_information_Click(object sender, EventArgs e)
 		{
-			_ = StaticForm<communityCredits>.Open();
+			_ = StaticForm<CommunityCredits>.Open();
 		}
 
 		private void userPlugins_panel_formLauncher_button_createTileTransitions_Click(object sender, EventArgs e)

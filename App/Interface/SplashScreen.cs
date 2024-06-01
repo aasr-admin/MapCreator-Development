@@ -1,33 +1,28 @@
 
-using Timer = System.Windows.Forms.Timer;
+using System.Timers;
 
 namespace MapCreator
 {
-	public partial class splashScreen : Form
+	public partial class SplashScreen : Form
 	{
-		public splashScreen()
+		public SplashScreen()
 		{
 			InitializeComponent();
 		}
 
-		private void splashScreen_Shown(object sender, EventArgs e)
+		protected override void OnShown(EventArgs e)
 		{
-			splashScreen_closeTimer = new Timer
-			{
-				Interval = 1500 // This Screen Will Pop-Up For (1.5) Seconds
-			};
-			splashScreen_closeTimer.Tick += splashScreen_closeTimer_Tick;
+			base.OnShown(e);
 
-			splashScreen_closeTimer.Start();
+			// This Screen Will Pop-Up For (1.5) Seconds
+			_ = TaskTimer.DelayCall(TimeSpan.FromSeconds(1.5), SplashScreen_closeTimer_Tick);
 		}
 
-		private void splashScreen_closeTimer_Tick(object sender, EventArgs e)
+		private void SplashScreen_closeTimer_Tick()
 		{
-			splashScreen_closeTimer.Stop();
-
 			Hide();
 
-			_ = StaticForm<facetBuilder>.Open();
+			_ = StaticForm<FacetBuilder>.Open();
 		}
 	}
 }

@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace MapCreator
 {
-	public partial class facetBuilder : Form
+	public partial class FacetBuilder : Form
 	{
 		private Bitmap i_Terrain;
 		private readonly ClsTerrainTable iTerrain;
@@ -18,7 +18,7 @@ namespace MapCreator
 		private readonly ClsAltitudeTable iAltitude;
 		private bool i_RandomStatic;
 
-		public facetBuilder()
+		public FacetBuilder()
 		{
 			iTerrain = new ClsTerrainTable();
 			iAltitude = new ClsAltitudeTable();
@@ -42,7 +42,7 @@ namespace MapCreator
 
 			IEnumerator enumerator = null;
 
-			var iLogger = StaticForm<buildLogger>.Open(this);
+			var iLogger = StaticForm<BuildLogger>.Open(this);
 
 			var x = iLogger.Location.X + 100;
 			var location = iLogger.Location;
@@ -128,7 +128,7 @@ namespace MapCreator
 
 		private void facetBuilder_menuStrip_button_gettingStarted_createColorTables_Click(object sender, EventArgs e)
 		{
-			_ = StaticForm<colorTables>.Open();
+			_ = StaticForm<ColorTables>.Open();
 		}
 
 		private void facetBuilder_menuStrip_button_gettingStarted_mapCreatorManual_Click(object sender, EventArgs e)
@@ -165,7 +165,7 @@ namespace MapCreator
 
 		private void facetBuilder_menuStrip_button_userPlugins_Click(object sender, EventArgs e)
 		{
-			_ = StaticForm<userPlugins>.Open();
+			_ = StaticForm<UserPlugins>.Open();
 		}
 
 		private void facetBuilder_menuStrip_button_uploadPlugin_Click(object sender, EventArgs e)
@@ -175,7 +175,7 @@ namespace MapCreator
 
 		private void facetBuilder_menuStrip_button_information_Click(object sender, EventArgs e)
 		{
-			_ = StaticForm<communityCredits>.Open();
+			_ = StaticForm<CommunityCredits>.Open();
 		}
 
 		private void facetBuilder_panel_workbench_selection_groupBox_createYourWorld_button_createFacetBitmapFiles_MouseEnter(object sender, EventArgs e)
@@ -216,7 +216,7 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_button_createFacetBitmapFiles_Click(object sender, EventArgs e)
 		{
-			var iLogger = StaticForm<buildLogger>.Open(this);
+			var iLogger = StaticForm<BuildLogger>.Open(this);
 
 			byte altID;
 			byte groupID;
@@ -443,7 +443,7 @@ namespace MapCreator
 
 		private async void facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_button_syncAltitudeBitmapFile_Click(object sender, EventArgs e)
 		{
-			var iLogger = StaticForm<buildLogger>.Open(this);
+			var iLogger = StaticForm<BuildLogger>.Open(this);
 
 			IProgress<string> logger = new Progress<string>(iLogger.LogMessage);
 
@@ -521,7 +521,7 @@ namespace MapCreator
 
 		private void CreateFacet_mul_Files()
 		{
-			var iLogger = StaticForm<buildLogger>.Open(this);
+			var iLogger = StaticForm<BuildLogger>.Open(this);
 
 			sbyte altID = 0;
 			string str;

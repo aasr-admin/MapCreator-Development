@@ -427,12 +427,12 @@ namespace MapCreator
 		{
 			Hide();
 
-			_ = StaticForm<facetBuilder>.Open();
+			_ = StaticForm<FacetBuilder>.Open();
 		}
 
 		private void OnCommunityCreditsButtonClick(object sender, EventArgs e)
 		{
-			_ = StaticForm<communityCredits>.Open();
+			_ = StaticForm<CommunityCredits>.Open();
 		}
 
 		private readonly record struct TileInfo(object Source, byte GridX, byte GridY, sbyte GridZ, byte GridH, TileFlag Flags);

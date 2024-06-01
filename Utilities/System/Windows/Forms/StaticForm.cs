@@ -1,25 +1,26 @@
-﻿namespace MapCreator
+﻿
+namespace System.Windows.Forms
 {
 	public static class StaticForm<T> where T : Form, new()
 	{
-		private static T _instance;
+		private static T? _Instance;
 
-		public static T Instance
+		public static T? Instance
 		{
 			get
 			{
-				if (_instance?.IsDisposed != false)
+				if (_Instance?.IsDisposed != false)
 				{
-					_instance = new T();
+					_Instance = new T();
 				}
 
-				return _instance;
+				return _Instance;
 			}
 		}
 
-		public static T Hide()
+		public static T? Hide()
 		{
-			var form = _instance;
+			var form = _Instance;
 
 			if (form?.IsDisposed != false)
 			{
@@ -36,7 +37,7 @@
 			return form;
 		}
 
-		public static T Open(Form owner)
+		public static T? Open(Form owner)
 		{
 			var form = Instance;
 
@@ -59,7 +60,7 @@
 			return form;
 		}
 
-		public static T Open()
+		public static T? Open()
 		{
 			var form = Instance;
 

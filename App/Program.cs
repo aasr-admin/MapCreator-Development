@@ -61,7 +61,7 @@ namespace MapCreator
 
 			AssetData.Load(clientPath, "enu", true);
 
-			Application.Run(new splashScreen());
+			Application.Run(new SplashScreen());
 		}
 	}
 }

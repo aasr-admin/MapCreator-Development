@@ -95,12 +95,12 @@ namespace MapCreator
 		{
 			Hide();
 
-			_ = StaticForm<facetBuilder>.Open();
+			_ = StaticForm<FacetBuilder>.Open();
 		}
 
 		private void sToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
-			_ = StaticForm<communityCredits>.Open();
+			_ = StaticForm<CommunityCredits>.Open();
 		}
 
 		/// .MUL <-> .UOP

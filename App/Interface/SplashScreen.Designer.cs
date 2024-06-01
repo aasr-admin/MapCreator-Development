@@ -1,6 +1,6 @@
 ﻿namespace MapCreator
 {
-    partial class splashScreen
+    partial class SplashScreen
     {
         /// <summary>
         ///  Required designer variable.
@@ -43,17 +43,10 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.Timer splashScreen_closeTimer;
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(splashScreen));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(SplashScreen));
             splashScreen_pictureBox_titleImage = new PictureBox();
-            splashScreen_closeTimer = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)splashScreen_pictureBox_titleImage).BeginInit();
             SuspendLayout();
-            // 
-            // splashScreen_closeTimer
-            // 
-            splashScreen_closeTimer.Interval = 1500;
-            splashScreen_closeTimer.Tick += splashScreen_closeTimer_Tick;
             // 
             // splashScreen_pictureBox_titleImage
             // 
@@ -85,7 +78,6 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Map Creator";
             TopMost = true;
-            Shown += splashScreen_Shown;
             ((System.ComponentModel.ISupportInitialize)splashScreen_pictureBox_titleImage).EndInit();
             ResumeLayout(false);
         }
@@ -93,6 +85,5 @@
         #endregion
 
         private PictureBox splashScreen_pictureBox_titleImage;
-        private System.Windows.Forms.Timer splashScreen_closeTimer;
     }
 }

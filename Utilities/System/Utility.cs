@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Numerics;
 using System.Text.RegularExpressions;
 
@@ -6,7 +7,8 @@ namespace System
 {
 	public static class Utility
 	{
-		private static Random _Random = new();
+		[ThreadStatic]
+		private static Random? _Random;
 
 		public static void SeedRandom(int seed)
 		{
@@ -15,31 +17,43 @@ namespace System
 
 		public static double RandomDouble()
 		{
+			_Random ??= new Random();
+
 			return _Random.NextDouble();
 		}
 
 		public static int Random()
 		{
+			_Random ??= new Random();
+
 			return _Random.Next();
 		}
 
 		public static int Random(int maxValue)
 		{
+			_Random ??= new Random();
+
 			return _Random.Next(maxValue);
 		}
 
 		public static int Random(int minValue, int maxValue)
 		{
+			_Random ??= new Random();
+
 			return _Random.Next(minValue, maxValue);
 		}
 
 		public static int RandomMinMax(int minValue, int maxValue)
 		{
+			_Random ??= new Random();
+
 			return _Random.Next(minValue, maxValue + 1);
 		}
 
 		public static bool RandomBool()
 		{
+			_Random ??= new Random();
+
 			return _Random.Next() % 2 == 0;
 		}
 
@@ -230,6 +244,31 @@ namespace System
 			}
 
 			return false;
+		}
+
+		public static T? Parse<T>(string input) where T : INumber<T>
+		{
+			if (String.IsNullOrWhiteSpace(input))
+			{
+				return default;
+			}
+
+			return Parse<T>(input.AsSpan());
+		}
+
+		public static T? Parse<T>(ReadOnlySpan<char> input) where T : INumber<T>
+		{
+			if (input.IsEmpty || input.IsWhiteSpace())
+			{
+				return default;
+			}
+
+			if (!T.TryParse(input, NumberStyles.Number, CultureInfo.InvariantCulture, out var result))
+			{
+				result = T.Parse(input, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+			}
+
+			return result;
 		}
 	}
 }

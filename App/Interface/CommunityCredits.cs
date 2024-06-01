@@ -2,9 +2,9 @@
 
 namespace MapCreator
 {
-	public partial class communityCredits : Form
+	public partial class CommunityCredits : Form
 	{
-		public communityCredits()
+		public CommunityCredits()
 		{
 			InitializeComponent();
 		}

@@ -4,14 +4,14 @@ using System.Diagnostics;
 
 namespace MapCreator
 {
-	public partial class colorTables : Form
+	public partial class ColorTables : Form
 	{
 		private int i_Menu;
 
 		private readonly ClsAltitudeTable i_Altitude;
 		private readonly ClsTerrainTable i_Terrain;
 
-		public colorTables()
+		public ColorTables()
 		{
 			i_Altitude = new ClsAltitudeTable();
 			i_Terrain = new ClsTerrainTable();
@@ -95,12 +95,12 @@ namespace MapCreator
 		{
 			Hide();
 
-			_ = StaticForm<facetBuilder>.Open();
+			_ = StaticForm<FacetBuilder>.Open();
 		}
 
 		private void colorTables_menuStrip_button_information_Click(object sender, EventArgs e)
 		{
-			_ = StaticForm<communityCredits>.Open();
+			_ = StaticForm<CommunityCredits>.Open();
 		}
 
 		private void colorTables_button_loadTerrainColorTables_Click(object sender, EventArgs e)

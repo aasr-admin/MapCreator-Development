@@ -1,6 +1,6 @@
 ﻿namespace MapCreator
 {
-    partial class communityCredits
+    partial class CommunityCredits
     {
         /// <summary>
         /// Required designer variable.
@@ -42,7 +42,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(communityCredits));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(CommunityCredits));
             communityCredits_pictureBox_backDrop = new PictureBox();
             communityCredits_label_thankDeveloper = new Label();
             communityCredits_label_thankSubmitter = new Label();

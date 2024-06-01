@@ -1,6 +1,6 @@
 ﻿namespace MapCreator
 {
-    partial class userPlugins
+    partial class UserPlugins
     {
         /// <summary>
         /// Required designer variable.
@@ -42,7 +42,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(userPlugins));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UserPlugins));
             userPlugins_pictureBox_topDivider = new PictureBox();
             userPlugins_statusStrip = new StatusStrip();
             userPlugins_statusStrip_sizeElevenSpacer = new ToolStripStatusLabel();

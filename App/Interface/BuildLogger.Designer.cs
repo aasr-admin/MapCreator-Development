@@ -1,6 +1,6 @@
 ﻿namespace MapCreator
 {
-    partial class buildLogger
+    partial class BuildLogger
     {
         /// <summary>
         /// Required designer variable.
@@ -42,7 +42,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(buildLogger));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(BuildLogger));
             buildLogger_menuStrip = new MenuStrip();
             buildLogger_menuStrip_button_saveLog = new ToolStripMenuItem();
             buildLogger_menuStrip_button_printLog = new ToolStripMenuItem();

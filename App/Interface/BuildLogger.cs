@@ -4,7 +4,7 @@ using System.Drawing.Printing;
 
 namespace MapCreator
 {
-	public partial class buildLogger : Form
+	public partial class BuildLogger : Form
 	{
 		private DateTime m_Task_Start;
 		private DateTime m_Task_End;
@@ -12,7 +12,7 @@ namespace MapCreator
 		private readonly PrintDocument document = new();
 		private readonly PrintDialog dialog = new();
 
-		public buildLogger()
+		public BuildLogger()
 		{
 			InitializeComponent();
 
