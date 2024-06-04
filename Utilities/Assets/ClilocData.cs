@@ -12,6 +12,8 @@ namespace Assets
 		public string? Directory { get; private set; }
 		public string? Language { get; private set; }
 
+		public bool IsLoaded => Directory != null;
+
 		public void Clear()
 		{
 			Directory = Language = null;
@@ -28,15 +30,15 @@ namespace Assets
 		{
 			Clear();
 
-			Directory = directoryPath;
-			Language = language;
-
-			var path = Utility.FindDataFile(Directory, $"Cliloc.{Language}");
+			var path = Utility.FindDataFile(directoryPath, $"Cliloc.{language}");
 
 			if (!File.Exists(path))
 			{
 				return;
 			}
+
+			Directory = directoryPath;
+			Language = language;
 
 			using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 			using var reader = new BinaryReader(file);

@@ -11,6 +11,8 @@
 
 		public string? Directory { get; private set; }
 
+		public bool IsLoaded => Directory != null;
+
 		public void Clear()
 		{
 			Directory = null;

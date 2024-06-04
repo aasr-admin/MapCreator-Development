@@ -21,11 +21,11 @@ namespace Assets
 
 		public string? Directory { get; private set; }
 
+		public bool IsLoaded => Directory != null;
+
 		public void Clear()
 		{
 			Directory = null;
-
-			_Buffer = null;
 
 			_FileIndex = null;
 
@@ -54,7 +54,7 @@ namespace Assets
 				{
 					Directory = directoryPath;
 
-					_FileIndex = new FileIndex(uopPath, 65535, ".tga", false);
+					_FileIndex = new FileIndex(uopPath, 65535, ".tga", true);
 
 					UOP = true;
 				}

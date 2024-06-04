@@ -113,8 +113,10 @@ namespace Assets
 							continue;
 						}
 
-						Index[idx].Offset = (int)(offset + headerLength);
-						Index[idx].Size = entryLength;
+						ref var entry = ref Index[idx];
+
+						entry.Offset = (int)(offset + headerLength);
+						entry.Size = entryLength;
 
 						if (!extended)
 						{
@@ -129,8 +131,8 @@ namespace Assets
 						var extra1 = (ushort)((extra[3] << 24) | (extra[2] << 16) | (extra[1] << 8) | extra[0]);
 						var extra2 = (ushort)((extra[7] << 24) | (extra[6] << 16) | (extra[5] << 8) | extra[4]);
 
-						Index[idx].Offset += 8;
-						Index[idx].Data = (extra1 << 16) | extra2;
+						entry.Offset += 8;
+						entry.Data = (extra1 << 16) | extra2;
 
 						_ = stream.Seek(curPos, SeekOrigin.Begin);
 					}
@@ -176,6 +178,7 @@ namespace Assets
 
 		public bool Seek(int index, ref byte[]? buffer, out int length, out int data)
 		{
+			buffer ??= [];
 			length = data = 0;
 
 			if (!File.Exists(_BinPath))
@@ -190,7 +193,7 @@ namespace Assets
 
 			var e = Index[index];
 
-			if (e.Offset < 0 || e.Size < 0)
+			if (e.Offset < 0 || e.Size <= 0)
 			{
 				return false;
 			}
@@ -200,16 +203,16 @@ namespace Assets
 
 			using var file = new FileStream(_BinPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
-			_ = file.Seek(e.Offset, SeekOrigin.Begin);
-
 			if (buffer == null || buffer.Length < e.Size)
 			{
 				buffer = new byte[e.Size];
 			}
 
+			_ = file.Seek(e.Offset, SeekOrigin.Begin);
+
 			length = file.Read(buffer, 0, e.Size);
 
-			return true;
+			return length > 0;
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1, Size = 12)]
