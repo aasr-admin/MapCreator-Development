@@ -450,17 +450,7 @@ namespace MapCreator
 
 		public void Add(Transition iValue)
 		{
-			try
-			{
-				GetTransitionTable.Add(iValue.HashKey, iValue);
-			}
-			catch (Exception expr_17)
-			{
-				ProjectData.SetProjectError(expr_17);
-				var ex = expr_17;
-				_ = Interaction.MsgBox(ex.Message, MsgBoxStyle.OkOnly, null);
-				ProjectData.ClearProjectError();
-			}
+			GetTransitionTable[iValue.HashKey] = iValue;
 		}
 
 		public void Remove(Transition iValue)
@@ -506,7 +496,7 @@ namespace MapCreator
 					{
 						var xmlInfo = (XmlElement)enumerator.Current;
 						var transition = new Transition(xmlInfo);
-						GetTransitionTable.Add(transition.HashKey, transition);
+						GetTransitionTable[transition.HashKey] = transition;
 					}
 				}
 				finally
@@ -651,7 +641,7 @@ namespace MapCreator
 
 		public HashKey(string Key)
 		{
-			this.Key = Byte.Parse(Key);
+			this.Key = Utility.ParseNumber<byte>(Key);
 		}
 
 		public override string ToString()

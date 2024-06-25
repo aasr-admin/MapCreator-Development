@@ -104,12 +104,8 @@ namespace MapCreator
 
 			Directory.CreateDirectory(outputPath);
 
-			/// GroupBox: Sync Your Altitude Bitmap
-
+			facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text = outputPath;
 			facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text = outputPath;
-
-			/// GroupBox: Compile Your New Facet
-
 			facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text = outputPath;
 
 			iTerrain.Load();
@@ -207,8 +203,9 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_button_locateProject_Click(object sender, EventArgs e)
 		{
-			var folderBrowserDialog = new FolderBrowserDialog()
+			using var folderBrowserDialog = new FolderBrowserDialog()
 			{
+				InitialDirectory = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text,
 				SelectedPath = facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text
 			};
 
@@ -435,10 +432,12 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_button_locateProject_Click(object sender, EventArgs e)
 		{
-			var folderBrowserDialog = new FolderBrowserDialog()
+			using var folderBrowserDialog = new FolderBrowserDialog()
 			{
+				InitialDirectory = facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text,
 				SelectedPath = facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text
 			};
+
 			if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
 			{
 				facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text = folderBrowserDialog.SelectedPath;
@@ -485,8 +484,9 @@ namespace MapCreator
 
 		private void facetBuilder_panel_workbench_groupBox_compileYourNewFacet_button_locateProject_Click(object sender, EventArgs e)
 		{
-			var folderBrowserDialog = new FolderBrowserDialog()
+			using var folderBrowserDialog = new FolderBrowserDialog()
 			{
+				InitialDirectory = facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text,
 				SelectedPath = facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text
 			};
 
@@ -516,10 +516,7 @@ namespace MapCreator
 		{
 			if (Interaction.MsgBox("You are about to create the Mul Files\r\nAre you sure ?", MsgBoxStyle.YesNo, "Make UO Map") == MsgBoxResult.Yes)
 			{
-				var mc_MapMake = this;
-				///CompileYourNewMap uOMapMake = this;
-				///
-				new Thread(new ThreadStart(CreateFacet_mul_Files)).Start();
+				BeginInvoke(CreateFacet_mul_Files);
 			}
 		}
 
