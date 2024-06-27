@@ -130,7 +130,7 @@ namespace MapCreator
 			{
 				ref var entry = ref this[i];
 
-				iList.Items.Add(entry);
+				_ = iList.Items.Add(entry);
 			}
 
 			iList.EndUpdate();

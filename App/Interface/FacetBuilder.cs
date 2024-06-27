@@ -40,7 +40,7 @@ namespace MapCreator
 
 			var outputPath = Path.Combine(Environment.CurrentDirectory, "Projects");
 
-			Directory.CreateDirectory(outputPath);
+			_ = Directory.CreateDirectory(outputPath);
 
 			facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text = outputPath;
 			facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text = outputPath;
@@ -515,7 +515,7 @@ namespace MapCreator
 		{
 			if (Interaction.MsgBox("You are about to create the Mul Files\r\nAre you sure ?", MsgBoxStyle.YesNo, "Make UO Map") == MsgBoxResult.Yes)
 			{
-				BeginInvoke(CreateFacet_mul_Files);
+				_ = BeginInvoke(CreateFacet_mul_Files);
 			}
 		}
 

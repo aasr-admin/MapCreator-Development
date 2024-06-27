@@ -256,7 +256,7 @@ namespace System.Timers
 					var wait = (int)delay;
 
 					await Task.Delay(wait, token).ConfigureAwait(ReturnContextOnTick);
-					
+
 					_Elapsed += wait;
 
 					Tick();
