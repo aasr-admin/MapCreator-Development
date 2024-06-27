@@ -1,5 +1,6 @@
 ﻿using Assets;
 
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace MapCreator
@@ -46,35 +47,35 @@ namespace MapCreator
 			colorTables_button_loadAltitudeColorTables_label.Parent = colorTables_pictureBox_backDrop;
 			colorTables_button_loadAltitudeColorTables_label.BackColor = Color.Transparent;
 
-			ClsAltitude.GlobalPropertyChanged += (o, e) =>
+			ClsAltitude.GlobalPropertyChanged += OnPropertyChanged;
+			ClsTerrain.GlobalPropertyChanged += OnPropertyChanged;
+		}
+
+		private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			var selected = colorTables_listBox_colorTableList.SelectedItem == sender;
+
+			if (sender is ClsTerrain t && i_Terrain.Contains(t))
 			{
-				if (o is ClsAltitude a && i_Altitude.Contains(a))
-				{
-					var selected = colorTables_listBox_colorTableList.SelectedItem == o;
-
-					i_Altitude.Display(colorTables_listBox_colorTableList);
-
-					if (selected)
-					{
-						colorTables_listBox_colorTableList.SelectedItem = o;
-					}
-				}
-			};
-
-			ClsTerrain.GlobalPropertyChanged += (o, e) =>
+				i_Terrain.Display(colorTables_listBox_colorTableList);
+			}
+			else if (sender is ClsAltitude a && i_Altitude.Contains(a))
 			{
-				if (o is ClsTerrain t && i_Terrain.Contains(t))
-				{
-					var selected = colorTables_listBox_colorTableList.SelectedItem == o;
+				i_Altitude.Display(colorTables_listBox_colorTableList);
+			}
 
-					i_Terrain.Display(colorTables_listBox_colorTableList);
+			if (selected)
+			{
+				colorTables_listBox_colorTableList.SelectedItem = sender;
+			}
+		}
 
-					if (selected)
-					{
-						colorTables_listBox_colorTableList.SelectedItem = o;
-					}
-				}
-			};
+		protected override void OnClosed(EventArgs e)
+		{
+			ClsAltitude.GlobalPropertyChanged -= OnPropertyChanged;
+			ClsTerrain.GlobalPropertyChanged -= OnPropertyChanged;
+
+			base.OnClosed(e);
 		}
 
 		private void colorTables_menuStrip_button_getAdobePhotoshop_Click(object sender, EventArgs e)
