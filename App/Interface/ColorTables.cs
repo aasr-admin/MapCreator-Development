@@ -45,6 +45,36 @@ namespace MapCreator
 			colorTables_button_loadAltitudeColorTables_label.FlatStyle = FlatStyle.Standard;
 			colorTables_button_loadAltitudeColorTables_label.Parent = colorTables_pictureBox_backDrop;
 			colorTables_button_loadAltitudeColorTables_label.BackColor = Color.Transparent;
+
+			ClsAltitude.GlobalPropertyChanged += (o, e) =>
+			{
+				if (o is ClsAltitude a && i_Altitude.Contains(a))
+				{
+					var selected = colorTables_listBox_colorTableList.SelectedItem == o;
+
+					i_Altitude.Display(colorTables_listBox_colorTableList);
+
+					if (selected)
+					{
+						colorTables_listBox_colorTableList.SelectedItem = o;
+					}
+				}
+			};
+
+			ClsTerrain.GlobalPropertyChanged += (o, e) =>
+			{
+				if (o is ClsTerrain t && i_Terrain.Contains(t))
+				{
+					var selected = colorTables_listBox_colorTableList.SelectedItem == o;
+
+					i_Terrain.Display(colorTables_listBox_colorTableList);
+
+					if (selected)
+					{
+						colorTables_listBox_colorTableList.SelectedItem = o;
+					}
+				}
+			};
 		}
 
 		private void colorTables_menuStrip_button_getAdobePhotoshop_Click(object sender, EventArgs e)

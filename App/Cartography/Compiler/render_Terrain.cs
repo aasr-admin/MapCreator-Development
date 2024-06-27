@@ -3,35 +3,101 @@
 using Photoshop;
 
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml;
 
 namespace MapCreator
 {
-	public struct ClsTerrain : IColorEntry
+	public record class ClsTerrain : IColorEntry, INotifyPropertyChanged
 	{
-		[Category("Tile Altitude")]
-		public byte AltID { get; set; }
+		public static event PropertyChangedEventHandler GlobalPropertyChanged;
 
-		[Category("Colour")]
-		public Color Color { get; set; } = Color.Black;
+		private byte _GroupID;
 
-		[Category("Key")]
-		public byte GroupID { get; set; }
+		[Browsable(false), Editable(false), EditorBrowsable(EditorBrowsableState.Never)]
+		public byte GroupID
+		{
+			get => _GroupID;
+			set
+			{
+				_GroupID = value;
 
-		[Category("Group ID")]
-		public readonly string GroupIDHex => $"{GroupID:X}";
+				InvokePropertyChanged();
+			}
+		}
 
-		[Category("Description")]
-		public string Name { get; set; }
+		private byte _AltID;
 
-		[Category("Random Altitude")]
-		public bool RandAlt { get; set; }
+		public byte AltID
+		{
+			get => _AltID;
+			set
+			{
+				_AltID = value;
 
-		[Category("Tile ID")]
-		public ushort TileID { get; set; }
+				InvokePropertyChanged();
+			}
+		}
 
-		public readonly ref LandData Data => ref AssetData.Tiles.LandTable[TileID];
+		private Color _Color;
+
+		public Color Color
+		{
+			get => _Color;
+			set
+			{
+				_Color = value;
+
+				InvokePropertyChanged();
+			}
+		}
+
+		private string _Name;
+
+		public string Name
+		{
+			get => _Name;
+			set
+			{
+				_Name = value;
+
+				InvokePropertyChanged();
+			}
+		}
+
+		private bool _RandAlt;
+
+		public bool RandAlt
+		{
+			get => _RandAlt;
+			set
+			{
+				_RandAlt = value;
+
+				InvokePropertyChanged();
+			}
+		}
+
+		private ushort _TileID;
+
+		public ushort TileID
+		{
+			get => _TileID;
+			set
+			{
+				_TileID = value;
+
+				InvokePropertyChanged();
+			}
+		}
+
+		[Browsable(false), Editable(false), EditorBrowsable(EditorBrowsableState.Never)]
+		public string GroupIDHex => $"{GroupID:X2}";
+
+		[Browsable(false), Editable(false), EditorBrowsable(EditorBrowsableState.Never)]
+		public ref LandData Data => ref AssetData.Tiles.LandTable[TileID];
 
 		public ClsTerrain()
 		{
@@ -39,12 +105,12 @@ namespace MapCreator
 
 		public ClsTerrain(string iName, byte iGroupID, ushort iTileID, Color iColor, byte iBase, bool iRandAlt)
 		{
-			Name = iName;
-			GroupID = iGroupID;
-			TileID = iTileID;
-			Color = iColor;
-			AltID = iBase;
-			RandAlt = iRandAlt;
+			_Name = iName;
+			_GroupID = iGroupID;
+			_TileID = iTileID;
+			_Color = iColor;
+			_AltID = iBase;
+			_RandAlt = iRandAlt;
 		}
 
 		public ClsTerrain(XmlElement xmlInfo)
@@ -52,39 +118,50 @@ namespace MapCreator
 			Load(xmlInfo);
 		}
 
-		public override readonly string ToString()
+		public override string ToString()
 		{
-			return !RandAlt ? $"[{GroupID:X2}] {Name}" : $"[{GroupID:X2}] *{Name}";
+			return !_RandAlt ? $"[{_GroupID:X2}] {_Name}" : $"[{GroupID:X2}] *{_Name}";
 		}
 
-		public readonly void Save(XmlTextWriter xmlInfo)
+		public void Save(XmlTextWriter xmlInfo)
 		{
 			xmlInfo.WriteStartElement("Terrain");
 
-			xmlInfo.WriteAttributeString("Name", Name);
-			xmlInfo.WriteAttributeString("ID", Convert.ToString(GroupID));
-			xmlInfo.WriteAttributeString("TileID", Convert.ToString(TileID));
-			xmlInfo.WriteAttributeString("R", Convert.ToString(Color.R));
-			xmlInfo.WriteAttributeString("G", Convert.ToString(Color.G));
-			xmlInfo.WriteAttributeString("B", Convert.ToString(Color.B));
-			xmlInfo.WriteAttributeString("Base", Convert.ToString(AltID));
-			xmlInfo.WriteAttributeString("Random", Convert.ToString(RandAlt));
+			xmlInfo.WriteAttributeString("Name", _Name);
+			xmlInfo.WriteAttributeString("ID", Convert.ToString(_GroupID));
+			xmlInfo.WriteAttributeString("TileID", Convert.ToString(_TileID));
+			xmlInfo.WriteAttributeString("R", Convert.ToString(_Color.R));
+			xmlInfo.WriteAttributeString("G", Convert.ToString(_Color.G));
+			xmlInfo.WriteAttributeString("B", Convert.ToString(_Color.B));
+			xmlInfo.WriteAttributeString("Base", Convert.ToString(_AltID));
+			xmlInfo.WriteAttributeString("Random", Convert.ToString(_RandAlt));
 
 			xmlInfo.WriteEndElement();
 		}
 
 		public void Load(XmlElement xmlInfo)
 		{
-			Name = xmlInfo.GetAttribute("Name");
-			GroupID = Utility.ParseNumber<byte>(xmlInfo.GetAttribute("ID"));
-			TileID = Utility.ParseNumber<ushort>(xmlInfo.GetAttribute("TileID"));
-			Color = Color.FromArgb(Utility.ParseNumber<byte>(xmlInfo.GetAttribute("R")), Utility.ParseNumber<byte>(xmlInfo.GetAttribute("G")), Utility.ParseNumber<byte>(xmlInfo.GetAttribute("B")));
-			AltID = Utility.ParseNumber<byte>(xmlInfo.GetAttribute("Base"));
+			_Name = xmlInfo.GetAttribute("Name");
+			_GroupID = Utility.ParseNumber<byte>(xmlInfo.GetAttribute("ID"));
+			_TileID = Utility.ParseNumber<ushort>(xmlInfo.GetAttribute("TileID"));
+			_Color = Color.FromArgb(Utility.ParseNumber<byte>(xmlInfo.GetAttribute("R")), Utility.ParseNumber<byte>(xmlInfo.GetAttribute("G")), Utility.ParseNumber<byte>(xmlInfo.GetAttribute("B")));
+			_AltID = Utility.ParseNumber<byte>(xmlInfo.GetAttribute("Base"));
 
 			if (Boolean.TryParse(xmlInfo.GetAttribute("Random"), out var rand))
 			{
-				RandAlt = rand;
+				_RandAlt = rand;
 			}
+		}
+
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add => GlobalPropertyChanged += value;
+			remove => GlobalPropertyChanged -= value;
+		}
+
+		private void InvokePropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			GlobalPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 
@@ -93,6 +170,24 @@ namespace MapCreator
 		public ClsTerrainTable()
 			: base(256)
 		{
+			Init();
+		}
+
+		private void Init()
+		{
+			for (var i = 0; i < Length; i++)
+			{
+				ref var entry = ref this[i];
+
+				entry.GroupID = (byte)i;
+			}
+		}
+
+		protected override void OnClear()
+		{
+			base.OnClear();
+
+			Init();
 		}
 
 		public void Display(ListBox iList)

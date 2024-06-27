@@ -1,21 +1,54 @@
 ﻿using Photoshop;
 
-using System.Drawing.Imaging;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml;
 
 namespace MapCreator
 {
-	public struct ClsAltitude : IColorEntry
+	public record class ClsAltitude : IColorEntry, INotifyPropertyChanged
 	{
-		Color IColorEntry.Color { readonly get => AltitudeColor; set => AltitudeColor = value; }
-		string IColorEntry.Name { readonly get => Type; set => Type = value; }
+		public static event PropertyChangedEventHandler GlobalPropertyChanged;
 
-		public sbyte GetAltitude { get; set; }
+		private sbyte _Altitude;
 
-		public Color AltitudeColor { get; set; }
+		public sbyte Altitude
+		{
+			get => _Altitude;
+			set
+			{
+				_Altitude = value;
 
-		public string Type { get; set; }
+				InvokePropertyChanged();
+			}
+		}
+
+		private Color _Color;
+
+		public Color Color
+		{
+			get => _Color;
+			set
+			{
+				_Color = value;
+
+				InvokePropertyChanged();
+			}
+		}
+
+		private string _Name;
+
+		public string Name
+		{
+			get => _Name;
+			set
+			{
+				_Name = value;
+
+				InvokePropertyChanged();
+			}
+		}
 
 		public ClsAltitude()
 		{
@@ -23,9 +56,9 @@ namespace MapCreator
 
 		public ClsAltitude(string iType, sbyte iAlt, Color iAltColor)
 		{
-			Type = iType;
-			GetAltitude = iAlt;
-			AltitudeColor = iAltColor;
+			_Name = iType;
+			_Altitude = iAlt;
+			_Color = iAltColor;
 		}
 
 		public ClsAltitude(XmlElement xmlInfo)
@@ -33,54 +66,55 @@ namespace MapCreator
 			Load(xmlInfo);
 		}
 
-		public override readonly string ToString()
+		public override string ToString()
 		{
-			return $"{Type} [{GetAltitude}]";
+			return $"[{_Altitude}z] {_Name}";
 		}
 
-		public readonly void Save(XmlTextWriter xmlInfo)
+		public void Save(XmlTextWriter xmlInfo)
 		{
 			xmlInfo.WriteStartElement("Altitude");
 
-			xmlInfo.WriteAttributeString("Type", Type);
+			xmlInfo.WriteAttributeString("Type", _Name);
 
-			xmlInfo.WriteAttributeString("Altitude", Convert.ToString(GetAltitude));
+			xmlInfo.WriteAttributeString("Altitude", Convert.ToString(_Altitude));
 
-			xmlInfo.WriteAttributeString("R", Convert.ToString(AltitudeColor.R));
-			xmlInfo.WriteAttributeString("G", Convert.ToString(AltitudeColor.G));
-			xmlInfo.WriteAttributeString("B", Convert.ToString(AltitudeColor.B));
+			xmlInfo.WriteAttributeString("R", Convert.ToString(_Color.R));
+			xmlInfo.WriteAttributeString("G", Convert.ToString(_Color.G));
+			xmlInfo.WriteAttributeString("B", Convert.ToString(_Color.B));
 
 			xmlInfo.WriteEndElement();
 		}
 
 		public void Load(XmlElement xmlInfo)
 		{
-			Type = xmlInfo.GetAttribute("Type");
+			_Name = xmlInfo.GetAttribute("Type");
 
 			var alt = Utility.ParseNumber<int>(xmlInfo.GetAttribute("Altitude"));
 
-			GetAltitude = (sbyte)Math.Clamp(alt, SByte.MinValue, SByte.MaxValue);
+			_Altitude = (sbyte)Math.Clamp(alt, SByte.MinValue, SByte.MaxValue);
 
 			var r = Utility.ParseNumber<byte>(xmlInfo.GetAttribute("R"));
 			var g = Utility.ParseNumber<byte>(xmlInfo.GetAttribute("G"));
 			var b = Utility.ParseNumber<byte>(xmlInfo.GetAttribute("B"));
 
-			AltitudeColor = Color.FromArgb(r, g, b);
+			_Color = Color.FromArgb(r, g, b);
+		}
+
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+		{
+			add => GlobalPropertyChanged += value;
+			remove => GlobalPropertyChanged -= value;
+		}
+
+		private void InvokePropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			GlobalPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 
 	public class ClsAltitudeTable : ColorCollection<ClsAltitude>
 	{
-		public void SetAltitude(int index, ClsAltitude Value)
-		{
-			this[index] = Value;
-		}
-
-		public ClsAltitude GetAltitude(int index)
-		{
-			return this[index];
-		}
-
 		public ClsAltitudeTable()
 			: base(256)
 		{
@@ -103,11 +137,6 @@ namespace MapCreator
 			iList.Invalidate();
 		}
 
-		public ColorPalette GetAltPalette()
-		{
-			return CreatePallette();
-		}
-
 		#region Altitude Swatch And Color Table
 
 		public void Load()
@@ -124,6 +153,8 @@ namespace MapCreator
 
 			foreach (XmlElement node in xmlDocument.SelectNodes("Altitudes/Altitude"))
 			{
+				++index;
+
 				var entry = new ClsAltitude(node);
 
 				var keyAttr = node.GetAttribute("Key");
@@ -136,7 +167,7 @@ namespace MapCreator
 				}
 				else
 				{
-					this[++index % Length] = entry;
+					this[index % Length] = entry;
 				}
 			}
 		}
@@ -158,7 +189,7 @@ namespace MapCreator
 			{
 				ref var entry = ref this[i];
 
-				entry.Save(xmlTextWriter);
+				entry?.Save(xmlTextWriter);
 			}
 
 			xmlTextWriter.WriteEndElement();

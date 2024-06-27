@@ -30,7 +30,7 @@ namespace MapCreator
 					return;
 				}
 
-				memoryImage.Palette = altitude.GetAltPalette();
+				memoryImage.Palette = altitude.CreatePallette();
 
 				var loadedBound = new Rectangle(0, 0, loadedImage.Width, loadedImage.Height);
 

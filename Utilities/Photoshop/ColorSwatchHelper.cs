@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Buffers.Binary;
+using System.Text;
 
 namespace Photoshop
 {
@@ -8,87 +9,148 @@ namespace Photoshop
 	/// </summary>
 	public static class ColorSwatchHelper
 	{
-		private const ushort NULL16 = 0;
+		private static readonly UnicodeEncoding _Encoding = new(true, true);
 
-		public static void Write<T>(BinaryWriter writer, T? entry, bool name, ColorFormat format) where T : IColorEntry
+		private static void WriteUInt16(Stream stream, ushort value)
 		{
-			writer.Write((ushort)format);
+			Span<byte> buffer = stackalloc byte[2];
+
+			BinaryPrimitives.WriteUInt16BigEndian(buffer, value);
+
+			stream.Write(buffer);
+		}
+
+		private static ushort ReadUInt16(Stream stream)
+		{
+			Span<byte> buffer = stackalloc byte[2];
+
+			_ = stream.Read(buffer);
+
+			return BinaryPrimitives.ReadUInt16BigEndian(buffer);
+		}
+
+		private static void WriteInt32(Stream stream, int value)
+		{
+			Span<byte> buffer = stackalloc byte[4];
+
+			BinaryPrimitives.WriteInt32BigEndian(buffer, value);
+
+			stream.Write(buffer);
+		}
+
+		private static int ReadInt32(Stream stream)
+		{
+			Span<byte> buffer = stackalloc byte[4];
+
+			_ = stream.Read(buffer);
+
+			return BinaryPrimitives.ReadInt32BigEndian(buffer);
+		}
+
+		private static void WriteString(Stream stream, string value)
+		{
+			value ??= String.Empty;
+
+			var length = value.Length + 1;
+
+			WriteInt32(stream, length);
+
+			Span<byte> buffer = stackalloc byte[length * 2];
+
+			_ = _Encoding.GetBytes(value, buffer);
+
+			stream.Write(buffer);
+		}
+
+		private static string ReadString(Stream stream)
+		{
+			var length = ReadInt32(stream) * 2;
+
+			Span<byte> buffer = stackalloc byte[length];
+
+			_ = stream.Read(buffer);
+
+			var value = Encoding.BigEndianUnicode.GetString(buffer);
+
+			return value.Trim();
+		}
+
+		public static void Write<T>(Stream stream, T? entry, bool name, ColorFormat format) where T : IColorEntry
+		{
+			WriteUInt16(stream, (ushort)format);
 
 			var color = entry?.Color ?? Color.Empty;
 
 			ColorHelper.Convert(color, format, out var v0, out var v1, out var v2, out var v3);
 
-			writer.Write(v0);
-			writer.Write(v1);
-			writer.Write(v2);
-			writer.Write(v3);
+			WriteUInt16(stream, v0);
+			WriteUInt16(stream, v1);
+			WriteUInt16(stream, v2);
+			WriteUInt16(stream, v3);
 
 			if (name)
 			{
-				var value = entry?.Name ?? String.Empty;
+				var entryName = entry?.Name ?? color.Name;
 
-				writer.Write(value.Length);
-
-				var data = Encoding.BigEndianUnicode.GetBytes(value);
-
-				writer.Write(data, 0, data.Length);
-
-				writer.Write(NULL16);
+				WriteString(stream, entryName);
 			}
+
+			stream.Flush();
 		}
 
-		public static T Read<T>(BinaryReader reader, T entry, bool name) where T : IColorEntry
+		public static T? Read<T>(Stream stream, T? entry, bool name) where T : IColorEntry
 		{
-			var format = (ColorFormat)reader.ReadUInt16();
+			var format = (ColorFormat)ReadUInt16(stream);
 
-			var v0 = reader.ReadUInt16();
-			var v1 = reader.ReadUInt16();
-			var v2 = reader.ReadUInt16();
-			var v3 = reader.ReadUInt16();
+			var v0 = ReadUInt16(stream);
+			var v1 = ReadUInt16(stream);
+			var v2 = ReadUInt16(stream);
+			var v3 = ReadUInt16(stream);
 
 			ColorHelper.Convert(v0, v1, v2, v3, format, out var color);
 
-			entry.Color = color;
+			if (entry != null)
+			{
+				entry.Color = color;
+			}
 
 			if (name)
 			{
-				var length = reader.ReadInt32();
-				var data = reader.ReadBytes(length * 2);
+				var entryName = ReadString(stream);
 
-				entry.Name = Encoding.BigEndianUnicode.GetString(data);
-
-				_ = reader.ReadUInt16();
+				if (entry != null)
+				{
+					entry.Name = entryName;
+				}
 			}
 
 			return entry;
 		}
 
-		public static void Export<T>(string filePath, T[] entries, ColorFormat format) where T : IColorEntry
+		public static void Export<T>(string filePath, T?[] entries, ColorFormat format) where T : IColorEntry
 		{
 			using var file = new FileStream(filePath, FileMode.Create);
-			using var writer = new BinaryWriter(file, Encoding.BigEndianUnicode);
 
-			writer.Write((ushort)1);
-			writer.Write((ushort)entries.Length);
-
-			foreach (var entry in entries)
-			{
-				Write(writer, entry, false, format);
-			}
-
-			writer.Write((ushort)2);
-			writer.Write((ushort)entries.Length);
+			WriteUInt16(file, 1);
+			WriteUInt16(file, (ushort)entries.Length);
 
 			foreach (var entry in entries)
 			{
-				Write(writer, entry, true, format);
+				Write(file, entry, false, format);
 			}
 
-			writer.Flush();
+			WriteUInt16(file, 2);
+			WriteUInt16(file, (ushort)entries.Length);
+
+			foreach (var entry in entries)
+			{
+				Write(file, entry, true, format);
+			}
+
 			file.Flush();
 		}
 
-		public static bool Import<T>(string filePath, T[] entries) where T : IColorEntry
+		public static bool Import<T>(string filePath, T?[] entries) where T : IColorEntry
 		{
 			if (!File.Exists(filePath))
 			{
@@ -96,26 +158,36 @@ namespace Photoshop
 			}
 
 			using var file = new FileStream(filePath, FileMode.Open);
-			using var reader = new BinaryReader(file, Encoding.BigEndianUnicode);
 
-			_ = reader.ReadUInt16(); // v1
+			var ver = ReadUInt16(file); // v1
 
-			var count1 = reader.ReadUInt16();
-			var index1 = -1;
-
-			while (--count1 >= 0 && ++index1 < entries.Length)
+			if (ver is < 0 or > 2)
 			{
-				entries[index1] = Read(reader, entries[index1], false);
+				return false;
 			}
 
-			_ = reader.ReadUInt16(); // v2
-
-			var count2 = reader.ReadUInt16();
-			var index2 = -1;
-
-			while (--count2 >= 0 && ++index2 < entries.Length)
+			if (ver == 1)
 			{
-				entries[index2] = Read(reader, entries[index2], true);
+				var count = ReadUInt16(file);
+				var index = -1;
+
+				while (--count >= 0 && ++index < entries.Length)
+				{
+					entries[index] = Read(file, entries[index], false);
+				}
+
+				ver = ReadUInt16(file); // v2
+			}
+
+			if (ver == 2)
+			{
+				var count = ReadUInt16(file);
+				var index = -1;
+
+				while (--count >= 0 && ++index < entries.Length)
+				{
+					entries[index] = Read(file, entries[index], true);
+				}
 			}
 
 			return true;

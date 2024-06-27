@@ -38,6 +38,14 @@ namespace MapCreator
 
 			#region Workbench Loading
 
+			var outputPath = Path.Combine(Environment.CurrentDirectory, "Projects");
+
+			Directory.CreateDirectory(outputPath);
+
+			facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text = outputPath;
+			facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text = outputPath;
+			facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text = outputPath;
+
 			/// GroupBox: Create Facet Bitmap Files
 
 			IEnumerator enumerator = null;
@@ -58,7 +66,6 @@ namespace MapCreator
 
 			#endregion
 
-			facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text = Directory.GetCurrentDirectory();
 			iTerrain.Display(facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_baseTerrain_comboBox);
 
 			try
@@ -99,14 +106,6 @@ namespace MapCreator
 				iLogger.LogMessage(String.Format("Unable to find:{0}", str));
 				ProjectData.ClearProjectError();
 			}
-
-			var outputPath = Path.Combine(Environment.CurrentDirectory, "Projects");
-
-			Directory.CreateDirectory(outputPath);
-
-			facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_projectFolderLocation_textBox.Text = outputPath;
-			facetBuilder_panel_workbench_groupBox_syncYourAltitudeBitmap_label_projectFolderLocation_textBox.Text = outputPath;
-			facetBuilder_panel_workbench_groupBox_compileYourNewFacet_label_projectFolderLocation_textBox.Text = outputPath;
 
 			iTerrain.Load();
 			iAltitude.Load();
@@ -276,7 +275,7 @@ namespace MapCreator
 				{
 					var str2 = String.Format("{0}/{1}", str, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_altitudeBitmap_textBox.Text);
 					var altPalette = MakeAltitudeBitmapFile(selectedItem.XSize, selectedItem.YSize, altID, facetBuilder_panel_workbench_groupBox_createFacetBitmapFiles_label_addDungeonArea_checkBox.Checked);
-					altPalette.Palette = iAltitude.GetAltPalette();
+					altPalette.Palette = iAltitude.CreatePallette();
 					altPalette.Save(str2, ImageFormat.Bmp);
 					altPalette.Dispose();
 				}
@@ -360,7 +359,7 @@ namespace MapCreator
 		{
 			var bitmap = new Bitmap(xSize, ySize, PixelFormat.Format8bppIndexed)
 			{
-				Palette = iAltitude.GetAltPalette()
+				Palette = iAltitude.CreatePallette()
 			};
 			var rectangle = new Rectangle(0, 0, xSize, ySize);
 			var bitmapDatum = bitmap.LockBits(rectangle, ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
@@ -598,8 +597,8 @@ namespace MapCreator
 					for (var j = 0; j <= num6; j++)
 					{
 						var num7 = (j * width) + i;
-						var getAltitude = clsAltitudeTable.GetAltitude(numArray1[num7]);
-						mapCell[i, j] = new MapCell(numArray[num7], getAltitude.GetAltitude);
+						var getAltitude = clsAltitudeTable[numArray1[num7]];
+						mapCell[i, j] = new MapCell(numArray[num7], getAltitude.Altitude);
 					}
 				}
 			}
